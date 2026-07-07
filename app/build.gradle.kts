@@ -22,7 +22,6 @@ base {
 android {
     namespace = "de.salomax.currencies"
     compileSdk = 37
-    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "de.salomax.currencies"
