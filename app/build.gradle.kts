@@ -21,13 +21,13 @@ base {
 
 android {
     namespace = "de.salomax.currencies"
-    compileSdk = 36
+    compileSdk = 37
     buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "de.salomax.currencies"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 37
         // SemVer
         versionName = "1.23.0"
         versionCode = 12300
@@ -91,7 +91,7 @@ android {
 
 dependencies {
     // kotlin
-    implementation("androidx.core:core-ktx:1.18.0")
+    implementation("androidx.core:core-ktx:1.19.0")
     // support libs
     val appCompatVersion = "1.7.1"
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
