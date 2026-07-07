@@ -1,0 +1,33 @@
+name: Build APK artifact
+
+on:
+  push:
+    branches-ignore:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Setup java environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build fdroid debug APK
+        run: ./gradlew assembleFdroidDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: currencies-fdroid-debug-${{ github.sha }}
+          path: app/build/outputs/apk/fdroid/debug/*.apk
+          if-no-files-found: error
