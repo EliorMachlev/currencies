@@ -2,26 +2,35 @@
 
 import java.util.Properties
 import java.io.FileInputStream
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
+    id("com.google.devtools.ksp") version "2.3.9"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+
+base {
+    archivesName.set("de.salomax.currencies-v12300")
 }
 
 android {
     namespace = "de.salomax.currencies"
-    compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "de.salomax.currencies"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         // SemVer
         versionName = "1.23.0"
         versionCode = 12300
-        setProperty("archivesBaseName", "$applicationId-v$versionCode")
     }
 
     signingConfigs {
@@ -67,10 +76,6 @@ android {
         targetCompatibility(JavaVersion.VERSION_17)
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
@@ -86,20 +91,20 @@ android {
 
 dependencies {
     // kotlin
-    implementation("androidx.core:core-ktx:1.16.0")
+    implementation("androidx.core:core-ktx:1.18.0")
     // support libs
     val appCompatVersion = "1.7.1"
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
     implementation("androidx.appcompat:appcompat-resources:$appCompatVersion")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    val livecycleVersion = "2.9.1"
+    val livecycleVersion = "2.11.0"
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$livecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$livecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$livecycleVersion")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.window:window:1.4.0")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0")
+    implementation("androidx.window:window:1.5.1")
+    implementation("com.google.android.material:material:1.14.0")
     // downloader
     val fuelVersion = "2.3.1"
     implementation("com.github.kittinunf.fuel:fuel:$fuelVersion")
@@ -115,7 +120,7 @@ dependencies {
     implementation("com.robinhood.spark:spark:1.2.0")
     // test
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation("org.mockito:mockito-core:5.23.0")
 }
 
 fun getSecret(key: String): String? {
