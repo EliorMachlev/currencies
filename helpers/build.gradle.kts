@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("kotlin")
+    id("org.jetbrains.kotlin.jvm")
 }
 
 tasks.withType<KotlinCompile>().configureEach {
