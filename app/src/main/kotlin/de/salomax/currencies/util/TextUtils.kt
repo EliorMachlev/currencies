@@ -20,7 +20,7 @@ import java.util.*
  * - system=af & app=system-default -> en (as there's no af localization it falls back to en)
  */
 fun getLocale(context: Context): Locale {
-    return AppCompatDelegate.getApplicationLocales()[0] ?: Locale(
+    return AppCompatDelegate.getApplicationLocales()[0] ?: Locale.of(
         context.getString(R.string.locale_language),
         context.getString(R.string.locale_country)
     )
