@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exchange Rate Providers — Currencies</title>
+  <meta name="description" content="Compare all exchange rate providers supported by the Currencies Android app — Frankfurter, OpenExchangerates, InforEuro, Bank of Canada, Norges Bank, Bank Rossii.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💱</text></svg>">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Currencies
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="providers.html" class="active">Providers</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" style="padding: 3.5rem 1.5rem 3rem;">
+  <div class="hero-inner">
+    <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);">Exchange Rate Providers</h1>
+    <p class="tagline" style="font-size:1.05rem;">Compare the 6 active data sources. Switch freely in Settings — no account needed for most.</p>
+  </div>
+</header>
+
+<main class="page">
+
+  <h2 class="section-title">Provider Comparison</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Currencies</th>
+          <th>Update Frequency</th>
+          <th>Base Currency</th>
+          <th>History</th>
+          <th>API Key</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Frankfurter.app</strong><br><small style="color:var(--clr-text-muted)">European Central Bank</small></td>
+          <td><span class="tag">~33</span></td>
+          <td>Business days (~16:00 CET)</td>
+          <td>EUR</td>
+          <td>From 2010-01-04</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>OpenExchangerates</strong></td>
+          <td><span class="tag">160+</span></td>
+          <td>Hourly</td>
+          <td>USD</td>
+          <td>Yes</td>
+          <td>Free tier available</td>
+        </tr>
+        <tr>
+          <td><strong>InforEuro</strong><br><small style="color:var(--clr-text-muted)">European Commission</small></td>
+          <td><span class="tag">~150</span></td>
+          <td>Monthly</td>
+          <td>EUR</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>Bank of Canada</strong></td>
+          <td><span class="tag">~23</span></td>
+          <td>Business days</td>
+          <td>CAD</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>Norges Bank</strong><br><small style="color:var(--clr-text-muted)">Norwegian Central Bank</small></td>
+          <td><span class="tag">~40</span></td>
+          <td>Business days</td>
+          <td>NOK</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>Bank Rossii</strong><br><small style="color:var(--clr-text-muted)">Russian Central Bank</small></td>
+          <td><span class="tag">~44</span></td>
+          <td>Business days</td>
+          <td>RUB</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Provider Details</h2>
+
+  <div class="cards" style="grid-template-columns: 1fr;">
+
+    <div class="card">
+      <span class="card-icon">🇪🇺</span>
+      <h3>Frankfurter.app</h3>
+      <p>A free, open-source API wrapper around the <strong>European Central Bank</strong> reference rates. Rates are published every business day around 16:00 CET. Covers major world currencies (~33). Historical data starts at 2010-01-04 and the service is highly reliable. No sign-up required.</p>
+      <p style="margin-top:.5rem;"><a href="https://frankfurter.app/">frankfurter.app</a></p>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">🌐</span>
+      <h3>OpenExchangerates</h3>
+      <p>A commercial service offering the widest currency coverage of any provider in the app — <strong>160+ currencies</strong> updated hourly. The free "App ID" tier provides access to current and historical rates. A free account is required; the API key is entered in Settings.</p>
+      <p style="margin-top:.5rem;"><a href="https://openexchangerates.org/">openexchangerates.org</a></p>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">🏛️</span>
+      <h3>InforEuro</h3>
+      <p>The <strong>European Commission's</strong> official monthly accounting rates for the euro, used for EU budget and grant calculations. Covers ~150 currencies and is updated once per month. Ideal when you need the official EU rate rather than market rates.</p>
+      <p style="margin-top:.5rem;"><a href="https://commission.europa.eu/funding-tenders/procedures-guidelines-tenders/information-contractors-and-beneficiaries/exchange-rate-inforeuro_en">European Commission</a></p>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">🍁</span>
+      <h3>Bank of Canada</h3>
+      <p>Daily exchange rates published by the <strong>Canadian Central Bank</strong>. Covers approximately 23 currencies against CAD. Updated every business day. No API key required.</p>
+      <p style="margin-top:.5rem;"><a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/">bankofcanada.ca</a></p>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">🇳🇴</span>
+      <h3>Norges Bank</h3>
+      <p>The <strong>Norwegian Central Bank</strong> publishes about 40 exchange rates against NOK every business day. Data is returned as XML and parsed natively in the app. No API key required.</p>
+      <p style="margin-top:.5rem;"><a href="https://www.norges-bank.no/en/topics/Statistics/exchange_rates/">norges-bank.no</a></p>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">🇷🇺</span>
+      <h3>Bank Rossii</h3>
+      <p>The <strong>Russian Central Bank</strong> lists ~44 exchange rates against RUB, updated every business day. Returns XML data. Particularly useful for RUB-based conversions and as a reliable fallback for providers that have been retired.</p>
+      <p style="margin-top:.5rem;"><a href="https://cbr.ru/eng/currency_base/daily/">cbr.ru</a></p>
+    </div>
+
+  </div>
+
+  <h2 class="section-title" style="margin-top:2.5rem;">Retired &amp; Deactivated Providers</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Provider</th><th>Reason</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>fer.ee</strong></td>
+          <td>Deactivated — persistent API instability made it unreliable</td>
+        </tr>
+        <tr>
+          <td><strong>exchangerate.host</strong></td>
+          <td>Removed — the service shut down its free API</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Switching Providers</h2>
+  <div class="prose">
+    <p>Open <strong>Settings → Exchange rate provider</strong> and select a provider. The change takes effect immediately on the next pull-to-refresh or app restart. Cached rates from the previous provider are discarded.</p>
+    <p>If a provider requires an API key (currently only OpenExchangerates), an input field appears in Settings after selecting it. The key is stored locally in SharedPreferences and is never transmitted to any server other than the provider's own API.</p>
+  </div>
+
+</main>
+
+<footer>
+  <p>Currencies &copy; 2020 Maximilian Salomon &mdash; Licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL-3.0</a></p>
+  <p style="margin-top:.4rem;"><a href="https://github.com/sal0max/currencies">GitHub</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="https://translate.codeberg.org/engage/currencies/">Translate</a></p>
+</footer>
+
+</body>
+</html>
