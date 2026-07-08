@@ -9,6 +9,9 @@ permissions:
   contents: read
   security-events: write
 
+env:
+  DETEKT_VERSION: "1.23.7"
+
 jobs:
   detekt:
     runs-on: ubuntu-latest
@@ -18,18 +21,23 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
+      - name: Install detekt CLI
+        run: |
+          curl -sSLo detekt-cli.zip \
+            "https://github.com/detekt/detekt/releases/download/v${DETEKT_VERSION}/detekt-cli-${DETEKT_VERSION}.zip"
+          unzip -q detekt-cli.zip
+          echo "$PWD/detekt-cli-${DETEKT_VERSION}/bin" >> "$GITHUB_PATH"
       - name: Run detekt
-        uses: natiginfo/action-detekt-all@1.23.7
         continue-on-error: true
-        with:
-          args: >-
-            --input app/src,helpers/src
-            --report sarif:detekt-results.sarif
-            --report txt:detekt-results.txt
+        run: |
+          detekt-cli \
+            --input app/src,helpers/src \
+            --report sarif:detekt-results.sarif \
+            --report txt:detekt-results.txt \
             --jvm-target 21
       - name: Upload SARIF to code scanning
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        if: always() && hashFiles('detekt-results.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: detekt-results.sarif
           category: detekt
@@ -40,3 +48,4 @@ jobs:
           name: detekt-report
           path: detekt-results.*
           retention-days: 14
+          if-no-files-found: ignore
