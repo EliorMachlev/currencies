@@ -46,7 +46,7 @@ fun main() {
                 .replace("'", "\\'")
             println("""    <string name="name_${isoName.lowercase()}">$name</string>""")
         } catch (e: IllegalArgumentException) {
-            println(isoName)
+            println("$isoName: ${e.message}")
         }
     }
     println("</resources>\n")
