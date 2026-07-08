@@ -27,7 +27,7 @@ jobs:
           java-version: 21
           distribution: temurin
       - name: Qodana Scan
-        uses: JetBrains/qodana-action@v2025.1
+        uses: JetBrains/qodana-action@f5aa2889b113c16bd6aee47817b027537ee33ac7 # v2025.1
         with:
           upload-result: true
           pr-mode: false
