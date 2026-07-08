@@ -23,23 +23,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # build-mode: none for java-kotlin because the CodeQL Kotlin
+          # extractor lags behind Kotlin releases (currently caps at
+          # <2.3.30) and this repo builds with a newer Kotlin. Source-
+          # only extraction avoids running the Kotlin compiler.
           - language: java-kotlin
-            build-mode: autobuild
+            build-mode: none
           - language: actions
             build-mode: none
     steps:
       - uses: actions/checkout@v7
-
-      - name: Setup Java
-        if: matrix.language == 'java-kotlin'
-        uses: actions/setup-java@v5
-        with:
-          java-version: 21
-          distribution: temurin
-
-      - name: Setup Gradle
-        if: matrix.language == 'java-kotlin'
-        uses: gradle/actions/setup-gradle@v6
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
