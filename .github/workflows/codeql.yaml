@@ -15,34 +15,25 @@ permissions:
   packages: read
   actions: read
 
+# Kotlin analysis is handled by Qodana (see qodana.yaml). CodeQL is
+# limited to GitHub Actions YAML analysis here because the CodeQL
+# Kotlin extractor lags behind Kotlin releases.
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: Analyze (actions)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # build-mode: none for java-kotlin because the CodeQL Kotlin
-          # extractor lags behind Kotlin releases (currently caps at
-          # <2.3.30) and this repo builds with a newer Kotlin. Source-
-          # only extraction avoids running the Kotlin compiler.
-          - language: java-kotlin
-            build-mode: none
-          - language: actions
-            build-mode: none
     steps:
       - uses: actions/checkout@v7
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
+          languages: actions
+          build-mode: none
           queries: security-and-quality
           config-file: ./.github/codeql/codeql-config.yml
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
-          category: "/language:${{ matrix.language }}"
+          category: /language:actions
