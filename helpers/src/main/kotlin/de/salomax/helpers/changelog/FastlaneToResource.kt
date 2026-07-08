@@ -72,7 +72,7 @@ private class FastlaneToResource {
     }
 
     private fun List<String>.createVersionChangelog(): String {
-        val sb = java.lang.StringBuilder()
+        val sb = StringBuilder()
         for (entry in this) {
             sb.appendLine("        <item>${entry.removePrefix("- ").replace("'", "\\'").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")}</item>")
         }

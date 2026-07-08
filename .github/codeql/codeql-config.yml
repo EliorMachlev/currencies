@@ -1,0 +1,8 @@
+name: "CodeQL config"
+
+paths-ignore:
+  - "**/build/**"
+  - "**/generated/**"
+  - "app/src/test/**"
+  - "app/src/androidTest/**"
+  - "helpers/src/test/**"
