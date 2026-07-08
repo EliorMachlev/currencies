@@ -1,0 +1,42 @@
+name: Detekt
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  detekt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+      - name: Run detekt
+        uses: natiginfo/action-detekt-all@1.23.7
+        continue-on-error: true
+        with:
+          args: >-
+            --input app/src,helpers/src
+            --report sarif:detekt-results.sarif
+            --report txt:detekt-results.txt
+            --jvm-target 21
+      - name: Upload SARIF to code scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: detekt-results.sarif
+          category: detekt
+      - name: Upload detekt report artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: detekt-report
+          path: detekt-results.*
+          retention-days: 14
