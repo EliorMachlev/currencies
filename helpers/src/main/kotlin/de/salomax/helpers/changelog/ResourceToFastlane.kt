@@ -7,7 +7,6 @@ import java.io.FileWriter
 import java.nio.charset.Charset
 import java.util.stream.IntStream
 import javax.xml.parsers.DocumentBuilderFactory
-import kotlin.streams.toList
 
 /**
  * Generate fastlane changelog files from android resource xml files.
@@ -40,7 +39,7 @@ private class ResourceToFastlane {
         val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(this)
         val changelogs = document.getElementsByTagName("string-array").toList()
         for (changelog in changelogs) {
-            val sb = java.lang.StringBuilder()
+            val sb = StringBuilder()
             val version = changelog
                 .attributes
                 .item(0)
