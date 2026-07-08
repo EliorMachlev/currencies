@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features — Currencies</title>
+  <meta name="description" content="Full list of features in the Currencies Android app — calculator, historical rates, charts, fee calculator, themes, and more.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💱</text></svg>">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Currencies
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html" class="active">Features</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" style="padding: 3.5rem 1.5rem 3rem;">
+  <div class="hero-inner">
+    <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);">Features</h1>
+    <p class="tagline" style="font-size:1.05rem;">Everything Currencies can do, explained in one place.</p>
+  </div>
+</header>
+
+<main class="page">
+
+  <h2 class="section-title">Currency Conversion</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">🌐</span>
+      <h3>Multiple Providers</h3>
+      <p>Choose from 6 active exchange-rate providers. Switch at any time in Settings — the next refresh uses the new source.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">⭐</span>
+      <h3>Starred Currencies</h3>
+      <p>Mark currencies as favourites to keep your most-used ones at the top. Tap the star icon next to any currency to toggle.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🔄</span>
+      <h3>Swap &amp; Mirror</h3>
+      <p>Instantly swap the base and target currencies. The conversion result updates in real time without re-entering values.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📋</span>
+      <h3>Copy / Paste</h3>
+      <p>Long-press the result to copy it to the clipboard, or paste a value directly into the input field.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Calculator</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">🧮</span>
+      <h3>Full Arithmetic</h3>
+      <p>Addition, subtraction, multiplication, and division — evaluated before conversion using the <strong>mXparser</strong> engine.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">⌨️</span>
+      <h3>Extended Keypad</h3>
+      <p>Optional expanded keypad mode adds operator keys directly on the main screen. Enable in Settings → Extended keypad.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🖥️</span>
+      <h3>Hardware Keyboard</h3>
+      <p>Physical keyboard input is fully supported — great for tablets and foldable devices with an attached keyboard.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Fee Calculator</h2>
+  <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+    <div class="card">
+      <span class="card-icon">💳</span>
+      <h3>Foreign Exchange Fee</h3>
+      <p>Add a configurable fee percentage (e.g., 1.5 %) to every conversion. The result shows both the raw and fee-inclusive amounts simultaneously.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🔧</span>
+      <h3>Custom Percentage</h3>
+      <p>Set any fee from 0 % to any value in Settings. Useful for credit-card foreign-transaction fees or bureau-de-change margins.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Historical Rates &amp; Charts</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">📅</span>
+      <h3>Past Dates</h3>
+      <p>Select any historical date using the built-in date picker. Data availability depends on the provider — Frankfurter.app goes back to <strong>2010-01-04</strong>.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📈</span>
+      <h3>1-Year Chart</h3>
+      <p>Tap the chart icon on the converter to see a full year of daily rate history for the selected currency pair.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🔍</span>
+      <h3>Interactive Timeline</h3>
+      <p>Scrub along the chart to see exact rates on any day. High and low points are highlighted for quick reference.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">UI &amp; Customisation</h2>
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">🎨</span>
+      <h3>Material 3 Design</h3>
+      <p>Built with the latest Material Design system components — adaptive colours, proper elevation, and dynamic theming.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🌙</span>
+      <h3>Dark &amp; Pure Black</h3>
+      <p>Three theme options: Light, Dark, and Pure Black (OLED-friendly). Follows system setting or can be locked manually.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📱</span>
+      <h3>Foldable Support</h3>
+      <p>Detects fold state via <code>WindowInfoTracker</code> and switches to a multi-pane layout when unfolded, making full use of the larger screen.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🌏</span>
+      <h3>20+ Languages</h3>
+      <p>Translated by the community via <a href="https://translate.codeberg.org/engage/currencies/">Weblate</a>. RTL languages are fully supported.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Privacy &amp; Permissions</h2>
+  <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+    <div class="card">
+      <span class="card-icon">🔒</span>
+      <h3>Single Permission</h3>
+      <p>Only <code>INTERNET</code> is requested — to fetch exchange rates. No location, no contacts, no camera, no microphone.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🚫</span>
+      <h3>No Tracking</h3>
+      <p>Zero advertising SDKs. Zero analytics. No crash reporter. Your usage never leaves your device.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">💾</span>
+      <h3>Local Storage Only</h3>
+      <p>All data (cached rates, preferences, starred currencies) is stored in SharedPreferences on your device. Nothing is synced to any server.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Currencies &copy; 2020 Maximilian Salomon &mdash; Licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL-3.0</a></p>
+  <p style="margin-top:.4rem;"><a href="https://github.com/sal0max/currencies">GitHub</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="https://translate.codeberg.org/engage/currencies/">Translate</a></p>
+</footer>
+
+</body>
+</html>
