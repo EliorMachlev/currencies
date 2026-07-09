@@ -202,72 +202,49 @@ class TimelineActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun observe() {
-        // title
-        timelineModel.getTitle().observe(this) {
-            title = it
-        }
-
-        // error
+        timelineModel.getTitle().observe(this) { title = it }
         timelineModel.getError().observe(this) {
             findViewById<TextView>(R.id.error).apply {
                 visibility = View.VISIBLE
                 text = HtmlCompat.fromHtml(it ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
-            // disable toggle button, when there was an error
             menuItemToggle?.isEnabled = it == null
         }
-
-        // progress bar
         timelineModel.isUpdating().observe(this) { isRefreshing ->
             refreshIndicator.visibility = if (isRefreshing) View.VISIBLE else View.GONE
-            // disable toggle button, when data is updating
             menuItemToggle?.isEnabled = isRefreshing.not()
         }
-
-        // populate the chart
         timelineModel.getRates().observe(this) {
             (timelineChart.adapter as ChartAdapter).entries = it?.entries?.toList()
         }
-
-        // provider info
         timelineModel.getProvider().observe(this) {
             textProvider.text = if (it != null)
-                HtmlCompat.fromHtml(
-                    getString(R.string.data_provider, it),
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                )
-            else
-                null
+                HtmlCompat.fromHtml(getString(R.string.data_provider, it), HtmlCompat.FROM_HTML_MODE_LEGACY)
+            else null
         }
-
-        // difference in percent
         timelineModel.getRatesDifferencePercent().observe(this) {
             textRateDifference.text = it?.toHumanReadableNumber(this, 2, true, "%")
-            if (it != null) {
+            if (it != null)
                 textRateDifference.setTextColor(
-                    if (it < 0)
-                        MaterialColors.getColor(this, R.attr.colorError, null) // red
-                    else
-                        getColor(R.color.dollarBill) // green
+                    if (it < 0) MaterialColors.getColor(this, R.attr.colorError, null)
+                    else getColor(R.color.dollarBill)
                 )
-            }
         }
+        observeRateComparison()
+        observeStatistics()
+    }
 
-        // past rate
+    private fun observeRateComparison() {
         timelineModel.getRatePast().observe(this) {
             val rate = it.first?.value
             if (rate != null) {
                 textPastRateDate.text = it.first?.key?.format(formatter)
                 textPastRateValue.text = combineValueAndSymbol(rate.value, rate.currency.symbol(), it.second)
-                // only show the divider if this row is populated
-                // highest chance of it populated is with this "past rate" data
                 divider.visibility = View.VISIBLE
             } else {
                 divider.visibility = View.GONE
             }
         }
-
-        // current rate
         timelineModel.getRateCurrent().observe(this) {
             val rate = it.first?.value
             if (rate != null) {
@@ -275,8 +252,9 @@ class TimelineActivity : BaseActivity() {
                 textCurrentRateValue.text = combineValueAndSymbol(rate.value, rate.currency.symbol(), it.second)
             }
         }
+    }
 
-        // average rate
+    private fun observeStatistics() {
         timelineModel.getRatesAverage().observe(this) {
             populateStat(
                 findViewById(R.id.stats_row_1),
@@ -286,31 +264,18 @@ class TimelineActivity : BaseActivity() {
                 it.second
             )
         }
-
-        // min rate
         timelineModel.getRatesMin().observe(this) {
             val rate = it.first
             populateStat(
-                findViewById(R.id.stats_row_2),
-                rate?.currency?.symbol(),
-                rate?.value,
-                it.second,
-                it.third
+                findViewById(R.id.stats_row_2), rate?.currency?.symbol(), rate?.value, it.second, it.third
             )
         }
-
-        // max rate
         timelineModel.getRatesMax().observe(this) {
             val rate = it.first
             populateStat(
-                findViewById(R.id.stats_row_3),
-                rate?.currency?.symbol(),
-                rate?.value,
-                it.second,
-                it.third
+                findViewById(R.id.stats_row_3), rate?.currency?.symbol(), rate?.value, it.second, it.third
             )
         }
-
     }
 
     private fun populateStat(parent: View, symbol: String?, value: Float?, date: LocalDate?, places: Int = 3) {
