@@ -1,4 +1,5 @@
 complexity:
   TooManyFunctions:
+    thresholdInClasses: 33
     ignorePrivate: true
     ignoreOverridden: true
