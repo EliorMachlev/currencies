@@ -113,7 +113,8 @@ class Database(context: Context) {
     /*
      * starred currencies ==========================================================================
      */
-    private val prefsStarredCurrencies: SharedPreferences = context.getSharedPreferences("starred_currencies", MODE_PRIVATE)
+    private val prefsStarredCurrencies: SharedPreferences =
+        context.getSharedPreferences("starred_currencies", MODE_PRIVATE)
 
     private val keyStars = "_stars"
     private val keyStarredEnabled = "_starredActive"

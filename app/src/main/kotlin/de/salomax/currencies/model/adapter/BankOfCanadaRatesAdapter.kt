@@ -19,11 +19,10 @@ internal class BankOfCanadaRatesAdapter {
     @Throws(IOException::class)
     fun fromJson(reader: JsonReader): ExchangeRates? {
         reader.beginObject()
-        // convert
-        while (reader.hasNext()) {
+        var result: ExchangeRates? = null
+        while (reader.hasNext() && result == null) {
             when (reader.nextName()) {
-                // error
-                "message" -> return ExchangeRates(
+                "message" -> result = ExchangeRates(
                     success = false,
                     error = reader.nextString(),
                     base = null,
@@ -31,17 +30,15 @@ internal class BankOfCanadaRatesAdapter {
                     rates = null,
                     provider = ApiProvider.BANK_OF_CANADA
                 )
-                // get the values
                 "observations" -> {
                     reader.beginArray()
-                    return convertObservation(reader)
+                    result = convertObservation(reader)
                 }
-                // not interested in those
                 else -> reader.skipValue()
             }
         }
         reader.endObject()
-        return null
+        return result
     }
 
     private fun convertObservation(reader: JsonReader): ExchangeRates {

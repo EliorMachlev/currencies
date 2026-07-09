@@ -129,7 +129,10 @@ class ExchangeRatesRepository(private val context: Context) {
                         postError(R.string.error_empty_response.text())
                     // everything else
                     else ->
-                        postError(fuelError.localizedMessage?.let { R.string.error.text(it) } ?: R.string.error_generic.text())
+                        postError(
+                            fuelError.localizedMessage?.let { R.string.error.text(it) }
+                                ?: R.string.error_generic.text()
+                        )
                 }
             }
         }

@@ -103,12 +103,23 @@ class BankRossii : ApiProvider.Api() {
             }
         ).get()
 
+        // pre-check IDs for non-RUB currencies before making network calls
+        val idBase = if (parameterBase != Currency.RUB.iso4217Alpha())
+            ids.entries.find { it.value == parameterBase }?.key else null
+        val idSymbol = if (parameterSymbol != Currency.RUB.iso4217Alpha())
+            ids.entries.find { it.value == parameterSymbol }?.key else null
+        val missingId = when {
+            parameterBase != Currency.RUB.iso4217Alpha() && idBase == null -> parameterBase
+            parameterSymbol != Currency.RUB.iso4217Alpha() && idSymbol == null -> parameterSymbol
+            else -> null
+        }
+        if (missingId != null)
+            return Result.error(FuelError.wrap(Throwable("No currency ID found for: $missingId")))
+
         // second call: RUB -> base
         val baseTimeline = if (parameterBase == Currency.RUB.iso4217Alpha()) {
             Result.success(timelineRub)
         } else {
-            val idBase = ids.entries.find { it.value == parameterBase }?.key
-                ?: return Result.error(FuelError.wrap(Throwable("No currency ID found for base: $parameterBase")))
             Fuel.get(
                 baseUrl +
                         "/XML_dynamic.asp" +
@@ -128,8 +139,6 @@ class BankRossii : ApiProvider.Api() {
         val symbolTimeline = if (parameterSymbol == Currency.RUB.iso4217Alpha()) {
             Result.success(timelineRub)
         } else {
-            val idSymbol = ids.entries.find { it.value == parameterSymbol }?.key
-                ?: return Result.error(FuelError.wrap(Throwable("No currency ID found for symbol: $parameterSymbol")))
             Fuel.get(
                 baseUrl +
                         "/XML_dynamic.asp" +

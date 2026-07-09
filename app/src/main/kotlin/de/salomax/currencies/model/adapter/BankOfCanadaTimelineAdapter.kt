@@ -22,11 +22,10 @@ internal class BankOfCanadaTimelineAdapter(
     @Throws(IOException::class)
     fun fromJson(reader: JsonReader): Timeline? {
         reader.beginObject()
-        // convert
-        while (reader.hasNext()) {
+        var result: Timeline? = null
+        while (reader.hasNext() && result == null) {
             when (reader.nextName()) {
-                // error
-                "message" -> return Timeline(
+                "message" -> result = Timeline(
                     success = false,
                     error = reader.nextString(),
                     base = null,
@@ -35,17 +34,15 @@ internal class BankOfCanadaTimelineAdapter(
                     rates = null,
                     provider = ApiProvider.BANK_OF_CANADA
                 )
-                // get the values
                 "observations" -> {
                     reader.beginArray()
-                    return convertObservations(reader)
+                    result = convertObservations(reader)
                 }
-                // not interested in those
                 else -> reader.skipValue()
             }
         }
         reader.endObject()
-        return null
+        return result
     }
 
     private fun convertObservations(reader: JsonReader): Timeline {

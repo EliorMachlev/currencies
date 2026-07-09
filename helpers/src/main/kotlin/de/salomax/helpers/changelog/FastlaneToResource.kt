@@ -74,7 +74,12 @@ private class FastlaneToResource {
     private fun List<String>.createVersionChangelog(): String {
         val sb = StringBuilder()
         for (entry in this) {
-            sb.appendLine("        <item>${entry.removePrefix("- ").replace("'", "\\'").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")}</item>")
+            val escaped = entry.removePrefix("- ")
+                .replace("'", "\\'")
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+            sb.appendLine("        <item>$escaped</item>")
         }
         return sb.toString()
     }

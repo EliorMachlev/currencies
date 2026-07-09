@@ -460,10 +460,12 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             if (currentCalculationValueText.value!!.split(" ").last().trim() == "0") {
                 // replace that "0" with any other number
                 if (value != "0" && value != "00" && value != "000")
-                    currentCalculationValueText.value = currentCalculationValueText.value?.trim()?.dropLast(1)?.plus(value)
+                    currentCalculationValueText.value =
+                        currentCalculationValueText.value?.trim()?.dropLast(1)?.plus(value)
             }
             // last input was an operator: replace "00" and "000" with "0"
-            else if (currentCalculationValueText.value!!.split(" ").last().isEmpty() && (value == "00" || value == "000"))
+            else if (currentCalculationValueText.value!!.split(" ").last().isEmpty()
+                && (value == "00" || value == "000"))
                 currentCalculationValueText.value += 0
             else
                 currentCalculationValueText.value += value

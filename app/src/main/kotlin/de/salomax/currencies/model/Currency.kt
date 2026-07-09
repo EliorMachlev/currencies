@@ -19,7 +19,9 @@ enum class Currency(
     AFN("AFN", 971,  "؋",    R.string.name_afn, R.drawable.flag_af),
     ALL("ALL", 8,    "L",    R.string.name_all, R.drawable.flag_al),
     AMD("AMD", 51,   "֏",    R.string.name_amd, R.drawable.flag_am),
-    ANG("ANG", 532,  "ƒ",    R.string.name_ang, R.drawable.flag_nl), // Dutch flag: on 10 October 2010, the Netherlands Antilles was dissolved into Curaçao, Sint Maarten and the three public bodies of the Caribbean Netherlands.
+    // Dutch flag: on 10 October 2010, the Netherlands Antilles was dissolved into Curaçao,
+    // Sint Maarten and the three public bodies of the Caribbean Netherlands.
+    ANG("ANG", 532,  "ƒ",    R.string.name_ang, R.drawable.flag_nl),
     AOA("AOA", 973,  "Kz",   R.string.name_aoa, R.drawable.flag_ao),
     ARS("ARS", 32,   "$",    R.string.name_ars, R.drawable.flag_ar),
     AUD("AUD", 36,   "$",    R.string.name_aud, R.drawable.flag_au),

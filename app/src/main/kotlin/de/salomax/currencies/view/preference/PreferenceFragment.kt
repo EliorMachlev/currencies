@@ -104,7 +104,8 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         // -------------------------------------------------------------------------------------
 
         // OpenExchangerates: API Key
-        val openExchangeratesApiKeyPreference = findPreference<EditTextPreference>(getString(R.string.api_open_exchangerates_id_key))
+        val openExchangeratesApiKeyPreference =
+            findPreference<EditTextPreference>(getString(R.string.api_open_exchangerates_id_key))
         openExchangeratesApiKeyPreference?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 viewModel.setOpenExchangeratesApiKey(newValue.toString().trim())

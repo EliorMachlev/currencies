@@ -68,14 +68,10 @@ class OpenExchangerates : ApiProvider.Api() {
             rates.copy(provider = ApiProvider.OPEN_EXCHANGERATES)
         }
 
-        if (result.component2()?.response?.statusCode == 401) {
-            return Result.error(
-                FuelError.wrap(
-                    Exception(context.getString(R.string.error_invalid_api_key))
-                )
-            )
-        }
-        return result
+        return if (result.component2()?.response?.statusCode == 401)
+            Result.error(FuelError.wrap(Exception(context.getString(R.string.error_invalid_api_key))))
+        else
+            result
     }
 
     override suspend fun getTimeline(

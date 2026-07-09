@@ -358,19 +358,22 @@ class TimelineActivity : BaseActivity() {
                     .collect { newLayoutInfo ->
                         newLayoutInfo.displayFeatures.filterIsInstance(FoldingFeature::class.java)
                             .firstOrNull ()?.let { foldingFeature ->
+                                val root = findViewById<LinearLayout>(R.id.timeline_root)
                                 // portrait
                                 if (foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL) {
                                     if (foldingFeature.state == FoldingFeature.State.HALF_OPENED)
-                                        findViewById<LinearLayout>(R.id.timeline_root).orientation = LinearLayout.HORIZONTAL
+                                        root.orientation = LinearLayout.HORIZONTAL
                                     else
-                                        findViewById<LinearLayout>(R.id.timeline_root).orientation = LinearLayout.VERTICAL
+                                        root.orientation = LinearLayout.VERTICAL
                                 }
                                 // landscape
                                 else {
-                                    if (foldingFeature.state == FoldingFeature.State.FLAT || foldingFeature.state == FoldingFeature.State.HALF_OPENED)
-                                        findViewById<LinearLayout>(R.id.timeline_root).orientation = LinearLayout.VERTICAL
+                                    val flat = FoldingFeature.State.FLAT
+                                    val halfOpen = FoldingFeature.State.HALF_OPENED
+                                    if (foldingFeature.state == flat || foldingFeature.state == halfOpen)
+                                        root.orientation = LinearLayout.VERTICAL
                                     else
-                                        findViewById<LinearLayout>(R.id.timeline_root).orientation = LinearLayout.HORIZONTAL
+                                        root.orientation = LinearLayout.HORIZONTAL
                                 }
                             }
                     }

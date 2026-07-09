@@ -43,7 +43,9 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
             // regular
             0 -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown, parent, false))
             // api hint
-            1 -> ViewHolderApiHint(LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown_api_hint, parent, false))
+            1 -> ViewHolderApiHint(
+                LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown_api_hint, parent, false)
+            )
             else -> throw IllegalArgumentException("View type must either be 0 or 1.")
         }
     }
@@ -96,7 +98,8 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
                 else if (hasAppendedCurrencySymbol(context)) "$source $sourceSymbol" else "$sourceSymbol $source"
             val right =
                 if (destinationSymbol.isEmpty()) destination
-                else if (hasAppendedCurrencySymbol(context)) "$destination $destinationSymbol" else "$destinationSymbol $destination"
+                else if (hasAppendedCurrencySymbol(context)) "$destination $destinationSymbol"
+                else "$destinationSymbol $destination"
             holder.tvRate.text = "$left = $right".replace("\u200F", "").trim()
         } else {
             if (holder.tvRate.visibility != View.GONE)

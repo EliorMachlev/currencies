@@ -139,7 +139,8 @@ class MainActivity : BaseActivity() {
                 }
             }
             R.id.date_picker -> {
-                // allow historical rates back until 2010-01-01, as every API at least provides a subset of rates since then
+                // allow historical rates back until 2010-01-01,
+                // as every API at least provides a subset of rates since then
                 val startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                     .apply { this.set(2010, Calendar.JANUARY, 1) }
                     .timeInMillis
@@ -370,7 +371,12 @@ class MainActivity : BaseActivity() {
         viewModel.getError().observe(this) {
             // error
             it?.let {
-                Snackbar.make(this, findViewById(R.id.snackbar_top_position), HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY), Snackbar.LENGTH_INDEFINITE) // show for 5s
+                Snackbar.make(
+                    this,
+                    findViewById(R.id.snackbar_top_position),
+                    HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY),
+                    Snackbar.LENGTH_INDEFINITE
+                )
                     .setBackgroundTint(MaterialColors.getColor(this, R.attr.colorError, null))
                     .setTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
                     .setActionTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))

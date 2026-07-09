@@ -84,29 +84,29 @@ class InforEuro : ApiProvider.Api() {
         val resultBase = Fuel.get(
             "$baseUrl/currencies/$parameterBase"
         ).awaitResult(deserializer)
-        // error
-        if (resultBase.component2() != null) return resultBase
-
         // EUR <-> symbol
         val resultSymbol = Fuel.get(
             "$baseUrl/currencies/$parameterSymbol"
         ).awaitResult(deserializer)
-        // error
-        if (resultSymbol.component2() != null) return resultSymbol
 
-        // success
-        val timeline = resultBase.get().copy(
-            provider = ApiProvider.INFOR_EURO,
-            base = (if (base == Currency.FOK) Currency.FOK else base).iso4217Alpha(),
-            rates = resultSymbol.get().rates?.map { symbolEntry ->
-                val baseValue = resultBase.get().rates?.get(symbolEntry.key)
-                Pair(
-                    symbolEntry.key,
-                    Rate(symbol, symbolEntry.value.value.div(baseValue?.value ?: 1f))
-                )
-            }?.toMap()
-        )
-        return Result.of { timeline }
+        return if (resultBase.component2() != null) {
+            resultBase
+        } else if (resultSymbol.component2() != null) {
+            resultSymbol
+        } else {
+            val timeline = resultBase.get().copy(
+                provider = ApiProvider.INFOR_EURO,
+                base = (if (base == Currency.FOK) Currency.FOK else base).iso4217Alpha(),
+                rates = resultSymbol.get().rates?.map { symbolEntry ->
+                    val baseValue = resultBase.get().rates?.get(symbolEntry.key)
+                    Pair(
+                        symbolEntry.key,
+                        Rate(symbol, symbolEntry.value.value.div(baseValue?.value ?: 1f))
+                    )
+                }?.toMap()
+            )
+            Result.of { timeline }
+        }
 
     }
 
