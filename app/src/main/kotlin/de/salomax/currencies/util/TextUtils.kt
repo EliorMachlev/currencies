@@ -1,9 +1,6 @@
 package de.salomax.currencies.util
 
 import android.content.Context
-
-private const val SYMBOL_DETECTION_VALUE = 1.23
-private const val THOUSANDS_GROUP_SIZE = 3
 import androidx.appcompat.app.AppCompatDelegate
 import de.salomax.currencies.R
 import java.math.RoundingMode
@@ -11,6 +8,9 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
+
+private const val SYMBOL_DETECTION_VALUE = 1.23
+private const val THOUSANDS_GROUP_SIZE = 3
 
 /**
  * Return the *used* Locale, based on the currently active resource folder,
@@ -96,20 +96,6 @@ fun String.toHumanReadableNumber(
     suffix: String? = null,
     trim: Boolean = false
 ): String {
-    fun String.groupNumbers(): String {
-        val sb = StringBuilder(this.length * 2)
-        // group thousands
-        for ((i, c) in this.reversed().withIndex()) {
-            if (i % THOUSANDS_GROUP_SIZE == 0 && i != 0)
-                sb.append(getGroupingSeparator(context))
-            sb.append(c)
-        }
-        return sb.toString().reversed()
-            // fix negative values (-.123 -> -123)
-            .replace("-${getGroupingSeparator(context)}", "-")
-    }
-
-
     val sb = StringBuilder()
 
     // + sign
@@ -143,9 +129,9 @@ fun String.toHumanReadableNumber(
         .let {
             if (it.contains('.')) {
                 val split = it.split('.')
-                split[0].groupNumbers() + getDecimalSeparator(context) + split[1]
+                split[0].groupNumbers(context) + getDecimalSeparator(context) + split[1]
             } else {
-                it.groupNumbers()
+                it.groupNumbers(context)
             }
         }
         // add space to negative sign
@@ -157,6 +143,17 @@ fun String.toHumanReadableNumber(
         sb.append(" $suffix")
 
     return sb.toString()
+}
+
+private fun String.groupNumbers(context: Context): String {
+    val sb = StringBuilder(this.length * 2)
+    for ((i, c) in this.reversed().withIndex()) {
+        if (i % THOUSANDS_GROUP_SIZE == 0 && i != 0)
+            sb.append(getGroupingSeparator(context))
+        sb.append(c)
+    }
+    return sb.toString().reversed()
+        .replace("-${getGroupingSeparator(context)}", "-")
 }
 
 // *************************************************************************************************
