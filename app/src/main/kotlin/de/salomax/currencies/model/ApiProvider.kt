@@ -13,20 +13,27 @@ import de.salomax.currencies.model.provider.NorgesBank
 import de.salomax.currencies.model.provider.OpenExchangerates
 import java.time.LocalDate
 
+private const val ID_FRANKFURTER_APP = 1
+private const val ID_INFOR_EURO = 3
+private const val ID_NORGES_BANK = 4
+private const val ID_BANK_ROSSII = 5
+private const val ID_BANK_OF_CANADA = 6
+private const val ID_OPEN_EXCHANGERATES = 7
+
 @JsonClass(generateAdapter = false) // see https://stackoverflow.com/a/64085370/421140
 enum class ApiProvider(
     val id: Int, // safer ordinal; DON'T CHANGE!
     private val implementation: Api
 ) {
     // EXCHANGERATE_HOST(0, "https://api.exchangerate.host"), // removed, as API was shut down
-    FRANKFURTER_APP(1, FrankfurterApp()),
+    FRANKFURTER_APP(ID_FRANKFURTER_APP, FrankfurterApp()),
     // FER_EE(2, FerEe()), // deactivated: API returns HTTP 422 most of the time with no response
     //   from developers — see https://github.com/narorolib/fer/issues/6
-    INFOR_EURO(3, InforEuro()),
-    NORGES_BANK(4, NorgesBank()),
-    BANK_ROSSII(5, BankRossii()),
-    BANK_OF_CANADA(6, BankOfCanada()),
-    OPEN_EXCHANGERATES(7, OpenExchangerates());
+    INFOR_EURO(ID_INFOR_EURO, InforEuro()),
+    NORGES_BANK(ID_NORGES_BANK, NorgesBank()),
+    BANK_ROSSII(ID_BANK_ROSSII, BankRossii()),
+    BANK_OF_CANADA(ID_BANK_OF_CANADA, BankOfCanada()),
+    OPEN_EXCHANGERATES(ID_OPEN_EXCHANGERATES, OpenExchangerates());
 
     companion object {
         fun fromId(value: Int): ApiProvider = entries.firstOrNull { it.id == value }

@@ -52,6 +52,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
+private const val HISTORICAL_MIN_YEAR = 2010
+private const val STALE_RATES_DAYS = 3L
+private const val MAX_ERROR_TEXT_LINES = 20
+
 class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: MainViewModel
@@ -142,7 +146,7 @@ class MainActivity : BaseActivity() {
                 // allow historical rates back until 2010-01-01,
                 // as every API at least provides a subset of rates since then
                 val startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-                    .apply { this.set(2010, Calendar.JANUARY, 1) }
+                    .apply { this.set(HISTORICAL_MIN_YEAR, Calendar.JANUARY, 1) }
                     .timeInMillis
 
                 // load all the views
@@ -346,7 +350,7 @@ class MainActivity : BaseActivity() {
                 listOf(tvInfoDate, tvInfoConversion).forEach { tv ->
                     tv.setTextColor(
                         if (date?.isBefore(
-                                LocalDate.now().minusDays(3)
+                                LocalDate.now().minusDays(STALE_RATES_DAYS)
                             ) == true || viewModel.getHistoricalDate() != null
                         )
                             MaterialColors.getColor(this, R.attr.colorError, null)
@@ -381,7 +385,7 @@ class MainActivity : BaseActivity() {
                     .setTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
                     .setActionTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
                     .setAction(android.R.string.ok) { /* onClick dismisses, by default */ }
-                    .setTextMaxLines(20)
+                    .setTextMaxLines(MAX_ERROR_TEXT_LINES)
                     .show()
             }
         }

@@ -16,6 +16,10 @@ import kotlinx.coroutines.withContext
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+private const val NO_HTTP_STATUS = -1
+private const val HTTP_OK = 200
+private const val MIN_UPDATE_DISPLAY_MS = 750L
+
 class ExchangeRatesRepository(private val context: Context) {
 
     private val liveExchangeRates = Database(context).getExchangeRates()
@@ -112,7 +116,7 @@ class ExchangeRatesRepository(private val context: Context) {
             fuelError == null ->
                 postError(R.string.error_generic.text())
             // print http response code, if available
-            fuelError.response.statusCode != -1 && fuelError.response.statusCode != 200 -> {
+            fuelError.response.statusCode != NO_HTTP_STATUS && fuelError.response.statusCode != HTTP_OK -> {
                 postError(R.string.error_http.text(fuelError.response.statusCode))
             }
             // generic network error
@@ -151,12 +155,12 @@ class ExchangeRatesRepository(private val context: Context) {
      */
     private suspend fun postIsUpdating(start: Long) {
         val now = System.currentTimeMillis()
-        if (now - start < 750) {
+        if (now - start < MIN_UPDATE_DISPLAY_MS) {
             Database(context).setUpdating(true)
 
             withContext(Dispatchers.Main) {
                 launch {
-                    delay(750 - (now - start))
+                    delay(MIN_UPDATE_DISPLAY_MS - (now - start))
                     Database(context).setUpdating(false)
                 }
             }

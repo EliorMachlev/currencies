@@ -19,6 +19,8 @@ import de.salomax.currencies.util.toLocalDate
 import de.salomax.currencies.util.toMillis
 import java.time.LocalDate
 
+private const val DEFAULT_FEE_PERCENT = 2.2f
+
 class Database(context: Context) {
 
     /*
@@ -259,7 +261,7 @@ class Database(context: Context) {
     }
 
     fun getFee(): LiveData<Float> {
-        return SharedPreferenceFloatLiveData(prefs, keyFeeValue, 2.2f)
+        return SharedPreferenceFloatLiveData(prefs, keyFeeValue, DEFAULT_FEE_PERCENT)
     }
 
     /* preview conversion */

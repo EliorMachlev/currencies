@@ -13,6 +13,11 @@ fun main() {
 
 private class FastlaneToResource {
 
+    companion object {
+        private const val SEMVER_MAJOR_MULTIPLIER = 10_000
+        private const val SEMVER_MINOR_MULTIPLIER = 100
+    }
+
     fun run() {
         // read all fastlane changelogs
         File("fastlane/metadata/android")
@@ -48,9 +53,9 @@ private class FastlaneToResource {
 
         this?.sortedByDescending { it.name.substringBefore(".txt").toInt() }?.forEachIndexed { index, file ->
             val version = file.name.substringBefore(".txt").toInt()
-            val major = version / 10_000
-            val minor = (version - (major * 10_000)) / 100
-            val patch = version - (major * 10_000) - (minor * 100)
+            val major = version / SEMVER_MAJOR_MULTIPLIER
+            val minor = (version - (major * SEMVER_MAJOR_MULTIPLIER)) / SEMVER_MINOR_MULTIPLIER
+            val patch = version - (major * SEMVER_MAJOR_MULTIPLIER) - (minor * SEMVER_MINOR_MULTIPLIER)
 
             // write
             fileWriter.apply {

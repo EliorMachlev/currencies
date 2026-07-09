@@ -21,6 +21,11 @@ import java.time.LocalDate
 import kotlin.math.absoluteValue
 import kotlin.math.min
 
+private const val DEFAULT_DECIMAL_PLACES = 3
+private const val WEEK_DAYS = 7L
+private const val SIGNIFICANT_DIGITS = 3
+private const val MAX_DECIMAL_PLACES = 7
+
 class TimelineViewModel(
     private val app: Application,
     private var base: Currency,
@@ -45,7 +50,7 @@ class TimelineViewModel(
 
     private var repository: ExchangeRatesRepository = ExchangeRatesRepository(app)
 
-    private var decimalPlaces = 3
+    private var decimalPlaces = DEFAULT_DECIMAL_PLACES
 
     // week/month/year
     private val periodLiveData = MutableLiveData(Period.YEAR)
@@ -79,7 +84,7 @@ class TimelineViewModel(
             // selected time period
             addSource(periodLiveData) {
                 startDate = when (it) {
-                    Period.WEEK -> LocalDate.now().minusDays(7)
+                    Period.WEEK -> LocalDate.now().minusDays(WEEK_DAYS)
                     Period.MONTH -> LocalDate.now().minusMonths(1)
                     else -> LocalDate.now().minusYears(1)
                 }
@@ -314,8 +319,8 @@ class TimelineViewModel(
 
             fun update() {
                 this.value = min(
-                    (min - max).absoluteValue.getSignificantDecimalPlaces(3),
-                    7
+                    (min - max).absoluteValue.getSignificantDecimalPlaces(SIGNIFICANT_DIGITS),
+                    MAX_DECIMAL_PLACES
                 )
             }
 

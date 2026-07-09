@@ -28,6 +28,8 @@ import java.text.Collator
 import java.time.LocalDate
 import java.time.ZoneId
 
+private const val PERCENTAGE_DIVISOR = 100f
+
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidViewModel(app) {
 
@@ -407,7 +409,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                         .let {
                             // add fee, if enabled
                             if (feeEnabled != null && feeEnabled == true && feeValue != null) {
-                                it + (it * (feeValue!! / 100))
+                                it + (it * (feeValue!! / PERCENTAGE_DIVISOR))
                             } else {
                                 it
                             }

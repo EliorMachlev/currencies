@@ -18,6 +18,8 @@ import de.salomax.currencies.model.adapter.BankOfCanadaTimelineAdapter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+private const val LOOKBACK_DAYS = 7L
+
 class BankOfCanada: ApiProvider.Api() {
 
     override val name = "Bank of Canada"
@@ -40,7 +42,7 @@ class BankOfCanada: ApiProvider.Api() {
 
         // As this API doesn't return results for nonwork days, get the last seven days.
         // The latest available values will be used.
-        val formattedDateStart = date?.minusDays(7)?.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        val formattedDateStart = date?.minusDays(LOOKBACK_DAYS)?.format(DateTimeFormatter.ISO_LOCAL_DATE)
         val formattedDateEnd = date?.format(DateTimeFormatter.ISO_LOCAL_DATE)
         val dateString =
             // latest

@@ -11,6 +11,9 @@ import de.salomax.currencies.model.Timeline
 import java.io.IOException
 import java.time.LocalDate
 
+private const val CURRENCY_CODE_START = 2
+private const val CURRENCY_CODE_END = 5
+
 @Suppress("unused", "UNUSED_PARAMETER")
 internal class BankOfCanadaTimelineAdapter(
     private val base: Currency,
@@ -82,7 +85,7 @@ internal class BankOfCanadaTimelineAdapter(
                 "d" -> date = LocalDate.parse(reader.nextString())
                 // rate
                 else -> {
-                    val currency = Currency.fromString(nextName.substring(2, 5))
+                    val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
                     reader.beginObject()
                     reader.skipName() // always "v"
                     val value = reader.nextDouble()

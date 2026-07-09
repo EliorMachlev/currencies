@@ -1,6 +1,9 @@
 package de.salomax.currencies.util
 
 import android.content.Context
+
+private const val SYMBOL_DETECTION_VALUE = 1.23
+private const val THOUSANDS_GROUP_SIZE = 3
 import androidx.appcompat.app.AppCompatDelegate
 import de.salomax.currencies.R
 import java.math.RoundingMode
@@ -54,7 +57,7 @@ fun getGroupingSeparator(context: Context): String {
  */
 fun hasAppendedCurrencySymbol(context: Context): Boolean {
     val currencyFormatter = NumberFormat.getCurrencyInstance(getLocale(context))
-    val formattedCurrency = currencyFormatter.format(1.23)
+    val formattedCurrency = currencyFormatter.format(SYMBOL_DETECTION_VALUE)
     return formattedCurrency.last().digitToIntOrNull() == null
 }
 
@@ -97,7 +100,7 @@ fun String.toHumanReadableNumber(
         val sb = StringBuilder(this.length * 2)
         // group thousands
         for ((i, c) in this.reversed().withIndex()) {
-            if (i % 3 == 0 && i != 0)
+            if (i % THOUSANDS_GROUP_SIZE == 0 && i != 0)
                 sb.append(getGroupingSeparator(context))
             sb.append(c)
         }

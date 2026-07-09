@@ -37,6 +37,8 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlin.math.max
 
+private const val TEXT_WIDTH_PADDING_FACTOR = 1.25
+
 class TimelineActivity : BaseActivity() {
 
     //
@@ -180,7 +182,7 @@ class TimelineActivity : BaseActivity() {
         val width1 = view1.paint.measureText(string1)
         val width2 = view2.paint.measureText(string2)
         val width3 = view3.paint.measureText(string3)
-        val maxWidth = (max(width1, max(width2, width3)) * 1.25).toInt()
+        val maxWidth = (max(width1, max(width2, width3)) * TEXT_WIDTH_PADDING_FACTOR).toInt()
         view1.width = maxWidth
         view2.width = maxWidth
         view3.width = maxWidth
