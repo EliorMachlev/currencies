@@ -34,6 +34,7 @@ jobs:
         run: |
           detekt-cli \
             --input app/src,helpers/src \
+            --config config/detekt.yml \
             --report sarif:detekt-results.sarif \
             --report txt:detekt-results.txt \
             --jvm-target 21

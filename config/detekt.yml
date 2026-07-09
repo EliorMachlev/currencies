@@ -1,0 +1,4 @@
+complexity:
+  TooManyFunctions:
+    ignorePrivate: true
+    ignoreOverridden: true
