@@ -78,6 +78,9 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
     }
 
     lint {
@@ -121,6 +124,12 @@ dependencies {
     // test
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")
+    // fuzzing
+    val junitVersion = "5.11.4"
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitVersion")
+    testImplementation("com.code-intelligence:jazzer-junit:0.22.0")
 }
 
 fun getSecret(key: String): String? {
