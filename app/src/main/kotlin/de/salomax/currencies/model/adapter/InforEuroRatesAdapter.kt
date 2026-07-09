@@ -20,53 +20,55 @@ internal class InforEuroRatesAdapter(private val date: LocalDate) {
     fun fromJson(reader: JsonReader): ExchangeRates {
         val rates = mutableListOf<Rate>()
 
-        // received rates
-        return if (reader.peek() == JsonReader.Token.BEGIN_ARRAY) {
-            reader.beginArray()
-            // convert
-            while (reader.hasNext()) {
-                reader.beginObject() // begin array element
-                var name: Currency? = null
-                var value: Float? = null
-                while (reader.hasNext()) {
-                    when (reader.nextName()) {
-                        "isoA3Code" -> name = Currency.fromString(reader.nextString())
-                        "value" -> value = reader.nextDouble().toFloat()
-                        else -> reader.skipValue()
-                    }
-                }
-                if (name != null && value != null)
-                    rates.add(Rate(name, value))
-                reader.endObject() // end array element
-            }
-            reader.endArray()
-            ExchangeRates(
-                success = rates.isNotEmpty(),
-                error = null,
-                base = Currency.EUR,
-                date = date,
-                rates = rates,
-                provider = ApiProvider.INFOR_EURO
-            )
+        if (reader.peek() != JsonReader.Token.BEGIN_ARRAY) return readErrorResponse(reader)
+
+        reader.beginArray()
+        while (reader.hasNext()) {
+            parseEntry(reader)?.let { rates.add(it) }
         }
-        // error message
-        else {
-            reader.beginObject()
-            var message: String? = null
-            while (reader.hasNext()) {
-                if (reader.nextName() == "message")
-                    message = reader.nextString()
+        reader.endArray()
+
+        return ExchangeRates(
+            success = rates.isNotEmpty(),
+            error = null,
+            base = Currency.EUR,
+            date = date,
+            rates = rates,
+            provider = ApiProvider.INFOR_EURO
+        )
+    }
+
+    private fun parseEntry(reader: JsonReader): Rate? {
+        reader.beginObject()
+        var name: Currency? = null
+        var value: Float? = null
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "isoA3Code" -> name = Currency.fromString(reader.nextString())
+                "value" -> value = reader.nextDouble().toFloat()
+                else -> reader.skipValue()
             }
-            reader.endObject()
-            ExchangeRates(
-                success = false,
-                error = message,
-                base = Currency.EUR,
-                date = date,
-                rates = null,
-                provider = ApiProvider.INFOR_EURO
-            )
         }
+        reader.endObject()
+        return if (name != null && value != null) Rate(name, value) else null
+    }
+
+    private fun readErrorResponse(reader: JsonReader): ExchangeRates {
+        reader.beginObject()
+        var message: String? = null
+        while (reader.hasNext()) {
+            if (reader.nextName() == "message")
+                message = reader.nextString()
+        }
+        reader.endObject()
+        return ExchangeRates(
+            success = false,
+            error = message,
+            base = Currency.EUR,
+            date = date,
+            rates = null,
+            provider = ApiProvider.INFOR_EURO
+        )
     }
 
     @Synchronized
