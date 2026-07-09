@@ -45,12 +45,12 @@ internal class InforEuroTimelineAdapter(
                     }
                 }
                 // only add data to result if it matches our criteria
-                if (
-                    currencyIso != null && value != null
+                val hasData = currencyIso != null && value != null
                     && dateStart != null && dateEnd != null
-                    && (startDate.withDayOfMonth(1).isBefore(dateStart) // inclusive: before-or-equal start
-                            || startDate.withDayOfMonth(1).isEqual(dateStart))
-                ) {
+                // inclusive: before-or-equal start
+                val startBeforeOrEqual = dateStart != null
+                    && !startDate.withDayOfMonth(1).isAfter(dateStart)
+                if (hasData && startBeforeOrEqual) {
                     var date: LocalDate = dateEnd
                     while (date.isAfter(dateStart) || date.isEqual(dateStart)) {
                         rates[date] = Rate(currencyIso, value)
