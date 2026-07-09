@@ -64,46 +64,13 @@ class BankRossii : ApiProvider.Api() {
         startDate: LocalDate,
         endDate: LocalDate
     ): Result<Timeline, FuelError> {
-        // Create a constant (1.0) timeline series for RUB.
-        // Needed for timelines with RUB, as the API doesn't return RUB, even if requested.
-        var currentDate = startDate
-        val rubMap = object : LinkedHashMap<LocalDate, Rate>() {
-            init {
-                while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-                    this[currentDate] = Rate(Currency.RUB, 1f)
-                    currentDate = currentDate.plusDays(1)
-                }
-            }
-        }
-        val timelineRub = Timeline(
-            success = true,
-            error = null,
-            base = Currency.RUB.iso4217Alpha(),
-            startDate = startDate,
-            endDate = endDate,
-            rates = rubMap.toSortedMap(),
-            provider = ApiProvider.BANK_ROSSII
-        )
-
         val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         // can't search for FOK - have to use DKK instead
         val parameterBase = if (base == Currency.FOK) "DKK" else base.iso4217Alpha()
         val parameterSymbol = if (symbol == Currency.FOK) "DKK" else symbol.iso4217Alpha()
 
-        // need three calls:
-        // first: get internal currency IDs
-        val ids = Fuel.get(
-            baseUrl +
-                    "/XML_valFull.asp"
-        ).awaitResult(
-            object : ResponseDeserializable<Map<String, String>> {
-                override fun deserialize(inputStream: InputStream): Map<String, String> {
-                    return BankRossiiCurrencyCodesXmlParser().parse(inputStream)
-                }
-            }
-        ).get()
+        val ids = fetchCurrencyIds().get()
 
-        // pre-check IDs for non-RUB currencies before making network calls
         val idBase = if (parameterBase != Currency.RUB.iso4217Alpha())
             ids.entries.find { it.value == parameterBase }?.key else null
         val idSymbol = if (parameterSymbol != Currency.RUB.iso4217Alpha())
@@ -116,45 +83,17 @@ class BankRossii : ApiProvider.Api() {
         if (missingId != null)
             return Result.error(FuelError.wrap(Throwable("No currency ID found for: $missingId")))
 
-        // second call: RUB -> base
-        val baseTimeline = if (parameterBase == Currency.RUB.iso4217Alpha()) {
+        val timelineRub = buildRubTimeline(startDate, endDate)
+        val baseTimeline = if (parameterBase == Currency.RUB.iso4217Alpha())
             Result.success(timelineRub)
-        } else {
-            Fuel.get(
-                baseUrl +
-                        "/XML_dynamic.asp" +
-                        "?date_req1=${startDate.format(dateFormatter)}" +
-                        "&date_req2=${endDate.format(dateFormatter)}" +
-                        "&VAL_NM_RQ=$idBase"
-            ).awaitResult(
-                object : ResponseDeserializable<Timeline> {
-                    override fun deserialize(inputStream: InputStream): Timeline {
-                        return BankRossiiTimelineXmlParser(ids).parse(inputStream)
-                    }
-                }
-            )
-        }
+        else
+            fetchCurrencyTimeline(startDate, endDate, idBase!!, ids, dateFormatter)
 
-        // third call: RUB -> symbol
-        val symbolTimeline = if (parameterSymbol == Currency.RUB.iso4217Alpha()) {
+        val symbolTimeline = if (parameterSymbol == Currency.RUB.iso4217Alpha())
             Result.success(timelineRub)
-        } else {
-            Fuel.get(
-                baseUrl +
-                        "/XML_dynamic.asp" +
-                        "?date_req1=${startDate.format(dateFormatter)}" +
-                        "&date_req2=${endDate.format(dateFormatter)}" +
-                        "&VAL_NM_RQ=$idSymbol"
-            ).awaitResult(
-                object : ResponseDeserializable<Timeline> {
-                    override fun deserialize(inputStream: InputStream): Timeline {
-                        return BankRossiiTimelineXmlParser(ids).parse(inputStream)
-                    }
-                }
-            )
-        }
+        else
+            fetchCurrencyTimeline(startDate, endDate, idSymbol!!, ids, dateFormatter)
 
-        // finally, combine the responses and return the result
         val baseRates: Map<LocalDate, Rate>? = baseTimeline.component1()?.rates
         val symbolRates: Map<LocalDate, Rate>? = symbolTimeline.component1()?.rates
 
@@ -162,20 +101,56 @@ class BankRossii : ApiProvider.Api() {
             Result.error(FuelError.wrap(Throwable("Timeline data unavailable for base or symbol currency")))
         else
             Result.of {
-                // merge base & symbol
                 symbolTimeline.get().copy(
                     rates = symbolRates
-                        .filter { symbol -> baseRates[symbol.key] != null }
-                        .mapValues { symbol ->
-                            val symbolValue = symbol.value
-                            val baseValue = baseRates[symbol.key]!!
-                            symbol.value.copy(
-                                currency = symbolValue.currency,
-                                value = symbolValue.value / baseValue.value
-                            )
-                        }
+                        .filter { (date, _) -> baseRates[date] != null }
+                        .mapValues { (date, rate) -> rate.copy(value = rate.value / baseRates[date]!!.value) }
                 )
             }
+    }
+
+    private fun buildRubTimeline(startDate: LocalDate, endDate: LocalDate): Timeline {
+        val rubMap = LinkedHashMap<LocalDate, Rate>()
+        var currentDate = startDate
+        while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
+            rubMap[currentDate] = Rate(Currency.RUB, 1f)
+            currentDate = currentDate.plusDays(1)
+        }
+        return Timeline(
+            success = true,
+            error = null,
+            base = Currency.RUB.iso4217Alpha(),
+            startDate = startDate,
+            endDate = endDate,
+            rates = rubMap.toSortedMap(),
+            provider = ApiProvider.BANK_ROSSII
+        )
+    }
+
+    private suspend fun fetchCurrencyIds(): Result<Map<String, String>, FuelError> {
+        return Fuel.get(baseUrl + "/XML_valFull.asp")
+            .awaitResult(object : ResponseDeserializable<Map<String, String>> {
+                override fun deserialize(inputStream: InputStream): Map<String, String> =
+                    BankRossiiCurrencyCodesXmlParser().parse(inputStream)
+            })
+    }
+
+    private suspend fun fetchCurrencyTimeline(
+        startDate: LocalDate,
+        endDate: LocalDate,
+        currencyId: String,
+        ids: Map<String, String>,
+        dateFormatter: DateTimeFormatter
+    ): Result<Timeline, FuelError> {
+        return Fuel.get(
+            baseUrl + "/XML_dynamic.asp" +
+                "?date_req1=${startDate.format(dateFormatter)}" +
+                "&date_req2=${endDate.format(dateFormatter)}" +
+                "&VAL_NM_RQ=$currencyId"
+        ).awaitResult(object : ResponseDeserializable<Timeline> {
+            override fun deserialize(inputStream: InputStream): Timeline =
+                BankRossiiTimelineXmlParser(ids).parse(inputStream)
+        })
     }
 
 }
