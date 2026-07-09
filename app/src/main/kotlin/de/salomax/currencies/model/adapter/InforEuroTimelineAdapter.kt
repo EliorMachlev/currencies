@@ -48,7 +48,7 @@ internal class InforEuroTimelineAdapter(
                 if (
                     currencyIso != null && value != null
                     && dateStart != null && dateEnd != null
-                    && (startDate.withDayOfMonth(1).isBefore(dateStart) // TODO: check if not isAfter()
+                    && (startDate.withDayOfMonth(1).isBefore(dateStart) // inclusive: before-or-equal start
                             || startDate.withDayOfMonth(1).isEqual(dateStart))
                 ) {
                     var date: LocalDate = dateEnd

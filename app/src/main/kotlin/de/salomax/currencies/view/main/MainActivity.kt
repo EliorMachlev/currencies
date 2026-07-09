@@ -256,7 +256,7 @@ class MainActivity : BaseActivity() {
 
         // spinners: listen for changes
         spinnerFrom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -270,7 +270,7 @@ class MainActivity : BaseActivity() {
             }
         }
         spinnerTo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -317,12 +317,12 @@ class MainActivity : BaseActivity() {
         //exchange rates changed
         viewModel.getExchangeRates().observe(this) {
             // date
-            it?.let { it ->
-                val date = it.date
+            it?.let { rates ->
+                val date = rates.date
                 val dateString = date
                     ?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(getLocale(this)))
                     ?.replace("\u200F", "") // remove rtl-mark (fixes broken arab date)
-                val providerString = it.provider?.getName()
+                val providerString = rates.provider?.getName()
 
                 // show rate age and rate source
                 tvInfoDate.text =

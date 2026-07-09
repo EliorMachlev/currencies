@@ -60,12 +60,7 @@ class FerEe : ApiProvider.Api() {
                     .build()
                     .adapter(ExchangeRates::class.java)
             )
-        ).map { rates ->
-            // TODO: uncomment, if this API should be used again
-            // rates.copy(provider = ApiProvider.FER_EE)
-            // TODO: remove, if this API should be used again
-            rates
-        }
+        )
     }
 
     override suspend fun getTimeline(
@@ -105,11 +100,6 @@ class FerEe : ApiProvider.Api() {
                 Currency.FOK -> timeline.copy(base = base.iso4217Alpha())
                 else -> timeline
             }
-        }.map { timeline ->
-            // TODO: uncomment, if this API should be used again
-            // timeline.copy(provider = ApiProvider.FER_EE)
-            // TODO: remove, if this API should be used again
-            timeline
         }
     }
 
