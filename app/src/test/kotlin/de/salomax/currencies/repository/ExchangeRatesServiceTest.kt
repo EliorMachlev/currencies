@@ -5,7 +5,8 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Timeline
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.LocalDate
 import java.time.ZoneId

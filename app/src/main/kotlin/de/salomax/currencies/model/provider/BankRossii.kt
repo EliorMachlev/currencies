@@ -108,7 +108,7 @@ class BankRossii : ApiProvider.Api() {
             Result.success(timelineRub)
         } else {
             val idBase = ids.entries.find { it.value == parameterBase }?.key
-                ?: return Result.error(FuelError.wrap(Throwable()))
+                ?: return Result.error(FuelError.wrap(Throwable("No currency ID found for base: $parameterBase")))
             Fuel.get(
                 baseUrl +
                         "/XML_dynamic.asp" +
@@ -129,7 +129,7 @@ class BankRossii : ApiProvider.Api() {
             Result.success(timelineRub)
         } else {
             val idSymbol = ids.entries.find { it.value == parameterSymbol }?.key
-                ?: return Result.error(FuelError.wrap(Throwable()))
+                ?: return Result.error(FuelError.wrap(Throwable("No currency ID found for symbol: $parameterSymbol")))
             Fuel.get(
                 baseUrl +
                         "/XML_dynamic.asp" +
@@ -150,7 +150,7 @@ class BankRossii : ApiProvider.Api() {
         val symbolRates: Map<LocalDate, Rate>? = symbolTimeline.component1()?.rates
 
         return if (baseRates == null || symbolRates == null)
-            Result.error(FuelError.wrap(Throwable()))
+            Result.error(FuelError.wrap(Throwable("Timeline data unavailable for base or symbol currency")))
         else
             Result.of {
                 // merge base & symbol

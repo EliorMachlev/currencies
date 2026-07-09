@@ -1,6 +1,7 @@
 package de.salomax.currencies.view.preference
 
 import android.content.ActivityNotFoundException
+import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -201,6 +202,7 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 }
                 // browser
                 catch (e: ActivityNotFoundException) {
+                    Log.d("PreferenceFragment", "Play Store not available, opening browser", e)
                     startActivity(createIntent("https://play.google.com/store/apps/details?id=de.salomax.currencies"))
                 }
                 true

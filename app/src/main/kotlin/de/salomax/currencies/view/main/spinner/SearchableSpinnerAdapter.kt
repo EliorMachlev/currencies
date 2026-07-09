@@ -50,11 +50,7 @@ class SearchableSpinnerAdapter(context: Context, resource: Int) :
     }
 
     override fun getItem(position: Int): Rate? {
-        return try {
-            rates[position]
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            null
-        }
+        return if (position in rates.indices) rates[position] else null
     }
 
     override fun getPosition(item: Rate?): Int {

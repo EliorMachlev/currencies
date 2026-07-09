@@ -26,7 +26,9 @@ class ChangelogDialog : AppCompatDialogFragment() {
                     val minor = s[1].toInt()
                     val patch = s[2].toInt()
                     major * 10_000 + minor * 100 + patch
-                } catch (e: Exception) {
+                } catch (e: NumberFormatException) {
+                    0
+                } catch (e: IndexOutOfBoundsException) {
                     0
                 }
             }) {
