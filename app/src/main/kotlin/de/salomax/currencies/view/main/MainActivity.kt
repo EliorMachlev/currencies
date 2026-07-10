@@ -44,6 +44,7 @@ import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
 import de.salomax.currencies.view.BaseActivity
+import java.math.BigDecimal
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
 import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.view.timeline.TimelineActivity
@@ -382,10 +383,10 @@ class MainActivity : BaseActivity() {
             ?.let { spinnerFrom.setCurrentRate(Rate(currency, it)) }
     }
 
-    private fun observeFeeValue(fee: Float) {
+    private fun observeFeeValue(fee: BigDecimal) {
         tvFee.text = fee.toHumanReadableNumber(this, showPositiveSign = true, suffix = "%")
         tvFee.setTextColor(
-            if (fee >= 0) MaterialColors.getColor(this, R.attr.colorError, null)
+            if (fee >= BigDecimal.ZERO) MaterialColors.getColor(this, R.attr.colorError, null)
             else MaterialColors.getColor(this, R.attr.colorPrimary, null)
         )
     }

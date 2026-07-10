@@ -1,24 +1,22 @@
 package de.salomax.currencies.util
 
-private const val SIGNIFICANT_THRESHOLD = 0.01f
+import java.math.BigDecimal
+import java.math.MathContext
 
-fun calculateDifference(old: Float?, new: Float?): Float? {
-    return if (old == null || new == null)
+private val SIGNIFICANT_THRESHOLD = BigDecimal("0.01")
+
+fun calculateDifference(old: BigDecimal?, new: BigDecimal?): BigDecimal? {
+    return if (old == null || new == null || old.compareTo(BigDecimal.ZERO) == 0)
         null
-    else {
-        val percentage = (new - old) / old * 100
-        if (percentage.isFinite())
-            percentage
-        else
-            null
-    }
+    else
+        (new - old).divide(old, MathContext.DECIMAL128) * BigDecimal("100")
 }
 
-fun Float.getSignificantDecimalPlaces(significantNumbers: Int = 2): Int {
-    if (this >= SIGNIFICANT_THRESHOLD) {
+fun BigDecimal.getSignificantDecimalPlaces(significantNumbers: Int = 2): Int {
+    if (this.abs() >= SIGNIFICANT_THRESHOLD) {
         return significantNumbers
     }
-    val decimalStr = this.toBigDecimal().stripTrailingZeros().toPlainString()
+    val decimalStr = this.abs().stripTrailingZeros().toPlainString()
     val decimalPart = decimalStr.substringAfter('.', "")
     // find leading zeros
     val leadingZeros = decimalPart.takeWhile { it == '0' }.length

@@ -9,6 +9,7 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import java.io.IOException
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @Suppress("unused", "UNUSED_PARAMETER")
@@ -41,11 +42,11 @@ internal class InforEuroRatesAdapter(private val date: LocalDate) {
     private fun parseEntry(reader: JsonReader): Rate? {
         reader.beginObject()
         var name: Currency? = null
-        var value: Float? = null
+        var value: BigDecimal? = null
         while (reader.hasNext()) {
             when (reader.nextName()) {
                 "isoA3Code" -> name = Currency.fromString(reader.nextString())
-                "value" -> value = reader.nextDouble().toFloat()
+                "value" -> value = reader.nextDouble().toBigDecimal()
                 else -> reader.skipValue()
             }
         }

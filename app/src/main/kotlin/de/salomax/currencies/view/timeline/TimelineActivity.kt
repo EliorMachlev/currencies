@@ -32,6 +32,7 @@ import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.viewmodel.timeline.TimelineViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -226,7 +227,7 @@ class TimelineActivity : BaseActivity() {
             textRateDifference.text = it?.toHumanReadableNumber(this, 2, true, "%")
             if (it != null)
                 textRateDifference.setTextColor(
-                    if (it < 0) MaterialColors.getColor(this, R.attr.colorError, null)
+                    if (it < BigDecimal.ZERO) MaterialColors.getColor(this, R.attr.colorError, null)
                     else getColor(R.color.dollarBill)
                 )
         }
@@ -278,7 +279,7 @@ class TimelineActivity : BaseActivity() {
         }
     }
 
-    private fun populateStat(parent: View, symbol: String?, value: Float?, date: LocalDate?, places: Int = 3) {
+    private fun populateStat(parent: View, symbol: String?, value: BigDecimal?, date: LocalDate?, places: Int = 3) {
         // hide entire row when there's no data
         parent.visibility = if (symbol == null) View.GONE else View.VISIBLE
         // hide dotted line when there's no date
@@ -289,7 +290,7 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun combineValueAndSymbol(
-        value: Float,
+        value: BigDecimal,
         symbol: String?,
         decimalPlaces: Int
     ): SpannableStringBuilder {

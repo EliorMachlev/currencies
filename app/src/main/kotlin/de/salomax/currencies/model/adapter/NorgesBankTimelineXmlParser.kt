@@ -7,6 +7,8 @@ import de.salomax.currencies.model.Timeline
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 import kotlin.math.pow
 
@@ -41,9 +43,12 @@ class NorgesBankTimelineXmlParser(
                 eventType == XmlPullParser.START_TAG
                     && tagname.equals("Obs", ignoreCase = true) -> {
                     val date = LocalDate.parse(parser.getAttributeValue(null, "TIME_PERIOD"))
-                    val value = parser.getAttributeValue(null, "OBS_VALUE").toFloatOrNull()
+                    val value = parser.getAttributeValue(null, "OBS_VALUE").toBigDecimalOrNull()
                     if (seriesCurrency != null && value != null)
-                        currentTimeline[date] = Rate(seriesCurrency, (1f / value) * multiplier)
+                        currentTimeline[date] = Rate(
+                            seriesCurrency,
+                            BigDecimal.ONE.divide(value, MathContext.DECIMAL128) * multiplier.toBigDecimal()
+                        )
                 }
                 eventType == XmlPullParser.END_TAG
                     && tagname.equals("Series", ignoreCase = true) -> {
@@ -71,7 +76,7 @@ class NorgesBankTimelineXmlParser(
         val series = mutableMapOf<LocalDate, Rate>()
         var currentDate = startDate
         while (!currentDate.isAfter(endDate)) {
-            series[currentDate] = Rate(Currency.NOK, 1f)
+            series[currentDate] = Rate(Currency.NOK, BigDecimal.ONE)
             currentDate = currentDate.plusDays(1)
         }
         return series
@@ -85,7 +90,7 @@ class NorgesBankTimelineXmlParser(
         for (entry in baseList) {
             val baseValue = entry.value.value
             val symbolValue = symbolList[entry.key]?.value ?: continue
-            rates[entry.key] = Rate(this.symbol, symbolValue.div(baseValue))
+            rates[entry.key] = Rate(this.symbol, symbolValue.divide(baseValue, MathContext.DECIMAL128))
         }
         return rates
     }

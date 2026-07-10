@@ -17,6 +17,7 @@ import de.salomax.currencies.util.SharedPreferenceStringLiveData
 import de.salomax.currencies.util.SharedPreferenceStringSetLiveData
 import de.salomax.currencies.util.toLocalDate
 import de.salomax.currencies.util.toMillis
+import java.math.BigDecimal
 import java.time.LocalDate
 
 private const val DEFAULT_FEE_PERCENT = 2.2f
@@ -44,7 +45,7 @@ class Database(context: Context) {
                 editor.putString(keyBaseRate, items.base?.iso4217Alpha())
                 editor.putInt(keyProvider, items.provider?.id ?: -1)
                 items.rates?.forEach { rate ->
-                    editor.putFloat(rate.currency.iso4217Alpha(), rate.value)
+                    editor.putString(rate.currency.iso4217Alpha(), rate.value.toPlainString())
                 }
                 // persist
                 editor.apply()
@@ -255,14 +256,16 @@ class Database(context: Context) {
         return SharedPreferenceBooleanLiveData(prefs, keyFeeEnabled, false)
     }
 
-    fun setFee(fee: Float) {
+    fun setFee(fee: BigDecimal) {
         prefs.apply {
-            edit().putFloat(keyFeeValue, fee).apply()
+            // store as Float to preserve backward compatibility with existing installations
+            edit().putFloat(keyFeeValue, fee.toFloat()).apply()
         }
     }
 
-    fun getFee(): LiveData<Float> {
+    fun getFee(): LiveData<BigDecimal> {
         return SharedPreferenceFloatLiveData(prefs, keyFeeValue, DEFAULT_FEE_PERCENT)
+            .map { it.toBigDecimal() }
     }
 
     /* preview conversion */

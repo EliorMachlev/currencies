@@ -24,11 +24,13 @@ import de.salomax.currencies.util.getSignificantDecimalPlaces
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
 import org.mariuszgromada.math.mxparser.Expression
+import java.math.BigDecimal
+import java.math.MathContext
 import java.text.Collator
 import java.time.LocalDate
 import java.time.ZoneId
 
-private const val PERCENTAGE_DIVISOR = 100f
+private val PERCENTAGE_DIVISOR = BigDecimal("100")
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidViewModel(app) {
@@ -69,7 +71,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     // fee
     private val isFeeEnabled: LiveData<Boolean>
-    private val fee: LiveData<Float>
+    private val fee: LiveData<BigDecimal>
 
     /*
      * repository data =============================================================================
@@ -238,7 +240,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     /**
      * the fee amount
      */
-    internal fun getFee(): LiveData<Float> {
+    internal fun getFee(): LiveData<BigDecimal> {
         return fee
     }
 
@@ -259,7 +261,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                 val baseValue = exchangeRates!!.rates?.find { it.currency == baseCurrency }?.value
                 // target currency
                 val destinationValue = exchangeRates!!.rates?.find { it.currency == destinationCurrency }?.value
-                val destinationValueCalculated = baseValue?.let { destinationValue?.div(it) }
+                val destinationValueCalculated = baseValue?.let {
+                    destinationValue?.divide(it, MathContext.DECIMAL128)
+                }
 
                 // create string
                 this.value = HtmlCompat.fromHtml(
@@ -387,7 +391,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         var baseValue: String? = null
         var baseCurrency: Currency? = null
         var destinationCurrency: Currency? = null
-        var feeValue: Float? = null
+        var feeValue: BigDecimal? = null
         var feeEnabled: Boolean? = null
 
         init {
@@ -406,22 +410,24 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         }
 
         private fun calculateResult() {
-            val baseValue: Double = baseValue?.toBigDecimal()?.toDouble() ?: 0.0
+            val baseValue: BigDecimal = baseValue?.toBigDecimal() ?: BigDecimal.ZERO
             val baseRate = rates?.rates?.find { it.currency == baseCurrency }
             val destinationRate = rates?.rates?.find { it.currency == destinationCurrency }
 
             if (baseRate != null && destinationRate != null) {
                 this.value =
-                    baseValue.div(baseRate.value).times(destinationRate.value)
+                    baseValue
+                        .divide(baseRate.value, MathContext.DECIMAL128)
+                        .multiply(destinationRate.value)
                         .let {
                             // add fee, if enabled
                             if (feeEnabled != null && feeEnabled == true && feeValue != null) {
-                                it + (it * (feeValue!! / PERCENTAGE_DIVISOR))
+                                it + it.multiply(feeValue!!.divide(PERCENTAGE_DIVISOR, MathContext.DECIMAL128))
                             } else {
                                 it
                             }
                         }
-                        .toString()
+                        .toPlainString()
             }
         }
     }
