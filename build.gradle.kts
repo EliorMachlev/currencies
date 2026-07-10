@@ -21,14 +21,6 @@ fun isNonStable(version: String): Boolean {
     return isStable.not()
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
 tasks.register("clean", Delete::class.java) {
     delete(rootProject.layout.buildDirectory)
 }
