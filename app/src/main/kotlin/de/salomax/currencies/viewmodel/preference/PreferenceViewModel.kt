@@ -136,8 +136,8 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         Database(app).setPreviewConversionEnabled(enabled)
     }
 
-    fun setExtendedKeypadEnabled(enabled: Boolean) {
-        Database(app).setExtendedKeypadEnabled(enabled)
+    fun setKeyboardType(type: Int) {
+        Database(app).setKeyboardType(type)
     }
 
 }
