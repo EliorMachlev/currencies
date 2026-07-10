@@ -426,6 +426,13 @@ class MainActivity : BaseActivity() {
     }
 
     /*
+     * keyboard: percentage
+     */
+    fun percentEvent(@Suppress("UNUSED_PARAMETER") view: View) {
+        viewModel.addPercent()
+    }
+
+    /*
      * keyboard: do some calculations
      */
     fun calculationEvent(view: View) {
