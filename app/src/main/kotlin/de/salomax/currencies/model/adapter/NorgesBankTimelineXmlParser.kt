@@ -19,83 +19,75 @@ class NorgesBankTimelineXmlParser(
     private val ratesList = mutableListOf<Map<LocalDate, Rate>>()
 
     fun parse(inputStream: InputStream): Timeline {
-        // create parser
         val parser = XmlPullParserFactory.newInstance()
             .apply { isNamespaceAware = false }.newPullParser()
             .apply { setInput(inputStream, null) }
 
-        // parse
         var eventType = parser.eventType
-        var base: Currency? = null
+        var seriesCurrency: Currency? = null
         var multiplier = 1
         val currentTimeline = mutableMapOf<LocalDate, Rate>()
         while (eventType != XmlPullParser.END_DOCUMENT) {
             val tagname = parser.name
-            if (eventType == XmlPullParser.START_TAG) {
-
-                if (tagname.equals("Series", ignoreCase = true)) {
-                    // get foreign currency
-                    base = Currency.fromString(parser.getAttributeValue(null, "BASE_CUR"))
-                    // get multiplier
-                    parser.getAttributeValue(null, "UNIT_MULT")?.toIntOrNull()?.let {
-                        multiplier = 10.0.pow(it).toInt()
-                    }
-
-                } else if (tagname.equals("Obs", ignoreCase = true)) {
-                    // get date
+            when {
+                eventType == XmlPullParser.START_TAG
+                    && tagname.equals("Series", ignoreCase = true) -> {
+                    seriesCurrency = Currency.fromString(
+                        parser.getAttributeValue(null, "BASE_CUR")
+                    )
+                    multiplier = parser.getAttributeValue(null, "UNIT_MULT")
+                        ?.toIntOrNull()?.let { 10.0.pow(it).toInt() } ?: 1
+                }
+                eventType == XmlPullParser.START_TAG
+                    && tagname.equals("Obs", ignoreCase = true) -> {
                     val date = LocalDate.parse(parser.getAttributeValue(null, "TIME_PERIOD"))
-                    // get value
                     val value = parser.getAttributeValue(null, "OBS_VALUE").toFloatOrNull()
-                    // add rate
-                    if (base != null && value != null) {
-                        currentTimeline[date] = Rate(base, (1f / value) * multiplier)
-                    }
+                    if (seriesCurrency != null && value != null)
+                        currentTimeline[date] = Rate(seriesCurrency, (1f / value) * multiplier)
+                }
+                eventType == XmlPullParser.END_TAG
+                    && tagname.equals("Series", ignoreCase = true) -> {
+                    ratesList.add(currentTimeline.toMap())
+                    currentTimeline.clear()
                 }
             }
-
-            // persist current timeline
-            else if (eventType == XmlPullParser.END_TAG && tagname.equals("Series", ignoreCase = true)) {
-                ratesList.add(currentTimeline.toMap())
-                currentTimeline.clear()
-            }
-
             eventType = parser.next()
         }
 
-        // Always manually add a NOK (constant 1.0) series.
-        // Needed for timelines with NOK, as the API doesn't return NOK, even if requested.
-        ratesList.add(object: LinkedHashMap<LocalDate, Rate>() {
-            var currentDate = startDate
-            init {
-                while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-                    this[currentDate] = Rate(Currency.NOK, 1f)
-                    currentDate = currentDate.plusDays(1)
-                }
-            }
-        })
-
-        // merge all series
-        val rates = mutableMapOf<LocalDate, Rate>()
-        val baseList = ratesList.find { it.entries.first().value.currency == this.base }
-        val symbolList = ratesList.find { it.entries.first().value.currency == this.symbol }
-        if (baseList != null && symbolList != null) {
-            for (entry in baseList) {
-                val baseValue = entry.value.value
-                val symbolValue = symbolList[entry.key]?.value
-                if (symbolValue != null)
-                    rates[entry.key] = Rate(this.symbol, symbolValue.div(baseValue))
-            }
-        }
-
+        ratesList.add(buildNokSeries())
+        val rates = mergeRates()
         return Timeline(
             success = rates.isNotEmpty(),
             error = null,
-            base = base?.iso4217Alpha(),
-            startDate = rates.entries.first().key,
-            endDate = rates.entries.last().key,
+            base = base.iso4217Alpha(),
+            startDate = rates.entries.firstOrNull()?.key,
+            endDate = rates.entries.lastOrNull()?.key,
             rates = rates.toSortedMap(),
             provider = ApiProvider.NORGES_BANK
         )
+    }
+
+    private fun buildNokSeries(): Map<LocalDate, Rate> {
+        val series = mutableMapOf<LocalDate, Rate>()
+        var currentDate = startDate
+        while (!currentDate.isAfter(endDate)) {
+            series[currentDate] = Rate(Currency.NOK, 1f)
+            currentDate = currentDate.plusDays(1)
+        }
+        return series
+    }
+
+    private fun mergeRates(): MutableMap<LocalDate, Rate> {
+        val rates = mutableMapOf<LocalDate, Rate>()
+        val baseList = ratesList.find { it.entries.first().value.currency == this.base }
+        val symbolList = ratesList.find { it.entries.first().value.currency == this.symbol }
+        if (baseList == null || symbolList == null) return rates
+        for (entry in baseList) {
+            val baseValue = entry.value.value
+            val symbolValue = symbolList[entry.key]?.value ?: continue
+            rates[entry.key] = Rate(this.symbol, symbolValue.div(baseValue))
+        }
+        return rates
     }
 
 }

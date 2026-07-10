@@ -1,5 +1,7 @@
 package de.salomax.currencies.util
 
+private const val SIGNIFICANT_THRESHOLD = 0.01f
+
 fun calculateDifference(old: Float?, new: Float?): Float? {
     return if (old == null || new == null)
         null
@@ -13,7 +15,7 @@ fun calculateDifference(old: Float?, new: Float?): Float? {
 }
 
 fun Float.getSignificantDecimalPlaces(significantNumbers: Int = 2): Int {
-    if (this >= 0.01) {
+    if (this >= SIGNIFICANT_THRESHOLD) {
         return significantNumbers
     }
     val decimalStr = this.toBigDecimal().stripTrailingZeros().toPlainString()

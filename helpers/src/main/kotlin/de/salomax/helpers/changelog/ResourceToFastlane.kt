@@ -17,6 +17,11 @@ fun main() {
 
 private class ResourceToFastlane {
 
+    companion object {
+        private const val SEMVER_MAJOR_MULTIPLIER = 10_000
+        private const val SEMVER_MINOR_MULTIPLIER = 100
+    }
+
     fun run() {
         File("app/src/de.salomax.helpers.currencies.main/res")
             // language directory
@@ -68,11 +73,7 @@ private class ResourceToFastlane {
     }
 
     private fun String.semVerToVer(): Int {
-        return try {
-            val arr = this.split(".").map { it.toInt() }
-            arr[0] * 10_000 + arr[1] * 100 + arr[2]
-        } catch (e: Error) {
-            -1
-        }
+        val parts = split(".").mapNotNull { it.toIntOrNull() }
+        return if (parts.size >= 3) parts[0] * SEMVER_MAJOR_MULTIPLIER + parts[1] * SEMVER_MINOR_MULTIPLIER + parts[2] else -1
     }
 }

@@ -43,7 +43,9 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
             // regular
             0 -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown, parent, false))
             // api hint
-            1 -> ViewHolderApiHint(LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown_api_hint, parent, false))
+            1 -> ViewHolderApiHint(
+                LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown_api_hint, parent, false)
+            )
             else -> throw IllegalArgumentException("View type must either be 0 or 1.")
         }
     }
@@ -78,26 +80,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         if (isPreviewConversionEnabled && currentBaseRate != null) {
             if (holder.tvRate.visibility == View.GONE)
                 holder.tvRate.visibility = View.VISIBLE
-            // source
-            val sourceSymbol = currentBaseRate!!.currency.symbol() ?: ""
-            val source = (if (currentBaseSum == 0.0) 1.0 else currentBaseSum)
-                .toString()
-                .toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
-            // destination
-            val destinationSymbol = item.currency.symbol() ?: ""
-            val destination = (if (currentBaseSum == 0.0) 1.0 else currentBaseSum)
-                .div(currentBaseRate!!.value)
-                .times(item.value)
-                .toString()
-                .toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
-            // set text
-            val left =
-                if (sourceSymbol.isEmpty()) source
-                else if (hasAppendedCurrencySymbol(context)) "$source $sourceSymbol" else "$sourceSymbol $source"
-            val right =
-                if (destinationSymbol.isEmpty()) destination
-                else if (hasAppendedCurrencySymbol(context)) "$destination $destinationSymbol" else "$destinationSymbol $destination"
-            holder.tvRate.text = "$left = $right".replace("\u200F", "").trim()
+            holder.tvRate.text = buildConversionText(item)
         } else {
             if (holder.tvRate.visibility != View.GONE)
                 holder.tvRate.visibility = View.GONE
@@ -151,6 +134,22 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
     fun setCurrentSum(currentSum: Double) {
         currentBaseSum = currentSum
         update()
+    }
+
+    private fun buildConversionText(item: Rate): String {
+        val sum = if (currentBaseSum == 0.0) 1.0 else currentBaseSum
+        val sourceSymbol = currentBaseRate!!.currency.symbol() ?: ""
+        val source = sum.toString().toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
+        val destinationSymbol = item.currency.symbol() ?: ""
+        val destination = sum.div(currentBaseRate!!.value).times(item.value)
+            .toString().toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
+        val left = if (sourceSymbol.isEmpty()) source
+            else if (hasAppendedCurrencySymbol(context)) "$source $sourceSymbol"
+            else "$sourceSymbol $source"
+        val right = if (destinationSymbol.isEmpty()) destination
+            else if (hasAppendedCurrencySymbol(context)) "$destination $destinationSymbol"
+            else "$destinationSymbol $destination"
+        return "$left = $right".replace("\u200F", "").trim()
     }
 
     private fun update() {

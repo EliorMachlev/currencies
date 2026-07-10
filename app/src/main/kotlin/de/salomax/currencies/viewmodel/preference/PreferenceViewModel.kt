@@ -109,7 +109,8 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         // app theme is dark
         val x = Database(app).getTheme() == 1
         // app theme is system default && current state is dark
-        val y = Database(app).getTheme() == 2 && (app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
+        val nightMode = app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        val y = Database(app).getTheme() == 2 && (nightMode == Configuration.UI_MODE_NIGHT_YES)
 
         return x || y
     }

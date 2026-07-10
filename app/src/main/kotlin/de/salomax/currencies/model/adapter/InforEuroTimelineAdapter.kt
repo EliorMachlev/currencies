@@ -25,70 +25,75 @@ internal class InforEuroTimelineAdapter(
         val rates = mutableMapOf<LocalDate, Rate>()
         val datePattern = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-        // received rates
-        return if (reader.peek() == JsonReader.Token.BEGIN_ARRAY) {
-            reader.beginArray()
-            // convert
-            while (reader.hasNext()) {
-                reader.beginObject() // begin array element
-                var currencyIso: Currency? = null
-                var value: Float? = null
-                var dateStart: LocalDate? = null
-                var dateEnd: LocalDate? = null
-                while (reader.hasNext()) {
-                    when (reader.nextName()) {
-                        "currencyIso" -> currencyIso = Currency.fromString(reader.nextString())
-                        "amount" -> value = reader.nextDouble().toFloat()
-                        "dateStart" -> dateStart = LocalDate.parse(reader.nextString(), datePattern)
-                        "dateEnd" -> dateEnd = LocalDate.parse(reader.nextString(), datePattern)
-                        else -> reader.skipValue()
-                    }
-                }
-                // only add data to result if it matches our criteria
-                if (
-                    currencyIso != null && value != null
-                    && dateStart != null && dateEnd != null
-                    && (startDate.withDayOfMonth(1).isBefore(dateStart) // TODO: check if not isAfter()
-                            || startDate.withDayOfMonth(1).isEqual(dateStart))
-                ) {
-                    var date: LocalDate = dateEnd
-                    while (date.isAfter(dateStart) || date.isEqual(dateStart)) {
-                        rates[date] = Rate(currencyIso, value)
-                        date = date.minusDays(1)
-                    }
-                }
-                reader.endObject() // end array element
-            }
-            reader.endArray()
-            Timeline(
-                success = rates.isNotEmpty(),
-                error = null,
-                base = Currency.EUR.iso4217Alpha(),
-                startDate = startDate,
-                endDate = endDate,
-                rates = rates.toSortedMap(compareBy { it }), // sort ascending
-                provider = ApiProvider.INFOR_EURO
-            )
+        if (reader.peek() != JsonReader.Token.BEGIN_ARRAY) return readErrorResponse(reader)
+
+        reader.beginArray()
+        while (reader.hasNext()) {
+            processEntry(reader, datePattern, rates)
         }
-        // error message
-        else {
-            reader.beginObject()
-            var message: String? = null
-            while (reader.hasNext()) {
-                if (reader.nextName() == "message")
-                    message = reader.nextString()
+        reader.endArray()
+
+        return Timeline(
+            success = rates.isNotEmpty(),
+            error = null,
+            base = Currency.EUR.iso4217Alpha(),
+            startDate = startDate,
+            endDate = endDate,
+            rates = rates.toSortedMap(compareBy { it }),
+            provider = ApiProvider.INFOR_EURO
+        )
+    }
+
+    private fun processEntry(
+        reader: JsonReader,
+        datePattern: DateTimeFormatter,
+        rates: MutableMap<LocalDate, Rate>
+    ) {
+        reader.beginObject()
+        var currencyIso: Currency? = null
+        var value: Float? = null
+        var dateStart: LocalDate? = null
+        var dateEnd: LocalDate? = null
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "currencyIso" -> currencyIso = Currency.fromString(reader.nextString())
+                "amount" -> value = reader.nextDouble().toFloat()
+                "dateStart" -> dateStart = LocalDate.parse(reader.nextString(), datePattern)
+                "dateEnd" -> dateEnd = LocalDate.parse(reader.nextString(), datePattern)
+                else -> reader.skipValue()
             }
-            reader.endObject()
-            Timeline(
-                success = false,
-                error = message,
-                base = Currency.EUR.iso4217Alpha(),
-                startDate = null,
-                endDate = null,
-                rates = null,
-                provider = ApiProvider.INFOR_EURO
-            )
         }
+        reader.endObject()
+
+        val hasData = currencyIso != null && value != null && dateStart != null && dateEnd != null
+        // inclusive: before-or-equal start
+        val startBeforeOrEqual = dateStart != null && !startDate.withDayOfMonth(1).isAfter(dateStart)
+        if (!hasData || !startBeforeOrEqual) return
+
+        var date: LocalDate = dateEnd!!
+        while (!date.isBefore(dateStart!!)) {
+            rates[date] = Rate(currencyIso!!, value!!)
+            date = date.minusDays(1)
+        }
+    }
+
+    private fun readErrorResponse(reader: JsonReader): Timeline {
+        reader.beginObject()
+        var message: String? = null
+        while (reader.hasNext()) {
+            if (reader.nextName() == "message")
+                message = reader.nextString()
+        }
+        reader.endObject()
+        return Timeline(
+            success = false,
+            error = message,
+            base = Currency.EUR.iso4217Alpha(),
+            startDate = null,
+            endDate = null,
+            rates = null,
+            provider = ApiProvider.INFOR_EURO
+        )
     }
 
     @Synchronized

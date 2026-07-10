@@ -19,6 +19,8 @@ import de.salomax.currencies.repository.Database
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+private const val HTTP_UNAUTHORIZED = 401
+
 class OpenExchangerates : ApiProvider.Api() {
 
     override val name = "Open Exchangerates"
@@ -68,14 +70,10 @@ class OpenExchangerates : ApiProvider.Api() {
             rates.copy(provider = ApiProvider.OPEN_EXCHANGERATES)
         }
 
-        if (result.component2()?.response?.statusCode == 401) {
-            return Result.error(
-                FuelError.wrap(
-                    Exception(context.getString(R.string.error_invalid_api_key))
-                )
-            )
-        }
-        return result
+        return if (result.component2()?.response?.statusCode == HTTP_UNAUTHORIZED)
+            Result.error(FuelError.wrap(Exception(context.getString(R.string.error_invalid_api_key))))
+        else
+            result
     }
 
     override suspend fun getTimeline(

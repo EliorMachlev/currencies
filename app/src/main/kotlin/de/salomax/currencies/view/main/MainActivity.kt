@@ -35,6 +35,8 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import de.salomax.currencies.R
+import de.salomax.currencies.model.Currency
+import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.util.getDecimalSeparator
 import de.salomax.currencies.util.getLocale
@@ -51,6 +53,10 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+
+private const val HISTORICAL_MIN_YEAR = 2010
+private const val STALE_RATES_DAYS = 3L
+private const val MAX_ERROR_TEXT_LINES = 20
 
 class MainActivity : BaseActivity() {
 
@@ -115,87 +121,65 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.settings -> {
-                startActivity(Intent(this, PreferenceActivity().javaClass))
-                true
-            }
-            R.id.refresh -> {
-                viewModel.forceUpdateExchangeRate()
-                true
-            }
-            R.id.timeline -> {
-                val from = viewModel.getBaseCurrency().value
-                val to = viewModel.getDestinationCurrency().value
-                if (from != null && to != null) {
-                    startActivity(
-                        Intent(Intent(this, TimelineActivity().javaClass)).apply {
-                            putExtra("ARG_FROM", from)
-                            putExtra("ARG_TO", to)
-                        }
-                    )
-                    true
-                } else {
-                    false
-                }
-            }
-            R.id.date_picker -> {
-                // allow historical rates back until 2010-01-01, as every API at least provides a subset of rates since then
-                val startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-                    .apply { this.set(2010, Calendar.JANUARY, 1) }
-                    .timeInMillis
-
-                // load all the views
-                val layout = layoutInflater.inflate(R.layout.main_dialog_historical_rates, null)
-                val toggle: SwitchMaterial = layout.findViewById(R.id.toggle)
-                val datePicker: DatePicker = layout.findViewById(R.id.date_picker)
-                val border: View = layout.findViewById(R.id.border)
-
-                val historicalDate = viewModel.getHistoricalDate()
-
-                // enables/disables the date picker and the border on top of it
-                fun showDatePicker(show: Boolean) {
-                    datePicker.visibility = if (show) View.VISIBLE else View.GONE
-                    border.visibility = if (show) View.VISIBLE else View.GONE
-                }
-                // initial dialog state
-                showDatePicker(historicalDate != null)
-                // configure the date picker
-                datePicker.apply {
-                    minDate = startDate
-                    maxDate = Calendar.getInstance().timeInMillis
-                    firstDayOfWeek = Calendar.getInstance().firstDayOfWeek
-                    historicalDate?.let {
-                        updateDate(it.year, it.monthValue - 1, it.dayOfMonth)
-                    }
-                }
-                // configure the toggle button
-                toggle.apply {
-                    setOnCheckedChangeListener { _, enabled -> showDatePicker(enabled) }
-                    isChecked = historicalDate != null
-                }
-                // finally, build the dialog and show it
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.historical_rates_dialog_title)
-                    .setView(layout)
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        viewModel.setHistoricalDate(
-                            // use historical
-                            if (toggle.isChecked) LocalDate.of(
-                                datePicker.year,
-                                datePicker.month + 1,
-                                datePicker.dayOfMonth
-                            )
-                            // use current
-                            else null
-                        )
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create()
-                    .show()
-                true
-            }
+            R.id.settings -> { startActivity(Intent(this, PreferenceActivity().javaClass)); true }
+            R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
+            R.id.timeline -> openTimelineActivity()
+            R.id.date_picker -> { openHistoricalDatePicker(); true }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openTimelineActivity(): Boolean {
+        val from = viewModel.getBaseCurrency().value
+        val to = viewModel.getDestinationCurrency().value
+        if (from == null || to == null) return false
+        startActivity(
+            Intent(Intent(this, TimelineActivity().javaClass)).apply {
+                putExtra("ARG_FROM", from)
+                putExtra("ARG_TO", to)
+            }
+        )
+        return true
+    }
+
+    private fun openHistoricalDatePicker() {
+        val startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            .apply { this.set(HISTORICAL_MIN_YEAR, Calendar.JANUARY, 1) }
+            .timeInMillis
+        val layout = layoutInflater.inflate(R.layout.main_dialog_historical_rates, null)
+        val toggle: SwitchMaterial = layout.findViewById(R.id.toggle)
+        val datePicker: DatePicker = layout.findViewById(R.id.date_picker)
+        val border: View = layout.findViewById(R.id.border)
+        val historicalDate = viewModel.getHistoricalDate()
+
+        fun showDatePicker(show: Boolean) {
+            datePicker.visibility = if (show) View.VISIBLE else View.GONE
+            border.visibility = if (show) View.VISIBLE else View.GONE
+        }
+        showDatePicker(historicalDate != null)
+        datePicker.apply {
+            minDate = startDate
+            maxDate = Calendar.getInstance().timeInMillis
+            firstDayOfWeek = Calendar.getInstance().firstDayOfWeek
+            historicalDate?.let { updateDate(it.year, it.monthValue - 1, it.dayOfMonth) }
+        }
+        toggle.apply {
+            setOnCheckedChangeListener { _, enabled -> showDatePicker(enabled) }
+            isChecked = historicalDate != null
+        }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.historical_rates_dialog_title)
+            .setView(layout)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                viewModel.setHistoricalDate(
+                    if (toggle.isChecked) LocalDate.of(
+                        datePicker.year, datePicker.month + 1, datePicker.dayOfMonth
+                    ) else null
+                )
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+            .show()
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -256,7 +240,7 @@ class MainActivity : BaseActivity() {
 
         // spinners: listen for changes
         spinnerFrom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -270,7 +254,7 @@ class MainActivity : BaseActivity() {
             }
         }
         spinnerTo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -309,146 +293,107 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observe() {
-        //
-        viewModel.ratesInformationFooter.observe(this) {
-            tvInfoConversion.text = it
-        }
-
-        //exchange rates changed
-        viewModel.getExchangeRates().observe(this) {
-            // date
-            it?.let { it ->
-                val date = it.date
-                val dateString = date
-                    ?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(getLocale(this)))
-                    ?.replace("\u200F", "") // remove rtl-mark (fixes broken arab date)
-                val providerString = it.provider?.getName()
-
-                // show rate age and rate source
-                tvInfoDate.text =
-                    if (dateString != null && providerString != null)
-                        HtmlCompat.fromHtml(
-                            getString(
-                                if (viewModel.getHistoricalDate() != null)
-                                    R.string.info_date_historical
-                                else
-                                    R.string.info_date_latest,
-                                dateString,
-                                providerString
-                            ),
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        )
-                    else
-                        null
-
-                // paint text in red in case the data is old (at least 3 days) or historical rates are enabled
-                listOf(tvInfoDate, tvInfoConversion).forEach { tv ->
-                    tv.setTextColor(
-                        if (date?.isBefore(
-                                LocalDate.now().minusDays(3)
-                            ) == true || viewModel.getHistoricalDate() != null
-                        )
-                            MaterialColors.getColor(this, R.attr.colorError, null)
-                        else
-                            getTextColorSecondary()
-                    )
-                }
-
-                // show little icon to indicate when historical rates are used
-                findViewById<ImageView>(R.id.iconHistorical).visibility =
-                    if (viewModel.getHistoricalDate() != null)
-                        View.VISIBLE
-                    else
-                        View.GONE
-            }
-            // rates
-            spinnerFrom.setRates(it?.rates)
-            spinnerTo.setRates(it?.rates)
-        }
-
-        // something bad happened
-        viewModel.getError().observe(this) {
-            // error
-            it?.let {
-                Snackbar.make(this, findViewById(R.id.snackbar_top_position), HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY), Snackbar.LENGTH_INDEFINITE) // show for 5s
-                    .setBackgroundTint(MaterialColors.getColor(this, R.attr.colorError, null))
-                    .setTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
-                    .setActionTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
-                    .setAction(android.R.string.ok) { /* onClick dismisses, by default */ }
-                    .setTextMaxLines(20)
-                    .show()
-            }
-        }
-
-        // rates are updating
+        viewModel.ratesInformationFooter.observe(this) { tvInfoConversion.text = it }
+        viewModel.getExchangeRates().observe(this) { observeExchangeRates(it) }
+        viewModel.getError().observe(this) { showErrorSnackbar(it) }
         viewModel.isUpdating().observe(this) { isRefreshing ->
             refreshIndicator.visibility = if (isRefreshing) View.VISIBLE else View.GONE
-            // disable manual refresh, while refreshing
             swipeRefresh.isEnabled = isRefreshing.not()
             menuItemRefresh?.isEnabled = isRefreshing.not()
         }
+        viewModel.getCurrentBaseValueFormatted().observe(this) { tvFrom.text = it }
+        viewModel.getResultFormatted().observe(this) { tvTo.text = it }
+        viewModel.getCalculationInputFormatted().observe(this) { tvCalculations.text = it }
+        viewModel.getBaseCurrency().observe(this) { observeBaseCurrency(it) }
+        viewModel.getDestinationCurrency().observe(this) { observeDestinationCurrency(it) }
+        viewModel.isFeeEnabled().observe(this) { tvFee.visibility = if (it) View.VISIBLE else View.GONE }
+        viewModel.getFee().observe(this) { observeFeeValue(it) }
+        viewModel.getCurrentBaseValueAsNumber().observe(this) { spinnerTo.setCurrentSum(it) }
+        viewModel.getResultAsNumber().observe(this) { spinnerFrom.setCurrentSum(it) }
+        viewModel.isExtendedKeypadEnabled.observe(this) { observeKeypadState(it) }
+    }
 
-        // input changed
-        viewModel.getCurrentBaseValueFormatted().observe(this) {
-            tvFrom.text = it
+    private fun observeExchangeRates(rates: ExchangeRates?) {
+        rates?.let {
+            val date = it.date
+            val dateString = date
+                ?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(getLocale(this)))
+                ?.replace("\u200F", "")
+            val providerString = it.provider?.getName()
+            tvInfoDate.text =
+                if (dateString != null && providerString != null)
+                    HtmlCompat.fromHtml(
+                        getString(
+                            if (viewModel.getHistoricalDate() != null)
+                                R.string.info_date_historical
+                            else
+                                R.string.info_date_latest,
+                            dateString,
+                            providerString
+                        ),
+                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
+                else null
+            val isStaleOrHistorical = date?.isBefore(LocalDate.now().minusDays(STALE_RATES_DAYS)) == true
+                || viewModel.getHistoricalDate() != null
+            val infoColor = if (isStaleOrHistorical)
+                MaterialColors.getColor(this, R.attr.colorError, null)
+            else
+                getTextColorSecondary()
+            listOf(tvInfoDate, tvInfoConversion).forEach { tv -> tv.setTextColor(infoColor) }
+            findViewById<ImageView>(R.id.iconHistorical).visibility =
+                if (viewModel.getHistoricalDate() != null) View.VISIBLE else View.GONE
         }
-        viewModel.getResultFormatted().observe(this) {
-            tvTo.text = it
-        }
-        viewModel.getCalculationInputFormatted().observe(this) {
-            tvCalculations.text = it
-        }
+        spinnerFrom.setRates(rates?.rates)
+        spinnerTo.setRates(rates?.rates)
+    }
 
-        // selected rates changed
-        viewModel.getBaseCurrency().observe(this) { currency ->
-            spinnerFrom.setSelection(currency)
-            // conversion preview
-            if (currency != null)
-                // get rate from currency
-                viewModel.getExchangeRates().value?.rates?.find { it.currency == currency }?.value
-                    // give it to the adapter
-                    ?.let { spinnerTo.setCurrentRate(Rate(currency, it)) }
-        }
-        viewModel.getDestinationCurrency().observe(this) { currency ->
-            spinnerTo.setSelection(currency)
-            // conversion preview
-            if (currency != null)
-                // get rate from currency
-                viewModel.getExchangeRates().value?.rates?.find { it.currency == currency }?.value
-                    // give it to the adapter
-                    ?.let { spinnerFrom.setCurrentRate(Rate(currency, it)) }
-        }
+    private fun showErrorSnackbar(message: String?) {
+        message ?: return
+        Snackbar.make(
+            this,
+            findViewById(R.id.snackbar_top_position),
+            HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY),
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setBackgroundTint(MaterialColors.getColor(this, R.attr.colorError, null))
+            .setTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
+            .setActionTextColor(MaterialColors.getColor(this, R.attr.colorOnError, null))
+            .setAction(android.R.string.ok) { }
+            .setTextMaxLines(MAX_ERROR_TEXT_LINES)
+            .show()
+    }
 
-        // fee changed
-        viewModel.isFeeEnabled().observe(this) {
-            tvFee.visibility = if (it) View.VISIBLE else View.GONE
-        }
-        viewModel.getFee().observe(this) {
-            tvFee.text = it.toHumanReadableNumber(this, showPositiveSign = true, suffix = "%")
-            tvFee.setTextColor(
-                if (it >= 0) MaterialColors.getColor(this, R.attr.colorError, null)
-                else MaterialColors.getColor(this, R.attr.colorPrimary, null)
-            )
-        }
+    private fun observeBaseCurrency(currency: Currency?) {
+        spinnerFrom.setSelection(currency)
+        currency ?: return
+        viewModel.getExchangeRates().value?.rates?.find { it.currency == currency }?.value
+            ?.let { spinnerTo.setCurrentRate(Rate(currency, it)) }
+    }
 
-        viewModel.getCurrentBaseValueAsNumber().observe(this) {
-            spinnerTo.setCurrentSum(it)
-        }
-        viewModel.getResultAsNumber().observe(this) {
-            spinnerFrom.setCurrentSum(it)
-        }
+    private fun observeDestinationCurrency(currency: Currency?) {
+        spinnerTo.setSelection(currency)
+        currency ?: return
+        viewModel.getExchangeRates().value?.rates?.find { it.currency == currency }?.value
+            ?.let { spinnerFrom.setCurrentRate(Rate(currency, it)) }
+    }
 
-        viewModel.isExtendedKeypadEnabled.observe(this) { extendedEnabled ->
-            val keypadRegular = findViewById<View>(R.id.keypad)
-            val keypadExtended = findViewById<View>(R.id.keypad_extended)
-            // activate the correct keypad
-            keypadRegular.visibility = if (extendedEnabled) View.GONE else View.VISIBLE
-            keypadExtended.visibility = if (extendedEnabled) View.VISIBLE else View.GONE
-            // decimal button: use correct char for the current locale
-            val separator = getDecimalSeparator(this)
-            keypadExtended.findViewById<TextView>(R.id.btn_decimal).text = separator
-            keypadRegular.findViewById<TextView>(R.id.btn_decimal).text = separator
-        }
+    private fun observeFeeValue(fee: Float) {
+        tvFee.text = fee.toHumanReadableNumber(this, showPositiveSign = true, suffix = "%")
+        tvFee.setTextColor(
+            if (fee >= 0) MaterialColors.getColor(this, R.attr.colorError, null)
+            else MaterialColors.getColor(this, R.attr.colorPrimary, null)
+        )
+    }
+
+    private fun observeKeypadState(extendedEnabled: Boolean) {
+        val keypadRegular = findViewById<View>(R.id.keypad)
+        val keypadExtended = findViewById<View>(R.id.keypad_extended)
+        keypadRegular.visibility = if (extendedEnabled) View.GONE else View.VISIBLE
+        keypadExtended.visibility = if (extendedEnabled) View.VISIBLE else View.GONE
+        val separator = getDecimalSeparator(this)
+        keypadExtended.findViewById<TextView>(R.id.btn_decimal).text = separator
+        keypadRegular.findViewById<TextView>(R.id.btn_decimal).text = separator
     }
 
     private fun getTextColorSecondary(): Int {
@@ -495,35 +440,18 @@ class MainActivity : BaseActivity() {
     // capture hardware keyboard input
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         // IMPORTANT: can't work with simple keyCodes here, as depending on the keyboard
-        // configuration, wrong values will be returned (e.g. KEYCODE_8 instad of KEYCODE_PLUS).
+        // configuration, wrong values will be returned (e.g. KEYCODE_8 instead of KEYCODE_PLUS).
         val key = event?.keyCharacterMap?.get(keyCode, event.metaState)?.let { Char(it) }
-        when (key) {
-            // numbers
-            '0' -> viewModel.addNumber("0")
-            '1' -> viewModel.addNumber("1")
-            '2' -> viewModel.addNumber("2")
-            '3' -> viewModel.addNumber("3")
-            '4' -> viewModel.addNumber("4")
-            '5' -> viewModel.addNumber("5")
-            '6' -> viewModel.addNumber("6")
-            '7' -> viewModel.addNumber("7")
-            '8' -> viewModel.addNumber("8")
-            '9' -> viewModel.addNumber("9")
-            // decimal
-            '.' -> viewModel.addDecimal()
-            ',' -> viewModel.addDecimal()
-            // operators
-            '+' -> viewModel.addition()
-            '-' -> viewModel.subtraction()
-            '*' -> viewModel.multiplication()
-            '/' -> viewModel.division()
-            else ->
-                // delete
-                when (keyCode) {
-                    KeyEvent.KEYCODE_DEL -> viewModel.delete()
-                    KeyEvent.KEYCODE_BACK -> super.onBackPressedDispatcher.onBackPressed()
-                    else -> return false
-                }
+        when {
+            key?.isDigit() == true -> viewModel.addNumber(key.toString())
+            key == '.' || key == ',' -> viewModel.addDecimal()
+            key == '+' -> viewModel.addition()
+            key == '-' -> viewModel.subtraction()
+            key == '*' -> viewModel.multiplication()
+            key == '/' -> viewModel.division()
+            keyCode == KeyEvent.KEYCODE_DEL -> viewModel.delete()
+            keyCode == KeyEvent.KEYCODE_BACK -> super.onBackPressedDispatcher.onBackPressed()
+            else -> return false
         }
         return true
     }

@@ -14,42 +14,30 @@ class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
     private val rates = mutableMapOf<LocalDate, Rate>()
 
     fun parse(inputStream: InputStream): Timeline {
-        // create parser
         val parser = XmlPullParserFactory.newInstance()
             .apply { isNamespaceAware = false }.newPullParser()
             .apply { setInput(inputStream, null) }
 
-        // storage
         var tagname: String? = null
         var eventType = parser.eventType
         var date: LocalDate? = null
         var currencyId: String? = null
         var value: Float? = null
 
-        // parse
         while (eventType != XmlPullParser.END_DOCUMENT) {
             tagname = parser.name ?: tagname
-            if (eventType == XmlPullParser.START_TAG) {
-                if (tagname == "Record") {
-                    // date
+            when (eventType) {
+                XmlPullParser.START_TAG -> if (tagname == "Record") {
                     date = LocalDate.parse(
                         parser.getAttributeValue(null, "Date"),
                         DateTimeFormatter.ofPattern("dd.MM.yyyy")
                     )
-                    // id
                     currencyId = parser.getAttributeValue(null, "Id")
                 }
-            } else if (eventType == XmlPullParser.TEXT) {
-                if (tagname == "VunitRate")
+                XmlPullParser.TEXT -> if (tagname == "VunitRate")
                     value = 1f / parser.text.replace(',', '.').toFloat()
-            } else if (eventType == XmlPullParser.END_TAG) {
-                if (tagname == "Record") {
-                    if (date != null && value != null && currencyId != null && ids[currencyId] != null) {
-                        val currency = Currency.fromString(ids[currencyId]!!)
-                        if (currency != null)
-                            rates[date] = Rate(currency, value)
-                    }
-                    // reset
+                XmlPullParser.END_TAG -> if (tagname == "Record") {
+                    recordRate(date, value, currencyId)
                     date = null
                     currencyId = null
                     value = null
@@ -67,6 +55,13 @@ class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
             rates = rates,
             provider = ApiProvider.BANK_ROSSII
         )
+    }
+
+    private fun recordRate(date: LocalDate?, value: Float?, currencyId: String?) {
+        val isoCode = currencyId?.let { ids[it] } ?: return
+        if (date == null || value == null) return
+        val currency = Currency.fromString(isoCode) ?: return
+        rates[date] = Rate(currency, value)
     }
 
 }

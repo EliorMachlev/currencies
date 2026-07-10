@@ -11,9 +11,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
-  packages: read
-  actions: read
 
 # Kotlin analysis is handled by Qodana (see qodana.yaml). CodeQL is
 # limited to GitHub Actions YAML analysis here because the CodeQL
@@ -22,6 +19,11 @@ jobs:
   analyze:
     name: Analyze (actions)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      packages: read
+      actions: read
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 

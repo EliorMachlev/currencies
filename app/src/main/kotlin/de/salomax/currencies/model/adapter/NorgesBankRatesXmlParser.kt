@@ -15,65 +15,34 @@ class NorgesBankRatesXmlParser {
     private val rates = mutableListOf<Rate>()
 
     fun parse(inputStream: InputStream, requestedDate: LocalDate): ExchangeRates {
-        // create parser
         val parser = XmlPullParserFactory.newInstance()
             .apply { isNamespaceAware = false }.newPullParser()
             .apply { setInput(inputStream, null) }
 
-        // parse
         var eventType = parser.eventType
         var base: Currency? = null
         var multiplier = 1
         while (eventType != XmlPullParser.END_DOCUMENT) {
             val tagname = parser.name
             if (eventType == XmlPullParser.START_TAG) {
-
-                if (tagname.equals("Series", ignoreCase = true)) {
-                    // get foreign currency
-                    base = Currency.fromString(parser.getAttributeValue(null, "BASE_CUR"))
-                    // get multiplier
-                    parser.getAttributeValue(null, "UNIT_MULT")?.toIntOrNull()?.let {
-                        multiplier = 10.0.pow(it).toInt()
+                when {
+                    tagname.equals("Series", ignoreCase = true) -> {
+                        base = Currency.fromString(parser.getAttributeValue(null, "BASE_CUR"))
+                        multiplier = parseMultiplier(parser)
                     }
-
-                } else if (tagname.equals("Obs", ignoreCase = true)) {
-                    // get date
-                    val date = LocalDate.parse(parser.getAttributeValue(null, "TIME_PERIOD"))
-                    // get value
-                    val value = parser.getAttributeValue(null, "OBS_VALUE").toFloatOrNull()
-                    // store
-                    if (
-                        base != null
-                        && value != null
-                        // api delivers historical rates for e.g. RUB; we don't want those
-                        && date.isAfter(requestedDate.minusWeeks(2))
-                    ) {
-                        // check if there is already an older value and remove it
-                        // (api is sorted ascending, so later currencies are always newer)
-                        rates.removeIf { rate -> rate.currency == base }
-                        // add rate
-                        rates.add(Rate(base, (1f / value) * multiplier))
-                    }
-                    base = null
-                    // found a newer date -> update
-                    if (this.date == null || this.date?.isBefore(date) == true) {
-                        this.date = date
+                    tagname.equals("Obs", ignoreCase = true) -> {
+                        val obsDate = LocalDate.parse(parser.getAttributeValue(null, "TIME_PERIOD"))
+                        val value = parser.getAttributeValue(null, "OBS_VALUE").toFloatOrNull()
+                        recordObservation(base, value, obsDate, multiplier, requestedDate)
+                        base = null
+                        updateDate(obsDate)
                     }
                 }
             }
             eventType = parser.next()
         }
 
-        if (rates.isNotEmpty()) {
-            // finally, add NOK...
-            rates.add(Rate(Currency.NOK, 1f))
-            // ...and FOK
-            if (rates.find { it.currency == Currency.FOK } == null)
-                rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
-                    rates.add(Rate(Currency.FOK, dkk))
-                }
-        }
-
+        addSyntheticRates()
         return ExchangeRates(
             success = rates.isNotEmpty(),
             error = null,
@@ -82,6 +51,38 @@ class NorgesBankRatesXmlParser {
             rates = rates,
             provider = ApiProvider.NORGES_BANK
         )
+    }
+
+    private fun parseMultiplier(parser: XmlPullParser): Int =
+        parser.getAttributeValue(null, "UNIT_MULT")?.toIntOrNull()
+            ?.let { 10.0.pow(it).toInt() } ?: 1
+
+    private fun recordObservation(
+        base: Currency?,
+        value: Float?,
+        date: LocalDate,
+        multiplier: Int,
+        requestedDate: LocalDate
+    ) {
+        if (base == null || value == null) return
+        // api delivers historical rates for e.g. RUB; ignore stale ones
+        if (!date.isAfter(requestedDate.minusWeeks(2))) return
+        rates.removeIf { rate -> rate.currency == base }
+        rates.add(Rate(base, (1f / value) * multiplier))
+    }
+
+    private fun updateDate(date: LocalDate) {
+        if (this.date == null || this.date?.isBefore(date) == true)
+            this.date = date
+    }
+
+    private fun addSyntheticRates() {
+        if (rates.isEmpty()) return
+        rates.add(Rate(Currency.NOK, 1f))
+        if (rates.find { it.currency == Currency.FOK } == null)
+            rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
+                rates.add(Rate(Currency.FOK, dkk))
+            }
     }
 
 }

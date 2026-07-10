@@ -11,6 +11,9 @@ import de.salomax.currencies.model.Timeline
 import java.io.IOException
 import java.time.LocalDate
 
+private const val CURRENCY_CODE_START = 2
+private const val CURRENCY_CODE_END = 5
+
 @Suppress("unused", "UNUSED_PARAMETER")
 internal class BankOfCanadaTimelineAdapter(
     private val base: Currency,
@@ -22,11 +25,10 @@ internal class BankOfCanadaTimelineAdapter(
     @Throws(IOException::class)
     fun fromJson(reader: JsonReader): Timeline? {
         reader.beginObject()
-        // convert
-        while (reader.hasNext()) {
+        var result: Timeline? = null
+        while (reader.hasNext() && result == null) {
             when (reader.nextName()) {
-                // error
-                "message" -> return Timeline(
+                "message" -> result = Timeline(
                     success = false,
                     error = reader.nextString(),
                     base = null,
@@ -35,17 +37,15 @@ internal class BankOfCanadaTimelineAdapter(
                     rates = null,
                     provider = ApiProvider.BANK_OF_CANADA
                 )
-                // get the values
                 "observations" -> {
                     reader.beginArray()
-                    return convertObservations(reader)
+                    result = convertObservations(reader)
                 }
-                // not interested in those
                 else -> reader.skipValue()
             }
         }
         reader.endObject()
-        return null
+        return result
     }
 
     private fun convertObservations(reader: JsonReader): Timeline {
@@ -85,7 +85,7 @@ internal class BankOfCanadaTimelineAdapter(
                 "d" -> date = LocalDate.parse(reader.nextString())
                 // rate
                 else -> {
-                    val currency = Currency.fromString(nextName.substring(2, 5))
+                    val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
                     reader.beginObject()
                     reader.skipName() // always "v"
                     val value = reader.nextDouble()

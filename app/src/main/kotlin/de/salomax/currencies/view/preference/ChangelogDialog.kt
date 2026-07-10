@@ -12,6 +12,11 @@ import java.lang.reflect.Modifier
 
 class ChangelogDialog : AppCompatDialogFragment() {
 
+    companion object {
+        private const val SEMVER_MAJOR_MULTIPLIER = 10_000
+        private const val SEMVER_MINOR_MULTIPLIER = 100
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = View.inflate(context, R.layout.fragment_changelog, null)
         val textView = view.findViewById<TextView>(R.id.changelog)
@@ -25,8 +30,10 @@ class ChangelogDialog : AppCompatDialogFragment() {
                     val major = s[0].toInt()
                     val minor = s[1].toInt()
                     val patch = s[2].toInt()
-                    major * 10_000 + minor * 100 + patch
-                } catch (e: Exception) {
+                    major * SEMVER_MAJOR_MULTIPLIER + minor * SEMVER_MINOR_MULTIPLIER + patch
+                } catch (e: NumberFormatException) {
+                    0
+                } catch (e: IndexOutOfBoundsException) {
                     0
                 }
             }) {

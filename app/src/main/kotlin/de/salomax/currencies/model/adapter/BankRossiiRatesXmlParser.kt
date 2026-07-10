@@ -15,41 +15,29 @@ class BankRossiiRatesXmlParser {
     private val rates = mutableListOf<Rate>()
 
     fun parse(inputStream: InputStream): ExchangeRates {
-        // create parser
         val parser = XmlPullParserFactory.newInstance()
             .apply { isNamespaceAware = false }.newPullParser()
             .apply { setInput(inputStream, null) }
 
-        // storage
         var tagname: String? = null
         var eventType = parser.eventType
         var currency: Currency? = null
         var value: Float? = null
 
-        // parse
         while (eventType != XmlPullParser.END_DOCUMENT) {
             tagname = parser.name ?: tagname
-            if (eventType == XmlPullParser.START_TAG) {
-                if (tagname == "ValCurs")
-                    // date
+            when (eventType) {
+                XmlPullParser.START_TAG -> if (tagname == "ValCurs")
                     date = LocalDate.parse(
                         parser.getAttributeValue(null, "Date"),
                         DateTimeFormatter.ofPattern("dd.MM.yyyy")
                     )
-            } else if (eventType == XmlPullParser.TEXT) {
-                when (tagname) {
-                    // currency
+                XmlPullParser.TEXT -> when (tagname) {
                     "CharCode" -> currency = Currency.fromString(parser.text)
-                    // rate
                     "VunitRate" -> value = 1f / parser.text.replace(',', '.').toFloat()
                 }
-            } else if (eventType == XmlPullParser.END_TAG) {
-                if (tagname == "Valute") {
-                    // store rate
-                    if (currency != null && value != null) {
-                        rates.add(Rate(currency, value))
-                    }
-                    // reset
+                XmlPullParser.END_TAG -> if (tagname == "Valute") {
+                    recordRate(currency, value)
                     currency = null
                     value = null
                 }
@@ -57,16 +45,7 @@ class BankRossiiRatesXmlParser {
             eventType = parser.next()
         }
 
-        if (rates.isNotEmpty()) {
-            // finally, add RUB...
-            rates.add(Rate(Currency.RUB, 1f))
-            // ...and FOK
-            if (rates.find { it.currency == Currency.FOK } == null)
-                rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
-                    rates.add(Rate(Currency.FOK, dkk))
-                }
-        }
-
+        addSyntheticRates()
         return ExchangeRates(
             success = rates.isNotEmpty(),
             error = null,
@@ -75,6 +54,20 @@ class BankRossiiRatesXmlParser {
             rates = rates,
             provider = ApiProvider.BANK_ROSSII
         )
+    }
+
+    private fun recordRate(currency: Currency?, value: Float?) {
+        if (currency != null && value != null)
+            rates.add(Rate(currency, value))
+    }
+
+    private fun addSyntheticRates() {
+        if (rates.isEmpty()) return
+        rates.add(Rate(Currency.RUB, 1f))
+        if (rates.find { it.currency == Currency.FOK } == null)
+            rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
+                rates.add(Rate(Currency.FOK, dkk))
+            }
     }
 
 }

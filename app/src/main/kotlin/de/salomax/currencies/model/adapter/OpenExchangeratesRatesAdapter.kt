@@ -25,76 +25,50 @@ internal class OpenExchangeratesRatesAdapter {
         var base: Currency? = null
         var date: LocalDate? = null
         var errorMessage: String? = null
-        var errorDescription: String? = null
 
-        if (reader.peek() == JsonReader.Token.BEGIN_OBJECT)
-            reader.beginObject()
-        else
-            return null
+        if (reader.peek() != JsonReader.Token.BEGIN_OBJECT) return null
+        reader.beginObject()
 
-        // parse
         while (reader.hasNext()) {
-            if (reader.peek() == JsonReader.Token.NAME) {
-                when (reader.nextName()) {
-                    "rates" -> {
-                        reader.beginObject()
-                        // convert
-                        while (reader.hasNext()) {
-                            val name: Currency? = Currency.fromString(reader.nextName())
-                            val value: Float = reader.nextDouble().toFloat()
-
-                            if (name != null)
-                                rates.add(Rate(name, value))
-                        }
-                        reader.endObject()
-                    }
-                    "timestamp" -> {
-                        date = Instant.ofEpochSecond(reader.nextLong())
-                            .atZone(ZoneId.systemDefault()).toLocalDate()
-                    }
-                    "base" -> {
-                        base = Currency.fromString(reader.nextString())
-                    }
-                    "message" -> {
-                        errorMessage = reader.nextString()
-                    }
-                    "description" -> {
-                        errorDescription = reader.nextString()
-                    }
-                    else -> {
-                        reader.skipValue()
-                    }
-                }
+            if (reader.peek() != JsonReader.Token.NAME) continue
+            when (reader.nextName()) {
+                "rates" -> rates.addAll(parseRates(reader))
+                "timestamp" -> date = Instant.ofEpochSecond(reader.nextLong())
+                    .atZone(ZoneId.systemDefault()).toLocalDate()
+                "base" -> base = Currency.fromString(reader.nextString())
+                "message" -> errorMessage = reader.nextString()
+                else -> reader.skipValue()
             }
         }
 
         reader.endObject()
-
-        // also add Faroese króna (same as Danish krone) if it isn't already there - I simply like it!
-        if (rates.find { it.currency == Currency.FOK } == null)
-            rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
-                rates.add(Rate(Currency.FOK, dkk))
-            }
+        addFokIfMissing(rates)
 
         return if (rates.isNotEmpty())
-            ExchangeRates(
-                success = true,
-                error = null,
-                base = base,
-                date = date,
-                rates = rates,
-                provider = ApiProvider.INFOR_EURO
-            )
-        // error message
-        else {
-            ExchangeRates(
-                success = false,
-                error = errorMessage,
-                base = base,
-                date = date,
-                rates = null,
-                provider = ApiProvider.INFOR_EURO
-            )
+            ExchangeRates(success = true, error = null, base = base, date = date,
+                rates = rates, provider = ApiProvider.OPEN_EXCHANGERATES)
+        else
+            ExchangeRates(success = false, error = errorMessage, base = base, date = date,
+                rates = null, provider = ApiProvider.OPEN_EXCHANGERATES)
+    }
+
+    private fun parseRates(reader: JsonReader): List<Rate> {
+        val rates = mutableListOf<Rate>()
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val name = Currency.fromString(reader.nextName())
+            val value = reader.nextDouble().toFloat()
+            if (name != null)
+                rates.add(Rate(name, value))
+        }
+        reader.endObject()
+        return rates
+    }
+
+    private fun addFokIfMissing(rates: MutableList<Rate>) {
+        if (rates.find { it.currency == Currency.FOK } != null) return
+        rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
+            rates.add(Rate(Currency.FOK, dkk))
         }
     }
 

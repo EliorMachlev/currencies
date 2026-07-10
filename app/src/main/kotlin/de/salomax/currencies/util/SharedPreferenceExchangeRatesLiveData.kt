@@ -23,7 +23,9 @@ class SharedPreferenceExchangeRatesLiveData(private val sharedPrefs: SharedPrefe
                 sharedPrefs.all.entries
                     .filter { !it.key.startsWith("_") }
                     .sortedBy { it.key }
-                    .mapNotNull { Currency.fromString(it.key!!)?.let { currency -> Rate(currency, (it.value as Float)) } }
+                    .mapNotNull { entry ->
+                        Currency.fromString(entry.key!!)?.let { Rate(it, entry.value as Float) }
+                    }
                     .toList(),
                 sharedPrefs.getInt("_provider", -1).let { ApiProvider.fromId(it) }
             )

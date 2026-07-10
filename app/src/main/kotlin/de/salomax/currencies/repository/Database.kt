@@ -8,8 +8,18 @@ import androidx.lifecycle.map
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
-import de.salomax.currencies.util.*
+import de.salomax.currencies.util.SharedPreferenceBooleanLiveData
+import de.salomax.currencies.util.SharedPreferenceExchangeRatesLiveData
+import de.salomax.currencies.util.SharedPreferenceFloatLiveData
+import de.salomax.currencies.util.SharedPreferenceIntLiveData
+import de.salomax.currencies.util.SharedPreferenceLongLiveData
+import de.salomax.currencies.util.SharedPreferenceStringLiveData
+import de.salomax.currencies.util.SharedPreferenceStringSetLiveData
+import de.salomax.currencies.util.toLocalDate
+import de.salomax.currencies.util.toMillis
 import java.time.LocalDate
+
+private const val DEFAULT_FEE_PERCENT = 2.2f
 
 class Database(context: Context) {
 
@@ -105,7 +115,8 @@ class Database(context: Context) {
     /*
      * starred currencies ==========================================================================
      */
-    private val prefsStarredCurrencies: SharedPreferences = context.getSharedPreferences("starred_currencies", MODE_PRIVATE)
+    private val prefsStarredCurrencies: SharedPreferences =
+        context.getSharedPreferences("starred_currencies", MODE_PRIVATE)
 
     private val keyStars = "_stars"
     private val keyStarredEnabled = "_starredActive"
@@ -250,7 +261,7 @@ class Database(context: Context) {
     }
 
     fun getFee(): LiveData<Float> {
-        return SharedPreferenceFloatLiveData(prefs, keyFeeValue, 2.2f)
+        return SharedPreferenceFloatLiveData(prefs, keyFeeValue, DEFAULT_FEE_PERCENT)
     }
 
     /* preview conversion */
