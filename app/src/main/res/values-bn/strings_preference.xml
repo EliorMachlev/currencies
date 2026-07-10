@@ -7,8 +7,6 @@
     <string name="fee_summary">তোমার ক্রেডিট কার্ড চুক্তির ওপর ভিত্তি করে, তোমার ব্যাংক বিদেশি লেনদেনের ওপর ফি নিতে পারে। এখানে সেই ফি এর পরিমান দিতে পারো। এটা হিসাবের ওপরে যোগ হবে, যাতে তুমি জানো তোমাকে <i>আসলেই</i> কত টাকা দিতে হবে।</string>
     <string name="previewConversion_title">রূপান্তরের প্রাকদর্শন</string>
     <string name="previewConversion_summary">অর্থ রূপান্তরের প্রত্যেকটি হার অর্থ নির্বাচকে দেখাও</string>
-    <string name="extendedKeypad_title">বর্ধিত কিপ্যাড</string>
-    <string name="extendedKeypad_summary">দুইটি অতিরিক্ত বোতাম যোগ করো: <b>০০</b>&nbsp;এবং&nbsp;<b>০০০</b>।</string>
     <string name="category_appearance">অবয়ব</string>
     <string name="system_default">সিস্টেম ডিফল্ট</string>
     <string name="theme_title">নকশা</string>

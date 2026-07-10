@@ -7,8 +7,6 @@
     <string name="fee_summary">بسته به قرارداد کارت اعتباری شما، بانک شما ممکن است برای تمام تراکنش های ارزی کارمزدی دریافت کند. در اینجا می توانید آن هزینه را وارد کنید. به محاسبات اضافه می شود، بنابراین می دانید که <i>واقعاً</i> چقدر می پردازید.</string>
     <string name="previewConversion_title">پیش نمایش تبدیل</string>
     <string name="previewConversion_summary">تبدیل فعلی برای هر نرخ را در انتخابگر ارز نشان دهید.</string>
-    <string name="extendedKeypad_title">صفحه کلید توسعه یافته</string>
-    <string name="extendedKeypad_summary">دو دکمه دیگر اضافه کنید: <b>00</b> و <b>000</b>.</string>
     <string name="category_appearance">ظاهر</string>
     <string name="system_default">پیش فرض سیستم</string>
     <string name="theme_title">طراحی</string>

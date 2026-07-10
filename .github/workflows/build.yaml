@@ -22,4 +22,4 @@ jobs:
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
 
       - name: Lint, test and build the debug apk
-        run: ./gradlew check assembleDebug
+        run: ./gradlew check assembleDebug --warning-mode all

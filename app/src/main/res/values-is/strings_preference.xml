@@ -7,8 +7,6 @@
     <string name="fee_summary">Bankinn þinn gæti innheimt gjald fyrir öll gjaldeyrisviðskipti. Hér er hægt að slá því inn svo þú veist hversu mikið þú borgar <i>í raun</i> .</string>
     <string name="previewConversion_title">Skiptisforskoðun</string>
     <string name="previewConversion_summary">Sýna núverandi gjaldmiðlaskipti fyrir hvert gengi í gjaldeyrisvalinu.</string>
-    <string name="extendedKeypad_title">Aukið takkaborð</string>
-    <string name="extendedKeypad_summary">Bætir við tveimur hnöppum til viðbótar: <b>00</b>&nbsp;og&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Útlit</string>
     <string name="system_default">Sjálfgildi kerfis</string>
     <string name="theme_title">Þema</string>

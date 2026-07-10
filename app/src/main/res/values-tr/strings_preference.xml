@@ -7,8 +7,6 @@
     <string name="fee_summary">Bankan, kredi kartı sözleşmene bağlı olarak tüm döviz işlemlerinden bir işlem ücreti alabilir. Bu ücreti buraya girebilirsin. Bu miktar hesaplamaya eklenecek, böylece <i>tam olarak</i> ne kadar ödeme yapacağını öğrenebilirsin.</string>
     <string name="previewConversion_title">Kur oranı önizlemesi</string>
     <string name="previewConversion_summary">Para birimi seçme ekranında mevcut kur oranlarını göster.</string>
-    <string name="extendedKeypad_title">Genişletilmiş Tuş Takımı</string>
-    <string name="extendedKeypad_summary">İki ekstra tuş ekler: <b>00</b>&nbsp;ve&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Görünüm</string>
     <string name="system_default">Sistem varsayılanı</string>
     <string name="theme_title">Tema</string>

@@ -7,8 +7,6 @@
     <string name="fee_summary">Ανάλογα με το συμβόλαιο της πιστωτικής σας κάρτας, η τράπεζα σας μπορεί να χρεώνει προμήθεια για όλες τις συναλλαγές συναλλάγματος. Εδώ μπορείτε να εισάγετε αυτό το τέλος. Θα προστεθεί στον υπολογισμό, ώστε να γνωρίζετε πόσα <i>πραγματικά</i> πληρώνετε.</string>
     <string name="previewConversion_title">Προεπισκόπηση ισοτιμίας</string>
     <string name="previewConversion_summary">Εμφάνιση της ισοτιμίας κάθε νομίσματος στον επιλογέα νομισμάτων.</string>
-    <string name="extendedKeypad_title">Εκτεταμένο πληκτρολόγιο</string>
-    <string name="extendedKeypad_summary">Προσθήκη δύο επιπλέον κουμπιών: <b>00</b>&nbsp;και&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Εμφάνιση</string>
     <string name="system_default">Συστήματος</string>
     <string name="theme_title">Θέμα</string>

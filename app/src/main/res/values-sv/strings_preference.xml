@@ -7,8 +7,6 @@
     <string name="fee_summary">Beroende på ditt avtal för ditt betalkort, så kan din bank ta ut en avgift på transaktioner i utländsk valuta. Här kan du ange vilken avgift du har. Den kommer att läggas på ovanpå kursberäkningarna, så att du vet hur mycket du <i>faktiskt</i> får betala.</string>
     <string name="previewConversion_title">Förhandsvisa konverteringar</string>
     <string name="previewConversion_summary">Visa konvertering för varje valuta i valutaväljaren.</string>
-    <string name="extendedKeypad_title">Utökad knappsats</string>
-    <string name="extendedKeypad_summary">Lägger till två ytterligare knappar: <b>00</b>&nbsp;och&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Utseende</string>
     <string name="system_default">Systemets standardinställning</string>
     <string name="theme_title">Färgtema</string>

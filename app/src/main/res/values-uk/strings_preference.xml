@@ -7,8 +7,6 @@
     <string name="fee_summary">Залежно від угоди вашої кредитної картки, ваш банк може стягувати комісію за всі операції обміну валюти. Тут ви можете ввести її розмір. Його буде додано до розрахунку, щоб ви знали, скільки ви <i>насправді</i> платите.</string>
     <string name="previewConversion_title">Попередній перегляд обміну</string>
     <string name="previewConversion_summary">Показувати поточні ставки в списку валют.</string>
-    <string name="extendedKeypad_title">Розширена клавіатура</string>
-    <string name="extendedKeypad_summary">Додати дві додаткові кнопки: <b>00</b>&nbsp;та&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Зовнішній вигляд</string>
     <string name="system_default">Станадартна, як у системі</string>
     <string name="theme_title">Тема</string>
