@@ -93,3 +93,18 @@ keyPassword=...
 ```
 
 A pre-build consistency check verifies that `versionName` and `versionCode` are in sync.
+
+## Known Issues
+
+### Gradle deprecation: "Project object as dependency notation" (AGP bug)
+
+**Symptom:** During configuration of `:app`, Gradle prints:
+
+```
+Using a Project object as a dependency notation has been deprecated.
+This will fail with an error in Gradle 10.
+```
+
+**Root cause:** This originates entirely inside **AGP 9.2.1** (`VariantDependenciesBuilder.java:279/333` → `VariantManager.createTestComponents`), not from any build script in this repository. The stack trace confirms no call site in our code.
+
+**Status:** Upstream AGP bug. Will resolve automatically when AGP is upgraded to a version that uses `project(String)` internally.
