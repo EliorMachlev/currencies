@@ -140,4 +140,8 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         Database(app).setKeyboardType(type)
     }
 
+    fun setHapticFeedbackEnabled(enabled: Boolean) {
+        Database(app).setHapticFeedbackEnabled(enabled)
+    }
+
 }

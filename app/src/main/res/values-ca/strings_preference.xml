@@ -7,6 +7,11 @@
     <string name="fee_summary">El vostre banc pot cobrar una comissió a les transaccions fetes a l\'estranger depenent del contracte de la targeta de crèdit. Introduïu aquí el valor d\'aquesta comissió. Aquesta s\'afegeix al càlcul per tal de determinar quant es pagarà <i>realment</i>.</string>
     <string name="previewConversion_title">Previsualització de la conversió</string>
     <string name="previewConversion_summary">Mostra la conversió actual per a cada taxa de canvi en el selector de monedes.</string>
+    <string name="keyboard_title">Teclat</string>
+    <string name="keyboard_option_default">Per defecte</string>
+    <string name="keyboard_option_expanded">Expandit</string>
+    <string name="haptic_feedback_title">Resposta tàctil</string>
+    <string name="haptic_feedback_summary">Vibra en prémer una tecla\nSegueix la configuració del sistema</string>
     <string name="category_appearance">Aparença</string>
     <string name="system_default">Opció predeterminada del sistema</string>
     <string name="theme_title">Tema</string>

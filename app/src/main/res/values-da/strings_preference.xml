@@ -7,6 +7,11 @@
 
     <string name="previewConversion_title">Forhåndsvisning af konvertering</string>
     <string name="previewConversion_summary">Vis den nuværende konverteringsrate for hver valuta i valutavælgeren.</string>
+    <string name="keyboard_title">Tastatur</string>
+    <string name="keyboard_option_default">Standard</string>
+    <string name="keyboard_option_expanded">Udvidet</string>
+    <string name="haptic_feedback_title">Haptisk feedback</string>
+    <string name="haptic_feedback_summary">Vibrer ved tastetryk\nFølger systemindstillingen</string>
     <string name="category_appearance">Udseende</string>
     <string name="system_default">Systemstandard</string>
     <string name="theme_title">Design</string>

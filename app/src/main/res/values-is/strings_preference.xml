@@ -7,6 +7,11 @@
     <string name="fee_summary">Bankinn þinn gæti innheimt gjald fyrir öll gjaldeyrisviðskipti. Hér er hægt að slá því inn svo þú veist hversu mikið þú borgar <i>í raun</i> .</string>
     <string name="previewConversion_title">Skiptisforskoðun</string>
     <string name="previewConversion_summary">Sýna núverandi gjaldmiðlaskipti fyrir hvert gengi í gjaldeyrisvalinu.</string>
+    <string name="keyboard_title">Lyklaborð</string>
+    <string name="keyboard_option_default">Sjálfgefið</string>
+    <string name="keyboard_option_expanded">Stækkað</string>
+    <string name="haptic_feedback_title">Haptísk endurgjöf</string>
+    <string name="haptic_feedback_summary">Titra við lyklakipp\nFylgir kerfisstillingu</string>
     <string name="category_appearance">Útlit</string>
     <string name="system_default">Sjálfgildi kerfis</string>
     <string name="theme_title">Þema</string>

@@ -7,6 +7,11 @@
     <string name="fee_summary">Dependendo do seu contrato de cartão de crédito, seu banco pode cobrar uma taxa em todas as transações de câmbio. Aqui você pode inserir essa taxa. Ele será adicionado no topo do cálculo, para que você saiba quanto você <i>realmente</i> paga.</string>
     <string name="previewConversion_title">Previsão da conversão</string>
     <string name="previewConversion_summary">Mostrar a conversão atual para cada taxa no selecionador de moeda.</string>
+    <string name="keyboard_title">Teclado</string>
+    <string name="keyboard_option_default">Padrão</string>
+    <string name="keyboard_option_expanded">Expandido</string>
+    <string name="haptic_feedback_title">Feedback tátil</string>
+    <string name="haptic_feedback_summary">Vibrar ao pressionar tecla\nSegue configuração do sistema</string>
     <string name="category_appearance">Aparência</string>
     <string name="system_default">Padrão do sistema</string>
     <string name="theme_title">Aspeto</string>

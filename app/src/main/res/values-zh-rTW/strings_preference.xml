@@ -7,6 +7,11 @@
     <string name="fee_summary">根據您的信用卡合約，您的銀行可能會收取外匯手續費。這裡可以輸入，手續費會直接加上去，所以您會知道<i>實際</i>要付多少錢。</string>
     <string name="previewConversion_title">匯率預覽</string>
     <string name="previewConversion_summary">在選擇貨幣頁面顯示目前匯率</string>
+    <string name="keyboard_title">���盤</string>
+    <string name="keyboard_option_default">預設</string>
+    <string name="keyboard_option_expanded">擴展</string>
+    <string name="haptic_feedback_title">觸覺回饋</string>
+    <string name="haptic_feedback_summary">按鍵時震動\n跟隨系統設定</string>
     <string name="category_appearance">應用程式外觀</string>
     <string name="system_default">系統預設值</string>
     <string name="theme_title">風格</string>

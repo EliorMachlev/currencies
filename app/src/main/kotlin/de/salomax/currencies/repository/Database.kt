@@ -182,6 +182,7 @@ class Database(context: Context) {
     private val keyFeeValue = "_fee"
     private val keyPreviewConversionEnabled = "_previewConversionEnabled"
     private val keyKeyboardType = "_keyboardType"
+    private val keyHapticFeedback = "_hapticFeedback"
 
     /* api */
 
@@ -286,6 +287,18 @@ class Database(context: Context) {
 
     fun getKeyboardType(): LiveData<Int> {
         return SharedPreferenceIntLiveData(prefs, keyKeyboardType, 0)
+    }
+
+    /* haptic feedback */
+
+    fun setHapticFeedbackEnabled(enabled: Boolean) {
+        prefs.apply {
+            edit().putBoolean(keyHapticFeedback, enabled).apply()
+        }
+    }
+
+    fun isHapticFeedbackEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyHapticFeedback, true)
     }
 
 }

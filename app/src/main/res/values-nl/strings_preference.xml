@@ -7,6 +7,11 @@
     <string name="fee_summary">Afhankelijk van uw creditcard overeenkomst kan uw bank kosten in rekening brengen voor alle valuta transacties. Hier kunt u die kosten invullen. Deze worden bij de berekening opgeteld, zodat u weet hoeveel u <i>echt</i> betaalt.</string>
     <string name="previewConversion_title">Conversie voorbeeld</string>
     <string name="previewConversion_summary">Toon de huidige conversie voor elke koers in de valutakiezer.</string>
+    <string name="keyboard_title">Toetsenbord</string>
+    <string name="keyboard_option_default">Standaard</string>
+    <string name="keyboard_option_expanded">Uitgebreid</string>
+    <string name="haptic_feedback_title">Haptische feedback</string>
+    <string name="haptic_feedback_summary">Trilling bij toetsaanslag\nVolgt systeeminstelling</string>
     <string name="category_appearance">Uiterlijk</string>
     <string name="system_default">Systeem standaard</string>
     <string name="theme_title">Thema</string>

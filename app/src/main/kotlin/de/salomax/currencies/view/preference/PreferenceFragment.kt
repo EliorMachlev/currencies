@@ -72,6 +72,12 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 true
             }
         }
+        findPreference<SwitchPreferenceCompat>(getString(R.string.haptic_feedback_key))?.apply {
+            setOnPreferenceChangeListener { _, newValue ->
+                viewModel.setHapticFeedbackEnabled(newValue.toString().toBoolean())
+                true
+            }
+        }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 viewModel.setTheme(newValue.toString().toInt())

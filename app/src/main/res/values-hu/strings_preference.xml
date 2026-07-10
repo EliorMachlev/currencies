@@ -7,6 +7,11 @@
     <string name="fee_summary">Hitelkártya-szerződésedtől függően bankod díjat számíthat fel minden devizatranzakció után. Itt adhatod meg ezt a díjat. Ez hozzáadódik a számításhoz, így tudod, hogy mennyit fizetsz <i>de ténylegesen</i>.</string>
     <string name="previewConversion_title">Konverziós előnézet</string>
     <string name="previewConversion_summary">Az aktuális átváltás megjelenítése minden egyes árfolyamhoz a pénznemválasztóban.</string>
+    <string name="keyboard_title">Billentyűzet</string>
+    <string name="keyboard_option_default">Alapértelmezett</string>
+    <string name="keyboard_option_expanded">Kibővített</string>
+    <string name="haptic_feedback_title">Haptikus visszajelzés</string>
+    <string name="haptic_feedback_summary">Rezgés billentyűnyomáskor\nA rendszerbeállítást követi</string>
     <string name="category_appearance">Megjelenítés</string>
     <string name="system_default">Rendszerbeállítás</string>
     <string name="theme_title">Dizájn</string>

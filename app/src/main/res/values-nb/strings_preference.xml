@@ -7,6 +7,11 @@
     <string name="fee_summary">Avhengig av avtalen for ditt bankkort kan banken din ta en avgift for alle vekslinger i utenlandsk valuta. Her kan du skrive inn dette gebyret. Det vil bli lagt til på toppen av utregningen, slik at du vet hvor mye du <i>virkelig</i> betaler.</string>
     <string name="previewConversion_title">Vekslingsoverslag</string>
     <string name="previewConversion_summary">Nåværende vekslingssats for hver kurs i valutavelgeren.</string>
+    <string name="keyboard_title">Tastatur</string>
+    <string name="keyboard_option_default">Standard</string>
+    <string name="keyboard_option_expanded">Utvidet</string>
+    <string name="haptic_feedback_title">Haptisk tilbakemelding</string>
+    <string name="haptic_feedback_summary">Vibrer ved tastetrykk\nFølger systeminnstillingen</string>
     <string name="category_appearance">Utseende</string>
     <string name="system_default">Systemstandard</string>
     <string name="theme_title">Tema</string>

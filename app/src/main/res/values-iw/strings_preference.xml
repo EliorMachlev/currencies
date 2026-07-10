@@ -7,6 +7,11 @@
     <string name="fee_summary">בהתאם להסכמים על כרטיס האשראי שלך, הבנק שלך עלול לחייב עמלה על כל עסקאות החליפין הזרות. כאן ניתן למלא את העמלה הזאת. היא תתווסף לחישוב כדי לאפשר לך לדעת כמה התשלום <i>באמת</i>.</string>
     <string name="previewConversion_title">תצוגה מקדימה להמרה</string>
     <string name="previewConversion_summary">הצגת ההמרה הנוכחית לכל שער בבורר המטבעות.</string>
+    <string name="keyboard_title">מקלדת</string>
+    <string name="keyboard_option_default">ברירת מחדל</string>
+    <string name="keyboard_option_expanded">מורחבת</string>
+    <string name="haptic_feedback_title">רטט מגע</string>
+    <string name="haptic_feedback_summary">רטט בלחיצה על מקש\nבהתאם להגדרות המערכת</string>
     <string name="category_appearance">מראה</string>
     <string name="system_default">ברירת המחדל של המערכת</string>
     <string name="theme_title">עיצוב</string>

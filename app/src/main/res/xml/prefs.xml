@@ -27,6 +27,12 @@
             android:key="@string/keyboard_key"
             android:title="@string/keyboard_title"
             app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="@string/haptic_feedback_key"
+            android:summary="@string/haptic_feedback_summary"
+            android:title="@string/haptic_feedback_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
