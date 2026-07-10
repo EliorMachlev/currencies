@@ -337,11 +337,11 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     /**
-     * the total base value, converted to double (internal is string)
+     * the total base value, as BigDecimal (internal is string)
      */
-    internal fun getCurrentBaseValueAsNumber(): LiveData<Double> {
+    internal fun getCurrentBaseValueAsNumber(): LiveData<BigDecimal> {
         return currentBaseValue.map {
-            it?.toBigDecimal()?.toDouble() ?: 0.0
+            it?.toBigDecimalOrNull() ?: BigDecimal.ZERO
         }
     }
 
@@ -431,11 +431,11 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     /**
-     * the total destination value, converted to double (internal is string)
+     * the total destination value, as BigDecimal (internal is string)
      */
-    internal fun getResultAsNumber(): LiveData<Double> {
+    internal fun getResultAsNumber(): LiveData<BigDecimal> {
         return result.map {
-            it?.toBigDecimal()?.toDouble() ?: 0.0
+            it?.toBigDecimalOrNull() ?: BigDecimal.ZERO
         }
     }
 

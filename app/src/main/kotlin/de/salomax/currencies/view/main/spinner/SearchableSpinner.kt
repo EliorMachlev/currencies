@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
+import java.math.BigDecimal
 
 class SearchableSpinner : AppCompatSpinner {
 
@@ -88,7 +89,7 @@ class SearchableSpinner : AppCompatSpinner {
         // set in dialog
         spinnerDialog.setCurrentRate(currentRate)
     }
-    fun setCurrentSum(currentSum: Double) {
+    fun setCurrentSum(currentSum: BigDecimal) {
         // set in dialog
         spinnerDialog.setCurrentSum(currentSum)
     }

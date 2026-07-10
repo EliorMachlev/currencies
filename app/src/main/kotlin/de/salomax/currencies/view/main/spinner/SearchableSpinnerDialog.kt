@@ -16,6 +16,7 @@ import de.salomax.currencies.R
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.viewmodel.main.MainViewModel
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
+import java.math.BigDecimal
 
 class SearchableSpinnerDialog(context: Context) : AppCompatDialogFragment(), SearchView.OnQueryTextListener {
 
@@ -33,7 +34,7 @@ class SearchableSpinnerDialog(context: Context) : AppCompatDialogFragment(), Sea
     fun setCurrentRate(currentRate: Rate) {
         adapter.setCurrentRate(currentRate)
     }
-    fun setCurrentSum(currentSum: Double) {
+    fun setCurrentSum(currentSum: BigDecimal) {
         adapter.setCurrentSum(currentSum)
     }
 
