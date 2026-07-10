@@ -65,14 +65,13 @@ internal class InforEuroTimelineAdapter(
         }
         reader.endObject()
 
-        val hasData = currencyIso != null && value != null && dateStart != null && dateEnd != null
+        if (currencyIso == null || value == null || dateStart == null || dateEnd == null) return
         // inclusive: before-or-equal start
-        val startBeforeOrEqual = dateStart != null && !startDate.withDayOfMonth(1).isAfter(dateStart)
-        if (!hasData || !startBeforeOrEqual) return
+        if (startDate.withDayOfMonth(1).isAfter(dateStart)) return
 
-        var date: LocalDate = dateEnd!!
-        while (!date.isBefore(dateStart!!)) {
-            rates[date] = Rate(currencyIso!!, value!!)
+        var date: LocalDate = dateEnd
+        while (!date.isBefore(dateStart)) {
+            rates[date] = Rate(currencyIso, value)
             date = date.minusDays(1)
         }
     }
