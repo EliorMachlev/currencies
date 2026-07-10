@@ -31,7 +31,7 @@ internal class FrankfurterAppTimelineAdapter(private val symbol: Currency) {
             // sometimes there's no rate yet, but an empty body or more than one rate, so check first
             while (reader.hasNext() && reader.peek() == JsonReader.Token.NAME) {
                 val name = Currency.fromString(reader.nextName())
-                val value: BigDecimal = reader.nextDouble().toBigDecimal()
+                val value: BigDecimal = BigDecimal(reader.nextString())
                 rate =
                         // change dkk to fok, when needed
                     if (name == Currency.DKK && symbol == Currency.FOK)

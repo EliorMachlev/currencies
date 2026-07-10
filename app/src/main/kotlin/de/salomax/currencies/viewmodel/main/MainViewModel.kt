@@ -19,7 +19,6 @@ import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
 import de.salomax.currencies.util.combineWith
 import de.salomax.currencies.util.getDecimalSeparator
-import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.getSignificantDecimalPlaces
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
@@ -271,11 +270,10 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                         R.string.info_conversion,
                         "1",
                         baseCurrency!!.iso4217Alpha(),
-                        String.format(
-                            getLocale(app),
-                            "%.${destinationValueCalculated?.getSignificantDecimalPlaces(2)}f",
-                            destinationValueCalculated
-                        ),
+                        destinationValueCalculated?.toHumanReadableNumber(
+                            app,
+                            decimalPlaces = destinationValueCalculated.getSignificantDecimalPlaces(2)
+                        ) ?: "",
                         destinationCurrency!!.iso4217Alpha()
                     ),
                     HtmlCompat.FROM_HTML_MODE_LEGACY

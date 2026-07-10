@@ -46,7 +46,7 @@ internal class InforEuroRatesAdapter(private val date: LocalDate) {
         while (reader.hasNext()) {
             when (reader.nextName()) {
                 "isoA3Code" -> name = Currency.fromString(reader.nextString())
-                "value" -> value = reader.nextDouble().toBigDecimal()
+                "value" -> value = BigDecimal(reader.nextString())
                 else -> reader.skipValue()
             }
         }

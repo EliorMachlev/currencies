@@ -65,7 +65,7 @@ internal class BankOfCanadaRatesAdapter {
                         val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
                         reader.beginObject()
                         reader.skipName() // always "v"
-                        val value = reader.nextDouble().toBigDecimal()
+                        val value = BigDecimal(reader.nextString())
                         reader.endObject()
                         currency?.let { rates.add(Rate(it, BigDecimal.ONE.divide(value, MathContext.DECIMAL128))) }
                     }

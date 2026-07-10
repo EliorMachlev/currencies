@@ -10,7 +10,6 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.util.SharedPreferenceBooleanLiveData
 import de.salomax.currencies.util.SharedPreferenceExchangeRatesLiveData
-import de.salomax.currencies.util.SharedPreferenceFloatLiveData
 import de.salomax.currencies.util.SharedPreferenceIntLiveData
 import de.salomax.currencies.util.SharedPreferenceLongLiveData
 import de.salomax.currencies.util.SharedPreferenceStringLiveData
@@ -20,7 +19,8 @@ import de.salomax.currencies.util.toMillis
 import java.math.BigDecimal
 import java.time.LocalDate
 
-private const val DEFAULT_FEE_PERCENT = 2.2f
+private const val DEFAULT_FEE_PERCENT = "2.2"
+private const val LEGACY_FEE_KEY = "_fee"
 
 class Database(context: Context) {
 
@@ -180,7 +180,7 @@ class Database(context: Context) {
     private val keyTheme = "_theme"
     private val keyPureBlackEnabled = "_pureBlackEnabled"
     private val keyFeeEnabled = "_feeEnabled"
-    private val keyFeeValue = "_fee"
+    private val keyFeeValue = "_fee_str"
     private val keyPreviewConversionEnabled = "_previewConversionEnabled"
     private val keyKeyboardType = "_keyboardType"
     private val keyHapticFeedback = "_hapticFeedback"
@@ -258,14 +258,21 @@ class Database(context: Context) {
 
     fun setFee(fee: BigDecimal) {
         prefs.apply {
-            // store as Float to preserve backward compatibility with existing installations
-            edit().putFloat(keyFeeValue, fee.toFloat()).apply()
+            edit().putString(keyFeeValue, fee.toPlainString()).apply()
         }
     }
 
     fun getFee(): LiveData<BigDecimal> {
-        return SharedPreferenceFloatLiveData(prefs, keyFeeValue, DEFAULT_FEE_PERCENT)
-            .map { it.toBigDecimal() }
+        migrateLegacyFeeIfNeeded()
+        return SharedPreferenceStringLiveData(prefs, keyFeeValue, DEFAULT_FEE_PERCENT)
+            .map { (it ?: DEFAULT_FEE_PERCENT).toBigDecimal() }
+    }
+
+    private fun migrateLegacyFeeIfNeeded() {
+        if (prefs.contains(keyFeeValue) || !prefs.contains(LEGACY_FEE_KEY)) return
+        val legacy = runCatching { prefs.getFloat(LEGACY_FEE_KEY, Float.NaN) }.getOrNull()
+        val migrated = if (legacy != null && !legacy.isNaN()) legacy.toString() else DEFAULT_FEE_PERCENT
+        prefs.edit().putString(keyFeeValue, migrated).remove(LEGACY_FEE_KEY).apply()
     }
 
     /* preview conversion */

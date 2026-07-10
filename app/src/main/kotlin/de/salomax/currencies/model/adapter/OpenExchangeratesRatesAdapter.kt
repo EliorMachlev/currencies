@@ -58,7 +58,7 @@ internal class OpenExchangeratesRatesAdapter {
         reader.beginObject()
         while (reader.hasNext()) {
             val name = Currency.fromString(reader.nextName())
-            val value: BigDecimal = reader.nextDouble().toBigDecimal()
+            val value: BigDecimal = BigDecimal(reader.nextString())
             if (name != null)
                 rates.add(Rate(name, value))
         }

@@ -25,7 +25,7 @@ internal class FrankfurterAppRatesAdapter(private val base: Currency) {
         // convert
         while (reader.hasNext()) {
             val name: String = reader.nextName()
-            val value: BigDecimal = reader.nextDouble().toBigDecimal()
+            val value: BigDecimal = BigDecimal(reader.nextString())
             Currency.fromString(name)?.let { list.add(Rate(it, value)) }
         }
         reader.endObject()
