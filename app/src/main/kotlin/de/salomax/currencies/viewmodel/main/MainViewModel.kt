@@ -310,7 +310,12 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                 .replace("\u2212", "-")
                 .replace("\u00D7", "*")
                 .replace("\u00F7", "/")
-                .replace("%", "/100")
+            // smart percentage: A+B% = A+(A*B/100), A-B% = A-(A*B/100)
+            s = s.replace(Regex("""(\d+(?:\.\d+)?)([+\-])(\d+(?:\.\d+)?)%""")) { m ->
+                "${m.groupValues[1]}${m.groupValues[2]}(${m.groupValues[1]}*${m.groupValues[3]}/100)"
+            }
+            // simple percentage: B% = B/100
+            s = s.replace("%", "/100")
             // fill, if last character is an operator
             when (s.trim().last()) {
                 '/' -> s += "1"
