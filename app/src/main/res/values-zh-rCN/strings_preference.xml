@@ -7,8 +7,6 @@
     <string name="fee_summary">根据您的信用卡协议，您的银行可能对所有外汇交易收取费用。这个比例会被直接加上，这样能知道<i>最终</i>支付了多少钱。</string>
     <string name="previewConversion_title">预览</string>
     <string name="previewConversion_summary">在选择货币页面显示当前汇率。</string>
-    <string name="extendedKeypad_title">额外输入键</string>
-    <string name="extendedKeypad_summary">增加两个大额按键 <b>00</b>&nbsp;和&nbsp;<b>000</b>。</string>
     <string name="category_appearance">外观</string>
     <string name="system_default">系统默认</string>
     <string name="theme_title">设计</string>

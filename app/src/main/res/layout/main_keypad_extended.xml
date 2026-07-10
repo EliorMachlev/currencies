@@ -105,8 +105,22 @@
             android:text="9"
             android:textAppearance="@style/AppTheme.TextAppearance.Keypad"
             app:layout_constraintBottom_toBottomOf="@+id/btn_7"
-            app:layout_constraintEnd_toStartOf="@id/btn_delete"
+            app:layout_constraintEnd_toStartOf="@id/btn_percent"
             app:layout_constraintStart_toEndOf="@id/btn_8"
+            app:layout_constraintTop_toTopOf="@+id/btn_7" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_percent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:onClick="percentEvent"
+            android:text="%"
+            android:textAppearance="@style/AppTheme.TextAppearance.Keypad"
+            android:textColor="@color/color_keypad_operators"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_9"
             app:layout_constraintTop_toTopOf="@+id/btn_7" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -117,10 +131,10 @@
             android:longClickable="true"
             android:onClick="deleteEvent"
             android:src="@drawable/ic_backspace"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_7"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_9"
-            app:layout_constraintTop_toTopOf="@+id/btn_7"
+            app:layout_constraintStart_toEndOf="@id/btn_6"
+            app:layout_constraintTop_toTopOf="@+id/btn_4"
             tools:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -233,7 +247,7 @@
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
             android:onClick="numberEvent"
-            android:text="00"
+            android:text="000"
             android:textAppearance="@style/AppTheme.TextAppearance.Keypad"
             app:layout_constraintBottom_toBottomOf="@+id/btn_0"
             app:layout_constraintEnd_toStartOf="@+id/btn_decimal"

@@ -7,8 +7,6 @@
     <string name="fee_summary">В зависимости от вашего договора по кредитной карте, ваш банк может взымать комиссию за все международные переводы. Здесь вы можете ввести эту комиссию. Она будет добавлена в итоговую сумму, чтобы вы знали, сколько вы <i>действительно</i> заплатите.</string>
     <string name="previewConversion_title">Предпросмотр обменных курсов</string>
     <string name="previewConversion_summary">Показывать текущий обменный курс для каждой валюты в меню выбора валют.</string>
-    <string name="extendedKeypad_title">Расширенная клавиатура</string>
-    <string name="extendedKeypad_summary">Добавить две дополнительные кнопки: <b>00</b>&nbsp;и&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Внешний вид</string>
     <string name="system_default">Как в системе</string>
     <string name="theme_title">Тема</string>

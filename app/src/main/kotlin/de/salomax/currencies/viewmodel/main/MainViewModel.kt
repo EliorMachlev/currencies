@@ -55,7 +55,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     // ui
     private var isUpdating: LiveData<Boolean> = repository.isUpdating()
-    val isExtendedKeypadEnabled: LiveData<Boolean> = Database(app).isExtendedKeypadEnabled()
+    val isExtendedKeypadEnabled: LiveData<Boolean> = Database(app).getKeyboardType().map { it != 0 }
 
 
     // number input
@@ -310,6 +310,12 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                 .replace("\u2212", "-")
                 .replace("\u00D7", "*")
                 .replace("\u00F7", "/")
+            // smart percentage: A+B% = A+(A*B/100), A-B% = A-(A*B/100)
+            s = s.replace(Regex("""(\d+(?:\.\d+)?)([+\-])(\d+(?:\.\d+)?)%""")) { m ->
+                "${m.groupValues[1]}${m.groupValues[2]}(${m.groupValues[1]}*${m.groupValues[3]}/100)"
+            }
+            // simple percentage: B% = B/100
+            s = s.replace("%", "/100")
             // fill, if last character is an operator
             when (s.trim().last()) {
                 '/' -> s += "1"
@@ -489,6 +495,15 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         value.toString().forEach {
             addNumber(it.toString())
         }
+    }
+
+    internal fun addPercent() {
+        if (!isInCalculationMode())
+            currentCalculationValueText.value = currentBaseValueText.value
+        val current = currentCalculationValueText.value?.trim() ?: return
+        if (current.isNotEmpty() && (current.last().isDigit() || current.last() == '.'))
+            currentCalculationValueText.value =
+                if (current.last() == '.') current.dropLast(1) + "%" else current + "%"
     }
 
     internal fun addDecimal() {

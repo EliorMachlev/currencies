@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- keyboard type settings -->
+    <string-array name="keyboard_type_names" translatable="false">
+        <item>@string/keyboard_option_default</item>
+        <item>@string/keyboard_option_expanded</item>
+    </string-array>
+
+    <string-array name="keyboard_type_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <!-- theme settings -->
     <string-array name="theme_names" translatable="false">
         <item>@string/theme_option_light</item>

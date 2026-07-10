@@ -7,8 +7,6 @@
 
     <string name="previewConversion_title">Forhåndsvisning af konvertering</string>
     <string name="previewConversion_summary">Vis den nuværende konverteringsrate for hver valuta i valutavælgeren.</string>
-    <string name="extendedKeypad_title">Udvidet tastatur</string>
-    <string name="extendedKeypad_summary">Tilføj to yderligere knapper: <b>00</b>&nbsp;og&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Udseende</string>
     <string name="system_default">Systemstandard</string>
     <string name="theme_title">Design</string>

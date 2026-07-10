@@ -7,8 +7,6 @@
     <string name="fee_summary">Valuutavahetuse kontor või krediitkaardi teenusepakkuja võivad kasutada eri vääringute konverteerimisel teenustasusid, mida sa saad siinkohal lisada. Kasutame seda valuutakursside arvutamisel ja seega saa tead, kui palju sa <i>tegelikult</i> maksad.</string>
     <string name="previewConversion_title">Konverteerimise eelvaade</string>
     <string name="previewConversion_summary">Näita valuutavalijas iga vääringu kohta viimast vahetuskurssi.</string>
-    <string name="extendedKeypad_title">Laiendatud klahvistik</string>
-    <string name="extendedKeypad_summary">Lisa kaks täiendavat nuppu: <b>00</b>&nbsp;ja&nbsp;<b>000</b>.</string>
     <string name="category_appearance">Välimus</string>
     <string name="system_default">Süsteemi välimus</string>
     <string name="theme_title">Kujundus</string>
