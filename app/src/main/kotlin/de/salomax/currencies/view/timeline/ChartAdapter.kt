@@ -16,10 +16,10 @@ class ChartAdapter : SparkAdapter() {
 
     override fun getItem(index: Int): Map.Entry<LocalDate, Rate>? = entries?.get(index)
 
-    override fun getY(index: Int): Float = getItem(index)?.value?.value ?: 0f
+    override fun getY(index: Int): Float = getItem(index)?.value?.value?.toFloat() ?: 0f
 
     override fun hasBaseLine() = true
 
-    override fun getBaseLine(): Float = entries?.last()?.value?.value ?: 0f
+    override fun getBaseLine(): Float = entries?.last()?.value?.value?.toFloat() ?: 0f
 
 }

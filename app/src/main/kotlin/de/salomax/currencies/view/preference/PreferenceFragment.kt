@@ -19,6 +19,7 @@ import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import de.salomax.currencies.widget.EditTextSwitchPreference
 import de.salomax.currencies.widget.LongSummaryPreference
+import java.math.BigDecimal
 import java.util.Calendar
 
 @Suppress("unused")
@@ -44,18 +45,14 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         val feePreference = findPreference<EditTextSwitchPreference>(getString(R.string.fee_key))
         feePreference?.setOnPreferenceChangeListener { _, newValue ->
             if (newValue is String)
-                try {
-                    viewModel.setFee(if (newValue.isEmpty()) 0f else newValue.toFloat())
-                } catch (e: NumberFormatException) {
-                    viewModel.setFee(0f)
-                }
+                viewModel.setFee(newValue.toBigDecimalOrNull() ?: BigDecimal.ZERO)
             else if (newValue is Boolean)
                 viewModel.setFeeEnabled(newValue)
             true
         }
         viewModel.getFee().observe(this) {
             feePreference?.summary = it.toHumanReadableNumber(requireContext(), showPositiveSign = true, suffix = "%")
-            feePreference?.text = it.toString()
+            feePreference?.text = it.toPlainString()
         }
     }
 

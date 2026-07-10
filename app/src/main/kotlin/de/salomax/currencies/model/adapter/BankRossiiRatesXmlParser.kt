@@ -7,6 +7,8 @@ import de.salomax.currencies.model.Rate
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -22,7 +24,7 @@ class BankRossiiRatesXmlParser {
         var tagname: String? = null
         var eventType = parser.eventType
         var currency: Currency? = null
-        var value: Float? = null
+        var value: BigDecimal? = null
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             tagname = parser.name ?: tagname
@@ -34,7 +36,10 @@ class BankRossiiRatesXmlParser {
                     )
                 XmlPullParser.TEXT -> when (tagname) {
                     "CharCode" -> currency = Currency.fromString(parser.text)
-                    "VunitRate" -> value = 1f / parser.text.replace(',', '.').toFloat()
+                    "VunitRate" -> value = BigDecimal.ONE.divide(
+                        parser.text.replace(',', '.').toBigDecimal(),
+                        MathContext.DECIMAL128
+                    )
                 }
                 XmlPullParser.END_TAG -> if (tagname == "Valute") {
                     recordRate(currency, value)
@@ -56,14 +61,14 @@ class BankRossiiRatesXmlParser {
         )
     }
 
-    private fun recordRate(currency: Currency?, value: Float?) {
+    private fun recordRate(currency: Currency?, value: BigDecimal?) {
         if (currency != null && value != null)
             rates.add(Rate(currency, value))
     }
 
     private fun addSyntheticRates() {
         if (rates.isEmpty()) return
-        rates.add(Rate(Currency.RUB, 1f))
+        rates.add(Rate(Currency.RUB, BigDecimal.ONE))
         if (rates.find { it.currency == Currency.FOK } == null)
             rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
                 rates.add(Rate(Currency.FOK, dkk))

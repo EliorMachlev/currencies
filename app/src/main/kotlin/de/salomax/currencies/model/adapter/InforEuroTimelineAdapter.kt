@@ -9,6 +9,7 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import java.io.IOException
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -51,13 +52,13 @@ internal class InforEuroTimelineAdapter(
     ) {
         reader.beginObject()
         var currencyIso: Currency? = null
-        var value: Float? = null
+        var value: BigDecimal? = null
         var dateStart: LocalDate? = null
         var dateEnd: LocalDate? = null
         while (reader.hasNext()) {
             when (reader.nextName()) {
                 "currencyIso" -> currencyIso = Currency.fromString(reader.nextString())
-                "amount" -> value = reader.nextDouble().toFloat()
+                "amount" -> value = BigDecimal(reader.nextString())
                 "dateStart" -> dateStart = LocalDate.parse(reader.nextString(), datePattern)
                 "dateEnd" -> dateEnd = LocalDate.parse(reader.nextString(), datePattern)
                 else -> reader.skipValue()

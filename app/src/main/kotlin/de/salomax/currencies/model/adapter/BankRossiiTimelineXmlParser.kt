@@ -7,6 +7,8 @@ import de.salomax.currencies.model.Timeline
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -22,7 +24,7 @@ class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
         var eventType = parser.eventType
         var date: LocalDate? = null
         var currencyId: String? = null
-        var value: Float? = null
+        var value: BigDecimal? = null
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             tagname = parser.name ?: tagname
@@ -35,7 +37,10 @@ class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
                     currencyId = parser.getAttributeValue(null, "Id")
                 }
                 XmlPullParser.TEXT -> if (tagname == "VunitRate")
-                    value = 1f / parser.text.replace(',', '.').toFloat()
+                    value = BigDecimal.ONE.divide(
+                        parser.text.replace(',', '.').toBigDecimal(),
+                        MathContext.DECIMAL128
+                    )
                 XmlPullParser.END_TAG -> if (tagname == "Record") {
                     recordRate(date, value, currencyId)
                     date = null
@@ -57,7 +62,7 @@ class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
         )
     }
 
-    private fun recordRate(date: LocalDate?, value: Float?, currencyId: String?) {
+    private fun recordRate(date: LocalDate?, value: BigDecimal?, currencyId: String?) {
         val isoCode = currencyId?.let { ids[it] } ?: return
         if (date == null || value == null) return
         val currency = Currency.fromString(isoCode) ?: return

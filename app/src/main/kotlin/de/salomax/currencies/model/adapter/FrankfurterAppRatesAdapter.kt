@@ -7,6 +7,7 @@ import com.squareup.moshi.ToJson
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import java.io.IOException
+import java.math.BigDecimal
 
 /*
  * Converts currency object to array of currencies.
@@ -24,13 +25,13 @@ internal class FrankfurterAppRatesAdapter(private val base: Currency) {
         // convert
         while (reader.hasNext()) {
             val name: String = reader.nextName()
-            val value: Double = reader.nextDouble()
-            Currency.fromString(name)?.let { list.add(Rate(it, value.toFloat())) }
+            val value: BigDecimal = BigDecimal(reader.nextString())
+            Currency.fromString(name)?.let { list.add(Rate(it, value)) }
         }
         reader.endObject()
         // add base - but only if it's missing in the api response!
         if (list.find { rate -> rate.currency == base } == null)
-            list.add(Rate(base, 1f))
+            list.add(Rate(base, BigDecimal.ONE))
         // also add Faroese króna (same as Danish krone) if it isn't already there - I simply like it!
         if (list.find { it.currency == Currency.FOK } == null)
             list.find { it.currency == Currency.DKK }?.value?.let { dkk ->

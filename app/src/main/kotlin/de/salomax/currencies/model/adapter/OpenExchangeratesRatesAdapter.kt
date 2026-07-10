@@ -9,6 +9,7 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import java.io.IOException
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -57,7 +58,7 @@ internal class OpenExchangeratesRatesAdapter {
         reader.beginObject()
         while (reader.hasNext()) {
             val name = Currency.fromString(reader.nextName())
-            val value = reader.nextDouble().toFloat()
+            val value: BigDecimal = BigDecimal(reader.nextString())
             if (name != null)
                 rates.add(Rate(name, value))
         }

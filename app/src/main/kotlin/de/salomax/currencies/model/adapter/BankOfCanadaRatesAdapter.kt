@@ -9,6 +9,8 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import java.io.IOException
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 
 private const val CURRENCY_CODE_START = 2
@@ -63,16 +65,16 @@ internal class BankOfCanadaRatesAdapter {
                         val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
                         reader.beginObject()
                         reader.skipName() // always "v"
-                        val value = reader.nextDouble()
+                        val value = BigDecimal(reader.nextString())
                         reader.endObject()
-                        currency?.let { rates.add(Rate(it, 1f / value.toFloat())) }
+                        currency?.let { rates.add(Rate(it, BigDecimal.ONE.divide(value, MathContext.DECIMAL128))) }
                     }
                 }
             }
         }
         if (rates.isNotEmpty())
             // finally, add CAD...
-            rates.add(Rate(Currency.CAD, 1f))
+            rates.add(Rate(Currency.CAD, BigDecimal.ONE))
 
         return ExchangeRates(
             success = errorMessage == null && rates.isNotEmpty() && date != null,

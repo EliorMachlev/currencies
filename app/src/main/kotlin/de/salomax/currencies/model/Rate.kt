@@ -1,10 +1,8 @@
 package de.salomax.currencies.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import java.math.BigDecimal
 
-@JsonClass(generateAdapter = true)
 data class Rate(
-    @field:Json(name = "name") val currency: Currency,
-    @field:Json(name = "value") val value: Float
+    val currency: Currency,
+    val value: BigDecimal
 )

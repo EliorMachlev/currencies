@@ -16,6 +16,8 @@ import de.salomax.currencies.model.adapter.BankRossiiCurrencyCodesXmlParser
 import de.salomax.currencies.model.adapter.BankRossiiRatesXmlParser
 import de.salomax.currencies.model.adapter.BankRossiiTimelineXmlParser
 import java.io.InputStream
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -104,7 +106,9 @@ class BankRossii : ApiProvider.Api() {
                 symbolTimeline.get().copy(
                     rates = symbolRates
                         .filter { (date, _) -> baseRates[date] != null }
-                        .mapValues { (date, rate) -> rate.copy(value = rate.value / baseRates[date]!!.value) }
+                        .mapValues { (date, rate) ->
+                            rate.copy(value = rate.value.divide(baseRates[date]!!.value, MathContext.DECIMAL128))
+                        }
                 )
             }
     }
@@ -113,7 +117,7 @@ class BankRossii : ApiProvider.Api() {
         val rubMap = LinkedHashMap<LocalDate, Rate>()
         var currentDate = startDate
         while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-            rubMap[currentDate] = Rate(Currency.RUB, 1f)
+            rubMap[currentDate] = Rate(Currency.RUB, BigDecimal.ONE)
             currentDate = currentDate.plusDays(1)
         }
         return Timeline(

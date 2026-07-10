@@ -3,6 +3,7 @@ package de.salomax.currencies.util
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import de.salomax.currencies.R
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -70,7 +71,7 @@ fun hasAppendedCurrencySymbol(context: Context): Boolean {
  * - uses the correct numbers (e.g. east arabian) of the locale
  * - adds plus sign and/or a suffix, if wanted
  */
-fun Float.toHumanReadableNumber(
+fun BigDecimal.toHumanReadableNumber(
     context: Context,
     decimalPlaces: Int? = null,
     showPositiveSign: Boolean = false,
@@ -78,7 +79,6 @@ fun Float.toHumanReadableNumber(
     trim: Boolean = false
 ): String {
     return this
-        .toBigDecimal()
         .toPlainString()
         .toHumanReadableNumber(context, decimalPlaces, showPositiveSign, suffix, trim)
 }
@@ -101,7 +101,7 @@ fun String.toHumanReadableNumber(
     // + sign
     if (showPositiveSign
         && DecimalFormat.getInstance().parse(this) != null
-        && DecimalFormat.getInstance().parse(this)!!.toFloat() >= 0
+        && DecimalFormat.getInstance().parse(this)!!.toDouble() >= 0.0
     )
         sb.append("+ ")
 

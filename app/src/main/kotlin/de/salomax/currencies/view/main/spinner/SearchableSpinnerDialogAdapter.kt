@@ -15,6 +15,8 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
+import java.math.BigDecimal
+import java.math.MathContext
 
 @SuppressLint("NotifyDataSetChanged")
 class SearchableSpinnerDialogAdapter(private val context: Context) :
@@ -30,7 +32,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
 
     private var isPreviewConversionEnabled: Boolean = false
     private var currentBaseRate: Rate? = null
-    private var currentBaseSum: Double = 1.0
+    private var currentBaseSum: BigDecimal = BigDecimal.ONE
 
     private var filterStarred = false
     private var filterText: String? = null
@@ -131,18 +133,20 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         currentBaseRate = currentRate
         update()
     }
-    fun setCurrentSum(currentSum: Double) {
+    fun setCurrentSum(currentSum: BigDecimal) {
         currentBaseSum = currentSum
         update()
     }
 
     private fun buildConversionText(item: Rate): String {
-        val sum = if (currentBaseSum == 0.0) 1.0 else currentBaseSum
+        val sum = if (currentBaseSum.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ONE else currentBaseSum
         val sourceSymbol = currentBaseRate!!.currency.symbol() ?: ""
-        val source = sum.toString().toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
+        val source = sum.toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
         val destinationSymbol = item.currency.symbol() ?: ""
-        val destination = sum.div(currentBaseRate!!.value).times(item.value)
-            .toString().toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
+        val destination = sum
+            .divide(currentBaseRate!!.value, MathContext.DECIMAL128)
+            .multiply(item.value)
+            .toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
         val left = if (sourceSymbol.isEmpty()) source
             else if (hasAppendedCurrencySymbol(context)) "$source $sourceSymbol"
             else "$sourceSymbol $source"

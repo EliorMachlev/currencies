@@ -18,8 +18,9 @@ import de.salomax.currencies.model.Timeline
 import de.salomax.currencies.repository.ExchangeRatesRepository
 import de.salomax.currencies.util.calculateDifference
 import de.salomax.currencies.util.getSignificantDecimalPlaces
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
-import kotlin.math.absoluteValue
 import kotlin.math.min
 
 private const val DEFAULT_DECIMAL_PLACES = 3
@@ -182,8 +183,8 @@ class TimelineViewModel(
         }
     }
 
-    fun getRatesDifferencePercent(): LiveData<Float?> {
-        return MediatorLiveData<Float?>().apply {
+    fun getRatesDifferencePercent(): LiveData<BigDecimal?> {
+        return MediatorLiveData<BigDecimal?>().apply {
             var scrubDate: LocalDate? = null
             var rates: Set<Map.Entry<LocalDate, Rate?>>? = null
 
@@ -217,12 +218,14 @@ class TimelineViewModel(
             var rates: Set<Map.Entry<LocalDate, Rate?>>? = null
 
             fun update() {
-                val avg: Rate? = rates
+                val values = rates
                     ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.map { entry -> entry.value }
-                    ?.map { rate -> rate?.value ?: 0f }
-                    ?.average()
-                    ?.let { average -> Rate(target, average.toFloat()) }
+                    ?.mapNotNull { entry -> entry.value?.value }
+                val avg: Rate? = if (values.isNullOrEmpty()) null
+                    else values
+                        .fold(BigDecimal.ZERO, BigDecimal::add)
+                        .divide(BigDecimal(values.size), MathContext.DECIMAL128)
+                        .let { Rate(target, it) }
                 this.value = Pair(avg, decimalPlaces)
             }
 
@@ -251,12 +254,12 @@ class TimelineViewModel(
             fun update() {
                 val min: Rate? = rates
                     ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.map { entry -> entry.value }
-                    ?.minOfOrNull { rate -> rate?.value ?: 0f }
-                    ?.let { min -> Rate(target, min) }
+                    ?.mapNotNull { entry -> entry.value }
+                    ?.minByOrNull { rate -> rate.value }
+                    ?.let { Rate(target, it.value) }
                 val date: LocalDate? = rates
                     ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.findLast { entry -> entry.value?.value == min?.value }
+                    ?.findLast { entry -> entry.value?.value?.compareTo(min?.value) == 0 }
                     ?.key
                 this.value = Triple(min, date, decimalPlaces)
             }
@@ -286,12 +289,12 @@ class TimelineViewModel(
             fun update() {
                 val max: Rate? = rates
                     ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.map { entry -> entry.value }
-                    ?.maxOfOrNull { rate -> rate?.value ?: 0f }
-                    ?.let { max -> Rate(target, max) }
+                    ?.mapNotNull { entry -> entry.value }
+                    ?.maxByOrNull { rate -> rate.value }
+                    ?.let { Rate(target, it.value) }
                 val date: LocalDate? = rates
                     ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.findLast { entry -> entry.value?.value == max?.value }
+                    ?.findLast { entry -> entry.value?.value?.compareTo(max?.value) == 0 }
                     ?.key
                 this.value = Triple(max, date, decimalPlaces)
             }
@@ -315,19 +318,19 @@ class TimelineViewModel(
 
     private fun getDecimalPlaces(): LiveData<Int> {
         return MediatorLiveData<Int>().apply {
-            var min = 0f
-            var max = 0f
+            var min = BigDecimal.ZERO
+            var max = BigDecimal.ZERO
 
             fun update() {
                 this.value = min(
-                    (min - max).absoluteValue.getSignificantDecimalPlaces(SIGNIFICANT_DIGITS),
+                    (min - max).abs().getSignificantDecimalPlaces(SIGNIFICANT_DIGITS),
                     MAX_DECIMAL_PLACES
                 )
             }
 
             addSource(dbLiveItems) {
-                min = it?.rates?.entries?.minOfOrNull { rate -> rate.value.value } ?: 0f
-                max = it?.rates?.entries?.maxOfOrNull { rate -> rate.value.value } ?: 0f
+                min = it?.rates?.entries?.minOfOrNull { rate -> rate.value.value } ?: BigDecimal.ZERO
+                max = it?.rates?.entries?.maxOfOrNull { rate -> rate.value.value } ?: BigDecimal.ZERO
                 update()
             }
         }

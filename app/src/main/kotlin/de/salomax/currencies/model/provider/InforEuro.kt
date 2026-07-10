@@ -17,6 +17,8 @@ import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import de.salomax.currencies.model.adapter.InforEuroRatesAdapter
 import de.salomax.currencies.model.adapter.InforEuroTimelineAdapter
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 import java.time.ZoneOffset
 
@@ -101,7 +103,13 @@ class InforEuro : ApiProvider.Api() {
                     val baseValue = resultBase.get().rates?.get(symbolEntry.key)
                     Pair(
                         symbolEntry.key,
-                        Rate(symbol, symbolEntry.value.value.div(baseValue?.value ?: 1f))
+                        Rate(
+                            symbol,
+                            symbolEntry.value.value.divide(
+                                baseValue?.value ?: BigDecimal.ONE,
+                                MathContext.DECIMAL128
+                            )
+                        )
                     )
                 }?.toMap()
             )

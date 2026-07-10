@@ -7,6 +7,8 @@ import de.salomax.currencies.model.Rate
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 import kotlin.math.pow
 
@@ -32,7 +34,7 @@ class NorgesBankRatesXmlParser {
                     }
                     tagname.equals("Obs", ignoreCase = true) -> {
                         val obsDate = LocalDate.parse(parser.getAttributeValue(null, "TIME_PERIOD"))
-                        val value = parser.getAttributeValue(null, "OBS_VALUE").toFloatOrNull()
+                        val value = parser.getAttributeValue(null, "OBS_VALUE").toBigDecimalOrNull()
                         recordObservation(base, value, obsDate, multiplier, requestedDate)
                         base = null
                         updateDate(obsDate)
@@ -59,7 +61,7 @@ class NorgesBankRatesXmlParser {
 
     private fun recordObservation(
         base: Currency?,
-        value: Float?,
+        value: BigDecimal?,
         date: LocalDate,
         multiplier: Int,
         requestedDate: LocalDate
@@ -68,7 +70,7 @@ class NorgesBankRatesXmlParser {
         // api delivers historical rates for e.g. RUB; ignore stale ones
         if (!date.isAfter(requestedDate.minusWeeks(2))) return
         rates.removeIf { rate -> rate.currency == base }
-        rates.add(Rate(base, (1f / value) * multiplier))
+        rates.add(Rate(base, BigDecimal.ONE.divide(value, MathContext.DECIMAL128) * multiplier.toBigDecimal()))
     }
 
     private fun updateDate(date: LocalDate) {
@@ -78,7 +80,7 @@ class NorgesBankRatesXmlParser {
 
     private fun addSyntheticRates() {
         if (rates.isEmpty()) return
-        rates.add(Rate(Currency.NOK, 1f))
+        rates.add(Rate(Currency.NOK, BigDecimal.ONE))
         if (rates.find { it.currency == Currency.FOK } == null)
             rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
                 rates.add(Rate(Currency.FOK, dkk))

@@ -19,16 +19,17 @@ import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
 import de.salomax.currencies.util.combineWith
 import de.salomax.currencies.util.getDecimalSeparator
-import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.getSignificantDecimalPlaces
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
 import org.mariuszgromada.math.mxparser.Expression
+import java.math.BigDecimal
+import java.math.MathContext
 import java.text.Collator
 import java.time.LocalDate
 import java.time.ZoneId
 
-private const val PERCENTAGE_DIVISOR = 100f
+private val PERCENTAGE_DIVISOR = BigDecimal("100")
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidViewModel(app) {
@@ -69,7 +70,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     // fee
     private val isFeeEnabled: LiveData<Boolean>
-    private val fee: LiveData<Float>
+    private val fee: LiveData<BigDecimal>
 
     /*
      * repository data =============================================================================
@@ -238,7 +239,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     /**
      * the fee amount
      */
-    internal fun getFee(): LiveData<Float> {
+    internal fun getFee(): LiveData<BigDecimal> {
         return fee
     }
 
@@ -259,7 +260,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                 val baseValue = exchangeRates!!.rates?.find { it.currency == baseCurrency }?.value
                 // target currency
                 val destinationValue = exchangeRates!!.rates?.find { it.currency == destinationCurrency }?.value
-                val destinationValueCalculated = baseValue?.let { destinationValue?.div(it) }
+                val destinationValueCalculated = baseValue?.let {
+                    destinationValue?.divide(it, MathContext.DECIMAL128)
+                }
 
                 // create string
                 this.value = HtmlCompat.fromHtml(
@@ -267,11 +270,10 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                         R.string.info_conversion,
                         "1",
                         baseCurrency!!.iso4217Alpha(),
-                        String.format(
-                            getLocale(app),
-                            "%.${destinationValueCalculated?.getSignificantDecimalPlaces(2)}f",
-                            destinationValueCalculated
-                        ),
+                        destinationValueCalculated?.toHumanReadableNumber(
+                            app,
+                            decimalPlaces = destinationValueCalculated.getSignificantDecimalPlaces(2)
+                        ) ?: "",
                         destinationCurrency!!.iso4217Alpha()
                     ),
                     HtmlCompat.FROM_HTML_MODE_LEGACY
@@ -335,11 +337,11 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     /**
-     * the total base value, converted to double (internal is string)
+     * the total base value, as BigDecimal (internal is string)
      */
-    internal fun getCurrentBaseValueAsNumber(): LiveData<Double> {
+    internal fun getCurrentBaseValueAsNumber(): LiveData<BigDecimal> {
         return currentBaseValue.map {
-            it?.toBigDecimal()?.toDouble() ?: 0.0
+            it?.toBigDecimalOrNull() ?: BigDecimal.ZERO
         }
     }
 
@@ -387,7 +389,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         var baseValue: String? = null
         var baseCurrency: Currency? = null
         var destinationCurrency: Currency? = null
-        var feeValue: Float? = null
+        var feeValue: BigDecimal? = null
         var feeEnabled: Boolean? = null
 
         init {
@@ -406,32 +408,34 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         }
 
         private fun calculateResult() {
-            val baseValue: Double = baseValue?.toBigDecimal()?.toDouble() ?: 0.0
+            val baseValue: BigDecimal = baseValue?.toBigDecimal() ?: BigDecimal.ZERO
             val baseRate = rates?.rates?.find { it.currency == baseCurrency }
             val destinationRate = rates?.rates?.find { it.currency == destinationCurrency }
 
             if (baseRate != null && destinationRate != null) {
                 this.value =
-                    baseValue.div(baseRate.value).times(destinationRate.value)
+                    baseValue
+                        .divide(baseRate.value, MathContext.DECIMAL128)
+                        .multiply(destinationRate.value)
                         .let {
                             // add fee, if enabled
                             if (feeEnabled != null && feeEnabled == true && feeValue != null) {
-                                it + (it * (feeValue!! / PERCENTAGE_DIVISOR))
+                                it + it.multiply(feeValue!!.divide(PERCENTAGE_DIVISOR, MathContext.DECIMAL128))
                             } else {
                                 it
                             }
                         }
-                        .toString()
+                        .toPlainString()
             }
         }
     }
 
     /**
-     * the total destination value, converted to double (internal is string)
+     * the total destination value, as BigDecimal (internal is string)
      */
-    internal fun getResultAsNumber(): LiveData<Double> {
+    internal fun getResultAsNumber(): LiveData<BigDecimal> {
         return result.map {
-            it?.toBigDecimal()?.toDouble() ?: 0.0
+            it?.toBigDecimalOrNull() ?: BigDecimal.ZERO
         }
     }
 

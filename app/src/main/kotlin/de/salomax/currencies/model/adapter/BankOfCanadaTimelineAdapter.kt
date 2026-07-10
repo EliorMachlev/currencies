@@ -9,6 +9,8 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import java.io.IOException
+import java.math.BigDecimal
+import java.math.MathContext
 import java.time.LocalDate
 
 private const val CURRENCY_CODE_START = 2
@@ -75,8 +77,8 @@ internal class BankOfCanadaTimelineAdapter(
     private fun convertObservation(reader: JsonReader): Pair<LocalDate, Rate>? {
         var date: LocalDate? = null
 
-        var baseValue: Float? = null
-        var symbolValue: Float? = null
+        var baseValue: BigDecimal? = null
+        var symbolValue: BigDecimal? = null
 
         reader.beginObject()
         while (reader.hasNext()) {
@@ -88,19 +90,19 @@ internal class BankOfCanadaTimelineAdapter(
                     val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
                     reader.beginObject()
                     reader.skipName() // always "v"
-                    val value = reader.nextDouble()
+                    val value = BigDecimal(reader.nextString())
                     reader.endObject()
                     currency?.let {
                         if (it == base)
-                            baseValue = value.toFloat()
+                            baseValue = value
                         else if (it == symbol)
-                            symbolValue = value.toFloat()
+                            symbolValue = value
                     }
                 }
             }
             if (date != null && baseValue != null && symbolValue != null) {
                 reader.endObject()
-                return Pair(date, Rate(symbol, baseValue / symbolValue))
+                return Pair(date, Rate(symbol, baseValue.divide(symbolValue, MathContext.DECIMAL128)))
             }
         }
         return null
