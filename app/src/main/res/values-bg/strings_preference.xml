@@ -7,6 +7,11 @@
     <string name="fee_summary">В зависимост от договора ви за кредитна карта, вашата банка може да ви таксува за всички чуждо валутни транзакции. Тук може да въведете тази такса. Тя ще бъде добавена при всяко пресмятане, за да знаете колко ще платите <i>реално</i>.</string>
     <string name="previewConversion_title">Преглед на конвертирането</string>
     <string name="previewConversion_summary">Покажи текущото конвертиране за всеки курс при избиране на валута.</string>
+    <string name="keyboard_title">Клавиатура</string>
+    <string name="keyboard_option_default">По подразбиране</string>
+    <string name="keyboard_option_expanded">Разширена</string>
+    <string name="haptic_feedback_title">Тактилна обратна връзка</string>
+    <string name="haptic_feedback_summary">Вибрация при натискане на клавиш\nСледва системната настройка</string>
     <string name="category_appearance">Изглед</string>
     <string name="system_default">Стандартно за системата</string>
     <string name="theme_title">Дизайн</string>

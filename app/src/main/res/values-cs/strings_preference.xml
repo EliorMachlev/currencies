@@ -7,6 +7,11 @@
     <string name="fee_summary">V závislosti na smlouvě o kreditní kartě si může vaše banka účtovat poplatek za všechny devizové transakce. Zde můžete zadat tento poplatek. Bude připočten k výpočtu, abyste věděli, kolik <i>skutečně</i> zaplatíte.</string>
     <string name="previewConversion_title">Náhled převodu</string>
     <string name="previewConversion_summary">Zobrazí aktuální převod u každého kurzu ve výběru měny.</string>
+    <string name="keyboard_title">Klávesnice</string>
+    <string name="keyboard_option_default">Výchozí</string>
+    <string name="keyboard_option_expanded">Rozšířená</string>
+    <string name="haptic_feedback_title">Haptická odezva</string>
+    <string name="haptic_feedback_summary">Vibrace při stisknutí klávesy\nŘídí se systémovým nastavením</string>
     <string name="category_appearance">Vzhled</string>
     <string name="system_default">Výchozí nastavení systému</string>
     <string name="theme_title">Design</string>

@@ -7,6 +7,11 @@
     <string name="fee_summary">Dependiendo del acuerdo de su tarjeta de crédito, su banco puede cobrar una comisión por todas las transacciones de cambio de divisas. Aquí puedes introducir esa comisión. Se añadirá al cálculo, para que sepas cuánto pagas <i>realmente</i>.</string>
     <string name="previewConversion_title">Vista previa de la conversión</string>
     <string name="previewConversion_summary">Mostrar la conversión actual para cada tipo de cambio en el selector de moneda.</string>
+    <string name="keyboard_title">Teclado</string>
+    <string name="keyboard_option_default">Predeterminado</string>
+    <string name="keyboard_option_expanded">Expandido</string>
+    <string name="haptic_feedback_title">Vibración táctil</string>
+    <string name="haptic_feedback_summary">Vibrar al pulsar una tecla\nSigue la configuración del sistema</string>
     <string name="category_appearance">Apariencia</string>
     <string name="system_default">Predeterminado del sistema</string>
     <string name="theme_title">Tema</string>

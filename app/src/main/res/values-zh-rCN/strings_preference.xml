@@ -7,6 +7,11 @@
     <string name="fee_summary">根据您的信用卡协议，您的银行可能对所有外汇交易收取费用。这个比例会被直接加上，这样能知道<i>最终</i>支付了多少钱。</string>
     <string name="previewConversion_title">预览</string>
     <string name="previewConversion_summary">在选择货币页面显示当前汇率。</string>
+    <string name="keyboard_title">键盘</string>
+    <string name="keyboard_option_default">默认</string>
+    <string name="keyboard_option_expanded">扩展</string>
+    <string name="haptic_feedback_title">触感反馈</string>
+    <string name="haptic_feedback_summary">按键时振动\n跟随系统设置</string>
     <string name="category_appearance">外观</string>
     <string name="system_default">系统默认</string>
     <string name="theme_title">设计</string>

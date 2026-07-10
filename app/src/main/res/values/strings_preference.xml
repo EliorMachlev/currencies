@@ -13,6 +13,9 @@
     <string name="keyboard_title">Keyboard</string>
     <string name="keyboard_option_default">Default</string>
     <string name="keyboard_option_expanded">Expanded</string>
+    <string name="haptic_feedback_key" translatable="false">KEY_HAPTIC_FEEDBACK</string>
+    <string name="haptic_feedback_title">Haptic feedback</string>
+    <string name="haptic_feedback_summary">Vibrate on key press\nFollows system setting</string>
     <string name="category_appearance">Appearance</string>
     <string name="system_default">System default</string>
     <string name="theme_key" translatable="false">KEY_THEME</string>

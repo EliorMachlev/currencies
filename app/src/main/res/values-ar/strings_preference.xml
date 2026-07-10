@@ -7,6 +7,11 @@
     <string name="fee_summary">اعتمادًا على اتفاقية بطاقة الائتمان الخاصة بك ، قد يفرض البنك الذي تتعامل معه رسومًا على جميع معاملات الصرف الأجنبي. هنا يمكنك إدخال تلك الرسوم. ستتم إضافته أعلى الحساب ، حتى تعرف مقدار ما تدفعه <i> حقًا </i>.</string>
     <string name="previewConversion_title">معاينة التحويل</string>
     <string name="previewConversion_summary">اعرض التحويل الحالي لكل سعر في منتقي العملات.</string>
+    <string name="keyboard_title">لوحة المفاتيح</string>
+    <string name="keyboard_option_default">افتراضي</string>
+    <string name="keyboard_option_expanded">موسّعة</string>
+    <string name="haptic_feedback_title">اهتزاز اللمس</string>
+    <string name="haptic_feedback_summary">اهتزاز عند الضغط على مفتاح\nيتبع إعداد النظام</string>
     <string name="category_appearance">المظهر</string>
     <string name="system_default">الإعداد التلقائي للنظام</string>
     <string name="theme_title">تصميم</string>

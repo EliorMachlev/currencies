@@ -7,6 +7,11 @@
     <string name="fee_summary">W zależności od umowy dotyczącej Twojej karty kredytowej, Twój bank może pobrać dodatkową opłatę za wszelkie transakcje zagraniczne. Tutaj możesz podać jej wysokość. Zostanie ona dodana do sumy do zapłaty, dzięki czemu będziesz wiedzieć ile <i>rzeczywiście</i> zapłacisz.</string>
     <string name="previewConversion_title">Podgląd konwersji</string>
     <string name="previewConversion_summary">Pokaż obecny kurs w ekranie wyboru waluty.</string>
+    <string name="keyboard_title">Klawiatura</string>
+    <string name="keyboard_option_default">Domyślna</string>
+    <string name="keyboard_option_expanded">Rozszerzona</string>
+    <string name="haptic_feedback_title">Wibracje dotykowe</string>
+    <string name="haptic_feedback_summary">Wibracja przy naciśnięciu klawisza\nZgodnie z ustawieniami systemu</string>
     <string name="category_appearance">Ekran</string>
     <string name="system_default">Ustawienie domyślne systemu</string>
     <string name="theme_title">Motyw</string>

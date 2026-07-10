@@ -7,6 +7,11 @@
     <string name="fee_summary">In den Konditionen mancher Kreditkarten sind Gebühren für den Einsatz im Ausland bzw. mit Fremdwährungen enthalten. Hier kannst du die Gebühr deiner Karte eintragen. Sie wird dann auf alle Umrechnungen aufgeschlagen, damit du weißt, wie viel du <i>wirklich</i> zahlst.</string>
     <string name="previewConversion_title">Umrechnungsvorschau</string>
     <string name="previewConversion_summary">Im Währungsauswahldialog die aktuelle Umrechnung für jeden Kurs anzeigen.</string>
+    <string name="keyboard_title">Tastatur</string>
+    <string name="keyboard_option_default">Standard</string>
+    <string name="keyboard_option_expanded">Erweitert</string>
+    <string name="haptic_feedback_title">Haptisches Feedback</string>
+    <string name="haptic_feedback_summary">Vibration bei Tastendruck\nRichtet sich nach der Systemeinstellung</string>
     <string name="category_appearance">Aussehen</string>
     <string name="system_default">Standardeinstellung des Systems</string>
     <string name="theme_title">Design</string>

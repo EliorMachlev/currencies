@@ -56,6 +56,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     // ui
     private var isUpdating: LiveData<Boolean> = repository.isUpdating()
     val isExtendedKeypadEnabled: LiveData<Boolean> = Database(app).getKeyboardType().map { it != 0 }
+    val isHapticFeedbackEnabled: LiveData<Boolean> = Database(app).isHapticFeedbackEnabled()
 
 
     // number input

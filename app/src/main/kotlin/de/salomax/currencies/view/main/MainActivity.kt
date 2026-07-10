@@ -10,6 +10,7 @@ import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Bundle
 import android.view.ContextMenu
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -62,6 +63,8 @@ class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var preferenceModel: PreferenceViewModel
+
+    private var hapticEnabled = false
 
     private lateinit var refreshIndicator: LinearProgressIndicator
     private lateinit var swipeRefresh: SwipeRefreshLayout
@@ -311,6 +314,7 @@ class MainActivity : BaseActivity() {
         viewModel.getCurrentBaseValueAsNumber().observe(this) { spinnerTo.setCurrentSum(it) }
         viewModel.getResultAsNumber().observe(this) { spinnerFrom.setCurrentSum(it) }
         viewModel.isExtendedKeypadEnabled.observe(this) { observeKeypadState(it) }
+        viewModel.isHapticFeedbackEnabled.observe(this) { hapticEnabled = it }
     }
 
     private fun observeExchangeRates(rates: ExchangeRates?) {
@@ -404,31 +408,40 @@ class MainActivity : BaseActivity() {
         return color
     }
 
+    private fun haptic(view: View) {
+        if (hapticEnabled)
+            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+    }
+
     /*
      * keyboard: number input
      */
     fun numberEvent(view: View) {
+        haptic(view)
         viewModel.addNumber((view as AppCompatButton).text.toString())
     }
 
     /*
      * keyboard: add decimal point
      */
-    fun decimalEvent(@Suppress("UNUSED_PARAMETER") view: View) {
+    fun decimalEvent(view: View) {
+        haptic(view)
         viewModel.addDecimal()
     }
 
     /*
      * keyboard: delete
      */
-    fun deleteEvent(@Suppress("UNUSED_PARAMETER") view: View) {
+    fun deleteEvent(view: View) {
+        haptic(view)
         viewModel.delete()
     }
 
     /*
      * keyboard: percentage
      */
-    fun percentEvent(@Suppress("UNUSED_PARAMETER") view: View) {
+    fun percentEvent(view: View) {
+        haptic(view)
         viewModel.addPercent()
     }
 
@@ -436,6 +449,7 @@ class MainActivity : BaseActivity() {
      * keyboard: do some calculations
      */
     fun calculationEvent(view: View) {
+        haptic(view)
         when ((view as AppCompatButton).text.toString()) {
             "+" -> viewModel.addition()
             "−" -> viewModel.subtraction()

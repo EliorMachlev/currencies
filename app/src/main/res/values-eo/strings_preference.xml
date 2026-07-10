@@ -7,6 +7,11 @@
     <string name="fee_summary">Depende de via kreditkarta interkonsento, via banko povas kosti kotizon por ĉiuj eksterlandaj transakcioj. Ĉi tie vi povas enigi tiun kotizon. Ĝi estos aldonita al la kalkulo, do vi sciu kiom vi <i>vere</i> pagas.</string>
     <string name="previewConversion_title">Antaŭrigardo de konvertiĝo</string>
     <string name="previewConversion_summary">Montri la nunan konvertiĝon por ĉiu kurzo en la valutelektilo.</string>
+    <string name="keyboard_title">Klavaro</string>
+    <string name="keyboard_option_default">Implicita</string>
+    <string name="keyboard_option_expanded">Etendita</string>
+    <string name="haptic_feedback_title">Hapta reago</string>
+    <string name="haptic_feedback_summary">Vibru ĉe klav-premo\nSekvas sisteman agordon</string>
     <string name="category_appearance">Aspekto</string>
     <string name="system_default">Sistema defaŭlta</string>
     <string name="theme_title">Dezajno</string>

@@ -7,6 +7,11 @@
     <string name="fee_summary">Selon votre contrat de carte de crédit, votre banque peut facturer des frais sur toutes les transactions de change. Vous pouvez saisir ici ces frais. Elle sera ajoutée en plus du calcul, afin que vous sachiez combien vous <i>réellement</i> payez.</string>
     <string name="previewConversion_title">Aperçu de la conversion</string>
     <string name="previewConversion_summary">Afficher la conversion actuelle pour chaque taux dans le sélecteur de devises.</string>
+    <string name="keyboard_title">Clavier</string>
+    <string name="keyboard_option_default">Par défaut</string>
+    <string name="keyboard_option_expanded">Étendu</string>
+    <string name="haptic_feedback_title">Retour haptique</string>
+    <string name="haptic_feedback_summary">Vibrer à chaque touche\nSuit le réglage système</string>
     <string name="category_appearance">Apparition</string>
     <string name="system_default">Paramètre système par défaut</string>
     <string name="theme_title">Thème</string>
