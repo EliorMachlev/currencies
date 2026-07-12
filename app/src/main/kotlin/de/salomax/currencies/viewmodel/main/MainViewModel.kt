@@ -50,7 +50,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     // repository data
     private var dbLiveItems: LiveData<ExchangeRates?>
     private var exchangeRates: LiveData<ExchangeRates?>
-    private val starredLiveItems: LiveData<Set<Currency>>
+    private val starredLiveItems: LiveData<List<Currency>>
     private val onlyShowStarred: LiveData<Boolean>
     private val liveError = repository.getError()
 
@@ -194,8 +194,15 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     /**
      * all the currencies that the user has starred
      */
-    internal fun getStarredCurrencies(): LiveData<Set<Currency>> {
+    internal fun getStarredCurrencies(): LiveData<List<Currency>> {
         return starredLiveItems
+    }
+
+    /**
+     * persist the user's manual ordering of starred currencies
+     */
+    internal fun setStarredCurrencyOrder(currencies: List<Currency>) {
+        Database(getApplication()).setStarredCurrencyOrder(currencies)
     }
 
     /**

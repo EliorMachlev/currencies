@@ -28,7 +28,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
 
     private var rates: List<Rate> = listOf()
     private var ratesFiltered: MutableList<Rate> = mutableListOf()
-    private var stars: Set<Currency> = setOf()
+    private var stars: List<Currency> = listOf()
 
     private var isPreviewConversionEnabled: Boolean = false
     private var currentBaseRate: Rate? = null
@@ -106,12 +106,35 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         update()
     }
 
-    fun setStars(stars: Set<Currency>?) {
-        if (stars == null)
-            this.stars = HashSet()
-        else
-            this.stars = stars
+    fun setStars(stars: List<Currency>?) {
+        this.stars = stars ?: emptyList()
         update()
+    }
+
+    fun isStarred(position: Int): Boolean {
+        if (position < 0 || position >= ratesFiltered.size) return false
+        return stars.contains(ratesFiltered[position].currency)
+    }
+
+    fun isDraggable(position: Int): Boolean {
+        return filterText.isNullOrEmpty() && isStarred(position)
+    }
+
+    fun moveItem(from: Int, to: Int): Boolean {
+        if (from == to) return false
+        if (from !in ratesFiltered.indices || to !in ratesFiltered.indices) return false
+        if (!isStarred(from) || !isStarred(to)) return false
+        val item = ratesFiltered.removeAt(from)
+        ratesFiltered.add(to, item)
+        notifyItemMoved(from, to)
+        return true
+    }
+
+    fun getCurrentStarredOrder(): List<Currency> {
+        val visibleOrder = ratesFiltered.map { it.currency }.filter { stars.contains(it) }
+        // preserve any starred currencies that aren't in the current rates (e.g. after api switch)
+        val missing = stars.filterNot { visibleOrder.contains(it) }
+        return visibleOrder + missing
     }
 
     fun filterStarred(enabled: Boolean) {
@@ -157,7 +180,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
     }
 
     private fun update() {
-        ratesFiltered = rates
+        val filtered = rates
             // find all rates based on both their code name or their full name
             .filter { rate ->
                 if (filterText != null)
@@ -174,7 +197,11 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
                     stars.contains(rate.currency)
                 else
                     true
-            }.toMutableList()
+            }
+        // starred rates come first, in the user's stored order; everything else keeps its order
+        val starredRates = stars.mapNotNull { code -> filtered.find { it.currency == code } }
+        val rest = filtered.filterNot { stars.contains(it.currency) }
+        ratesFiltered = (starredRates + rest).toMutableList()
 
         notifyDataSetChanged()
     }
