@@ -10,6 +10,8 @@
     <string name="keyboard_title">কীবোর্ড</string>
     <string name="keyboard_option_default">ডিফল্ট</string>
     <string name="keyboard_option_expanded">প্রসারিত</string>
+    <string name="decimal_places_title">দশমিক নির্ভুলতা</string>
+    <string name="decimal_places_summary">রূপান্তরিত মানের জন্য প্রদর্শিত দশমিক স্থানের সংখ্যা।</string>
     <string name="haptic_feedback_title">হ্যাপটিক ফিডব্যাক</string>
     <string name="haptic_feedback_summary">কী চাপলে কম্পন\nসিস্টেম সেটিং অনুসরণ করে</string>
     <string name="category_appearance">অবয়ব</string>

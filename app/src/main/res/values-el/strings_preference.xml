@@ -10,6 +10,8 @@
     <string name="keyboard_title">Πληκτρολόγιο</string>
     <string name="keyboard_option_default">Προεπιλογή</string>
     <string name="keyboard_option_expanded">Αναπτυγμένο</string>
+    <string name="decimal_places_title">Δεκαδική ακρίβεια</string>
+    <string name="decimal_places_summary">Αριθμός δεκαδικών ψηφίων που εμφανίζονται για τις μετατραπείσες τιμές.</string>
     <string name="haptic_feedback_title">Απτική ανάδραση</string>
     <string name="haptic_feedback_summary">Δόνηση κατά το πάτημα πλήκτρου\nΑκολουθεί τη ρύθμιση συστήματος</string>
     <string name="category_appearance">Εμφάνιση</string>

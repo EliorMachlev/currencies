@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desc_toggle_currencies">കറൻസികൾ മാറ്റുക</string>
+    <string name="info_conversion">%1$s %2$s ≈ %3$s %4$s</string>
+    <string name="info_date_latest">&lt;b>%1$s&lt;/b>-ലെ നിരക്കുകൾ, &lt;b>%2$s&lt;/b> നൽകിയത്</string>
+    <string name="info_date_historical">&lt;b>%1$s&lt;/b>-ന്റെ ചരിത്ര നിരക്കുകൾ, &lt;b>%2$s&lt;/b> നൽകിയത്</string>
+    <string name="copied_to_clipboard">&lt;b>%s&lt;/b> ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</string>
+
+    <string name="historical_rates_dialog_title">ചരിത്ര നിരക്കുകൾ</string>
+    <string name="historical_rates_dialog_toggle">ഒരു നിർദ്ദിഷ്ട തീയതിയിലെ വിനിമയ നിരക്കുകൾ ഉപയോഗിക്കുക. എപ്പോഴും ഏറ്റവും പുതിയവ എടുക്കാൻ പ്രവർത്തനരഹിതമാക്കുക.</string>
+
+    <string name="error">പിശക്: %s</string>
+    <string name="error_generic">അജ്ഞാത പ്രശ്നം.</string>
+    <string name="error_http">സെർവർ HTTP %d ഉപയോഗിച്ച് പ്രതികരിച്ചു.</string>
+    <string name="error_timeout">സെർവർ സമയബന്ധിതമായി പ്രതികരിച്ചില്ല അല്ലെങ്കിൽ എത്തിച്ചേരാനാവുന്നില്ല.</string>
+    <string name="error_no_data">സെർവറിലേക്ക് കണക്റ്റുചെയ്യാൻ കഴിഞ്ഞില്ല.</string>
+    <string name="error_empty_response">ഈ അഭ്യർത്ഥനയ്ക്ക് സെർവറിൽ ഡാറ്റയില്ല.</string>
+    <string name="error_api_error">ഒരു API പിശക് സംഭവിച്ചു. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="error_try_another_api">എന്നിരുന്നാലും, ക്രമീകരണങ്ങളിൽ നിന്ന് നിങ്ങൾക്ക് തിരഞ്ഞെടുക്കാവുന്ന മറ്റ് ഡാറ്റ ദാതാക്കളുണ്ട്. ഒന്ന് പരീക്ഷിച്ചു നോക്കൂ!</string>
+    <string name="error_no_api_key">ഈ ഉറവിടം ഉപയോഗിക്കാൻ, ഒരു സാധുവായ API കീ സജ്ജീകരിക്കണം.</string>
+    <string name="error_invalid_api_key">HTTP 401 – ദയവായി നിങ്ങളുടെ API കീ പരിശോധിക്കുക.</string>
+    <string name="error_unsupported_timeline">ഈ API-യിൽ ടൈംലൈൻ ഡാറ്റ പിന്തുണയ്ക്കുന്നില്ല.</string>
+
+    <string name="menu_settings">ക്രമീകരണങ്ങൾ</string>
+    <string name="menu_refresh">നിരക്കുകൾ പുതുക്കുക</string>
+    <string name="menu_timeline">വിനിമയ നിരക്ക് ചാർട്ട്</string>
+
+    <string name="tooltip_filter_starred">നക്ഷത്രമുള്ള കറൻസികൾ മാത്രം കാണിക്കുക.</string>
+    <string name="currency_dropdown_api_hint">എന്തെങ്കിലും കാണാനില്ലേ? വ്യത്യസ്ത ഡാറ്റ ദാതാക്കൾ വ്യത്യസ്ത കറൻസികൾ വാഗ്ദാനം ചെയ്യുന്നു. മറ്റൊന്ന് പരീക്ഷിക്കാൻ ക്രമീകരണങ്ങളിലേക്ക് പോകുക!\u00A0\uD83E\uDD17</string>
+</resources>

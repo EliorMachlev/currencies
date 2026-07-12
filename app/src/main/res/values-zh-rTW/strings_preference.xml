@@ -10,6 +10,8 @@
     <string name="keyboard_title">���盤</string>
     <string name="keyboard_option_default">預設</string>
     <string name="keyboard_option_expanded">擴展</string>
+    <string name="decimal_places_title">小數精度</string>
+    <string name="decimal_places_summary">轉換數值顯示的小數位數。</string>
     <string name="haptic_feedback_title">觸覺回饋</string>
     <string name="haptic_feedback_summary">按鍵時震動\n跟隨系統設定</string>
     <string name="category_appearance">應用程式外觀</string>

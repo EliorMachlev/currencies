@@ -10,6 +10,8 @@
     <string name="keyboard_title">Tastatur</string>
     <string name="keyboard_option_default">Standard</string>
     <string name="keyboard_option_expanded">Erweitert</string>
+    <string name="decimal_places_title">Dezimalgenauigkeit</string>
+    <string name="decimal_places_summary">Anzahl der Nachkommastellen bei umgerechneten Werten.</string>
     <string name="haptic_feedback_title">Haptisches Feedback</string>
     <string name="haptic_feedback_summary">Vibration bei Tastendruck\nRichtet sich nach der Systemeinstellung</string>
     <string name="category_appearance">Aussehen</string>

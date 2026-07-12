@@ -10,6 +10,8 @@
     <string name="keyboard_title">Clavier</string>
     <string name="keyboard_option_default">Par défaut</string>
     <string name="keyboard_option_expanded">Étendu</string>
+    <string name="decimal_places_title">Précision décimale</string>
+    <string name="decimal_places_summary">Nombre de décimales à afficher pour les valeurs converties.</string>
     <string name="haptic_feedback_title">Retour haptique</string>
     <string name="haptic_feedback_summary">Vibrer à chaque touche\nSuit le réglage système</string>
     <string name="category_appearance">Apparition</string>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_bankOfCanada_descriptionFull"><a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>ബാങ്ക് ഓഫ് കാനഡ</b></a>-യുടെ ദൈനംദിന ശരാശരി വിനിമയ നിരക്കുകൾ.\n<b>ഏകദേശം 23 കറൻസികൾ ഉൾപ്പെടുന്നു.</b></string>
+    <string name="api_bankOfCanada_descriptionShort">ഏകദേശം 23 വിനിമയ നിരക്കുകൾ\nഉറവിടം: കാനഡയുടെ കേന്ദ്ര ബാങ്ക്</string>
+    <string name="api_bankOfCanada_descriptionUpdateInterval">നിരക്കുകൾ ഓരോ പ്രവൃത്തി ദിനത്തിലും 16:30 ET-ന് പ്രസിദ്ധീകരിക്കുന്നു</string>
+
+    <string name="api_bankRossii_descriptionFull">റഷ്യൻ കേന്ദ്ര ബാങ്ക് <a href="https://cbr.ru/eng/currency_base/daily/"><b>ബാങ്ക് റോസ്സി</b></a> നൽകുന്ന വിനിമയ നിരക്കുകൾ. നിലവിലെ ഉപരോധങ്ങളോടെ, റഷ്യൻ റൂബിളിന് ഏറ്റവും വിശ്വസനീയമായ വിനിമയ നിരക്കുകൾ ഈ ഉറവിടം നൽകാൻ സാധ്യതയുണ്ട്.\n<b>ബാങ്ക് റോസ്സി ഏകദേശം 44 വിനിമയ നിരക്കുകൾ പട്ടികപ്പെടുത്തുന്നു.</b></string>
+    <string name="api_bankRossii_descriptionShort">ഏകദേശം 44 വിനിമയ നിരക്കുകൾ\nഉറവിടം: റഷ്യയുടെ കേന്ദ്ര ബാങ്ക്</string>
+    <string name="api_bankRossii_descriptionUpdateInterval">നിരക്കുകൾ ദിവസേന അപ്ഡേറ്റ് ചെയ്യുന്നു, <a href="https://cbr.ru/eng/other/holidays/">റഷ്യയിലെ പൊതു അവധി ദിവസങ്ങൾ</a> ഒഴികെ.</string>
+
+    <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> യൂറോപ്യൻ കേന്ദ്ര ബാങ്ക് ഉൾപ്പെടെ വിവിധ സാമ്പത്തിക ഡാറ്റ ദാതാക്കളിൽ നിന്നും ബാങ്കുകളിൽ നിന്നും കറൻസി നിരക്കുകൾ ശേഖരിക്കുന്നു. എല്ലാ വിനിമയ നിരക്ക് ഡാറ്റയും മിഡ്‌പോയിന്റ് ഡാറ്റയായി നൽകപ്പെടുന്നു. Bid, Ask നിരക്കുകളുടെ ശരാശരി മീഡിയൻ കണക്കാക്കി മിഡ്‌പോയിന്റ് നിരക്കുകൾ നിർണയിക്കുന്നു.\n<b>ഏകദേശം 160 കറൻസികൾ ഉൾപ്പെടുന്നു.</b></string>
+    <string name="api_exchangerateHost_descriptionUpdateInterval">വിനിമയ നിരക്കുകൾ ഓരോ പ്രവൃത്തിദിനത്തിലും ഏകദേശം അർദ്ധരാത്രി UTC-ന് അപ്ഡേറ്റ് ചെയ്യുന്നു.</string>
+
+    <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> താരതമ്യേന പുതിയ ഒരു സേവനമാണ്, ഇത് (Frankfurter.app പോലെ) യൂറോപ്യൻ കേന്ദ്ര ബാങ്ക് പ്രസിദ്ധീകരിക്കുന്ന റഫറൻസ് വിനിമയ (forex) നിരക്കുകൾ ട്രാക്ക് ചെയ്യുന്നു.\n<b>ഏകദേശം 30 കറൻസികൾ ഉൾപ്പെടുന്നു.</b></string>
+    <string name="api_ferEe_descriptionUpdateInterval">നിരക്കുകൾ ഓരോ പ്രവൃത്തി ദിനത്തിലും അപ്ഡേറ്റ് ചെയ്യുന്നു.</string>
+
+    <string name="api_frankfurterApp_descriptionFull"><a href="https://www.frankfurter.app/"><b>Frankfurter.app</b></a> യൂറോപ്യൻ കേന്ദ്ര ബാങ്ക് പ്രസിദ്ധീകരിക്കുന്ന റഫറൻസ് വിനിമയ (forex) നിരക്കുകൾ ട്രാക്ക് ചെയ്യുന്നു.\n<b>ഏകദേശം 30 കറൻസികൾ ഉൾപ്പെടുന്നു.</b></string>
+    <string name="api_frankfurterApp_descriptionShort">ഏകദേശം 30 വിനിമയ നിരക്കുകൾ\nഉറവിടം: യൂറോപ്യൻ കേന്ദ്ര ബാങ്ക്</string>
+    <string name="api_frankfurterApp_descriptionUpdateInterval">ഓരോ പ്രവൃത്തി ദിനത്തിലും ഏകദേശം 16:00 CET-ന് ഡാറ്റ അപ്ഡേറ്റ് ചെയ്യുന്നു.</string>
+
+    <string name="api_inforEuro_descriptionFull"><a href="https://commission.europa.eu/funding-tenders/procedures-guidelines-tenders/information-contractors-and-beneficiaries/exchange-rate-inforeuro_en"><b>InforEuro</b></a> യൂറോപ്യൻ കമ്മീഷന്റെ യൂറോയ്ക്കായുള്ള ഔദ്യോഗിക പ്രതിമാസ അക്കൗണ്ടിംഗ് നിരക്കും ധനകാര്യ നിയന്ത്രണത്തിന്റെ ആർട്ടിക്കിൾ 19-ന് അനുസൃതമായി യൂറോപ്യൻ കമ്മീഷന്റെ അക്കൗണ്ടിംഗ് ഓഫീസർ സ്ഥാപിച്ച പരിവർത്തന നിരക്കുകളും നൽകുന്നു.\nയൂറോപ്യൻ കമ്മീഷന്റെ അഭ്യർത്ഥന പ്രകാരം മീറ്റിംഗുകൾ, അഭിമുഖങ്ങൾ തുടങ്ങിയവയിൽ പങ്കെടുക്കുന്ന ബാഹ്യ ജനങ്ങൾക്ക് ചെലവുകൾ, യാത്ര അല്ലെങ്കിൽ ജീവനാംശ ചെലവുകൾ എന്നിവയുടെ റീഇംബേഴ്‌സ്‌മെന്റ് കണക്കാക്കാൻ ഈ നിരക്കുകൾ ഉപയോഗിക്കുന്നു.\n<b>ഏകദേശം 150 കറൻസികൾ ഉൾപ്പെടുന്നു.</b></string>
+    <string name="api_inforEuro_descriptionShort">ഏകദേശം 150 വിനിമയ നിരക്കുകൾ\nഉറവിടം: യൂറോപ്യൻ കമ്മീഷൻ</string>
+    <string name="api_inforEuro_descriptionUpdateInterval">സൂചിപ്പിക്കുന്ന നിരക്കുകൾ, യൂറോപ്യൻ കേന്ദ്ര ബാങ്ക് ഉദ്ധരിച്ചതുപോലെ അല്ലെങ്കിൽ ലഭ്യതയനുസരിച്ച് ആ തീയതിക്ക് അടുത്തുള്ള പ്രതിനിധി സംഘങ്ങളോ മറ്റ് ഉചിതമായ ഉറവിടങ്ങളോ നൽകുന്നതുപോലെ, മുൻ മാസത്തിലെ അവസാനത്തിനു തൊട്ടു മുൻപുള്ള ദിവസത്തെ വിപണി നിരക്കുകളാണ്.</string>
+    <string name="api_inforEuro_hint">നിരക്കുകൾ മാസത്തിലൊരിക്കൽ മാത്രമേ അപ്ഡേറ്റ് ചെയ്യുന്നുള്ളൂ!</string>
+
+    <string name="api_norgesBank_descriptionFull">നോർവീജിയൻ കേന്ദ്ര ബാങ്ക് <a href="https://www.norges-bank.no/en/topics/Statistics/exchange_rates/"><b>നോർജസ് ബാങ്ക്</b></a> നൽകുന്ന വിനിമയ നിരക്കുകൾ.\n<b>നോർജസ് ബാങ്ക് ഏകദേശം 40 വിനിമയ നിരക്കുകൾ പട്ടികപ്പെടുത്തുന്നു.</b></string>
+    <string name="api_norgesBank_descriptionShort">ഏകദേശം 40 വിനിമയ നിരക്കുകൾ\nഉറവിടം: നോർവേയുടെ കേന്ദ്ര ബാങ്ക്</string>
+    <string name="api_norgesBank_descriptionUpdateInterval">ദൈനംദിന വിനിമയ നിരക്കുകളുടെ പ്രസിദ്ധീകരണ സമയം ഏകദേശം 16:00 CET ആണ്.</string>
+    <string name="api_norgesBank_hint">സേവനത്തിന് സ്ഥിരമായി തടസ്സങ്ങളുണ്ട് (HTTP 503), അക്കാലത്ത് നിരക്കുകൾ പുതുക്കാൻ കഴിയില്ല!</string>
+
+    <string name="api_openExchangeRates_descriptionFull">ഒന്നിലധികം വിശ്വസനീയമായ ഉറവിടങ്ങളിൽ നിന്ന് ഡാറ്റ ട്രാക്ക് ചെയ്ത് സംയോജിപ്പിക്കുന്നു, പക്ഷപാതരഹിതമായ നിരക്കുകൾ ഉറപ്പാക്കുന്നു. കൂടുതൽ വിവരങ്ങൾക്ക് <a href="https://openexchangerates.org/"><b>openexchangerates.org</b></a> കാണുക.\n<b>Open Exchange Rates ഏകദേശം 160 വിനിമയ നിരക്കുകൾ നൽകുന്നു.\n<i>ഈ ഉറവിടം ഉപയോഗിക്കാൻ, നിങ്ങളുടെ വ്യക്തിഗത API കീ നൽകണം!</i></b></string>
+    <string name="api_openExchangeRates_descriptionShort">ഏകദേശം 160 വിനിമയ നിരക്കുകൾ\nഉറവിടം: ഒന്നിലധികം വിശ്വസനീയമായ ദാതാക്കളുടെ സംയോജനം.</string>
+    <string name="api_openExchangeRates_descriptionUpdateInterval">മണിക്കൂറിലൊരിക്കൽ അപ്ഡേറ്റുകൾ.</string>
+    <string name="api_openExchangeRates_hint">ഈ ഉറവിടം ഉപയോഗിക്കാൻ, നിങ്ങളുടെ വ്യക്തിഗത API കീ സൃഷ്ടിക്കണം!</string>
+</resources>

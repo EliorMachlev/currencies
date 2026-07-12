@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_timeline_title">&lt;b>%1$s&lt;/b> മുതൽ &lt;b>%2$s&lt;/b> വരെ</string>
+    <string name="data_provider">&lt;b>%s&lt;/b> നൽകുന്ന ഡാറ്റ</string>
+
+    <string name="rate_average">ശരാശരി</string>
+    <string name="rate_min">കുറഞ്ഞത്</string>
+    <string name="rate_max">കൂടിയത്</string>
+
+    <string name="year">വർഷം</string>
+    <string name="month">മാസം</string>
+    <string name="week">ആഴ്ച</string>
+</resources>

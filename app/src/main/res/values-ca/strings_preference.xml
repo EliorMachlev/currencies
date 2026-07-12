@@ -10,6 +10,8 @@
     <string name="keyboard_title">Teclat</string>
     <string name="keyboard_option_default">Per defecte</string>
     <string name="keyboard_option_expanded">Expandit</string>
+    <string name="decimal_places_title">Precisió decimal</string>
+    <string name="decimal_places_summary">Nombre de decimals a mostrar per als valors convertits.</string>
     <string name="haptic_feedback_title">Resposta tàctil</string>
     <string name="haptic_feedback_summary">Vibra en prémer una tecla\nSegueix la configuració del sistema</string>
     <string name="category_appearance">Aparença</string>

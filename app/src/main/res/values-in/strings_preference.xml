@@ -10,6 +10,8 @@
     <string name="keyboard_title">Keyboard</string>
     <string name="keyboard_option_default">Bawaan</string>
     <string name="keyboard_option_expanded">Diperluas</string>
+    <string name="decimal_places_title">Akurasi desimal</string>
+    <string name="decimal_places_summary">Jumlah tempat desimal yang ditampilkan untuk nilai yang dikonversi.</string>
     <string name="haptic_feedback_title">Umpan balik haptic</string>
     <string name="haptic_feedback_summary">Getar saat tombol ditekan\nMengikuti pengaturan sistem</string>
     <string name="category_appearance">Tampilan</string>

@@ -10,6 +10,8 @@
     <string name="keyboard_title">Klawiatura</string>
     <string name="keyboard_option_default">Domyślna</string>
     <string name="keyboard_option_expanded">Rozszerzona</string>
+    <string name="decimal_places_title">Dokładność dziesiętna</string>
+    <string name="decimal_places_summary">Liczba miejsc dziesiętnych wyświetlanych dla przeliczonych wartości.</string>
     <string name="haptic_feedback_title">Wibracje dotykowe</string>
     <string name="haptic_feedback_summary">Wibracja przy naciśnięciu klawisza\nZgodnie z ustawieniami systemu</string>
     <string name="category_appearance">Ekran</string>

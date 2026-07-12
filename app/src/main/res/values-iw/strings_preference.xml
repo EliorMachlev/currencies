@@ -10,6 +10,8 @@
     <string name="keyboard_title">מקלדת</string>
     <string name="keyboard_option_default">ברירת מחדל</string>
     <string name="keyboard_option_expanded">מורחבת</string>
+    <string name="decimal_places_title">דיוק עשרוני</string>
+    <string name="decimal_places_summary">מספר הספרות שאחרי הנקודה שיוצגו עבור ערכים מומרים.</string>
     <string name="haptic_feedback_title">רטט מגע</string>
     <string name="haptic_feedback_summary">רטט בלחיצה על מקש\nבהתאם להגדרות המערכת</string>
     <string name="category_appearance">מראה</string>
