@@ -11,9 +11,15 @@
     <string name="error_http">תגובת השרת היא HTTP %d</string>
     <string name="error_timeout">השרת לא הגיב בזמן או שאינו נגיש.</string>
     <string name="error_no_data">לא ניתן להתחבר לשרת.</string>
+    <string name="error_empty_response">לשרת אין נתונים עבור בקשה זו.</string>
     <string name="error_api_error">אירעה שגיאת API. נא לנסות שוב בהמשך.</string>
+    <string name="error_try_another_api">עם זאת, יש ספקי נתונים נוספים לבחירה בהגדרות. כדאי לנסות!</string>
+    <string name="error_no_api_key">כדי להשתמש במקור זה, יש להגדיר API Key תקין.</string>
+    <string name="error_invalid_api_key">HTTP 401 – נא לבדוק את ה־API Key שלך.</string>
+    <string name="error_unsupported_timeline">תרשים שערי חליפין אינו נתמך על ידי API זה.</string>
     <string name="menu_settings">הגדרות</string>
     <string name="menu_refresh">רענון השערים</string>
     <string name="menu_timeline">תרשים שערי חליפין</string>
     <string name="tooltip_filter_starred">הצגת מטבעות מסומנים בלבד.</string>
+    <string name="currency_dropdown_api_hint">משהו חסר? ספקי נתונים שונים מציעים מטבעות שונים. אפשר לגשת להגדרות ולנסות ספק אחר!\u00A0\uD83E\uDD17</string>
 </resources>

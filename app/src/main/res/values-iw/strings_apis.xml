@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfCanada_descriptionFull">שערי חליפין ממוצעים יומיים של <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>.\n<b>כלולים כ־23 מטבעות.</b></string>
+    <string name="api_bankOfCanada_descriptionShort">כ־23 שערי חליפין\nמקור: הבנק המרכזי של קנדה</string>
+    <string name="api_bankOfCanada_descriptionUpdateInterval">השערים מתפרסמים פעם ביום עבודה עד השעה 16:30 ET.</string>
+
+    <string name="api_bankRossii_descriptionFull">שערי חליפין, בחסות הבנק המרכזי הרוסי <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. לאור הסנקציות הנוכחיות, מקור זה מספק כנראה את שערי החליפין האמינים ביותר עבור הרובל הרוסי.\n<b>Bank Rossii מציג כ־44 שערי חליפין.</b></string>
+    <string name="api_bankRossii_descriptionShort">כ־44 שערי חליפין\nמקור: הבנק המרכזי של רוסיה</string>
+    <string name="api_bankRossii_descriptionUpdateInterval">השערים מתעדכנים על בסיס יומי, למעט <a href="https://cbr.ru/eng/other/holidays/">חגים לאומיים ברוסיה</a>.</string>
+
+    <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> מקבל את שערי המטבעות ממגוון ספקי נתונים פיננסיים ובנקים, כולל הבנק המרכזי האירופי. כל נתוני שערי החליפין מסופקים כשערי אמצע. שערי אמצע נקבעים על ידי חישוב חציון של שערי ה־Bid וה־Ask.\n<b>כלולים כ־160 מטבעות.</b></string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">שערי החליפין מעודכנים בסביבות חצות לפי UTC בכל יום עבודה.</string>
+
+    <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> הוא שירות חדש יחסית אשר (בדומה ל־Frankfurter.app) עוקב אחר שערי חליפין (פורקס) שמפרסם הבנק המרכזי האירופי.\n<b>כלולים כ־30 מטבעות.</b></string>
+    <string name="api_ferEe_descriptionShort" translatable="false">@string/api_frankfurterApp_descriptionShort</string>
     <string name="api_ferEe_descriptionUpdateInterval">השערים מתעדכנים בכל יום עבודה.</string>
+
+    <string name="api_frankfurterApp_descriptionFull"><a href="https://www.frankfurter.app/"><b>Frankfurter.app</b></a> עוקב אחר שערי חליפין (פורקס) שמפרסם הבנק המרכזי האירופי.\n<b>כלולים כ־30 מטבעות.</b></string>
+    <string name="api_frankfurterApp_descriptionShort">כ־30 שערי חליפין\nמקור: הבנק המרכזי האירופי</string>
     <string name="api_frankfurterApp_descriptionUpdateInterval">הנתונים מתעדכנים באזור 16:00 CET בכל יום עבודה.</string>
+
+    <string name="api_inforEuro_descriptionFull"><a href="https://commission.europa.eu/funding-tenders/procedures-guidelines-tenders/information-contractors-and-beneficiaries/exchange-rate-inforeuro_en"><b>InforEuro</b></a> מספק את שער החשבונאות החודשי הרשמי של הנציבות האירופית עבור האירו ואת שערי ההמרה, כפי שנקבעו על ידי הפקיד החשבונאי של הנציבות האירופית בהתאם לסעיף 19 של התקנון הפיננסי.\nשערים אלה משמשים לחישוב סכומי החזרי הוצאות, נסיעות או קצבאות מחיה עבור גורמים חיצוניים המשתתפים בפגישות, ראיונות וכו\' לבקשת הנציבות האירופית.\n<b>כלולים כ־150 מטבעות.</b></string>
+    <string name="api_inforEuro_descriptionShort">כ־150 שערי חליפין\nמקור: הנציבות האירופית</string>
+    <string name="api_inforEuro_descriptionUpdateInterval">השערים המוצגים הם שערי השוק ליום השני לפני הסוף של החודש הקודם, כפי שצוטטו על ידי הבנק המרכזי האירופי או, בהתאם לזמינות, סופקו על ידי המשלחות או מקורות מתאימים אחרים סמוך לאותו תאריך.</string>
+    <string name="api_inforEuro_hint">השערים מתעדכנים רק פעם בחודש!</string>
+
+    <string name="api_norgesBank_descriptionFull">שערי חליפין, בחסות הבנק המרכזי הנורווגי <a href="https://www.norges-bank.no/en/topics/Statistics/exchange_rates/"><b>Norges Bank</b></a>.\n<b>Norges Bank מציג כ־40 שערי חליפין.</b></string>
+    <string name="api_norgesBank_descriptionShort">כ־40 שערי חליפין\nמקור: הבנק המרכזי של נורווגיה</string>
+    <string name="api_norgesBank_descriptionUpdateInterval">זמן פרסום שערי החליפין היומיים הוא בסביבות 16:00 CET.</string>
+    <string name="api_norgesBank_hint">לשירות יש השבתות תדירות (HTTP 503), במהלכן לא ניתן לרענן את השערים!</string>
+
+    <string name="api_openExchangeRates_descriptionFull">הנתונים נאספים ומשולבים ממגוון מקורות אמינים, כדי להבטיח שערים ללא הטיה. למידע נוסף ראו <a href="https://openexchangerates.org/"><b>openexchangerates.org</b></a>.\n<b>Open Exchange Rates מספק כמות גדולה של כ־160 שערי חליפין.\n<i>כדי להשתמש במקור זה, יש להזין API Key אישי!</i></b></string>
+    <string name="api_openExchangeRates_descriptionShort">כ־160 שערי חליפין\nמקור: שילוב של מספר ספקים אמינים.</string>
+    <string name="api_openExchangeRates_descriptionUpdateInterval">עדכונים שעתיים.</string>
+    <string name="api_openExchangeRates_hint">כדי להשתמש במקור זה, יש ליצור API Key אישי!</string>
 </resources>

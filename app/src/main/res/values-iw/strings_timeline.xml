@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_timeline_title">מ־&lt;b>%1$s&lt;/b> ל־&lt;b>%2$s&lt;/b></string>
+    <string name="data_provider">נתונים בחסות &lt;b>%s&lt;/b></string>
+
+    <string name="rate_average">ממוצע</string>
+    <string name="rate_min">מינימום</string>
+    <string name="rate_max">מקסימום</string>
+
+    <string name="year">שנה</string>
+    <string name="month">חודש</string>
+    <string name="week">שבוע</string>
+</resources>
