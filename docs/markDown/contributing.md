@@ -25,6 +25,17 @@ Translations are managed on [Weblate](https://translate.codeberg.org/engage/curr
 3. JDK 21 is required.
 4. `./gradlew assembleFdroidDebug` should build without errors.
 
+### Branching Base
+
+Every new branch must be forked from **remote master** (`origin/master`), not from the local current branch:
+
+```sh
+git fetch origin master
+git switch -c <new-branch> origin/master
+```
+
+This ensures the branch starts from the latest upstream state and does not inherit stale local work or unrelated in-progress commits from another feature. If a PR intentionally depends on another unmerged branch, state that dependency explicitly.
+
 ### Branch Naming
 
 Use descriptive branch names. The CI `apk-artifact.yaml` workflow runs on any non-master push and uploads a debug APK as an artifact for easy review.
