@@ -51,29 +51,12 @@ internal class BankOfCanadaRatesAdapter {
         var date: LocalDate? = null
         val rates = mutableListOf<Rate>()
 
-        if (reader.peek() == JsonReader.Token.END_ARRAY)
-            // no data
+        if (reader.peek() == JsonReader.Token.END_ARRAY) {
             errorMessage = "No data found."
-        else {
-            reader.beginObject()
-            while (reader.hasNext()) {
-                when (val nextName = reader.nextName()) {
-                    // date
-                    "d" -> date = LocalDate.parse(reader.nextString())
-                    // rate
-                    else -> {
-                        val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
-                        reader.beginObject()
-                        reader.skipName() // always "v"
-                        val value = BigDecimal(reader.nextString())
-                        reader.endObject()
-                        currency?.let { rates.add(Rate(it, BigDecimal.ONE.divide(value, MathContext.DECIMAL128))) }
-                    }
-                }
-            }
+        } else {
+            date = readObservationRates(reader, rates)
         }
         if (rates.isNotEmpty())
-            // finally, add CAD...
             rates.add(Rate(Currency.CAD, BigDecimal.ONE))
 
         return ExchangeRates(
@@ -84,6 +67,29 @@ internal class BankOfCanadaRatesAdapter {
             rates = rates,
             provider = ApiProvider.BANK_OF_CANADA
         )
+    }
+
+    private fun readObservationRates(reader: JsonReader, rates: MutableList<Rate>): LocalDate? {
+        var date: LocalDate? = null
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val nextName = reader.nextName()
+            if (nextName == "d") {
+                date = LocalDate.parse(reader.nextString())
+            } else {
+                readRate(reader, nextName)?.let(rates::add)
+            }
+        }
+        return date
+    }
+
+    private fun readRate(reader: JsonReader, name: String): Rate? {
+        val currency = Currency.fromString(name.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
+        reader.beginObject()
+        reader.skipName() // always "v"
+        val value = BigDecimal(reader.nextString())
+        reader.endObject()
+        return currency?.let { Rate(it, BigDecimal.ONE.divide(value, MathContext.DECIMAL128)) }
     }
 
     @Synchronized

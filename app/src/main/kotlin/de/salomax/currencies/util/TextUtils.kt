@@ -96,53 +96,39 @@ fun String.toHumanReadableNumber(
     suffix: String? = null,
     trim: Boolean = false
 ): String {
-    val sb = StringBuilder()
-
-    // + sign
-    if (showPositiveSign
-        && DecimalFormat.getInstance().parse(this) != null
-        && DecimalFormat.getInstance().parse(this)!!.toDouble() >= 0.0
-    )
-        sb.append("+ ")
-
-    // format number
-    sb.append(this
-        // round, if wished; also converts scientific to natural (123456789.123456789 instead of 1.23456789123456789E8)
-        .let {
-            if (decimalPlaces != null)
-                it.toBigDecimal()
-                    // round with bankers' rounding
-                    .setScale(decimalPlaces, RoundingMode.HALF_EVEN)
-                    // convert back to string
-                    .toPlainString()
-            else
-                it
-        }
-        // remove trailing .0000
-        .let {
-            if (trim)
-                it.replace("(?!^)\\.?0+$".toRegex(), "")
-            else
-                it
-        }
-        // group number blocks
-        .let {
-            if (it.contains('.')) {
-                val split = it.split('.')
-                split[0].groupNumbers(context) + getDecimalSeparator(context) + split[1]
-            } else {
-                it.groupNumbers(context)
-            }
-        }
-        // add space to negative sign
+    val formatted = this
+        .let { roundIfNeeded(it, decimalPlaces) }
+        .let { if (trim) trimTrailingZeros(it) else it }
+        .let { applyGrouping(it, context) }
         .replace("-", "- ")
-    )
+    return buildString {
+        if (showPositiveSign && isNonNegative(this@toHumanReadableNumber))
+            append("+ ")
+        append(formatted)
+        if (suffix != null) append(" $suffix")
+    }
+}
 
-    // suffix
-    if (suffix != null)
-        sb.append(" $suffix")
+private fun roundIfNeeded(value: String, decimalPlaces: Int?): String {
+    if (decimalPlaces == null) return value
+    // also converts scientific to natural (123456789.123 instead of 1.23456789E8)
+    return value.toBigDecimal()
+        .setScale(decimalPlaces, RoundingMode.HALF_EVEN)
+        .toPlainString()
+}
 
-    return sb.toString()
+private fun trimTrailingZeros(value: String): String =
+    value.replace("(?!^)\\.?0+$".toRegex(), "")
+
+private fun applyGrouping(value: String, context: Context): String {
+    if (!value.contains('.')) return value.groupNumbers(context)
+    val (intPart, fracPart) = value.split('.', limit = 2).let { it[0] to it[1] }
+    return intPart.groupNumbers(context) + getDecimalSeparator(context) + fracPart
+}
+
+private fun isNonNegative(raw: String): Boolean {
+    val parsed = DecimalFormat.getInstance().parse(raw) ?: return false
+    return parsed.toDouble() >= 0.0
 }
 
 private fun String.groupNumbers(context: Context): String {
