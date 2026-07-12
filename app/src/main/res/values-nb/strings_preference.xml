@@ -10,6 +10,8 @@
     <string name="keyboard_title">Tastatur</string>
     <string name="keyboard_option_default">Standard</string>
     <string name="keyboard_option_expanded">Utvidet</string>
+    <string name="decimal_places_title">Desimalpresisjon</string>
+    <string name="decimal_places_summary">Antall desimaler som vises for konverterte verdier.</string>
     <string name="haptic_feedback_title">Haptisk tilbakemelding</string>
     <string name="haptic_feedback_summary">Vibrer ved tastetrykk\nFølger systeminnstillingen</string>
     <string name="category_appearance">Utseende</string>

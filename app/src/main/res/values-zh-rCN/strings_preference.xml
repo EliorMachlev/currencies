@@ -10,6 +10,8 @@
     <string name="keyboard_title">键盘</string>
     <string name="keyboard_option_default">默认</string>
     <string name="keyboard_option_expanded">扩展</string>
+    <string name="decimal_places_title">小数精度</string>
+    <string name="decimal_places_summary">转换值显示的小数位数。</string>
     <string name="haptic_feedback_title">触感反馈</string>
     <string name="haptic_feedback_summary">按键时振动\n跟随系统设置</string>
     <string name="category_appearance">外观</string>

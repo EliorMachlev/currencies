@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [<!ENTITY nbsp "&#160;">]>
+<resources>
+    <!-- main settings -->
+    <string name="category_settings">പൊതു ക്രമീകരണങ്ങൾ</string>
+    <string name="fee_title">വിദേശ ഇടപാട് ഫീസ്</string>
+    <string name="fee_summary">നിങ്ങളുടെ ക്രെഡിറ്റ് കാർഡ് കരാർ അനുസരിച്ച്, നിങ്ങളുടെ ബാങ്ക് എല്ലാ വിദേശ വിനിമയ ഇടപാടുകൾക്കും ഒരു ഫീസ് ഈടാക്കിയേക്കാം. ഇവിടെ നിങ്ങൾക്ക് ആ ഫീസ് നൽകാം. അത് കണക്കുകൂട്ടലിനു മുകളിൽ ചേർക്കപ്പെടും, അതിനാൽ നിങ്ങൾ <i>യഥാർത്ഥത്തിൽ</i> എത്ര നൽകുന്നുവെന്ന് നിങ്ങൾക്കറിയാം.</string>
+    <string name="previewConversion_title">പരിവർത്തന പ്രിവ്യൂ</string>
+    <string name="previewConversion_summary">കറൻസി പിക്കറിൽ ഓരോ നിരക്കിന്റെയും നിലവിലെ പരിവർത്തനം കാണിക്കുക.</string>
+    <string name="keyboard_title">കീബോർഡ്</string>
+    <string name="keyboard_option_default">സ്ഥിരസ്ഥിതി</string>
+    <string name="keyboard_option_expanded">വിപുലീകൃതം</string>
+    <string name="decimal_places_title">ദശാംശ കൃത്യത</string>
+    <string name="decimal_places_summary">പരിവർത്തനം ചെയ്ത മൂല്യങ്ങൾക്ക് കാണിക്കേണ്ട ദശാംശ സ്ഥാനങ്ങളുടെ എണ്ണം.</string>
+    <string name="haptic_feedback_title">ഹാപ്റ്റിക് ഫീഡ്‌ബാക്ക്</string>
+    <string name="haptic_feedback_summary">കീ അമർത്തുമ്പോൾ വൈബ്രേറ്റ് ചെയ്യുക\nസിസ്റ്റം ക്രമീകരണം പിന്തുടരുന്നു</string>
+    <string name="category_appearance">ദൃശ്യരൂപം</string>
+    <string name="system_default">സിസ്റ്റം സ്ഥിരസ്ഥിതി</string>
+    <string name="theme_title">രൂപകൽപ്പന</string>
+    <string name="theme_option_light">ലൈറ്റ്</string>
+    <string name="theme_option_dark">ഡാർക്ക്</string>
+    <string name="pure_black_enabled_title">OLED കറുപ്പ്</string>
+    <string name="pure_black_enabled_summary">ഡാർക്ക് മോഡിൽ പൂർണ കറുപ്പ് ഉപയോഗിക്കുക</string>
+    <!-- languages -->
+    <string name="language_title">ആപ്പ് ഭാഷ</string>
+    <string name="language_ar">അറബിക്</string>
+    <string name="language_bg">ബൾഗേറിയൻ</string>
+    <string name="language_bn">ബംഗാളി</string>
+    <string name="language_ca">കാറ്റലൻ</string>
+    <string name="language_cs">ചെക്</string>
+    <string name="language_da">ഡാനിഷ്</string>
+    <string name="language_de">ജർമ്മൻ</string>
+    <string name="language_el">ഗ്രീക്ക്</string>
+    <string name="language_en">ഇംഗ്ലീഷ്</string>
+    <string name="language_en_GB">ഇംഗ്ലീഷ് (യുണൈറ്റഡ് കിംഗ്ഡം)</string>
+    <string name="language_eo">എസ്‌പെറാന്റോ</string>
+    <string name="language_es">സ്പാനിഷ്</string>
+    <string name="language_et">എസ്റ്റോണിയൻ</string>
+    <string name="language_fa">പേർഷ്യൻ</string>
+    <string name="language_fr">ഫ്രഞ്ച്</string>
+    <string name="language_hr">ക്രൊയേഷ്യൻ</string>
+    <string name="language_hu">ഹംഗേറിയൻ</string>
+    <string name="language_in">ഇന്തോനേഷ്യൻ</string>
+    <string name="language_is">ഐസ്‌ലാൻഡിക്</string>
+    <string name="language_it">ഇറ്റാലിയൻ</string>
+    <string name="language_iw">ഹീബ്രു</string>
+    <string name="language_nb">നോർവീജിയൻ</string>
+    <string name="language_nl">ഡച്ച്</string>
+    <string name="language_pl">പോളിഷ്</string>
+    <string name="language_pt_BR">പോർച്ചുഗീസ് (ബ്രസീൽ)</string>
+    <string name="language_ru">റഷ്യൻ</string>
+    <string name="language_sv">സ്വീഡിഷ്</string>
+    <string name="language_tr">ടർക്കിഷ്</string>
+    <string name="language_uk">ഉക്രേനിയൻ</string>
+    <string name="language_vi">വിയറ്റ്നാമീസ്</string>
+    <string name="language_zh_CN">ചൈനീസ് (ലളിതം)</string>
+    <string name="language_zh_TW">ചൈനീസ് (പരമ്പരാഗതം)</string>
+    <!-- api -->
+    <string name="category_api">വിനിമയ നിരക്കുകൾ</string>
+    <string name="api_title">ഡാറ്റ ദാതാവ്</string>
+    <string name="api_open_exchangerates_api_key_title">Open Exchangerates API കീ</string>
+    <string name="api_open_exchangerates_api_key_message">ഈ ഉറവിടം ഉപയോഗിക്കാൻ, നിങ്ങൾ നിങ്ങളുടെ വ്യക്തിഗത API കീ സൃഷ്ടിക്കണം.\n\nഅതിനായി, https://openexchangerates.org/signup/free-ലേക്ക് പോയി ഒരു സൗജന്യ അക്കൗണ്ട് സൃഷ്ടിക്കുക.\nഅവസാനം, നിങ്ങളുടെ ഡാഷ്‌ബോർഡിനുള്ളിൽ ഒരു പുതിയ App ID സൃഷ്ടിച്ച് ഇവിടെ നൽകുക:</string>
+    <string name="api_open_exchangerates_api_key_missing"><i>API കീ ആവശ്യമാണ്</i></string>
+    <string name="api_about_title">%s കുറിച്ച്</string>
+    <string name="api_refreshPeriod_title">പുതുക്കൽ കാലയളവ്</string>
+    <!-- about -->
+    <string name="category_about">ഈ ആപ്പിനെക്കുറിച്ച്</string>
+    <string name="disclaimer_title">നിരാകരണം</string>
+    <string name="disclaimer_summary">ഈ ആപ്പ് വളരെ സൂക്ഷ്മമായി എഴുതി പരീക്ഷിച്ചിട്ടുണ്ടെങ്കിലും, <b>അത് കാണിക്കുന്ന ഡാറ്റ ശരിയാണെന്ന് ഒരു ഉറപ്പുമില്ല</b>. വിനിമയ നിരക്കുകൾ ഒരു മൂന്നാം കക്ഷിയാൽ നൽകപ്പെടുന്നു, ഈ ആപ്പിന് ഡാറ്റ ശരിയാണെന്നും കാലാനുസൃതമാണെന്നും ഉറപ്പു നൽകാൻ കഴിയില്ല.\nകൂടാതെ, നൽകിയ നിരക്കുകൾ - ശരിയാണെങ്കിലും - നിങ്ങളുടെ ബാങ്ക് ഉപയോഗിക്കുന്നവയിൽ നിന്ന് വ്യത്യാസപ്പെട്ടേക്കാം.\nഅവസാനമായി: തെറ്റുകൾ സംഭവിക്കാം. ആരെയും അന്ധമായി വിശ്വസിക്കരുത്! എന്നിരുന്നാലും, ഈ ആപ്പ് ഉദ്ദേശിച്ചതുപോലെ പ്രവർത്തിക്കുന്നു എന്ന് സംശയമുണ്ടെങ്കിൽ ഞാൻ ഇത് പുറത്തിറക്കുമായിരുന്നില്ല.</string>
+    <string name="sourcecode_title">സോഴ്‌സ് കോഡ്</string>
+    <string name="sourcecode_summary">ഈ ആപ്പ് ഓപ്പൺ സോഴ്‌സ് ആണ്. ഇഷ്യൂകൾ തുറക്കാനും, സംഭാവന ചെയ്യുന്നതെങ്ങനെയെന്നറിയാനും, അല്ലെങ്കിൽ സോഴ്‌സുകൾ ഒന്നു കാണാനുമായി കോഡ് റെപ്പോസിറ്ററിയിലേക്ക് പോകുക.</string>
+    <string name="donate_title">ഡെവലപ്പറെ പിന്തുണയ്ക്കുക</string>
+    <string name="donate_summary">PayPal വഴി സംഭാവന ചെയ്യുക</string>
+    <string name="rate_title">ഈ ആപ്പ് റേറ്റ് ചെയ്യുക</string>
+    <string name="rate_summary">നിങ്ങൾക്ക് താൽപ്പര്യമുണ്ടെങ്കിൽ, മറ്റുള്ളവർക്ക് Currencies കണ്ടെത്താൻ നിങ്ങൾക്ക് സഹായിക്കാം. Google Play-യിൽ ആപ്പ് റേറ്റ് ചെയ്യാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക.</string>
+    <string name="category_versioninfo">പതിപ്പ് വിവരം</string>
+    <string name="title_changelog">മാറ്റങ്ങളുടെ ചരിത്രം</string>
+</resources>

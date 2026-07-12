@@ -10,6 +10,8 @@
     <string name="keyboard_title">Klávesnice</string>
     <string name="keyboard_option_default">Výchozí</string>
     <string name="keyboard_option_expanded">Rozšířená</string>
+    <string name="decimal_places_title">Desetinná přesnost</string>
+    <string name="decimal_places_summary">Počet desetinných míst zobrazených u převedených hodnot.</string>
     <string name="haptic_feedback_title">Haptická odezva</string>
     <string name="haptic_feedback_summary">Vibrace při stisknutí klávesy\nŘídí se systémovým nastavením</string>
     <string name="category_appearance">Vzhled</string>

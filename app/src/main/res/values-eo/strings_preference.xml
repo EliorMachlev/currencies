@@ -10,6 +10,8 @@
     <string name="keyboard_title">Klavaro</string>
     <string name="keyboard_option_default">Implicita</string>
     <string name="keyboard_option_expanded">Etendita</string>
+    <string name="decimal_places_title">Decimala precizeco</string>
+    <string name="decimal_places_summary">Nombro de decimalaj lokoj montrataj por konvertitaj valoroj.</string>
     <string name="haptic_feedback_title">Hapta reago</string>
     <string name="haptic_feedback_summary">Vibru ĉe klav-premo\nSekvas sisteman agordon</string>
     <string name="category_appearance">Aspekto</string>

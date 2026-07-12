@@ -10,6 +10,8 @@
     <string name="keyboard_title">Tastatur</string>
     <string name="keyboard_option_default">Standard</string>
     <string name="keyboard_option_expanded">Udvidet</string>
+    <string name="decimal_places_title">Decimalnøjagtighed</string>
+    <string name="decimal_places_summary">Antal decimaler, der vises for konverterede værdier.</string>
     <string name="haptic_feedback_title">Haptisk feedback</string>
     <string name="haptic_feedback_summary">Vibrer ved tastetryk\nFølger systemindstillingen</string>
     <string name="category_appearance">Udseende</string>

@@ -10,6 +10,8 @@
     <string name="keyboard_title">Klaviatuur</string>
     <string name="keyboard_option_default">Vaikimisi</string>
     <string name="keyboard_option_expanded">Laiendatud</string>
+    <string name="decimal_places_title">Kümnendtäpsus</string>
+    <string name="decimal_places_summary">Kuvatavate kümnendkohtade arv teisendatud väärtustel.</string>
     <string name="haptic_feedback_title">Haptiline tagasiside</string>
     <string name="haptic_feedback_summary">Vibratsioon klahvivajutuse korral\nJärgib süsteemi seadet</string>
     <string name="category_appearance">Välimus</string>

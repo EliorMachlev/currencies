@@ -10,6 +10,8 @@
     <string name="keyboard_title">Klavye</string>
     <string name="keyboard_option_default">Varsayılan</string>
     <string name="keyboard_option_expanded">Genişletilmiş</string>
+    <string name="decimal_places_title">Ondalık doğruluk</string>
+    <string name="decimal_places_summary">Dönüştürülmüş değerler için gösterilecek ondalık basamak sayısı.</string>
     <string name="haptic_feedback_title">Dokunsal geri bildirim</string>
     <string name="haptic_feedback_summary">Tuşa basıldığında titreşim\nSistem ayarını takip eder</string>
     <string name="category_appearance">Görünüm</string>

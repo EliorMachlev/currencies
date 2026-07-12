@@ -10,6 +10,8 @@
     <string name="keyboard_title">Teclado</string>
     <string name="keyboard_option_default">Padrão</string>
     <string name="keyboard_option_expanded">Expandido</string>
+    <string name="decimal_places_title">Precisão decimal</string>
+    <string name="decimal_places_summary">Número de casas decimais mostradas para os valores convertidos.</string>
     <string name="haptic_feedback_title">Feedback tátil</string>
     <string name="haptic_feedback_summary">Vibrar ao pressionar tecla\nSegue configuração do sistema</string>
     <string name="category_appearance">Aparência</string>

@@ -10,6 +10,8 @@
     <string name="keyboard_title">Клавиатура</string>
     <string name="keyboard_option_default">По умолчанию</string>
     <string name="keyboard_option_expanded">Расширенная</string>
+    <string name="decimal_places_title">Точность десятичных</string>
+    <string name="decimal_places_summary">Количество десятичных знаков, отображаемых для конвертированных значений.</string>
     <string name="haptic_feedback_title">Тактильный отклик</string>
     <string name="haptic_feedback_summary">Вибрация при нажатии клавиши\nСледует системной настройке</string>
     <string name="category_appearance">Внешний вид</string>

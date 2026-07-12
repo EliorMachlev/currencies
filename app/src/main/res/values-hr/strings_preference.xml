@@ -10,6 +10,8 @@
     <string name="keyboard_title">Tipkovnica</string>
     <string name="keyboard_option_default">Zadano</string>
     <string name="keyboard_option_expanded">Proširena</string>
+    <string name="decimal_places_title">Decimalna preciznost</string>
+    <string name="decimal_places_summary">Broj decimala prikazanih za pretvorene vrijednosti.</string>
     <string name="haptic_feedback_title">Haptička povratna informacija</string>
     <string name="haptic_feedback_summary">Vibracija pri pritisku tipke\nPrati postavku sustava</string>
     <string name="category_appearance">Izgled</string>

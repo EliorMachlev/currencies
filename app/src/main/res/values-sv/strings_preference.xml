@@ -10,6 +10,8 @@
     <string name="keyboard_title">Tangentbord</string>
     <string name="keyboard_option_default">Standard</string>
     <string name="keyboard_option_expanded">Ut��kad</string>
+    <string name="decimal_places_title">Decimalnoggrannhet</string>
+    <string name="decimal_places_summary">Antal decimaler som visas för konverterade värden.</string>
     <string name="haptic_feedback_title">Haptisk återkoppling</string>
     <string name="haptic_feedback_summary">Vibrera vid knapptryckning\nFöljer systeminställning</string>
     <string name="category_appearance">Utseende</string>

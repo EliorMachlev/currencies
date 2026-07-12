@@ -10,6 +10,8 @@
     <string name="keyboard_title">Клавиатура</string>
     <string name="keyboard_option_default">По подразбиране</string>
     <string name="keyboard_option_expanded">Разширена</string>
+    <string name="decimal_places_title">Десетична точност</string>
+    <string name="decimal_places_summary">Брой десетични знаци, показвани за конвертираните стойности.</string>
     <string name="haptic_feedback_title">Тактилна обратна връзка</string>
     <string name="haptic_feedback_summary">Вибрация при натискане на клавиш\nСледва системната настройка</string>
     <string name="category_appearance">Изглед</string>

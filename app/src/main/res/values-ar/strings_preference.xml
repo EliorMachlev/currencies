@@ -10,6 +10,8 @@
     <string name="keyboard_title">لوحة المفاتيح</string>
     <string name="keyboard_option_default">افتراضي</string>
     <string name="keyboard_option_expanded">موسّعة</string>
+    <string name="decimal_places_title">دقة عشرية</string>
+    <string name="decimal_places_summary">عدد المنازل العشرية المعروضة للقيم المحولة.</string>
     <string name="haptic_feedback_title">اهتزاز اللمس</string>
     <string name="haptic_feedback_summary">اهتزاز عند الضغط على مفتاح\nيتبع إعداد النظام</string>
     <string name="category_appearance">المظهر</string>
