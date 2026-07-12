@@ -56,16 +56,19 @@
     <string name="api_title">ספק נתונים</string>
     <string name="api_about_title">על %s</string>
     <string name="api_refreshPeriod_title">פער לרענון</string>
+    <string name="api_open_exchangerates_api_key_title">Open Exchangerates API Key</string>
+    <string name="api_open_exchangerates_api_key_message">כדי להשתמש במקור זה, יש ליצור API Key אישי.\n\nלשם כך, יש להיכנס ל־https://openexchangerates.org/signup/free וליצור חשבון חינמי.\nלבסוף, יש להפיק App ID חדש בלוח הבקרה ולהזין אותו כאן:</string>
+    <string name="api_open_exchangerates_api_key_missing"><i>נדרש API Key</i></string>
     <!-- about -->
     <string name="category_about">על היישומון הזה</string>
     <string name="disclaimer_title">כתב ויתור</string>
-
-
-
+    <string name="disclaimer_summary">אף על פי שהיישומון נכתב ונבדק בקפידה רבה, <b>אין כל אחריות שהנתונים המוצגים בו נכונים</b>. שערי החליפין מסופקים על ידי צד שלישי והיישומון אינו יכול להבטיח בשום צורה שהנתונים נכונים ומעודכנים.\nבנוסף, השערים המסופקים – גם אם הם נכונים – עשויים להיות שונים מאלה שהבנק שלך משתמש בהם.\nולסיום: טעויות קורות. אף פעם אל תסמכו על אף אחד באופן עיוור! עם זאת, לא הייתי משחרר את היישומון אילו הייתי מפקפק שהוא פועל כמצופה.</string>
+    <string name="sourcecode_title">קוד מקור</string>
+    <string name="sourcecode_summary">היישומון הזה בקוד פתוח. אפשר לגשת למאגר הקוד כדי לפתוח דיווחים על תקלות, לגלות איך לתרום או פשוט להציץ במקורות.</string>
     <string name="donate_title">תמיכה במתכנת</string>
     <string name="donate_summary">תרומה דרך PayPal</string>
     <string name="rate_title">דירוג היישומון</string>
     <string name="rate_summary">לבחירתך, אפשר לסייע לאחרים להיחשף ליישומון. לחיצה כאן תוביל אותך לדירוג ב־Google Play.</string>
-
-
+    <string name="category_versioninfo">פרטי גרסה</string>
+    <string name="title_changelog">יומן שינויים</string>
 </resources>
