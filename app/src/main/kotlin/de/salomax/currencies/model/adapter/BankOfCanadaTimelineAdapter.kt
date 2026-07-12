@@ -76,29 +76,18 @@ internal class BankOfCanadaTimelineAdapter(
 
     private fun convertObservation(reader: JsonReader): Pair<LocalDate, Rate>? {
         var date: LocalDate? = null
-
         var baseValue: BigDecimal? = null
         var symbolValue: BigDecimal? = null
 
         reader.beginObject()
         while (reader.hasNext()) {
-            when (val nextName = reader.nextName()) {
-                // date
-                "d" -> date = LocalDate.parse(reader.nextString())
-                // rate
-                else -> {
-                    val currency = Currency.fromString(nextName.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
-                    reader.beginObject()
-                    reader.skipName() // always "v"
-                    val value = BigDecimal(reader.nextString())
-                    reader.endObject()
-                    currency?.let {
-                        if (it == base)
-                            baseValue = value
-                        else if (it == symbol)
-                            symbolValue = value
-                    }
-                }
+            val nextName = reader.nextName()
+            if (nextName == "d") {
+                date = LocalDate.parse(reader.nextString())
+            } else {
+                val (currency, value) = readCurrencyValue(reader, nextName)
+                if (currency == base) baseValue = value
+                else if (currency == symbol) symbolValue = value
             }
             if (date != null && baseValue != null && symbolValue != null) {
                 reader.endObject()
@@ -106,6 +95,15 @@ internal class BankOfCanadaTimelineAdapter(
             }
         }
         return null
+    }
+
+    private fun readCurrencyValue(reader: JsonReader, name: String): Pair<Currency?, BigDecimal> {
+        val currency = Currency.fromString(name.substring(CURRENCY_CODE_START, CURRENCY_CODE_END))
+        reader.beginObject()
+        reader.skipName() // always "v"
+        val value = BigDecimal(reader.nextString())
+        reader.endObject()
+        return currency to value
     }
 
     @Synchronized
