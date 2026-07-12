@@ -145,4 +145,8 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         Database(app).setHapticFeedbackEnabled(enabled)
     }
 
+    fun setDecimalPlaces(places: Int) {
+        Database(app).setDecimalPlaces(places)
+    }
+
 }
