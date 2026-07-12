@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.salomax.currencies.R
@@ -57,6 +58,52 @@ class SearchableSpinnerDialog(context: Context) : AppCompatDialogFragment(), Sea
         adapter.onStarClicked = {
             mainViewModel.toggleCurrencyStar(it.currency)
         }
+
+        // drag-to-reorder for starred rows (long-press to drag)
+        val dragCallback = object : ItemTouchHelper.Callback() {
+            override fun isLongPressDragEnabled(): Boolean = true
+            override fun isItemViewSwipeEnabled(): Boolean = false
+
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                val pos = viewHolder.bindingAdapterPosition
+                return if (adapter.isDraggable(pos))
+                    makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
+                else 0
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return adapter.moveItem(
+                    viewHolder.bindingAdapterPosition,
+                    target.bindingAdapterPosition
+                )
+            }
+
+            override fun canDropOver(
+                recyclerView: RecyclerView,
+                current: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return adapter.isDraggable(target.bindingAdapterPosition)
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) = Unit
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+                mainViewModel.setStarredCurrencyOrder(adapter.getCurrentStarredOrder())
+            }
+        }
+        ItemTouchHelper(dragCallback).attachToRecyclerView(listView)
 
         // searchView
         searchView = view.findViewById(R.id.searchView)

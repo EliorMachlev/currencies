@@ -13,7 +13,6 @@ import de.salomax.currencies.util.SharedPreferenceExchangeRatesLiveData
 import de.salomax.currencies.util.SharedPreferenceIntLiveData
 import de.salomax.currencies.util.SharedPreferenceLongLiveData
 import de.salomax.currencies.util.SharedPreferenceStringLiveData
-import de.salomax.currencies.util.SharedPreferenceStringSetLiveData
 import de.salomax.currencies.util.toLocalDate
 import de.salomax.currencies.util.toMillis
 import java.math.BigDecimal
@@ -120,42 +119,40 @@ class Database(context: Context) {
         context.getSharedPreferences("starred_currencies", MODE_PRIVATE)
 
     private val keyStars = "_stars"
+    private val keyStarsOrder = "_starsOrder"
     private val keyStarredEnabled = "_starredActive"
 
-    fun toggleCurrencyStar(currency: Currency) {
-        prefsStarredCurrencies.apply {
-            if (prefsStarredCurrencies.getStringSet(keyStars, HashSet<String>())!!.contains(currency.iso4217Alpha()))
-                removeCurrencyStar(currency)
-            else
-                starCurrency(currency)
-        }
+    private fun readOrderedStarCodes(): List<String> {
+        val stored = prefsStarredCurrencies.getString(keyStarsOrder, null)
+        if (stored != null)
+            return if (stored.isEmpty()) emptyList() else stored.split(",")
+        // migrate legacy Set<String> to ordered CSV (alphabetical)
+        val legacy = prefsStarredCurrencies.getStringSet(keyStars, HashSet<String>())!!
+        return legacy.sorted()
     }
 
-    fun getStarredCurrencies(): LiveData<Set<Currency>> {
-        return SharedPreferenceStringSetLiveData(prefsStarredCurrencies, keyStars, HashSet())
-            .map { set ->
-                set.mapNotNull { code ->
-                    Currency.fromString(code)
-                }.toSet()
+    private fun writeOrderedStarCodes(codes: List<String>) {
+        prefsStarredCurrencies.edit()
+            .putString(keyStarsOrder, codes.joinToString(","))
+            .apply()
+    }
+
+    fun toggleCurrencyStar(currency: Currency) {
+        val code = currency.iso4217Alpha()
+        val current = readOrderedStarCodes()
+        val next = if (current.contains(code)) current.minus(code) else current.plus(code)
+        writeOrderedStarCodes(next)
+    }
+
+    fun getStarredCurrencies(): LiveData<List<Currency>> {
+        return SharedPreferenceStringLiveData(prefsStarredCurrencies, keyStarsOrder, null)
+            .map { _ ->
+                readOrderedStarCodes().mapNotNull { code -> Currency.fromString(code) }
             }
     }
 
-    private fun starCurrency(currency: Currency) {
-        prefsStarredCurrencies.apply {
-            edit().putStringSet(keyStars,
-                prefsStarredCurrencies.getStringSet(keyStars, HashSet<String>())!!
-                    .plus(currency.iso4217Alpha())
-            ).apply()
-        }
-    }
-
-    private fun removeCurrencyStar(currency: Currency) {
-        prefsStarredCurrencies.apply {
-            edit().putStringSet(keyStars,
-                prefsStarredCurrencies.getStringSet(keyStars, HashSet<String>())!!
-                    .minus(currency.iso4217Alpha())
-            ).apply()
-        }
+    fun setStarredCurrencyOrder(currencies: List<Currency>) {
+        writeOrderedStarCodes(currencies.map { it.iso4217Alpha() })
     }
 
     fun isFilterStarredEnabled(): SharedPreferenceBooleanLiveData {
