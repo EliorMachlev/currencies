@@ -464,15 +464,27 @@ class MainActivity : BaseActivity() {
         // IMPORTANT: can't work with simple keyCodes here, as depending on the keyboard
         // configuration, wrong values will be returned (e.g. KEYCODE_8 instead of KEYCODE_PLUS).
         val key = event?.keyCharacterMap?.get(keyCode, event.metaState)?.let { Char(it) }
+        return handleCharKey(key) || handleControlKey(keyCode)
+    }
+
+    private fun handleCharKey(key: Char?): Boolean {
+        key ?: return false
         when {
-            key?.isDigit() == true -> viewModel.addNumber(key.toString())
+            key.isDigit() -> viewModel.addNumber(key.toString())
             key == '.' || key == ',' -> viewModel.addDecimal()
             key == '+' -> viewModel.addition()
             key == '-' -> viewModel.subtraction()
             key == '*' -> viewModel.multiplication()
             key == '/' -> viewModel.division()
-            keyCode == KeyEvent.KEYCODE_DEL -> viewModel.delete()
-            keyCode == KeyEvent.KEYCODE_BACK -> super.onBackPressedDispatcher.onBackPressed()
+            else -> return false
+        }
+        return true
+    }
+
+    private fun handleControlKey(keyCode: Int): Boolean {
+        when (keyCode) {
+            KeyEvent.KEYCODE_DEL -> viewModel.delete()
+            KeyEvent.KEYCODE_BACK -> super.onBackPressedDispatcher.onBackPressed()
             else -> return false
         }
         return true
@@ -495,26 +507,25 @@ class MainActivity : BaseActivity() {
                     .windowLayoutInfo(this@MainActivity)
                     .collect { newLayoutInfo ->
                         newLayoutInfo.displayFeatures.filterIsInstance(FoldingFeature::class.java)
-                            .firstOrNull ()?.let { foldingFeature ->
-                                // flat
-                                if (foldingFeature.state == FoldingFeature.State.FLAT) {
-                                    // portrait
-                                    if (resources.configuration.screenHeightDp >= resources.configuration.screenWidthDp)
-                                        findViewById<LinearLayout>(R.id.main_root).orientation = LinearLayout.VERTICAL
-                                    // landscape
-                                    else
-                                        findViewById<LinearLayout>(R.id.main_root).orientation = LinearLayout.HORIZONTAL
-                                }
-                                // half & portrait
-                                else if (foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL)
-                                    findViewById<LinearLayout>(R.id.main_root).orientation = LinearLayout.HORIZONTAL
-                                // half & landscape
-                                else
-                                    findViewById<LinearLayout>(R.id.main_root).orientation = LinearLayout.VERTICAL
-                            }
+                            .firstOrNull()?.let { applyFoldingOrientation(it) }
                     }
             }
         }
+    }
+
+    private fun applyFoldingOrientation(foldingFeature: FoldingFeature) {
+        val root = findViewById<LinearLayout>(R.id.main_root)
+        root.orientation = when {
+            foldingFeature.state == FoldingFeature.State.FLAT -> flatOrientation()
+            foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL -> LinearLayout.HORIZONTAL
+            else -> LinearLayout.VERTICAL
+        }
+    }
+
+    private fun flatOrientation(): Int {
+        val cfg = resources.configuration
+        return if (cfg.screenHeightDp >= cfg.screenWidthDp) LinearLayout.VERTICAL
+        else LinearLayout.HORIZONTAL
     }
 
 }
