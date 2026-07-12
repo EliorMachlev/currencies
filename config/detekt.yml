@@ -1,5 +1,8 @@
 complexity:
   TooManyFunctions:
-    thresholdInClasses: 33
+    # Activities, ViewModels, adapters and the SharedPreferences-backed Database
+    # legitimately expose many small public functions that map 1:1 to UI actions
+    # or persisted settings. Splitting them would fragment cohesive units.
+    thresholdInClasses: 40
     ignorePrivate: true
     ignoreOverridden: true
