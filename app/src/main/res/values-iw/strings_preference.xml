@@ -28,11 +28,15 @@
     <string name="language_bn">בנגלית</string>
     <string name="language_ca">קטלאנית</string>
     <string name="language_cs">צ\'כית</string>
+    <string name="language_da">דנית</string>
     <string name="language_de">גרמנית</string>
     <string name="language_el">יוונית</string>
     <string name="language_en">אנגלית</string>
+    <string name="language_en_GB">אנגלית (בריטית)</string>
     <string name="language_eo">אספרנטו</string>
     <string name="language_es">ספרדית</string>
+    <string name="language_et">אסטונית</string>
+    <string name="language_fa">פרסית</string>
     <string name="language_fr">צרפתית</string>
     <string name="language_hr">קרואטית</string>
     <string name="language_hu">הונגרית</string>
@@ -50,6 +54,7 @@
     <string name="language_uk">אוקראינית</string>
     <string name="language_vi">וייטנאמית</string>
     <string name="language_zh_CN">סינית מפושטת</string>
+    <string name="language_zh_TW">סינית מסורתית</string>
 
     <!-- api -->
     <string name="category_api">שערי חליפין</string>
