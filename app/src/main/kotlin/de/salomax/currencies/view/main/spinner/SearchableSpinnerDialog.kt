@@ -137,6 +137,10 @@ class SearchableSpinnerDialog(context: Context) : AppCompatDialogFragment(), Sea
         prefViewModel.isPreviewConversionEnabled().observe(this) {
             adapter.setPreviewConversionEnabled(it)
         }
+        // decimal accuracy
+        mainViewModel.getDecimalPlaces().observe(this) {
+            adapter.setDecimalPlaces(it)
+        }
 
         // build dialog
         return AlertDialog.Builder(requireContext())

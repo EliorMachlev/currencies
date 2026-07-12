@@ -69,6 +69,14 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 true
             }
         }
+        findPreference<ListPreference>(getString(R.string.decimal_places_key))?.apply {
+            setOnPreferenceChangeListener { _, newValue ->
+                viewModel.setDecimalPlaces(
+                    (newValue.toString().toIntOrNull() ?: 2).coerceIn(0, 6)
+                )
+                true
+            }
+        }
         findPreference<SwitchPreferenceCompat>(getString(R.string.haptic_feedback_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 viewModel.setHapticFeedbackEnabled(newValue.toString().toBoolean())

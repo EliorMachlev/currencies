@@ -181,6 +181,7 @@ class Database(context: Context) {
     private val keyPreviewConversionEnabled = "_previewConversionEnabled"
     private val keyKeyboardType = "_keyboardType"
     private val keyHapticFeedback = "_hapticFeedback"
+    private val keyDecimalPlaces = "_decimalPlaces"
 
     /* api */
 
@@ -306,6 +307,19 @@ class Database(context: Context) {
 
     fun isHapticFeedbackEnabled(): LiveData<Boolean> {
         return SharedPreferenceBooleanLiveData(prefs, keyHapticFeedback, true)
+    }
+
+    /* decimal places */
+
+    fun setDecimalPlaces(places: Int) {
+        prefs.apply {
+            edit().putString(keyDecimalPlaces, places.toString()).apply()
+        }
+    }
+
+    fun getDecimalPlaces(): LiveData<Int> {
+        return SharedPreferenceStringLiveData(prefs, keyDecimalPlaces, "2")
+            .map { (it ?: "2").toIntOrNull()?.coerceIn(0, 6) ?: 2 }
     }
 
 }
