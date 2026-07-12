@@ -28,6 +28,15 @@
             android:title="@string/keyboard_title"
             app:useSimpleSummaryProvider="true" />
 
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/decimal_places_values"
+            android:entryValues="@array/decimal_places_values"
+            android:key="@string/decimal_places_key"
+            android:summary="@string/decimal_places_summary"
+            android:title="@string/decimal_places_title"
+            app:useSimpleSummaryProvider="true" />
+
         <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="@string/haptic_feedback_key"

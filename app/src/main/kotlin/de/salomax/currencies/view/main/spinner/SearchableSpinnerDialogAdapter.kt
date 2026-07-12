@@ -33,6 +33,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
     private var isPreviewConversionEnabled: Boolean = false
     private var currentBaseRate: Rate? = null
     private var currentBaseSum: BigDecimal = BigDecimal.ONE
+    private var decimalPlaces: Int = 2
 
     private var filterStarred = false
     private var filterText: String? = null
@@ -160,16 +161,20 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         currentBaseSum = currentSum
         update()
     }
+    fun setDecimalPlaces(places: Int) {
+        decimalPlaces = places.coerceIn(0, 6)
+        update()
+    }
 
     private fun buildConversionText(item: Rate): String {
         val sum = if (currentBaseSum.compareTo(BigDecimal.ZERO) == 0) BigDecimal.ONE else currentBaseSum
         val sourceSymbol = currentBaseRate!!.currency.symbol() ?: ""
-        val source = sum.toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
+        val source = sum.toHumanReadableNumber(context, decimalPlaces = decimalPlaces, trim = true)
         val destinationSymbol = item.currency.symbol() ?: ""
         val destination = sum
             .divide(currentBaseRate!!.value, MathContext.DECIMAL128)
             .multiply(item.value)
-            .toHumanReadableNumber(context, decimalPlaces = 2, trim = true)
+            .toHumanReadableNumber(context, decimalPlaces = decimalPlaces, trim = true)
         val left = if (sourceSymbol.isEmpty()) source
             else if (hasAppendedCurrencySymbol(context)) "$source $sourceSymbol"
             else "$sourceSymbol $source"

@@ -13,6 +13,9 @@
     <string name="keyboard_title">Keyboard</string>
     <string name="keyboard_option_default">Default</string>
     <string name="keyboard_option_expanded">Expanded</string>
+    <string name="decimal_places_key" translatable="false">KEY_DECIMAL_PLACES</string>
+    <string name="decimal_places_title">Decimal accuracy</string>
+    <string name="decimal_places_summary">Number of decimal places to show for converted values.</string>
     <string name="haptic_feedback_key" translatable="false">KEY_HAPTIC_FEEDBACK</string>
     <string name="haptic_feedback_title">Haptic feedback</string>
     <string name="haptic_feedback_summary">Vibrate on key press\nFollows system setting</string>
