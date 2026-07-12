@@ -58,6 +58,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     private var isUpdating: LiveData<Boolean> = repository.isUpdating()
     val isExtendedKeypadEnabled: LiveData<Boolean> = Database(app).getKeyboardType().map { it != 0 }
     val isHapticFeedbackEnabled: LiveData<Boolean> = Database(app).isHapticFeedbackEnabled()
+    private val decimalPlaces: LiveData<Int> = Database(app).getDecimalPlaces()
 
 
     // number input
@@ -443,23 +444,43 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * the nicely formatted, total destination value including the currency symbol at the right position.
      */
     internal fun getResultFormatted(): LiveData<SpannableStringBuilder> {
-        return result.combineWith(currentDestinationCurrency) { value, currency ->
-            val number = (value?.toHumanReadableNumber(
-                app,
-                trim = true,
-                decimalPlaces = 2
-            ) ?: "0")
-            val symbol = currency?.symbol()
+        return object : MediatorLiveData<SpannableStringBuilder>() {
+            var resultText: String? = null
+            var currency: Currency? = null
+            var places: Int = 2
 
-            if (hasAppendedCurrencySymbol(app))
-                SpannableStringBuilder() // 123 $
-                    .bold { append(number) }
-                    .append(if (symbol != null) " $symbol" else "")
-            else
-                SpannableStringBuilder() // $ 123
-                    .append(if (symbol != null) "$symbol " else "")
-                    .bold { append(number) }
+            init {
+                addSource(result) { resultText = it; update() }
+                addSource(currentDestinationCurrency) { currency = it; update() }
+                addSource(decimalPlaces) { places = it; update() }
+            }
+
+            fun update() {
+                val number = (resultText?.toHumanReadableNumber(
+                    app,
+                    trim = true,
+                    decimalPlaces = places
+                ) ?: "0")
+                val symbol = currency?.symbol()
+
+                this.value =
+                    if (hasAppendedCurrencySymbol(app))
+                        SpannableStringBuilder() // 123 $
+                            .bold { append(number) }
+                            .append(if (symbol != null) " $symbol" else "")
+                    else
+                        SpannableStringBuilder() // $ 123
+                            .append(if (symbol != null) "$symbol " else "")
+                            .bold { append(number) }
+            }
         }
+    }
+
+    /**
+     * the current decimal-places preference, for output-side rounding.
+     */
+    internal fun getDecimalPlaces(): LiveData<Int> {
+        return decimalPlaces
     }
 
     /*
