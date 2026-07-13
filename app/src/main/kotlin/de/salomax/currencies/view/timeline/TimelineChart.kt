@@ -72,9 +72,19 @@ fun TimelineChart(
     val maxValue = remember(data) { data.maxOfOrNull { it.second }?.toDouble() }
     val baseline = remember(data) { data.lastOrNull()?.second?.toDouble() }
 
+    // Vico's axis measurement (getMaxLabelWidth) may call this with x-values outside
+    // data.indices while the model is transitioning to a smaller series. Returning a
+    // blank string throws IllegalStateException, so clamp to the valid range and fall
+    // back to a non-blank placeholder when the series is empty.
     val bottomAxisValueFormatter = remember(data, dateFormatter) {
         CartesianValueFormatter { _, value, _ ->
-            data.getOrNull(value.toInt())?.first?.format(dateFormatter) ?: " "
+            val lastIdx = data.size - 1
+            if (lastIdx < 0) {
+                "—"
+            } else {
+                val idx = value.toInt().coerceIn(0, lastIdx)
+                data[idx].first.format(dateFormatter)
+            }
         }
     }
 
