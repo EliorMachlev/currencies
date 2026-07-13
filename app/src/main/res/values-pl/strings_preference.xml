@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Użyj samej czerni w ciemnym motywie</string>
     <!-- graph options -->
     <string name="category_graph_options">Opcje wykresu</string>
+    <string name="graph_options_title">Opcje wykresu</string>
+    <string name="graph_options_summary">Skonfiguruj siatkę, etykiety osi i wyróżnienia.</string>
     <string name="graph_grid_title">Pokaż siatkę</string>
     <string name="graph_grid_summary">Narysuj poziome i pionowe linie prowadzące za wykresem.</string>
     <string name="graph_x_axis_title">Pokaż etykiety osi X</string>

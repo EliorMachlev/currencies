@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Koyu modda saf siyah kullan</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafik seçenekleri</string>
+    <string name="graph_options_title">Grafik seçenekleri</string>
+    <string name="graph_options_summary">Izgarayı, eksen etiketlerini ve vurguları yapılandır.</string>
     <string name="graph_grid_title">Izgarayı göster</string>
     <string name="graph_grid_summary">Grafiğin arkasına yatay ve dikey kılavuz çizgileri çiz.</string>
     <string name="graph_x_axis_title">X ekseni etiketlerini göster</string>

@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Gunakan hitam asli dalam mode gelap</string>
     <!-- graph options -->
     <string name="category_graph_options">Opsi grafik</string>
+    <string name="graph_options_title">Opsi grafik</string>
+    <string name="graph_options_summary">Konfigurasikan kisi, label sumbu, dan sorotan.</string>
     <string name="graph_grid_title">Tampilkan kisi</string>
     <string name="graph_grid_summary">Gambar garis panduan horizontal dan vertikal di belakang grafik.</string>
     <string name="graph_x_axis_title">Tampilkan label sumbu X</string>

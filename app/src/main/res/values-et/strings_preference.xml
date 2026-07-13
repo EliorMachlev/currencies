@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Tumeda kujunduse puhul kasuta süsimusta värvi</string>
     <!-- graph options -->
     <string name="category_graph_options">Graafiku valikud</string>
+    <string name="graph_options_title">Graafiku valikud</string>
+    <string name="graph_options_summary">Seadista ruudustik, telgede sildid ja esiletõstud.</string>
     <string name="graph_grid_title">Kuva ruudustik</string>
     <string name="graph_grid_summary">Joonista graafiku taha horisontaalsed ja vertikaalsed abijooned.</string>
     <string name="graph_x_axis_title">Kuva X-telje sildid</string>

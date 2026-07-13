@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Използвай чисто черно в тъмен режим</string>
     <!-- graph options -->
     <string name="category_graph_options">Опции на графиката</string>
+    <string name="graph_options_title">Опции на графиката</string>
+    <string name="graph_options_summary">Конфигуриране на решетка, етикети на осите и акценти.</string>
     <string name="graph_grid_title">Показване на решетка</string>
     <string name="graph_grid_summary">Начертайте хоризонтални и вертикални помощни линии зад графиката.</string>
     <string name="graph_x_axis_title">Показване на етикети на оста X</string>

@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Tiszta fekete használata sötét módban</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafikon beállítások</string>
+    <string name="graph_options_title">Grafikon beállítások</string>
+    <string name="graph_options_summary">Rács, tengelyfeliratok és kiemelések beállítása.</string>
     <string name="graph_grid_title">Rács megjelenítése</string>
     <string name="graph_grid_summary">Vízszintes és függőleges segédvonalak rajzolása a diagram mögé.</string>
     <string name="graph_x_axis_title">X tengely feliratok megjelenítése</string>

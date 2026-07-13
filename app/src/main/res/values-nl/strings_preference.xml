@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Gebruik puur zwart in donkere modus</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafiekopties</string>
+    <string name="graph_options_title">Grafiekopties</string>
+    <string name="graph_options_summary">Configureer raster, aslabels en markeringen.</string>
     <string name="graph_grid_title">Raster tonen</string>
     <string name="graph_grid_summary">Teken horizontale en verticale hulplijnen achter de grafiek.</string>
     <string name="graph_x_axis_title">X-aslabels tonen</string>

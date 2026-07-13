@@ -2,6 +2,7 @@ package de.salomax.currencies.view.timeline
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -9,7 +10,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
@@ -159,26 +162,31 @@ fun TimelineChart(
     // Rebuild the host when the series length changes: Vico's scroll/marker state
     // caches the previous point count and crashes when the dataset shrinks.
     key(data.size) {
-        CartesianChartHost(
-            modifier = Modifier.fillMaxSize(),
-            chart = rememberCartesianChart(
-                rememberLineCartesianLayer(
-                    lineProvider = LineCartesianLayer.LineProvider.series(
-                        LineCartesianLayer.rememberLine(
-                            fill = LineCartesianLayer.LineFill.single(Fill(lineColor))
-                        )
+        // Force LTR: Vico maps touch x-coordinates against the host's layout direction,
+        // so under an RTL locale (e.g. Hebrew) the scrub marker mirrors to the wrong
+        // side of the finger and clamps to the left edge.
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+            CartesianChartHost(
+                modifier = Modifier.fillMaxSize(),
+                chart = rememberCartesianChart(
+                    rememberLineCartesianLayer(
+                        lineProvider = LineCartesianLayer.LineProvider.series(
+                            LineCartesianLayer.rememberLine(
+                                fill = LineCartesianLayer.LineFill.single(Fill(lineColor))
+                            )
+                        ),
+                        rangeProvider = rangeProvider,
                     ),
-                    rangeProvider = rangeProvider,
+                    startAxis = startAxis,
+                    bottomAxis = bottomAxis,
+                    marker = marker,
+                    markerVisibilityListener = markerListener,
+                    decorations = decorations,
                 ),
-                startAxis = startAxis,
-                bottomAxis = bottomAxis,
-                marker = marker,
-                markerVisibilityListener = markerListener,
-                decorations = decorations,
-            ),
-            modelProducer = modelProducer,
-            scrollState = rememberVicoScrollState(scrollEnabled = false),
-        )
+                modelProducer = modelProducer,
+                scrollState = rememberVicoScrollState(scrollEnabled = false),
+            )
+        }
     }
 }
 

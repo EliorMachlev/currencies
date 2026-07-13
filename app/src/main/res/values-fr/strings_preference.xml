@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Utiliser le noir pur en mode sombre</string>
     <!-- graph options -->
     <string name="category_graph_options">Options du graphique</string>
+    <string name="graph_options_title">Options du graphique</string>
+    <string name="graph_options_summary">Configurer la grille, les étiquettes des axes et les surlignages.</string>
     <string name="graph_grid_title">Afficher la grille</string>
     <string name="graph_grid_summary">Tracer des lignes de repère horizontales et verticales derrière le graphique.</string>
     <string name="graph_x_axis_title">Afficher les étiquettes de l\'axe X</string>

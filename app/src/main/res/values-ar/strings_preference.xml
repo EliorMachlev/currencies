@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">استخدم الأسود النقي في الوضع المظلم</string>
     <!-- graph options -->
     <string name="category_graph_options">خيارات الرسم البياني</string>
+    <string name="graph_options_title">خيارات الرسم البياني</string>
+    <string name="graph_options_summary">تكوين الشبكة وعناوين المحاور والتمييزات.</string>
     <string name="graph_grid_title">إظهار الشبكة</string>
     <string name="graph_grid_summary">ارسم خطوط توجيه أفقية ورأسية خلف الرسم البياني.</string>
     <string name="graph_x_axis_title">إظهار عناوين المحور السيني</string>

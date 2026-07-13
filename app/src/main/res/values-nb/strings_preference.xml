@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Bruk helsvart i nattmodus</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafinnstillinger</string>
+    <string name="graph_options_title">Grafinnstillinger</string>
+    <string name="graph_options_summary">Konfigurer rutenett, akseetiketter og fremhevinger.</string>
     <string name="graph_grid_title">Vis rutenett</string>
     <string name="graph_grid_summary">Tegn horisontale og vertikale hjelpelinjer bak diagrammet.</string>
     <string name="graph_x_axis_title">Vis X-akse etiketter</string>

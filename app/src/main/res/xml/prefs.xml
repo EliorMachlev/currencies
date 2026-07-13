@@ -47,26 +47,11 @@
     <PreferenceCategory
         android:title="@string/category_graph_options"
         app:allowDividerAbove="false">
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/graph_grid_key"
-            android:summary="@string/graph_grid_summary"
-            android:title="@string/graph_grid_title" />
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/graph_x_axis_key"
-            android:summary="@string/graph_x_axis_summary"
-            android:title="@string/graph_x_axis_title" />
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/graph_y_axis_key"
-            android:summary="@string/graph_y_axis_summary"
-            android:title="@string/graph_y_axis_title" />
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/graph_highlight_extremes_key"
-            android:summary="@string/graph_highlight_extremes_summary"
-            android:title="@string/graph_highlight_extremes_title" />
+        <Preference
+            android:icon="@drawable/ic_tune"
+            android:key="@string/graph_options_key"
+            android:summary="@string/graph_options_summary"
+            android:title="@string/graph_options_title" />
     </PreferenceCategory>
 
     <PreferenceCategory

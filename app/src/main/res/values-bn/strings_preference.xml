@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">বিশুদ্ধ কালো ব্যবহার করো অন্ধকার অবস্থায়(মোড)</string>
     <!-- graph options -->
     <string name="category_graph_options">গ্রাফ বিকল্প</string>
+    <string name="graph_options_title">গ্রাফ বিকল্প</string>
+    <string name="graph_options_summary">গ্রিড, অক্ষের লেবেল এবং হাইলাইট কনফিগার করুন।</string>
     <string name="graph_grid_title">গ্রিড দেখান</string>
     <string name="graph_grid_summary">চার্টের পিছনে অনুভূমিক এবং উল্লম্ব গাইড লাইন আঁকুন।</string>
     <string name="graph_x_axis_title">X-অক্ষের লেবেল দেখান</string>

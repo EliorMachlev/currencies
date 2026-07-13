@@ -21,6 +21,9 @@
     <string name="haptic_feedback_summary">Vibrate on key press\nFollows system setting</string>
     <!-- graph options -->
     <string name="category_graph_options">Graph options</string>
+    <string name="graph_options_key" translatable="false">KEY_GRAPH_OPTIONS</string>
+    <string name="graph_options_title">Graph options</string>
+    <string name="graph_options_summary">Configure grid, axis labels, and highlights.</string>
     <string name="graph_grid_key" translatable="false">KEY_GRAPH_GRID</string>
     <string name="graph_grid_title">Show grid</string>
     <string name="graph_grid_summary">Draw horizontal and vertical guide lines behind the chart.</string>

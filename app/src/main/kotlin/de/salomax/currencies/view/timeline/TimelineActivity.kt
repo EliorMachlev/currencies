@@ -29,6 +29,7 @@ import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
+import de.salomax.currencies.view.preference.GraphOptionsDialog
 import de.salomax.currencies.viewmodel.timeline.TimelineViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -128,6 +129,10 @@ class TimelineActivity : BaseActivity() {
         return when (item.itemId) {
             R.id.toggle -> {
                 timelineModel.toggleCurrencies()
+                true
+            }
+            R.id.graph_options -> {
+                GraphOptionsDialog().show(supportFragmentManager, null)
                 true
             }
             else -> super.onOptionsItemSelected(item)

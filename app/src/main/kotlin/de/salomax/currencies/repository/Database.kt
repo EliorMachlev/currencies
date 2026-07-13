@@ -328,20 +328,52 @@ class Database(context: Context) {
 
     /* graph options */
 
+    fun setChartGridEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartGrid, enabled).apply()
+    }
+
     fun isChartGridEnabled(): LiveData<Boolean> {
         return SharedPreferenceBooleanLiveData(prefs, keyChartGrid, true)
+    }
+
+    fun isChartGridEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartGrid, true)
+    }
+
+    fun setChartXAxisLabelEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartXAxisLabel, enabled).apply()
     }
 
     fun isChartXAxisLabelEnabled(): LiveData<Boolean> {
         return SharedPreferenceBooleanLiveData(prefs, keyChartXAxisLabel, true)
     }
 
+    fun isChartXAxisLabelEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartXAxisLabel, true)
+    }
+
+    fun setChartYAxisLabelEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartYAxisLabel, enabled).apply()
+    }
+
     fun isChartYAxisLabelEnabled(): LiveData<Boolean> {
         return SharedPreferenceBooleanLiveData(prefs, keyChartYAxisLabel, true)
     }
 
+    fun isChartYAxisLabelEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartYAxisLabel, true)
+    }
+
+    fun setChartHighlightExtremesEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartHighlightExtremes, enabled).apply()
+    }
+
     fun isChartHighlightExtremesEnabled(): LiveData<Boolean> {
         return SharedPreferenceBooleanLiveData(prefs, keyChartHighlightExtremes, true)
+    }
+
+    fun isChartHighlightExtremesEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartHighlightExtremes, true)
     }
 
 }

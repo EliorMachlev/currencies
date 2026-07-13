@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">Utilizar el negro puro en el modo oscuro</string>
     <!-- graph options -->
     <string name="category_graph_options">Opciones del gráfico</string>
+    <string name="graph_options_title">Opciones del gráfico</string>
+    <string name="graph_options_summary">Configurar cuadrícula, etiquetas de ejes y resaltados.</string>
     <string name="graph_grid_title">Mostrar cuadrícula</string>
     <string name="graph_grid_summary">Dibujar líneas guía horizontales y verticales detrás del gráfico.</string>
     <string name="graph_x_axis_title">Mostrar etiquetas del eje X</string>

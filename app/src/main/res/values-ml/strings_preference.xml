@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">ഡാർക്ക് മോഡിൽ പൂർണ കറുപ്പ് ഉപയോഗിക്കുക</string>
     <!-- graph options -->
     <string name="category_graph_options">ഗ്രാഫ് ഓപ്ഷനുകൾ</string>
+    <string name="graph_options_title">ഗ്രാഫ് ഓപ്ഷനുകൾ</string>
+    <string name="graph_options_summary">ഗ്രിഡ്, ആക്‌സിസ് ലേബലുകൾ, ഹൈലൈറ്റുകൾ എന്നിവ കോൺഫിഗർ ചെയ്യുക.</string>
     <string name="graph_grid_title">ഗ്രിഡ് കാണിക്കുക</string>
     <string name="graph_grid_summary">ചാർട്ടിന് പിന്നിൽ തിരശ്ചീനവും ലംബവുമായ ഗൈഡ് ലൈനുകൾ വരയ്ക്കുക.</string>
     <string name="graph_x_axis_title">X-അക്ഷം ലേബലുകൾ കാണിക്കുക</string>

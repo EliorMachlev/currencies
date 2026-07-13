@@ -23,6 +23,8 @@
     <string name="pure_black_enabled_summary">在暗色模式中使用純黑色</string>
     <!-- graph options -->
     <string name="category_graph_options">圖表選項</string>
+    <string name="graph_options_title">圖表選項</string>
+    <string name="graph_options_summary">設定格線、座標軸標籤和標示。</string>
     <string name="graph_grid_title">顯示格線</string>
     <string name="graph_grid_summary">在圖表後方繪製水平和垂直參考線。</string>
     <string name="graph_x_axis_title">顯示 X 軸標籤</string>
