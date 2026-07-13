@@ -8,7 +8,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
@@ -20,19 +22,21 @@ import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.compose.cartesian.data.lineModel
 import com.patrykandpatrick.vico.compose.cartesian.decoration.HorizontalLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.marker.CartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.marker.CartesianMarkerVisibilityListener
 import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.common.Fill
 import com.patrykandpatrick.vico.compose.common.component.LineComponent
-import com.patrykandpatrick.vico.core.cartesian.marker.CartesianMarker
+import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 fun TimelineChart(
     entriesLive: LiveData<List<Pair<LocalDate, Float>>?>,
     showGridLive: LiveData<Boolean>,
@@ -86,8 +90,10 @@ fun TimelineChart(
         }
     }
 
+    val axisLabelStyle = TextStyle(color = axisColor, fontSize = 12.sp)
+
     val marker = rememberDefaultCartesianMarker(
-        label = rememberAxisLabelComponent(color = axisColor)
+        label = rememberTextComponent(style = axisLabelStyle),
     )
 
     val decorations = buildList {
@@ -95,7 +101,7 @@ fun TimelineChart(
             add(
                 HorizontalLine(
                     y = { baseline },
-                    line = LineComponent(fill = Fill(baselineColor), thickness = 1.dp)
+                    line = LineComponent(fill = Fill(baselineColor), thickness = 1.dp),
                 )
             )
         }
@@ -104,24 +110,24 @@ fun TimelineChart(
             add(
                 HorizontalLine(
                     y = { minValue },
-                    line = LineComponent(fill = highlightFill, thickness = 1.dp)
+                    line = LineComponent(fill = highlightFill, thickness = 1.dp),
                 )
             )
             add(
                 HorizontalLine(
                     y = { maxValue },
-                    line = LineComponent(fill = highlightFill, thickness = 1.dp)
+                    line = LineComponent(fill = highlightFill, thickness = 1.dp),
                 )
             )
         }
     }
 
     val startAxis = VerticalAxis.rememberStart(
-        label = if (showYAxis) rememberAxisLabelComponent(color = axisColor) else null,
+        label = if (showYAxis) rememberAxisLabelComponent(style = axisLabelStyle) else null,
         guideline = if (showGrid) rememberAxisGuidelineComponent() else null,
     )
     val bottomAxis = HorizontalAxis.rememberBottom(
-        label = if (showXAxis) rememberAxisLabelComponent(color = axisColor) else null,
+        label = if (showXAxis) rememberAxisLabelComponent(style = axisLabelStyle) else null,
         guideline = if (showGrid) rememberAxisGuidelineComponent() else null,
         valueFormatter = bottomAxisValueFormatter,
     )
@@ -131,7 +137,7 @@ fun TimelineChart(
         chart = rememberCartesianChart(
             rememberLineCartesianLayer(
                 lineProvider = LineCartesianLayer.LineProvider.series(
-                    LineCartesianLayer.Line(
+                    LineCartesianLayer.rememberLine(
                         fill = LineCartesianLayer.LineFill.single(Fill(lineColor))
                     )
                 )
@@ -139,10 +145,10 @@ fun TimelineChart(
             startAxis = startAxis,
             bottomAxis = bottomAxis,
             marker = marker,
+            markerVisibilityListener = markerListener,
             decorations = decorations,
         ),
         modelProducer = modelProducer,
-        markerVisibilityListener = markerListener,
         scrollState = rememberVicoScrollState(scrollEnabled = false),
     )
 }
