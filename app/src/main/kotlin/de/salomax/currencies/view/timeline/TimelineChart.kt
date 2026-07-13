@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -145,26 +146,30 @@ fun TimelineChart(
         labelRotationDegrees = X_AXIS_LABEL_ROTATION,
     )
 
-    CartesianChartHost(
-        modifier = Modifier.fillMaxSize(),
-        chart = rememberCartesianChart(
-            rememberLineCartesianLayer(
-                lineProvider = LineCartesianLayer.LineProvider.series(
-                    LineCartesianLayer.rememberLine(
-                        fill = LineCartesianLayer.LineFill.single(Fill(lineColor))
-                    )
+    // Rebuild the host when the series length changes: Vico's scroll/marker state
+    // caches the previous point count and crashes when the dataset shrinks.
+    key(data.size) {
+        CartesianChartHost(
+            modifier = Modifier.fillMaxSize(),
+            chart = rememberCartesianChart(
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        LineCartesianLayer.rememberLine(
+                            fill = LineCartesianLayer.LineFill.single(Fill(lineColor))
+                        )
+                    ),
+                    rangeProvider = rangeProvider,
                 ),
-                rangeProvider = rangeProvider,
+                startAxis = startAxis,
+                bottomAxis = bottomAxis,
+                marker = marker,
+                markerVisibilityListener = markerListener,
+                decorations = decorations,
             ),
-            startAxis = startAxis,
-            bottomAxis = bottomAxis,
-            marker = marker,
-            markerVisibilityListener = markerListener,
-            decorations = decorations,
-        ),
-        modelProducer = modelProducer,
-        scrollState = rememberVicoScrollState(scrollEnabled = false),
-    )
+            modelProducer = modelProducer,
+            scrollState = rememberVicoScrollState(scrollEnabled = false),
+        )
+    }
 }
 
 private const val HIGHLIGHT_ALPHA = 0.4f
