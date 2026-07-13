@@ -23,6 +23,11 @@
     <string name="pure_black_enabled_summary">Usar modo escuro puro no modo escuro</string>
     <!-- languages -->
     <string name="language_title">Idioma do app</string>
+    <string name="language_da">Dinamarquês</string>
+    <string name="language_en_GB">Inglês (Britânico)</string>
+    <string name="language_et">Estoniano</string>
+    <string name="language_fa">Persa</string>
+    <string name="language_zh_TW">Chinês (Tradicional)</string>
 
 
 

@@ -23,6 +23,11 @@
     <string name="pure_black_enabled_summary">Tiszta fekete használata sötét módban</string>
     <!-- languages -->
     <string name="language_title">Az alkalmazás nyelve</string>
+    <string name="language_da">Dán</string>
+    <string name="language_en_GB">Angol (brit)</string>
+    <string name="language_et">Észt</string>
+    <string name="language_fa">Perzsa</string>
+    <string name="language_zh_TW">Kínai (hagyományos)</string>
 
 
 

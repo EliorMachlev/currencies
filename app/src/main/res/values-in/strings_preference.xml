@@ -32,8 +32,11 @@
     <string name="language_de">Jerman</string>
     <string name="language_el">Yunani</string>
     <string name="language_en">Inggris</string>
+    <string name="language_en_GB">Inggris (Britania)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">Spanyol</string>
+    <string name="language_et">Estonia</string>
+    <string name="language_fa">Persia</string>
     <string name="language_fr">Prancis</string>
     <string name="language_hr">Kroasia</string>
     <string name="language_hu">Hongaria</string>
@@ -50,6 +53,7 @@
     <string name="language_tr">Turki</string>
     <string name="language_uk">Ukraina</string>
     <string name="language_vi">Vietnam</string>
+    <string name="language_zh_TW">Tionghoa (Tradisional)</string>
 
 
     <!-- api -->

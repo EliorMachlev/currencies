@@ -28,11 +28,14 @@
     <string name="language_bn">بنگالی</string>
     <string name="language_ca">کاتالان</string>
     <string name="language_cs">چک</string>
+    <string name="language_da">دانمارکی</string>
     <string name="language_de">المانی</string>
     <string name="language_el">یونانی</string>
     <string name="language_en">اینگلیسی</string>
+    <string name="language_en_GB">انگلیسی (بریتانیایی)</string>
     <string name="language_eo">اسپرانتو</string>
     <string name="language_es">اسپانیایی</string>
+    <string name="language_et">استونیایی</string>
     <string name="language_fa">فارسی</string>
     <string name="language_fr">فرانسوی</string>
     <string name="language_hr">کرواتی</string>

@@ -28,11 +28,15 @@
     <string name="language_bn">Tiếng Bengal</string>
     <string name="language_ca">Tiếng Catalunya</string>
     <string name="language_cs">Tiếng Séc</string>
+    <string name="language_da">Tiếng Đan Mạch</string>
     <string name="language_de">Tiếng Đức</string>
     <string name="language_el">Tiếng Hy Lạp</string>
     <string name="language_en">Tiếng Anh</string>
+    <string name="language_en_GB">Tiếng Anh (Anh)</string>
     <string name="language_eo">Tiếng Quốc tế ngữ</string>
     <string name="language_es">Tiếng Tây Ban Nha</string>
+    <string name="language_et">Tiếng Estonia</string>
+    <string name="language_fa">Tiếng Ba Tư</string>
 
     <string name="language_fr">Tiếng Pháp</string>
     <string name="language_hr">Tiếng Croatia</string>
@@ -51,6 +55,7 @@
     <string name="language_uk">Tiếng Ukraina</string>
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_zh_CN">Tiếng Trung giản thể</string>
+    <string name="language_zh_TW">Tiếng Trung phồn thể</string>
 
     <!-- api -->
     <string name="category_api">Tỉ lệ chuyển đổi</string>

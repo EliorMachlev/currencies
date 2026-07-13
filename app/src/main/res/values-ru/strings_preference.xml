@@ -28,11 +28,14 @@
     <string name="language_bn">Бенгальский</string>
     <string name="language_ca">Каталанский</string>
     <string name="language_cs">Чешский</string>
+    <string name="language_da">Датский</string>
     <string name="language_de">Немецкий</string>
     <string name="language_el">Греческий</string>
     <string name="language_en">Английский</string>
+    <string name="language_en_GB">Английский (британский)</string>
     <string name="language_eo">Эсперанто</string>
     <string name="language_es">Испанский</string>
+    <string name="language_et">Эстонский</string>
     <string name="language_fa">Персидский</string>
     <string name="language_fr">Французский</string>
     <string name="language_hr">Хорватский</string>

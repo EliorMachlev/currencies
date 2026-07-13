@@ -32,8 +32,11 @@
     <string name="language_de">Germana</string>
     <string name="language_el">Greka</string>
     <string name="language_en">Angla</string>
+    <string name="language_en_GB">Angla (Brita)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">Hispana</string>
+    <string name="language_et">Estona</string>
+    <string name="language_fa">Persa</string>
     <string name="language_fr">Franca</string>
     <string name="language_hr">Kroata</string>
     <string name="language_hu">Hungara</string>

@@ -32,8 +32,10 @@
     <string name="language_de">Alemany</string>
     <string name="language_el">Grec</string>
     <string name="language_en">Anglès</string>
+    <string name="language_en_GB">Anglès (Britànic)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">Castellà</string>
+    <string name="language_et">Estonià</string>
     <string name="language_fa">Persa</string>
     <string name="language_fr">Francès</string>
     <string name="language_hr">Croat</string>
