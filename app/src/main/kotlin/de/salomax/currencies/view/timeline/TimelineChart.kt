@@ -18,6 +18,7 @@ import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianLayerRangeProvider
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.compose.cartesian.data.lineModel
 import com.patrykandpatrick.vico.compose.cartesian.decoration.HorizontalLine
@@ -71,7 +72,16 @@ fun TimelineChart(
     val baseline = data.lastOrNull()?.second?.toDouble()
 
     val bottomAxisValueFormatter = CartesianValueFormatter { _, value, _ ->
-        data.getOrNull(value.toInt())?.first?.format(dateFormatter) ?: ""
+        data.getOrNull(value.toInt())?.first?.format(dateFormatter) ?: " "
+    }
+
+    val rangeProvider = remember(minValue, maxValue) {
+        if (minValue != null && maxValue != null && minValue < maxValue) {
+            val pad = (maxValue - minValue) * Y_AXIS_PADDING
+            CartesianLayerRangeProvider.fixed(minY = minValue - pad, maxY = maxValue + pad)
+        } else {
+            CartesianLayerRangeProvider.auto()
+        }
     }
 
     val markerListener = remember(data, onScrub) {
@@ -130,6 +140,7 @@ fun TimelineChart(
         label = if (showXAxis) rememberAxisLabelComponent(style = axisLabelStyle) else null,
         guideline = if (showGrid) rememberAxisGuidelineComponent() else null,
         valueFormatter = bottomAxisValueFormatter,
+        labelRotationDegrees = X_AXIS_LABEL_ROTATION,
     )
 
     CartesianChartHost(
@@ -140,7 +151,8 @@ fun TimelineChart(
                     LineCartesianLayer.rememberLine(
                         fill = LineCartesianLayer.LineFill.single(Fill(lineColor))
                     )
-                )
+                ),
+                rangeProvider = rangeProvider,
             ),
             startAxis = startAxis,
             bottomAxis = bottomAxis,
@@ -154,3 +166,5 @@ fun TimelineChart(
 }
 
 private const val HIGHLIGHT_ALPHA = 0.4f
+private const val Y_AXIS_PADDING = 0.05
+private const val X_AXIS_LABEL_ROTATION = 45f
