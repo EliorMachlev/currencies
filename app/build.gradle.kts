@@ -125,7 +125,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")
     // fuzzing
-    val junitVersion = "5.11.4"
+    val junitVersion = "6.1.1"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitVersion")
