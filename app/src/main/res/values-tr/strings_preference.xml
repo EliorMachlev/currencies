@@ -28,11 +28,15 @@
     <string name="language_bn">Bengalce</string>
     <string name="language_ca">Katalanca</string>
     <string name="language_cs">Çek</string>
+    <string name="language_da">Danca</string>
     <string name="language_de">Almanca</string>
     <string name="language_el">Yunanca</string>
     <string name="language_en">İngilizce</string>
+    <string name="language_en_GB">İngilizce (Britanya)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">İspanyolca</string>
+    <string name="language_et">Estonca</string>
+    <string name="language_fa">Farsça</string>
     <string name="language_fr">Fransızca</string>
     <string name="language_hr">Hırvatça</string>
     <string name="language_hu">Macarca</string>

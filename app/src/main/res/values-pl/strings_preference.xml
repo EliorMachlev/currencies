@@ -32,8 +32,11 @@
     <string name="language_de">Niemiecki</string>
     <string name="language_el">Grecki</string>
     <string name="language_en">Angielski</string>
+    <string name="language_en_GB">Angielski (brytyjski)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">Hiszpański</string>
+    <string name="language_et">Estoński</string>
+    <string name="language_fa">Perski</string>
     <string name="language_fr">Francuski</string>
     <string name="language_hr">Croatian</string>
     <string name="language_hu">Węgierski</string>

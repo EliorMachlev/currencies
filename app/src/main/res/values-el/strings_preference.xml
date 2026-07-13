@@ -28,11 +28,14 @@
     <string name="language_bn">Μπενγκάλι</string>
     <string name="language_ca">Καταλανικά</string>
     <string name="language_cs">Τσέχικα</string>
+    <string name="language_da">Δανικά</string>
     <string name="language_de">Γερμανικά</string>
     <string name="language_el">Ελληνικά</string>
     <string name="language_en">Αγγλικά</string>
+    <string name="language_en_GB">Αγγλικά (Βρετανικά)</string>
     <string name="language_eo">Εσπεράντο</string>
     <string name="language_es">Ισπανικά</string>
+    <string name="language_et">Εσθονικά</string>
     <string name="language_fa">Περσικά</string>
     <string name="language_fr">Γαλλικά</string>
     <string name="language_hr">Κροατικά</string>

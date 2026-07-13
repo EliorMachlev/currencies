@@ -33,8 +33,10 @@
     <string name="language_el">Grekiska</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_en">Engelska</string>
+    <string name="language_en_GB">Engelska (brittisk)</string>
 
     <string name="language_es">Spanska</string>
+    <string name="language_et">Estniska</string>
     <string name="language_fa">Persiska</string>
     <string name="language_fr">Franska</string>
     <string name="language_hr">Kroatiska</string>

@@ -32,8 +32,11 @@
     <string name="language_de">Þýska</string>
     <string name="language_el">Gríska</string>
     <string name="language_en">Enska</string>
+    <string name="language_en_GB">Enska (bresk)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">Spænska</string>
+    <string name="language_et">Eistneska</string>
+    <string name="language_fa">Persneska</string>
     <string name="language_fr">Franska</string>
     <string name="language_hr">Króatíska</string>
     <string name="language_hu">Ungverska</string>
@@ -51,6 +54,7 @@
     <string name="language_uk">Úkraínska</string>
     <string name="language_vi">Víetnamska</string>
     <string name="language_zh_CN">Einfölduð kínverska</string>
+    <string name="language_zh_TW">Hefðbundin kínverska</string>
 
     <!-- api -->
     <string name="category_api">Gengi</string>

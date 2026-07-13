@@ -32,8 +32,11 @@
     <string name="language_de">Tysk</string>
     <string name="language_el">Gresk</string>
     <string name="language_en">Engelsk</string>
+    <string name="language_en_GB">Engelsk (britisk)</string>
     <string name="language_eo">Esperanto</string>
     <string name="language_es">Spansk</string>
+    <string name="language_et">Estisk</string>
+    <string name="language_fa">Persisk</string>
     <string name="language_fr">Fransk</string>
     <string name="language_hr">Kroatisk</string>
     <string name="language_hu">Ungarsk</string>
@@ -50,6 +53,7 @@
     <string name="language_tr">Tyrkisk</string>
     <string name="language_uk">Ukrainsk</string>
     <string name="language_vi">Vietnamesisk</string>
+    <string name="language_zh_TW">Kinesisk (tradisjonell)</string>
 
 
     <!-- api -->

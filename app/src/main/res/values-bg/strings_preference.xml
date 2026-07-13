@@ -23,6 +23,11 @@
     <string name="pure_black_enabled_summary">Използвай чисто черно в тъмен режим</string>
     <!-- languages -->
     <string name="language_title">Език на приложението</string>
+    <string name="language_da">Датски</string>
+    <string name="language_en_GB">Английски (Британски)</string>
+    <string name="language_et">Естонски</string>
+    <string name="language_fa">Персийски</string>
+    <string name="language_zh_TW">Китайски (традиционен)</string>
 
 
 

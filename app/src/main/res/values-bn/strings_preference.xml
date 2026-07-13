@@ -28,12 +28,14 @@
     <string name="language_bn">বাংলা</string>
     <string name="language_ca">কাতালান</string>
     <string name="language_cs">চেক</string>
+    <string name="language_da">ডেনিশ</string>
     <string name="language_de">জর্মন</string>
     <string name="language_el">গ্রিক</string>
     <string name="language_en">ইংরেজি</string>
     <string name="language_en_GB">ইংরেজি (যুক্তরাজ্য)</string>
     <string name="language_eo">এস্পেরান্তো</string>
     <string name="language_es">স্পেনীয়</string>
+    <string name="language_et">এস্তোনীয়</string>
     <string name="language_fa">ফারসি</string>
     <string name="language_fr">ফরাসি</string>
     <string name="language_hr">ক্রোয়েসীয়</string>

@@ -27,11 +27,14 @@
     <string name="language_bn">孟加拉文</string>
     <string name="language_ca">加泰隆尼亞語</string>
     <string name="language_cs">捷克文</string>
+    <string name="language_da">丹麥文</string>
     <string name="language_de">德文</string>
     <string name="language_el">希臘文</string>
     <string name="language_en">英文</string>
+    <string name="language_en_GB">英文 (英國)</string>
     <string name="language_eo">世界語</string>
     <string name="language_es">西班牙文</string>
+    <string name="language_et">愛沙尼亞文</string>
     <string name="language_fa">波斯語</string>
     <string name="language_fr">法文</string>
     <string name="language_hr">克羅埃西亞文</string>
