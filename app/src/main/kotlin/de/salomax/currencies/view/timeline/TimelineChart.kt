@@ -59,7 +59,7 @@ fun TimelineChart(
     val data = entries.orEmpty()
     val modelProducer = remember { CartesianChartModelProducer() }
 
-    LaunchedEffect(data) {
+    LaunchedEffect(data.size, data.hashCode()) {
         if (data.isNotEmpty()) {
             modelProducer.runTransaction {
                 lineModel { series(data.map { it.second }) }
@@ -67,12 +67,14 @@ fun TimelineChart(
         }
     }
 
-    val minValue = data.minOfOrNull { it.second }?.toDouble()
-    val maxValue = data.maxOfOrNull { it.second }?.toDouble()
-    val baseline = data.lastOrNull()?.second?.toDouble()
+    val minValue = remember(data) { data.minOfOrNull { it.second }?.toDouble() }
+    val maxValue = remember(data) { data.maxOfOrNull { it.second }?.toDouble() }
+    val baseline = remember(data) { data.lastOrNull()?.second?.toDouble() }
 
-    val bottomAxisValueFormatter = CartesianValueFormatter { _, value, _ ->
-        data.getOrNull(value.toInt())?.first?.format(dateFormatter) ?: " "
+    val bottomAxisValueFormatter = remember(data, dateFormatter) {
+        CartesianValueFormatter { _, value, _ ->
+            data.getOrNull(value.toInt())?.first?.format(dateFormatter) ?: " "
+        }
     }
 
     val rangeProvider = remember(minValue, maxValue) {
