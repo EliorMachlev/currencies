@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Scuro</string>
     <string name="pure_black_enabled_title">OLED nero</string>
     <string name="pure_black_enabled_summary">Usare il nero puro in modalità scura</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Opzioni del grafico</string>
+    <string name="graph_grid_title">Mostra griglia</string>
+    <string name="graph_grid_summary">Disegna linee guida orizzontali e verticali dietro il grafico.</string>
+    <string name="graph_x_axis_title">Mostra etichette asse X</string>
+    <string name="graph_x_axis_summary">Mostra etichette di data nella parte inferiore del grafico.</string>
+    <string name="graph_y_axis_title">Mostra etichette asse Y</string>
+    <string name="graph_y_axis_summary">Mostra etichette del valore di cambio sul lato sinistro del grafico.</string>
+    <string name="graph_highlight_extremes_title">Evidenzia min. e max.</string>
+    <string name="graph_highlight_extremes_summary">Sovrapponi linee di riferimento ai tassi più bassi e più alti dell'intervallo visibile.</string>
     <!-- languages -->
     <string name="language_title">Lingua dell\'app</string>
     <string name="language_ar">Arabo</string>

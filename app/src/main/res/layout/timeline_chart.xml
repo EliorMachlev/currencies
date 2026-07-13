@@ -34,8 +34,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Error: HTTP Exception 521" />
 
-    <!-- chart -->
-    <com.robinhood.spark.SparkView
+    <!-- chart (Vico line chart rendered inside a ComposeView) -->
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/timeline_chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -43,15 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:spark_animateChanges="true"
-        app:spark_baseLineColor="?android:attr/textColorSecondary"
-        app:spark_baseLineWidth="1dp"
-        app:spark_lineColor="?attr/colorPrimary"
-        app:spark_lineWidth="3dp"
-        app:spark_scrubEnabled="true"
-        app:spark_scrubLineColor="?android:attr/textColorSecondary"
-        app:spark_scrubLineWidth="2dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- provider info -->
     <TextView

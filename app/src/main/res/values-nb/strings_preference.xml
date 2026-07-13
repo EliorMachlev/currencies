@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Mørk</string>
     <string name="pure_black_enabled_title">OLED-svart</string>
     <string name="pure_black_enabled_summary">Bruk helsvart i nattmodus</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Grafinnstillinger</string>
+    <string name="graph_grid_title">Vis rutenett</string>
+    <string name="graph_grid_summary">Tegn horisontale og vertikale hjelpelinjer bak diagrammet.</string>
+    <string name="graph_x_axis_title">Vis X-akse etiketter</string>
+    <string name="graph_x_axis_summary">Vis datoetiketter langs bunnen av diagrammet.</string>
+    <string name="graph_y_axis_title">Vis Y-akse etiketter</string>
+    <string name="graph_y_axis_summary">Vis kursetiketter langs venstre side av diagrammet.</string>
+    <string name="graph_highlight_extremes_title">Uthev min. og maks.</string>
+    <string name="graph_highlight_extremes_summary">Legg referanselinjer over laveste og høyeste kurser i det synlige området.</string>
     <!-- languages -->
     <string name="language_title">Språk i appen</string>
     <string name="language_ar">Arabisk</string>

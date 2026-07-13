@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Tmavý</string>
     <string name="pure_black_enabled_title">OLED černý</string>
     <string name="pure_black_enabled_summary">Použít plně černou v tmavém režimu</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Možnosti grafu</string>
+    <string name="graph_grid_title">Zobrazit mřížku</string>
+    <string name="graph_grid_summary">Nakreslit vodorovné a svislé pomocné čáry za grafem.</string>
+    <string name="graph_x_axis_title">Popisky osy X</string>
+    <string name="graph_x_axis_summary">Zobrazit popisky data ve spodní části grafu.</string>
+    <string name="graph_y_axis_title">Popisky osy Y</string>
+    <string name="graph_y_axis_summary">Zobrazit popisky hodnot kurzu na levé straně grafu.</string>
+    <string name="graph_highlight_extremes_title">Zvýraznit min. a max.</string>
+    <string name="graph_highlight_extremes_summary">Překrýt referenční čáry na nejnižších a nejvyšších hodnotách kurzu.</string>
     <!-- languages -->
     <string name="language_title">Jazyk aplikace</string>
     <string name="language_ar">Arabština</string>

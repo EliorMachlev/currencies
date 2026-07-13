@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.4.0"
     id("com.google.devtools.ksp") version "2.3.9"
 }
 
@@ -89,6 +90,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 }
 
@@ -119,8 +121,16 @@ dependencies {
     ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
     // math (v5 releases use incompatible license to fdroid: noinspection GradleDependency)
     implementation("org.mariuszgromada.math:MathParser.org-mXparser:4.4.3")
+    // compose (needed to host the Vico chart via ComposeView)
+    val composeBomVersion = "2024.12.01"
+    implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.compose.runtime:runtime-livedata")
     // charts
-    implementation("com.robinhood.spark:spark:1.2.0")
+    val vicoVersion = "3.2.3"
+    implementation("com.patrykandpatrick.vico:compose:$vicoVersion")
     // test
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")

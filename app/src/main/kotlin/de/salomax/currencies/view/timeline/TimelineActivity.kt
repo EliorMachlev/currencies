@@ -1,8 +1,6 @@
 package de.salomax.currencies.view.timeline
 
 import android.annotation.SuppressLint
-import android.graphics.DashPathEffect
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -11,20 +9,22 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.bold
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.robinhood.spark.SparkView
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
-import de.salomax.currencies.util.dpToPx
+import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
@@ -50,7 +50,7 @@ class TimelineActivity : BaseActivity() {
     private var menuItemToggle: MenuItem? = null
 
     private lateinit var refreshIndicator: LinearProgressIndicator
-    private lateinit var timelineChart: SparkView
+    private lateinit var timelineChart: ComposeView
     private lateinit var textProvider: TextView
     private lateinit var textRateDifference: TextView
     private lateinit var divider: View
@@ -149,20 +149,26 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun initChartView() {
-        timelineChart.apply {
-            // dashed baseline
-            baseLinePaint = baseLinePaint.apply {
-                strokeWidth = 1f.dpToPx()
-                style = Paint.Style.STROKE
-                pathEffect = DashPathEffect(floatArrayOf(1f.dpToPx(), 4f.dpToPx()), 0f)
-            }
-            // scrub (tooltip)
-            scrubListener = SparkView.OnScrubListener { data ->
-                data as Map.Entry<*, *>?
-                timelineModel.setPastDate(data?.key as LocalDate?)
-            }
-            // adapter
-            adapter = ChartAdapter()
+        val db = Database(this)
+        val entriesLive = timelineModel.getRates().map { rates ->
+            rates?.entries?.map { entry -> entry.key to entry.value.value.toFloat() }
+        }
+        val lineColor = Color(MaterialColors.getColor(this, R.attr.colorPrimary, 0))
+        val baselineColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        val axisColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        timelineChart.setContent {
+            TimelineChart(
+                entriesLive = entriesLive,
+                showGridLive = db.isChartGridEnabled(),
+                showXAxisLive = db.isChartXAxisLabelEnabled(),
+                showYAxisLive = db.isChartYAxisLabelEnabled(),
+                highlightExtremesLive = db.isChartHighlightExtremesEnabled(),
+                lineColor = lineColor,
+                baselineColor = baselineColor,
+                axisColor = axisColor,
+                dateFormatter = formatter,
+                onScrub = { date -> timelineModel.setPastDate(date) },
+            )
         }
     }
 
@@ -214,9 +220,6 @@ class TimelineActivity : BaseActivity() {
         timelineModel.isUpdating().observe(this) { isRefreshing ->
             refreshIndicator.visibility = if (isRefreshing) View.VISIBLE else View.GONE
             menuItemToggle?.isEnabled = isRefreshing.not()
-        }
-        timelineModel.getRates().observe(this) {
-            (timelineChart.adapter as ChartAdapter).entries = it?.entries?.toList()
         }
         timelineModel.getProvider().observe(this) {
             textProvider.text = if (it != null)

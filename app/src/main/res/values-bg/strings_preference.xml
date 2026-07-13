@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Тъмен</string>
     <string name="pure_black_enabled_title">OLED черно</string>
     <string name="pure_black_enabled_summary">Използвай чисто черно в тъмен режим</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Опции на графиката</string>
+    <string name="graph_grid_title">Показване на решетка</string>
+    <string name="graph_grid_summary">Начертайте хоризонтални и вертикални помощни линии зад графиката.</string>
+    <string name="graph_x_axis_title">Показване на етикети на оста X</string>
+    <string name="graph_x_axis_summary">Показване на етикети с дати в долната част на графиката.</string>
+    <string name="graph_y_axis_title">Показване на етикети на оста Y</string>
+    <string name="graph_y_axis_summary">Показване на етикети със стойности на курса от лявата страна на графиката.</string>
+    <string name="graph_highlight_extremes_title">Открояване на минимум и максимум</string>
+    <string name="graph_highlight_extremes_summary">Наслагване на референтни линии при най-ниските и най-високите курсове.</string>
     <!-- languages -->
     <string name="language_title">Език на приложението</string>
     <string name="language_da">Датски</string>

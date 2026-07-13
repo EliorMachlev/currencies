@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Σκούρο</string>
     <string name="pure_black_enabled_title">Μαύρο OLED</string>
     <string name="pure_black_enabled_summary">Χρήση μαύρου στο σκούρο θέμα</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Επιλογές γραφήματος</string>
+    <string name="graph_grid_title">Εμφάνιση πλέγματος</string>
+    <string name="graph_grid_summary">Σχεδίαση οριζόντιων και κατακόρυφων γραμμών πλέγματος πίσω από το γράφημα.</string>
+    <string name="graph_x_axis_title">Εμφάνιση ετικετών άξονα X</string>
+    <string name="graph_x_axis_summary">Εμφάνιση ετικετών ημερομηνίας στο κάτω μέρος του γραφήματος.</string>
+    <string name="graph_y_axis_title">Εμφάνιση ετικετών άξονα Y</string>
+    <string name="graph_y_axis_summary">Εμφάνιση ετικετών τιμών στην αριστερή πλευρά του γραφήματος.</string>
+    <string name="graph_highlight_extremes_title">Επισήμανση ελάχ. και μέγ.</string>
+    <string name="graph_highlight_extremes_summary">Προβολή γραμμών αναφοράς στις χαμηλότερες και υψηλότερες τιμές του ορατού εύρους.</string>
     <!-- languages -->
     <string name="language_title">Γλώσσα εφαρμογής</string>
     <string name="language_ar">Αραβικά</string>

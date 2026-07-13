@@ -182,6 +182,10 @@ class Database(context: Context) {
     private val keyKeyboardType = "_keyboardType"
     private val keyHapticFeedback = "_hapticFeedback"
     private val keyDecimalPlaces = "_decimalPlaces"
+    private val keyChartGrid = "_chartGrid"
+    private val keyChartXAxisLabel = "_chartXAxisLabel"
+    private val keyChartYAxisLabel = "_chartYAxisLabel"
+    private val keyChartHighlightExtremes = "_chartHighlightExtremes"
 
     /* api */
 
@@ -320,6 +324,24 @@ class Database(context: Context) {
     fun getDecimalPlaces(): LiveData<Int> {
         return SharedPreferenceStringLiveData(prefs, keyDecimalPlaces, "2")
             .map { (it ?: "2").toIntOrNull()?.coerceIn(0, 6) ?: 2 }
+    }
+
+    /* graph options */
+
+    fun isChartGridEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartGrid, true)
+    }
+
+    fun isChartXAxisLabelEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartXAxisLabel, true)
+    }
+
+    fun isChartYAxisLabelEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartYAxisLabel, true)
+    }
+
+    fun isChartHighlightExtremesEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartHighlightExtremes, true)
     }
 
 }

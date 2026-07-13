@@ -21,6 +21,16 @@
     <string name="theme_option_dark">অন্ধকার</string>
     <string name="pure_black_enabled_title">ওলেড অন্ধকার</string>
     <string name="pure_black_enabled_summary">বিশুদ্ধ কালো ব্যবহার করো অন্ধকার অবস্থায়(মোড)</string>
+    <!-- graph options -->
+    <string name="category_graph_options">গ্রাফ বিকল্প</string>
+    <string name="graph_grid_title">গ্রিড দেখান</string>
+    <string name="graph_grid_summary">চার্টের পিছনে অনুভূমিক এবং উল্লম্ব গাইড লাইন আঁকুন।</string>
+    <string name="graph_x_axis_title">X-অক্ষের লেবেল দেখান</string>
+    <string name="graph_x_axis_summary">চার্টের নীচে তারিখের লেবেল দেখান।</string>
+    <string name="graph_y_axis_title">Y-অক্ষের লেবেল দেখান</string>
+    <string name="graph_y_axis_summary">চার্টের বাম দিকে রেট মানের লেবেল দেখান।</string>
+    <string name="graph_highlight_extremes_title">সর্বনিম্ন এবং সর্বোচ্চ হাইলাইট করুন</string>
+    <string name="graph_highlight_extremes_summary">দৃশ্যমান পরিসরে সর্বনিম্ন এবং সর্বোচ্চ রেটে রেফারেন্স লাইন প্রদর্শন করুন।</string>
     <!-- languages -->
     <string name="language_title">অ্যাপ ভাষা</string>
     <string name="language_ar">আরবি</string>

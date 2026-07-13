@@ -21,6 +21,16 @@
     <string name="theme_option_dark">ഡാർക്ക്</string>
     <string name="pure_black_enabled_title">OLED കറുപ്പ്</string>
     <string name="pure_black_enabled_summary">ഡാർക്ക് മോഡിൽ പൂർണ കറുപ്പ് ഉപയോഗിക്കുക</string>
+    <!-- graph options -->
+    <string name="category_graph_options">ഗ്രാഫ് ഓപ്ഷനുകൾ</string>
+    <string name="graph_grid_title">ഗ്രിഡ് കാണിക്കുക</string>
+    <string name="graph_grid_summary">ചാർട്ടിന് പിന്നിൽ തിരശ്ചീനവും ലംബവുമായ ഗൈഡ് ലൈനുകൾ വരയ്ക്കുക.</string>
+    <string name="graph_x_axis_title">X-അക്ഷം ലേബലുകൾ കാണിക്കുക</string>
+    <string name="graph_x_axis_summary">ചാർട്ടിന്റെ താഴെയായി തീയതി ലേബലുകൾ കാണിക്കുക.</string>
+    <string name="graph_y_axis_title">Y-അക്ഷം ലേബലുകൾ കാണിക്കുക</string>
+    <string name="graph_y_axis_summary">ചാർട്ടിന്റെ ഇടതുവശത്ത് നിരക്ക് മൂല്യ ലേബലുകൾ കാണിക്കുക.</string>
+    <string name="graph_highlight_extremes_title">മിനിമവും പരമാവധിയും ഹൈലൈറ്റ് ചെയ്യുക</string>
+    <string name="graph_highlight_extremes_summary">ദൃശ്യമായ ശ്രേണിയിലെ ഏറ്റവും കുറഞ്ഞതും കൂടിയതുമായ നിരക്കുകളിൽ റഫറൻസ് ലൈനുകൾ പ്രദർശിപ്പിക്കുക.</string>
     <!-- languages -->
     <string name="language_title">ആപ്പ് ഭാഷ</string>
     <string name="language_ar">അറബിക്</string>

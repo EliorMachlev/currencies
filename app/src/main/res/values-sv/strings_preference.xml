@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Mörkt</string>
     <string name="pure_black_enabled_title">OLED-svart</string>
     <string name="pure_black_enabled_summary">Använd helt svart färg i mörkt läge</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Diagraminställningar</string>
+    <string name="graph_grid_title">Visa rutnät</string>
+    <string name="graph_grid_summary">Rita horisontella och vertikala hjälplinjer bakom diagrammet.</string>
+    <string name="graph_x_axis_title">Visa X-axelns etiketter</string>
+    <string name="graph_x_axis_summary">Visa datumetiketter längst ner i diagrammet.</string>
+    <string name="graph_y_axis_title">Visa Y-axelns etiketter</string>
+    <string name="graph_y_axis_summary">Visa kursetiketter till vänster i diagrammet.</string>
+    <string name="graph_highlight_extremes_title">Markera min. och max.</string>
+    <string name="graph_highlight_extremes_summary">Lägg referenslinjer över lägsta och högsta kurserna i det synliga intervallet.</string>
     <!-- languages -->
     <string name="language_title">Appspråk</string>
     <string name="language_ar">Arabiska</string>

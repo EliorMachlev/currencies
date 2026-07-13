@@ -21,6 +21,16 @@
     <string name="theme_option_dark">Темна</string>
     <string name="pure_black_enabled_title">OLED чорний</string>
     <string name="pure_black_enabled_summary">Використовувати істинно-чорний в темній темі</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Параметри графіка</string>
+    <string name="graph_grid_title">Показувати сітку</string>
+    <string name="graph_grid_summary">Малювати горизонтальні та вертикальні допоміжні лінії за графіком.</string>
+    <string name="graph_x_axis_title">Показувати мітки осі X</string>
+    <string name="graph_x_axis_summary">Показувати мітки дат внизу графіка.</string>
+    <string name="graph_y_axis_title">Показувати мітки осі Y</string>
+    <string name="graph_y_axis_summary">Показувати мітки значень курсу зліва від графіка.</string>
+    <string name="graph_highlight_extremes_title">Виділяти мінімум і максимум</string>
+    <string name="graph_highlight_extremes_summary">Накладати опорні лінії на найнижчі та найвищі курси у видимому діапазоні.</string>
     <!-- languages -->
     <string name="language_title">Мова додатка</string>
     <string name="language_ar">Арабська</string>
