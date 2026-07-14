@@ -156,11 +156,16 @@ fun TimelineChart(
         label = if (showYAxis) rememberAxisLabelComponent(style = axisLabelStyle) else null,
         guideline = if (showGrid) rememberAxisGuidelineComponent() else null,
     )
+    val axisItemPlacer = remember(data.size) {
+        val spacing = (data.size / X_AXIS_TARGET_LABEL_COUNT).coerceAtLeast(1)
+        HorizontalAxis.ItemPlacer.aligned(spacing = { spacing })
+    }
     val bottomAxis = HorizontalAxis.rememberBottom(
         label = if (showXAxis) rememberAxisLabelComponent(style = axisLabelStyle) else null,
         guideline = if (showGrid) rememberAxisGuidelineComponent() else null,
         valueFormatter = bottomAxisValueFormatter,
         labelRotationDegrees = X_AXIS_LABEL_ROTATION,
+        itemPlacer = axisItemPlacer,
     )
 
     // Rebuild the host when the series length changes: Vico's scroll/marker state
@@ -197,3 +202,4 @@ fun TimelineChart(
 private const val HIGHLIGHT_ALPHA = 0.4f
 private const val Y_AXIS_PADDING = 0.05
 private const val X_AXIS_LABEL_ROTATION = 0f
+private const val X_AXIS_TARGET_LABEL_COUNT = 6
