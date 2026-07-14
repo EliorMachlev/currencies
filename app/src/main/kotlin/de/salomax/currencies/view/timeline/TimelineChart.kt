@@ -31,6 +31,7 @@ import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.marker.CartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.marker.CartesianMarkerVisibilityListener
+import com.patrykandpatrick.vico.compose.cartesian.marker.DefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
@@ -122,8 +123,12 @@ fun TimelineChart(
 
     val axisLabelStyle = TextStyle(color = axisColor, fontSize = 12.sp)
 
+    val markerValueFormatter = remember {
+        DefaultCartesianMarker.ValueFormatter.default(decimalCount = MARKER_DECIMAL_COUNT)
+    }
     val marker = rememberDefaultCartesianMarker(
         label = rememberTextComponent(style = axisLabelStyle),
+        valueFormatter = markerValueFormatter,
     )
 
     val decorations = buildList {
@@ -206,3 +211,4 @@ private const val Y_AXIS_PADDING = 0.05
 private const val X_AXIS_LABEL_ROTATION = 0f
 private const val X_AXIS_TARGET_LABEL_COUNT = 7
 private const val Y_AXIS_TARGET_LABEL_COUNT = 6
+private const val MARKER_DECIMAL_COUNT = 5
