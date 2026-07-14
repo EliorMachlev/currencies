@@ -152,9 +152,11 @@ fun TimelineChart(
         }
     }
 
+    val yAxisItemPlacer = remember { VerticalAxis.ItemPlacer.count(count = { Y_AXIS_TARGET_LABEL_COUNT }) }
     val startAxis = VerticalAxis.rememberStart(
         label = if (showYAxis) rememberAxisLabelComponent(style = axisLabelStyle) else null,
         guideline = if (showGrid) rememberAxisGuidelineComponent() else null,
+        itemPlacer = yAxisItemPlacer,
     )
     val axisItemPlacer = remember(data.size) {
         val spacing = (data.size / X_AXIS_TARGET_LABEL_COUNT).coerceAtLeast(1)
@@ -203,3 +205,4 @@ private const val HIGHLIGHT_ALPHA = 0.4f
 private const val Y_AXIS_PADDING = 0.05
 private const val X_AXIS_LABEL_ROTATION = 0f
 private const val X_AXIS_TARGET_LABEL_COUNT = 7
+private const val Y_AXIS_TARGET_LABEL_COUNT = 5
