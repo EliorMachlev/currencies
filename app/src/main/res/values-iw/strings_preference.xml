@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">הצג תוויות ערך שער בצד השמאלי של הגרף.</string>
     <string name="graph_highlight_extremes_title">הדגש מינימום ומקסימום</string>
     <string name="graph_highlight_extremes_summary">הצג קווי ייחוס בשערים הנמוכים והגבוהים ביותר בטווח הנראה.</string>
-    <string name="graph_date_format_title">פורמט תאריך ציר X</string>
     <!-- languages -->
     <string name="language_title">שפת האפליקציה</string>
     <string name="language_ar">ערבית</string>

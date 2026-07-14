@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Mostrar etiquetas de valor de cambio en el lado izquierdo del gráfico.</string>
     <string name="graph_highlight_extremes_title">Resaltar mín. y máx.</string>
     <string name="graph_highlight_extremes_summary">Superponer líneas de referencia en los tipos más bajos y más altos del rango visible.</string>
-    <string name="graph_date_format_title">Formato de fecha del eje X</string>
     <!-- languages -->
     <string name="language_title">Idioma de la aplicación</string>
     <string name="language_ar">Árabe</string>

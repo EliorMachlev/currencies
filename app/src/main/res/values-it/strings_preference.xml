@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Mostra etichette del valore di cambio sul lato sinistro del grafico.</string>
     <string name="graph_highlight_extremes_title">Evidenzia min. e max.</string>
     <string name="graph_highlight_extremes_summary">Sovrapponi linee di riferimento ai tassi più bassi e più alti dell\'intervallo visibile.</string>
-    <string name="graph_date_format_title">Formato data asse X</string>
     <!-- languages -->
     <string name="language_title">Lingua dell\'app</string>
     <string name="language_ar">Arabo</string>

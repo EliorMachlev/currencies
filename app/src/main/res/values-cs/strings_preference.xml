@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Zobrazit popisky hodnot kurzu na levé straně grafu.</string>
     <string name="graph_highlight_extremes_title">Zvýraznit min. a max.</string>
     <string name="graph_highlight_extremes_summary">Překrýt referenční čáry na nejnižších a nejvyšších hodnotách kurzu.</string>
-    <string name="graph_date_format_title">Formát data osy X</string>
     <!-- languages -->
     <string name="language_title">Jazyk aplikace</string>
     <string name="language_ar">Arabština</string>

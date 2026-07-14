@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Mostrar rótulos de valor de câmbio no lado esquerdo do gráfico.</string>
     <string name="graph_highlight_extremes_title">Destacar mín. e máx.</string>
     <string name="graph_highlight_extremes_summary">Sobrepor linhas de referência nas taxas mais baixas e mais altas do intervalo visível.</string>
-    <string name="graph_date_format_title">Formato de data do eixo X</string>
     <!-- languages -->
     <string name="language_title">Idioma do app</string>
     <string name="language_da">Dinamarquês</string>

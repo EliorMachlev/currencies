@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Kursbeschriftungen an der linken Seite des Diagramms anzeigen.</string>
     <string name="graph_highlight_extremes_title">Min. und Max. hervorheben</string>
     <string name="graph_highlight_extremes_summary">Referenzlinien beim niedrigsten und höchsten Kurs im sichtbaren Bereich einblenden.</string>
-    <string name="graph_date_format_title">Datumsformat der X-Achse</string>
     <!-- languages -->
     <string name="language_title">App-Sprache</string>
     <string name="language_ar">Arabisch</string>

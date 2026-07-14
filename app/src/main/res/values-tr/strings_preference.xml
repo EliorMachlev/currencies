@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Grafiğin sol tarafında kur değer etiketlerini göster.</string>
     <string name="graph_highlight_extremes_title">Min. ve maks. vurgula</string>
     <string name="graph_highlight_extremes_summary">Görünür aralıktaki en düşük ve en yüksek kurlarda referans çizgileri ekle.</string>
-    <string name="graph_date_format_title">X ekseni tarih biçimi</string>
     <!-- languages -->
     <string name="language_title">Uygulama Dili</string>
     <string name="language_ar">Arapça</string>

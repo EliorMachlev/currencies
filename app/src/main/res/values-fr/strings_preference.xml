@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Afficher les étiquettes de taux sur le côté gauche du graphique.</string>
     <string name="graph_highlight_extremes_title">Mettre en évidence min. et max.</string>
     <string name="graph_highlight_extremes_summary">Superposer des lignes de référence aux taux les plus bas et les plus élevés.</string>
-    <string name="graph_date_format_title">Format de date de l\'axe X</string>
     <!-- languages -->
     <string name="language_title">Langue de l\'appli</string>
     <string name="language_ar">Arabe</string>

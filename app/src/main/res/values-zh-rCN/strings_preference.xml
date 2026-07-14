@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">在图表左侧显示汇率数值标签。</string>
     <string name="graph_highlight_extremes_title">突出显示最小值和最大值</string>
     <string name="graph_highlight_extremes_summary">在可见范围内的最低和最高汇率处叠加参考线。</string>
-    <string name="graph_date_format_title">X 轴日期格式</string>
     <!-- languages -->
     <string name="language_title">应用语言</string>
     <string name="language_ar">阿拉伯语</string>

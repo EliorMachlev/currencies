@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Vis kurslabels langs venstre side af diagrammet.</string>
     <string name="graph_highlight_extremes_title">Fremhæv min. og maks.</string>
     <string name="graph_highlight_extremes_summary">Læg referencelinjer over de laveste og højeste kurser i det synlige område.</string>
-    <string name="graph_date_format_title">X-akse datoformat</string>
     <!-- languages -->
     <string name="language_title">Appsprog</string>
     <string name="language_ar">Arabisk</string>

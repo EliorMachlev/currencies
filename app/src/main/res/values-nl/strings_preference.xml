@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Toon koerslabels aan de linkerkant van de grafiek.</string>
     <string name="graph_highlight_extremes_title">Min. en max. markeren</string>
     <string name="graph_highlight_extremes_summary">Referentielijnen weergeven bij de laagste en hoogste koersen in het zichtbare bereik.</string>
-    <string name="graph_date_format_title">X-as datumnotatie</string>
     <!-- languages -->
     <string name="language_title">App taal</string>
     <string name="language_ar">Arabisch</string>

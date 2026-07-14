@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Εμφάνιση ετικετών τιμών στην αριστερή πλευρά του γραφήματος.</string>
     <string name="graph_highlight_extremes_title">Επισήμανση ελάχ. και μέγ.</string>
     <string name="graph_highlight_extremes_summary">Προβολή γραμμών αναφοράς στις χαμηλότερες και υψηλότερες τιμές του ορατού εύρους.</string>
-    <string name="graph_date_format_title">Μορφή ημερομηνίας άξονα X</string>
     <!-- languages -->
     <string name="language_title">Γλώσσα εφαρμογής</string>
     <string name="language_ar">Αραβικά</string>

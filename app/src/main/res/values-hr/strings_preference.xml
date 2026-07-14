@@ -33,7 +33,6 @@
     <string name="graph_y_axis_summary">Prikaži oznake tečaja na lijevoj strani grafikona.</string>
     <string name="graph_highlight_extremes_title">Istakni min. i maks.</string>
     <string name="graph_highlight_extremes_summary">Prekrij referentne linije na najnižim i najvišim tečajevima u vidljivom rasponu.</string>
-    <string name="graph_date_format_title">Format datuma osi X</string>
     <!-- languages -->
     <string name="language_title">Jezik aplikacije</string>
     <string name="language_ar">arapski</string>
