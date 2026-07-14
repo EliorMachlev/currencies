@@ -41,6 +41,7 @@ import com.patrykandpatrick.vico.compose.common.DashedShape
 import com.patrykandpatrick.vico.compose.common.Fill
 import com.patrykandpatrick.vico.compose.common.component.LineComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
+import de.salomax.currencies.util.stripTimePattern
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -65,7 +66,7 @@ fun TimelineChart(
     val highlightExtremes by highlightExtremesLive.observeAsState(initial = true)
     val dateFormat by dateFormatLive.observeAsState(initial = DEFAULT_DATE_FORMAT)
     val axisDateFormatter = remember(dateFormat) {
-        DateTimeFormatter.ofPattern(stripYear(dateFormat))
+        DateTimeFormatter.ofPattern(stripYear(stripTimePattern(dateFormat)))
     }
 
     val data = entries.orEmpty()

@@ -3,6 +3,7 @@ package de.salomax.currencies.model
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.LocalDate
+import java.time.LocalTime
 
 @JsonClass(generateAdapter = true)
 data class ExchangeRates(
@@ -12,6 +13,8 @@ data class ExchangeRates(
     @field:Json(name = "base") val base: Currency?,
     @field:Json(name = "date") val date: LocalDate?,
     @field:Json(name = "rates") val rates: List<Rate>?,
+
+    @Transient val time: LocalTime? = null,
 
     @Transient val provider: ApiProvider? = null
 )

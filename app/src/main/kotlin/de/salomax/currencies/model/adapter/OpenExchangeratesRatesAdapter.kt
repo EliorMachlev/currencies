@@ -12,6 +12,7 @@ import java.io.IOException
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 
 @Suppress("unused", "UNUSED_PARAMETER")
@@ -25,6 +26,7 @@ internal class OpenExchangeratesRatesAdapter {
         val rates = mutableListOf<Rate>()
         var base: Currency? = null
         var date: LocalDate? = null
+        var time: LocalTime? = null
         var errorMessage: String? = null
 
         if (reader.peek() != JsonReader.Token.BEGIN_OBJECT) return null
@@ -34,8 +36,12 @@ internal class OpenExchangeratesRatesAdapter {
             if (reader.peek() != JsonReader.Token.NAME) continue
             when (reader.nextName()) {
                 "rates" -> rates.addAll(parseRates(reader))
-                "timestamp" -> date = Instant.ofEpochSecond(reader.nextLong())
-                    .atZone(ZoneId.systemDefault()).toLocalDate()
+                "timestamp" -> {
+                    val zoned = Instant.ofEpochSecond(reader.nextLong())
+                        .atZone(ZoneId.systemDefault())
+                    date = zoned.toLocalDate()
+                    time = zoned.toLocalTime().withSecond(0).withNano(0)
+                }
                 "base" -> base = Currency.fromString(reader.nextString())
                 "message" -> errorMessage = reader.nextString()
                 else -> reader.skipValue()
@@ -46,10 +52,10 @@ internal class OpenExchangeratesRatesAdapter {
         addFokIfMissing(rates)
 
         return if (rates.isNotEmpty())
-            ExchangeRates(success = true, error = null, base = base, date = date,
+            ExchangeRates(success = true, error = null, base = base, date = date, time = time,
                 rates = rates, provider = ApiProvider.OPEN_EXCHANGERATES)
         else
-            ExchangeRates(success = false, error = errorMessage, base = base, date = date,
+            ExchangeRates(success = false, error = errorMessage, base = base, date = date, time = time,
                 rates = null, provider = ApiProvider.OPEN_EXCHANGERATES)
     }
 

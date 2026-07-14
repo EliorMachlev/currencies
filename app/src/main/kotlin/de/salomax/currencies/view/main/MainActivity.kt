@@ -41,6 +41,7 @@ import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.getDecimalSeparator
+import de.salomax.currencies.util.stripTimePattern
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
 import de.salomax.currencies.view.BaseActivity
@@ -320,8 +321,16 @@ class MainActivity : BaseActivity() {
     private fun observeExchangeRates(rates: ExchangeRates?) {
         rates?.let {
             val date = it.date
-            val dateString = date
-                ?.format(DateTimeFormatter.ofPattern(Database(this).getDateFormatBlocking()))
+            val time = it.time
+            val pattern = Database(this).getDateFormatBlocking()
+            val effectivePattern = if (time != null) pattern else stripTimePattern(pattern)
+            val temporal = when {
+                date == null -> null
+                time != null -> date.atTime(time)
+                else -> date
+            }
+            val dateString = temporal
+                ?.let { DateTimeFormatter.ofPattern(effectivePattern).format(it) }
                 ?.replace("\u200F", "")
             val providerString = it.provider?.getName()
             tvInfoDate.text =

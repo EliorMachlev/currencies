@@ -26,6 +26,7 @@ import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
+import de.salomax.currencies.util.stripTimePattern
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.preference.GraphOptionsDialog
@@ -63,7 +64,7 @@ class TimelineActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        formatter = DateTimeFormatter.ofPattern(Database(this).getDateFormatBlocking())
+        formatter = DateTimeFormatter.ofPattern(stripTimePattern(Database(this).getDateFormatBlocking()))
 
         // general layout
         setContentView(R.layout.activity_timeline)

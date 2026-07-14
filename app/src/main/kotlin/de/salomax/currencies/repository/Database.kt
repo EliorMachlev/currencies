@@ -29,6 +29,7 @@ class Database(context: Context) {
     private val prefsRates: SharedPreferences = context.getSharedPreferences("rates", MODE_PRIVATE)
 
     private val keyDate = "_date"
+    private val keyTime = "_time"
     private val keyBaseRate = "_base"
     private val keyProvider = "_provider"
 
@@ -41,6 +42,7 @@ class Database(context: Context) {
                 editor.clear()
                 // apply new ones
                 editor.putString(keyDate, items.date.toString())
+                editor.putString(keyTime, items.time?.toString())
                 editor.putString(keyBaseRate, items.base?.iso4217Alpha())
                 editor.putInt(keyProvider, items.provider?.id ?: -1)
                 items.rates?.forEach { rate ->
@@ -187,7 +189,7 @@ class Database(context: Context) {
     private val keyChartYAxisLabel = "_chartYAxisLabel"
     private val keyChartHighlightExtremes = "_chartHighlightExtremes"
     private val keyDateFormat = "_dateFormat"
-    private val defaultDateFormat = "dd/MM/yy"
+    private val defaultDateFormat = "dd/MM/yy HH:mm"
 
     /* api */
 

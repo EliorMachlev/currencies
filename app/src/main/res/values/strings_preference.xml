@@ -20,7 +20,7 @@
     <string name="haptic_feedback_title">Haptic feedback</string>
     <string name="haptic_feedback_summary">Vibrate on key press\nFollows system setting</string>
     <string name="date_format_key" translatable="false">KEY_DATE_FORMAT</string>
-    <string name="date_format_title">Date format</string>
+    <string name="date_format_title">Date and Time format</string>
     <!-- graph options -->
     <string name="category_graph_options">Graph options</string>
     <string name="graph_options_key" translatable="false">KEY_GRAPH_OPTIONS</string>
