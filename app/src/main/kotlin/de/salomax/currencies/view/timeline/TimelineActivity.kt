@@ -178,10 +178,10 @@ class TimelineActivity : BaseActivity() {
         val view2 = findViewById<View>(R.id.stats_row_2).findViewById<TextView>(R.id.text)
         val view3 = findViewById<View>(R.id.stats_row_3).findViewById<TextView>(R.id.text)
 
-        // set the title of "avg", "min", "max
-        val string1 = getString(R.string.rate_average)
-        val string2 = getString(R.string.rate_min)
-        val string3 = getString(R.string.rate_max)
+        // set the title of "max", "avg", "min" (top to bottom)
+        val string1 = getString(R.string.rate_max)
+        val string2 = getString(R.string.rate_average)
+        val string3 = getString(R.string.rate_min)
         view1.text = string1
         view2.text = string2
         view3.text = string3
@@ -260,9 +260,15 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun observeStatistics() {
+        timelineModel.getRatesMax().observe(this) {
+            val rate = it.first
+            populateStat(
+                findViewById(R.id.stats_row_1), rate?.currency?.symbol(), rate?.value, it.second, it.third
+            )
+        }
         timelineModel.getRatesAverage().observe(this) {
             populateStat(
-                findViewById(R.id.stats_row_1),
+                findViewById(R.id.stats_row_2),
                 it.first?.currency?.symbol(),
                 it.first?.value,
                 null,
@@ -270,12 +276,6 @@ class TimelineActivity : BaseActivity() {
             )
         }
         timelineModel.getRatesMin().observe(this) {
-            val rate = it.first
-            populateStat(
-                findViewById(R.id.stats_row_2), rate?.currency?.symbol(), rate?.value, it.second, it.third
-            )
-        }
-        timelineModel.getRatesMax().observe(this) {
             val rate = it.first
             populateStat(
                 findViewById(R.id.stats_row_3), rate?.currency?.symbol(), rate?.value, it.second, it.third
