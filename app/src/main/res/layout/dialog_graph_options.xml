@@ -39,4 +39,34 @@
         android:text="@string/graph_highlight_extremes_title"
         android:textAppearance="?attr/textAppearanceBodyLarge" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin2x"
+        android:paddingBottom="@dimen/margin1x"
+        android:text="@string/graph_date_format_title"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+    <RadioGroup
+        android:id="@+id/radio_date_format"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_date_format_day_first"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="dd/MM" />
+
+        <RadioButton
+            android:id="@+id/radio_date_format_month_first"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="MM/dd" />
+
+    </RadioGroup>
+
 </LinearLayout>

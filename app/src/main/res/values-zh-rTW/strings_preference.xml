@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">在圖表左側顯示匯率數值標籤。</string>
     <string name="graph_highlight_extremes_title">標示最小值和最大值</string>
     <string name="graph_highlight_extremes_summary">在可見範圍內的最低與最高匯率處疊加參考線。</string>
+    <string name="graph_date_format_title">X 軸日期格式</string>
     <!-- languages -->
     <string name="language_ar">阿拉伯文</string>
     <string name="language_bg">保加利亞文</string>

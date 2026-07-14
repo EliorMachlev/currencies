@@ -48,10 +48,10 @@ fun TimelineChart(
     showXAxisLive: LiveData<Boolean>,
     showYAxisLive: LiveData<Boolean>,
     highlightExtremesLive: LiveData<Boolean>,
+    dateFormatDayFirstLive: LiveData<Boolean>,
     lineColor: Color,
     baselineColor: Color,
     axisColor: Color,
-    dateFormatter: DateTimeFormatter,
     onScrub: (LocalDate?) -> Unit,
 ) {
     val entries by entriesLive.observeAsState()
@@ -59,6 +59,10 @@ fun TimelineChart(
     val showXAxis by showXAxisLive.observeAsState(initial = true)
     val showYAxis by showYAxisLive.observeAsState(initial = true)
     val highlightExtremes by highlightExtremesLive.observeAsState(initial = true)
+    val dayFirst by dateFormatDayFirstLive.observeAsState(initial = true)
+    val axisDateFormatter = remember(dayFirst) {
+        DateTimeFormatter.ofPattern(if (dayFirst) "dd/MM" else "MM/dd")
+    }
 
     val data = entries.orEmpty()
     val modelProducer = remember { CartesianChartModelProducer() }
@@ -79,14 +83,14 @@ fun TimelineChart(
     // data.indices while the model is transitioning to a smaller series. Returning a
     // blank string throws IllegalStateException, so clamp to the valid range and fall
     // back to a non-blank placeholder when the series is empty.
-    val bottomAxisValueFormatter = remember(data, dateFormatter) {
+    val bottomAxisValueFormatter = remember(data, axisDateFormatter) {
         CartesianValueFormatter { _, value, _ ->
             val lastIdx = data.size - 1
             if (lastIdx < 0) {
                 "—"
             } else {
                 val idx = value.toInt().coerceIn(0, lastIdx)
-                data[idx].first.format(dateFormatter)
+                data[idx].first.format(axisDateFormatter)
             }
         }
     }
@@ -192,4 +196,4 @@ fun TimelineChart(
 
 private const val HIGHLIGHT_ALPHA = 0.4f
 private const val Y_AXIS_PADDING = 0.05
-private const val X_AXIS_LABEL_ROTATION = 45f
+private const val X_AXIS_LABEL_ROTATION = 0f

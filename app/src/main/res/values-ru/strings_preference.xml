@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">Показывать метки значений курса слева от графика.</string>
     <string name="graph_highlight_extremes_title">Выделять минимум и максимум</string>
     <string name="graph_highlight_extremes_summary">Накладывать опорные линии на самые низкие и самые высокие курсы в видимом диапазоне.</string>
+    <string name="graph_date_format_title">Формат даты оси X</string>
     <!-- languages -->
     <string name="language_title">Язык приложения</string>
     <string name="language_ar">Арабский</string>

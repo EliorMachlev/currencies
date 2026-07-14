@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">Tampilkan label nilai kurs di sisi kiri grafik.</string>
     <string name="graph_highlight_extremes_title">Sorot min. dan maks.</string>
     <string name="graph_highlight_extremes_summary">Menampilkan garis referensi pada nilai kurs terendah dan tertinggi dalam rentang.</string>
+    <string name="graph_date_format_title">Format tanggal sumbu X</string>
     <!-- languages -->
     <string name="language_title">Bahasa Aplikasi</string>
     <string name="language_ar">Arab</string>

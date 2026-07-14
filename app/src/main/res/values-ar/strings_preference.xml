@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">إظهار عناوين قيم السعر على الجانب الأيسر من الرسم البياني.</string>
     <string name="graph_highlight_extremes_title">تمييز الحد الأدنى والأقصى</string>
     <string name="graph_highlight_extremes_summary">تراكب خطوط مرجعية عند أدنى وأعلى الأسعار في النطاق المرئي.</string>
+    <string name="graph_date_format_title">تنسيق تاريخ المحور السيني</string>
     <!-- languages -->
     <string name="language_title">لغة التطبيق</string>
     <string name="language_ar">العربية</string>

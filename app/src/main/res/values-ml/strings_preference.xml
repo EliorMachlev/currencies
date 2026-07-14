@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">ചാർട്ടിന്റെ ഇടതുവശത്ത് നിരക്ക് മൂല്യ ലേബലുകൾ കാണിക്കുക.</string>
     <string name="graph_highlight_extremes_title">മിനിമവും പരമാവധിയും ഹൈലൈറ്റ് ചെയ്യുക</string>
     <string name="graph_highlight_extremes_summary">ദൃശ്യമായ ശ്രേണിയിലെ ഏറ്റവും കുറഞ്ഞതും കൂടിയതുമായ നിരക്കുകളിൽ റഫറൻസ് ലൈനുകൾ പ്രദർശിപ്പിക്കുക.</string>
+    <string name="graph_date_format_title">X-അക്ഷം തീയതി ഫോർമാറ്റ്</string>
     <!-- languages -->
     <string name="language_title">ആപ്പ് ഭാഷ</string>
     <string name="language_ar">അറബിക്</string>

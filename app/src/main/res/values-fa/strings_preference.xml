@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">نمایش برچسب‌های ارزش نرخ در سمت چپ نمودار.</string>
     <string name="graph_highlight_extremes_title">برجسته‌سازی حداقل و حداکثر</string>
     <string name="graph_highlight_extremes_summary">قرار دادن خطوط مرجع در پایین‌ترین و بالاترین نرخ‌های محدوده قابل مشاهده.</string>
+    <string name="graph_date_format_title">قالب تاریخ محور X</string>
     <!-- languages -->
     <string name="language_title">زبان برنامه</string>
     <string name="language_ar">عربی</string>

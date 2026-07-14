@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">Hiện nhãn giá trị tỉ lệ ở phía trái biểu đồ.</string>
     <string name="graph_highlight_extremes_title">Đánh dấu thấp/cao nhất</string>
     <string name="graph_highlight_extremes_summary">Phủ đường tham chiếu tại các tỉ lệ thấp nhất và cao nhất trong phạm vi hiển thị.</string>
+    <string name="graph_date_format_title">Định dạng ngày trục X</string>
     <!-- languages -->
     <string name="language_title">Ngôn ngữ ứng dụng</string>
     <string name="language_ar">Tiếng Ả Rập</string>

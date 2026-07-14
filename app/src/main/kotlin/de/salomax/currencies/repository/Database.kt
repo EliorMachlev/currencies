@@ -186,6 +186,7 @@ class Database(context: Context) {
     private val keyChartXAxisLabel = "_chartXAxisLabel"
     private val keyChartYAxisLabel = "_chartYAxisLabel"
     private val keyChartHighlightExtremes = "_chartHighlightExtremes"
+    private val keyChartDateFormatDayFirst = "_chartDateFormatDayFirst"
 
     /* api */
 
@@ -374,6 +375,18 @@ class Database(context: Context) {
 
     fun isChartHighlightExtremesEnabledBlocking(): Boolean {
         return prefs.getBoolean(keyChartHighlightExtremes, true)
+    }
+
+    fun setChartDateFormatDayFirst(dayFirst: Boolean) {
+        prefs.edit().putBoolean(keyChartDateFormatDayFirst, dayFirst).apply()
+    }
+
+    fun isChartDateFormatDayFirst(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartDateFormatDayFirst, true)
+    }
+
+    fun isChartDateFormatDayFirstBlocking(): Boolean {
+        return prefs.getBoolean(keyChartDateFormatDayFirst, true)
     }
 
 }

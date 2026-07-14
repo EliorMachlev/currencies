@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">চার্টের বাম দিকে রেট মানের লেবেল দেখান।</string>
     <string name="graph_highlight_extremes_title">সর্বনিম্ন এবং সর্বোচ্চ হাইলাইট করুন</string>
     <string name="graph_highlight_extremes_summary">দৃশ্যমান পরিসরে সর্বনিম্ন এবং সর্বোচ্চ রেটে রেফারেন্স লাইন প্রদর্শন করুন।</string>
+    <string name="graph_date_format_title">X-অক্ষের তারিখ ফরম্যাট</string>
     <!-- languages -->
     <string name="language_title">অ্যাপ ভাষা</string>
     <string name="language_ar">আরবি</string>

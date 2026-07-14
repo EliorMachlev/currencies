@@ -168,10 +168,10 @@ class TimelineActivity : BaseActivity() {
                 showXAxisLive = db.isChartXAxisLabelEnabled(),
                 showYAxisLive = db.isChartYAxisLabelEnabled(),
                 highlightExtremesLive = db.isChartHighlightExtremesEnabled(),
+                dateFormatDayFirstLive = db.isChartDateFormatDayFirst(),
                 lineColor = lineColor,
                 baselineColor = baselineColor,
                 axisColor = axisColor,
-                dateFormatter = formatter,
                 onScrub = { date -> timelineModel.setPastDate(date) },
             )
         }

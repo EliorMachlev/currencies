@@ -33,6 +33,7 @@
     <string name="graph_y_axis_summary">Pokaż etykiety wartości kursu po lewej stronie wykresu.</string>
     <string name="graph_highlight_extremes_title">Wyróżnij min. i maks.</string>
     <string name="graph_highlight_extremes_summary">Nałóż linie odniesienia na najniższe i najwyższe kursy w widocznym zakresie.</string>
+    <string name="graph_date_format_title">Format daty osi X</string>
     <!-- languages -->
     <string name="language_title">Język aplikacji</string>
     <string name="language_ar">Arabski</string>

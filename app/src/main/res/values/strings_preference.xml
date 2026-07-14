@@ -36,6 +36,8 @@
     <string name="graph_highlight_extremes_key" translatable="false">KEY_GRAPH_HIGHLIGHT_EXTREMES</string>
     <string name="graph_highlight_extremes_title">Highlight min and max</string>
     <string name="graph_highlight_extremes_summary">Overlay reference lines at the lowest and highest rates in the visible range.</string>
+    <string name="graph_date_format_key" translatable="false">KEY_GRAPH_DATE_FORMAT</string>
+    <string name="graph_date_format_title">X-axis date format</string>
     <string name="category_appearance">Appearance</string>
     <string name="system_default">System default</string>
     <string name="theme_key" translatable="false">KEY_THEME</string>
