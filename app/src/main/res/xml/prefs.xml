@@ -42,6 +42,14 @@
             android:key="@string/haptic_feedback_key"
             android:summary="@string/haptic_feedback_summary"
             android:title="@string/haptic_feedback_title" />
+
+        <ListPreference
+            android:defaultValue="dd/MM/yy"
+            android:entries="@array/date_format_values"
+            android:entryValues="@array/date_format_values"
+            android:key="@string/date_format_key"
+            android:title="@string/date_format_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory

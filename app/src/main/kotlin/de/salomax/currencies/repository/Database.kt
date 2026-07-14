@@ -186,7 +186,8 @@ class Database(context: Context) {
     private val keyChartXAxisLabel = "_chartXAxisLabel"
     private val keyChartYAxisLabel = "_chartYAxisLabel"
     private val keyChartHighlightExtremes = "_chartHighlightExtremes"
-    private val keyChartDateFormatDayFirst = "_chartDateFormatDayFirst"
+    private val keyDateFormat = "_dateFormat"
+    private val defaultDateFormat = "dd/MM/yy"
 
     /* api */
 
@@ -377,16 +378,17 @@ class Database(context: Context) {
         return prefs.getBoolean(keyChartHighlightExtremes, true)
     }
 
-    fun setChartDateFormatDayFirst(dayFirst: Boolean) {
-        prefs.edit().putBoolean(keyChartDateFormatDayFirst, dayFirst).apply()
+    fun setDateFormat(pattern: String) {
+        prefs.edit().putString(keyDateFormat, pattern).apply()
     }
 
-    fun isChartDateFormatDayFirst(): LiveData<Boolean> {
-        return SharedPreferenceBooleanLiveData(prefs, keyChartDateFormatDayFirst, true)
+    fun getDateFormat(): LiveData<String> {
+        return SharedPreferenceStringLiveData(prefs, keyDateFormat, defaultDateFormat)
+            .map { it ?: defaultDateFormat }
     }
 
-    fun isChartDateFormatDayFirstBlocking(): Boolean {
-        return prefs.getBoolean(keyChartDateFormatDayFirst, true)
+    fun getDateFormatBlocking(): String {
+        return prefs.getString(keyDateFormat, defaultDateFormat) ?: defaultDateFormat
     }
 
 }

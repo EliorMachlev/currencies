@@ -25,7 +25,6 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.repository.Database
-import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
@@ -36,7 +35,6 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import kotlin.math.max
 
 private const val TEXT_WIDTH_PADDING_FACTOR = 1.25
@@ -65,9 +63,7 @@ class TimelineActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        formatter = DateTimeFormatter
-            .ofLocalizedDate(FormatStyle.MEDIUM)
-            .withLocale(getLocale(this))
+        formatter = DateTimeFormatter.ofPattern(Database(this).getDateFormatBlocking())
 
         // general layout
         setContentView(R.layout.activity_timeline)
@@ -168,7 +164,7 @@ class TimelineActivity : BaseActivity() {
                 showXAxisLive = db.isChartXAxisLabelEnabled(),
                 showYAxisLive = db.isChartYAxisLabelEnabled(),
                 highlightExtremesLive = db.isChartHighlightExtremesEnabled(),
-                dateFormatDayFirstLive = db.isChartDateFormatDayFirst(),
+                dateFormatLive = db.getDateFormat(),
                 lineColor = lineColor,
                 baselineColor = baselineColor,
                 axisColor = axisColor,

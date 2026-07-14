@@ -52,7 +52,7 @@ fun TimelineChart(
     showXAxisLive: LiveData<Boolean>,
     showYAxisLive: LiveData<Boolean>,
     highlightExtremesLive: LiveData<Boolean>,
-    dateFormatDayFirstLive: LiveData<Boolean>,
+    dateFormatLive: LiveData<String>,
     lineColor: Color,
     baselineColor: Color,
     axisColor: Color,
@@ -63,9 +63,9 @@ fun TimelineChart(
     val showXAxis by showXAxisLive.observeAsState(initial = true)
     val showYAxis by showYAxisLive.observeAsState(initial = true)
     val highlightExtremes by highlightExtremesLive.observeAsState(initial = true)
-    val dayFirst by dateFormatDayFirstLive.observeAsState(initial = true)
-    val axisDateFormatter = remember(dayFirst) {
-        DateTimeFormatter.ofPattern(if (dayFirst) "dd/MM" else "MM/dd")
+    val dateFormat by dateFormatLive.observeAsState(initial = DEFAULT_DATE_FORMAT)
+    val axisDateFormatter = remember(dateFormat) {
+        DateTimeFormatter.ofPattern(stripYear(dateFormat))
     }
 
     val data = entries.orEmpty()
@@ -253,6 +253,11 @@ fun TimelineChart(
         }
     }
 }
+
+internal const val DEFAULT_DATE_FORMAT = "dd/MM/yy"
+
+private fun stripYear(pattern: String): String =
+    pattern.replace("/yy", "").replace("yy/", "")
 
 private const val HIGHLIGHT_ALPHA = 0.4f
 private const val Y_AXIS_PADDING = 0.05

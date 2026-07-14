@@ -3,7 +3,6 @@ package de.salomax.currencies.view.preference
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -37,15 +36,6 @@ class GraphOptionsDialog : AppCompatDialogFragment() {
         }
         highlightSwitch.setOnCheckedChangeListener { _, checked ->
             db.setChartHighlightExtremesEnabled(checked)
-        }
-
-        val dateFormatGroup = view.findViewById<RadioGroup>(R.id.radio_date_format)
-        dateFormatGroup.check(
-            if (db.isChartDateFormatDayFirstBlocking()) R.id.radio_date_format_day_first
-            else R.id.radio_date_format_month_first
-        )
-        dateFormatGroup.setOnCheckedChangeListener { _, checkedId ->
-            db.setChartDateFormatDayFirst(checkedId == R.id.radio_date_format_day_first)
         }
 
         return AlertDialog.Builder(requireContext())

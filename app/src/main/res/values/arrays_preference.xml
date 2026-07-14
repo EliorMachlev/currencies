@@ -22,6 +22,12 @@
         <item>6</item>
     </string-array>
 
+    <!-- date format settings -->
+    <string-array name="date_format_values" translatable="false">
+        <item>dd/MM/yy</item>
+        <item>MM/dd/yy</item>
+    </string-array>
+
     <!-- theme settings -->
     <string-array name="theme_names" translatable="false">
         <item>@string/theme_option_light</item>

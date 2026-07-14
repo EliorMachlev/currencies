@@ -39,8 +39,8 @@ import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
+import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.getDecimalSeparator
-import de.salomax.currencies.util.getLocale
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
 import de.salomax.currencies.view.BaseActivity
@@ -54,7 +54,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 private const val HISTORICAL_MIN_YEAR = 2010
 private const val STALE_RATES_DAYS = 3L
@@ -322,7 +321,7 @@ class MainActivity : BaseActivity() {
         rates?.let {
             val date = it.date
             val dateString = date
-                ?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(getLocale(this)))
+                ?.format(DateTimeFormatter.ofPattern(Database(this).getDateFormatBlocking()))
                 ?.replace("\u200F", "")
             val providerString = it.provider?.getName()
             tvInfoDate.text =
