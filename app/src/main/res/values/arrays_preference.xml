@@ -25,9 +25,16 @@
     <!-- date and time format settings -->
     <string-array name="date_format_values" translatable="false">
         <item>dd/MM/yy HH:mm</item>
-        <item>dd/MM/yy hh:mm</item>
+        <item>dd/MM/yy hh:mm a</item>
         <item>MM/dd/yy HH:mm</item>
-        <item>MM/dd/yy hh:mm</item>
+        <item>MM/dd/yy hh:mm a</item>
+    </string-array>
+
+    <string-array name="date_format_names" translatable="false">
+        <item>dd/MM/yy HH:mm\n15/07/26 14:30</item>
+        <item>dd/MM/yy hh:mm a\n15/07/26 02:30 PM</item>
+        <item>MM/dd/yy HH:mm\n07/15/26 14:30</item>
+        <item>MM/dd/yy hh:mm a\n07/15/26 02:30 PM</item>
     </string-array>
 
     <!-- theme settings -->

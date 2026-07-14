@@ -111,6 +111,9 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 true
             }
         }
+        findPreference<ListPreference>(getString(R.string.date_format_key))?.apply {
+            summaryProvider = Preference.SummaryProvider<ListPreference> { pref -> pref.value }
+        }
     }
 
     private fun setupApiPreferences() {
