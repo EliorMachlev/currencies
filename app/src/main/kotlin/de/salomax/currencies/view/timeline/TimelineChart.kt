@@ -202,4 +202,4 @@ fun TimelineChart(
 private const val HIGHLIGHT_ALPHA = 0.4f
 private const val Y_AXIS_PADDING = 0.05
 private const val X_AXIS_LABEL_ROTATION = 0f
-private const val X_AXIS_TARGET_LABEL_COUNT = 6
+private const val X_AXIS_TARGET_LABEL_COUNT = 7
