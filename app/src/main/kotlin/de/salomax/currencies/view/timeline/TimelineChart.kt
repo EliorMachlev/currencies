@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.CartesianDrawingContext
 import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
@@ -25,6 +26,7 @@ import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProdu
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianLayerRangeProvider
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.compose.cartesian.data.lineModel
+import com.patrykandpatrick.vico.compose.cartesian.decoration.Decoration
 import com.patrykandpatrick.vico.compose.cartesian.decoration.HorizontalLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
@@ -35,6 +37,7 @@ import com.patrykandpatrick.vico.compose.cartesian.marker.DefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.compose.common.DashedShape
 import com.patrykandpatrick.vico.compose.common.Fill
 import com.patrykandpatrick.vico.compose.common.component.LineComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
@@ -132,6 +135,48 @@ fun TimelineChart(
     )
 
     val decorations = buildList {
+        // Dashed verticals at year and month boundaries. A year boundary always
+        // implies a month boundary, so skip the month line at the same index to
+        // avoid stacking both colors on one pixel.
+        val yearChangeIndices = mutableListOf<Int>()
+        val monthChangeIndices = mutableListOf<Int>()
+        for (i in 1 until data.size) {
+            val prev = data[i - 1].first
+            val curr = data[i].first
+            if (prev.year != curr.year) {
+                yearChangeIndices += i
+            } else if (prev.monthValue != curr.monthValue) {
+                monthChangeIndices += i
+            }
+        }
+        val dashedShape = DashedShape(
+            dashLength = DASH_LENGTH.dp,
+            gapLength = DASH_GAP_LENGTH.dp,
+        )
+        monthChangeIndices.forEach { idx ->
+            add(
+                VerticalLine(
+                    x = idx.toDouble(),
+                    line = LineComponent(
+                        fill = Fill(MONTH_CHANGE_COLOR),
+                        thickness = 1.dp,
+                        shape = dashedShape,
+                    ),
+                )
+            )
+        }
+        yearChangeIndices.forEach { idx ->
+            add(
+                VerticalLine(
+                    x = idx.toDouble(),
+                    line = LineComponent(
+                        fill = Fill(YEAR_CHANGE_COLOR),
+                        thickness = 1.dp,
+                        shape = dashedShape,
+                    ),
+                )
+            )
+        }
         if (baseline != null) {
             add(
                 HorizontalLine(
@@ -141,17 +186,18 @@ fun TimelineChart(
             )
         }
         if (highlightExtremes && minValue != null && maxValue != null && minValue != maxValue) {
-            val highlightFill = Fill(lineColor.copy(alpha = HIGHLIGHT_ALPHA))
+            val maxFill = Fill(lineColor.copy(alpha = HIGHLIGHT_ALPHA))
+            val minFill = Fill(MIN_LINE_COLOR.copy(alpha = HIGHLIGHT_ALPHA))
             add(
                 HorizontalLine(
                     y = { minValue },
-                    line = LineComponent(fill = highlightFill, thickness = 1.dp),
+                    line = LineComponent(fill = minFill, thickness = 1.dp),
                 )
             )
             add(
                 HorizontalLine(
                     y = { maxValue },
-                    line = LineComponent(fill = highlightFill, thickness = 1.dp),
+                    line = LineComponent(fill = maxFill, thickness = 1.dp),
                 )
             )
         }
@@ -212,3 +258,26 @@ private const val X_AXIS_LABEL_ROTATION = 0f
 private const val X_AXIS_TARGET_LABEL_COUNT = 7
 private const val Y_AXIS_TARGET_LABEL_COUNT = 6
 private const val MARKER_DECIMAL_COUNT = 5
+private const val DASH_LENGTH = 4f
+private const val DASH_GAP_LENGTH = 4f
+private val MIN_LINE_COLOR = Color(0xFFE53935)
+private val YEAR_CHANGE_COLOR = Color(0xFF1E88E5)
+private val MONTH_CHANGE_COLOR = Color(0xFF8E24AA)
+
+// Vico 3.2.3 ships HorizontalLine but no VerticalLine. Mirror the x mapping used
+// by HorizontalAxis (see HorizontalAxis.kt in vico:compose): the parent forces
+// LTR so layoutDirectionMultiplier is 1 and getStart(isLtr) == layerBounds.left.
+private class VerticalLine(
+    private val x: Double,
+    private val line: LineComponent,
+) : Decoration {
+    override fun drawUnderLayers(context: CartesianDrawingContext) {
+        with(context) {
+            val baseCanvasX = layerBounds.left - scroll + layerDimensions.startPadding
+            val canvasX = baseCanvasX +
+                ((x - ranges.minX) / ranges.xStep).toFloat() * layerDimensions.xSpacing
+            if (canvasX < layerBounds.left || canvasX > layerBounds.right) return
+            line.drawVertical(this, canvasX, layerBounds.top, layerBounds.bottom)
+        }
+    }
+}
