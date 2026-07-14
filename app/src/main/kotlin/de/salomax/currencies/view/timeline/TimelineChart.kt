@@ -135,9 +135,11 @@ fun TimelineChart(
     )
 
     val decorations = buildList {
-        // Dashed verticals at year and month boundaries. A year boundary always
-        // implies a month boundary, so skip the month line at the same index to
-        // avoid stacking both colors on one pixel.
+        // Dashed verticals at year and month boundaries. Suppress the month
+        // lines on the year view (heuristic: >90 data points) since ~12 of them
+        // just add noise. Year boundaries always imply month boundaries, so
+        // skip the month line at the same index to avoid stacking two colors.
+        val showMonthChangeLines = data.size <= YEAR_VIEW_MIN_POINTS
         val yearChangeIndices = mutableListOf<Int>()
         val monthChangeIndices = mutableListOf<Int>()
         for (i in 1 until data.size) {
@@ -145,7 +147,7 @@ fun TimelineChart(
             val curr = data[i].first
             if (prev.year != curr.year) {
                 yearChangeIndices += i
-            } else if (prev.monthValue != curr.monthValue) {
+            } else if (showMonthChangeLines && prev.monthValue != curr.monthValue) {
                 monthChangeIndices += i
             }
         }
@@ -260,6 +262,7 @@ private const val Y_AXIS_TARGET_LABEL_COUNT = 6
 private const val MARKER_DECIMAL_COUNT = 5
 private const val DASH_LENGTH = 4f
 private const val DASH_GAP_LENGTH = 4f
+private const val YEAR_VIEW_MIN_POINTS = 90
 private val MIN_LINE_COLOR = Color(0xFFE53935)
 private val YEAR_CHANGE_COLOR = Color(0xFF1E88E5)
 private val MONTH_CHANGE_COLOR = Color(0xFF8E24AA)
