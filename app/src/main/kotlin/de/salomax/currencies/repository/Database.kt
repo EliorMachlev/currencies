@@ -8,6 +8,8 @@ import androidx.lifecycle.map
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
+import de.salomax.currencies.model.Fee
+import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.util.SharedPreferenceBooleanLiveData
 import de.salomax.currencies.util.SharedPreferenceExchangeRatesLiveData
 import de.salomax.currencies.util.SharedPreferenceIntLiveData
@@ -15,11 +17,19 @@ import de.salomax.currencies.util.SharedPreferenceLongLiveData
 import de.salomax.currencies.util.SharedPreferenceStringLiveData
 import de.salomax.currencies.util.toLocalDate
 import de.salomax.currencies.util.toMillis
-import java.math.BigDecimal
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import java.time.LocalDate
+import java.util.UUID
 
-private const val DEFAULT_FEE_PERCENT = "2.2"
 private const val LEGACY_FEE_KEY = "_fee"
+private const val LEGACY_FEE_STR_KEY = "_fee_str"
+private const val LEGACY_FEE_ENABLED_KEY = "_feeEnabled"
+
+private const val FEE_TYPE_GLOBAL_EXCHANGE = "global_exchange"
+private const val FEE_TYPE_GLOBAL_BANK = "global_bank"
+private const val FEE_TYPE_SPECIFIC_PAIR = "specific_pair"
 
 class Database(context: Context) {
 
@@ -178,8 +188,8 @@ class Database(context: Context) {
     private val keyOpenExchangeratesApiKey = "_api_openExchangeratesApiKey"
     private val keyTheme = "_theme"
     private val keyPureBlackEnabled = "_pureBlackEnabled"
-    private val keyFeeEnabled = "_feeEnabled"
-    private val keyFeeValue = "_fee_str"
+    private val keyFeesJson = "_fees_json"
+    private val keyFeeSide = "_fee_side"
     private val keyPreviewConversionEnabled = "_previewConversionEnabled"
     private val keyKeyboardType = "_keyboardType"
     private val keyHapticFeedback = "_hapticFeedback"
@@ -250,35 +260,156 @@ class Database(context: Context) {
         return prefs.getBoolean(keyPureBlackEnabled, false)
     }
 
-    /* fee */
+    /* fees */
 
-    fun setFeeEnabled(enabled: Boolean) {
-        prefs.apply {
-            edit().putBoolean(keyFeeEnabled, enabled).apply()
-        }
-    }
-
-    fun isFeeEnabled(): LiveData<Boolean> {
-        return SharedPreferenceBooleanLiveData(prefs, keyFeeEnabled, false)
-    }
-
-    fun setFee(fee: BigDecimal) {
-        prefs.apply {
-            edit().putString(keyFeeValue, fee.toPlainString()).apply()
-        }
-    }
-
-    fun getFee(): LiveData<BigDecimal> {
+    fun getFees(): LiveData<List<Fee>> {
         migrateLegacyFeeIfNeeded()
-        return SharedPreferenceStringLiveData(prefs, keyFeeValue, DEFAULT_FEE_PERCENT)
-            .map { (it ?: DEFAULT_FEE_PERCENT).toBigDecimal() }
+        return SharedPreferenceStringLiveData(prefs, keyFeesJson, "[]")
+            .map { parseFeeList(it ?: "[]") }
     }
 
+    fun getFeesBlocking(): List<Fee> {
+        migrateLegacyFeeIfNeeded()
+        return parseFeeList(prefs.getString(keyFeesJson, "[]") ?: "[]")
+    }
+
+    fun addFee(fee: Fee) {
+        migrateLegacyFeeIfNeeded()
+        val next = getFeesBlocking() + fee
+        writeFees(next)
+    }
+
+    fun updateFee(fee: Fee) {
+        migrateLegacyFeeIfNeeded()
+        val next = getFeesBlocking().map { if (it.id == fee.id) fee else it }
+        writeFees(next)
+    }
+
+    fun deleteFee(id: String) {
+        migrateLegacyFeeIfNeeded()
+        val next = getFeesBlocking().filter { it.id != id }
+        writeFees(next)
+    }
+
+    fun getFeeSide(): LiveData<FeeSide> {
+        return SharedPreferenceStringLiveData(prefs, keyFeeSide, FeeSide.ORIGINAL.name)
+            .map { raw -> parseFeeSide(raw) }
+    }
+
+    fun getFeeSideBlocking(): FeeSide {
+        return parseFeeSide(prefs.getString(keyFeeSide, FeeSide.ORIGINAL.name))
+    }
+
+    fun setFeeSide(side: FeeSide) {
+        prefs.edit().putString(keyFeeSide, side.name).apply()
+    }
+
+    private fun parseFeeSide(raw: String?): FeeSide {
+        return runCatching { FeeSide.valueOf(raw ?: FeeSide.ORIGINAL.name) }
+            .getOrDefault(FeeSide.ORIGINAL)
+    }
+
+    private fun writeFees(list: List<Fee>) {
+        prefs.edit().putString(keyFeesJson, serializeFeeList(list)).apply()
+    }
+
+    /**
+     * Migrate the legacy single-fee representation into the new [Fee] list.
+     * Runs at most once (the presence of the [keyFeesJson] key marks completion).
+     * The old markup direction is preserved: an enabled fee becomes a
+     * [Fee.GlobalExchange] with `isMarkup=true`; a disabled fee migrates to
+     * an empty list.
+     */
     private fun migrateLegacyFeeIfNeeded() {
-        if (prefs.contains(keyFeeValue) || !prefs.contains(LEGACY_FEE_KEY)) return
-        val legacy = runCatching { prefs.getFloat(LEGACY_FEE_KEY, Float.NaN) }.getOrNull()
-        val migrated = if (legacy != null && !legacy.isNaN()) legacy.toString() else DEFAULT_FEE_PERCENT
-        prefs.edit().putString(keyFeeValue, migrated).remove(LEGACY_FEE_KEY).apply()
+        if (prefs.contains(keyFeesJson)) return
+        if (!prefs.contains(LEGACY_FEE_STR_KEY) && !prefs.contains(LEGACY_FEE_KEY)) {
+            // no legacy data at all: initialize with empty list
+            prefs.edit()
+                .putString(keyFeesJson, "[]")
+                .remove(LEGACY_FEE_ENABLED_KEY)
+                .remove(LEGACY_FEE_STR_KEY)
+                .remove(LEGACY_FEE_KEY)
+                .apply()
+            return
+        }
+        val enabled = prefs.getBoolean(LEGACY_FEE_ENABLED_KEY, false)
+        val migrated = if (enabled) {
+            val legacyStr = prefs.getString(LEGACY_FEE_STR_KEY, null)
+            val legacyFloat = runCatching { prefs.getFloat(LEGACY_FEE_KEY, Float.NaN) }.getOrNull()
+            val percent = legacyStr?.toBigDecimalOrNull()
+                ?: legacyFloat?.takeIf { !it.isNaN() }?.toString()?.toBigDecimalOrNull()
+            if (percent != null) {
+                listOf(
+                    Fee.GlobalExchange(
+                        id = UUID.randomUUID().toString(),
+                        percent = percent,
+                        isMarkup = true,
+                    )
+                )
+            } else {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+        prefs.edit()
+            .putString(keyFeesJson, serializeFeeList(migrated))
+            .remove(LEGACY_FEE_ENABLED_KEY)
+            .remove(LEGACY_FEE_STR_KEY)
+            .remove(LEGACY_FEE_KEY)
+            .apply()
+    }
+
+    private fun serializeFeeList(list: List<Fee>): String {
+        val arr = JSONArray()
+        list.forEach { fee ->
+            val obj = JSONObject()
+            obj.put("id", fee.id)
+            obj.put("percent", fee.percent.toPlainString())
+            obj.put("isMarkup", fee.isMarkup)
+            when (fee) {
+                is Fee.GlobalExchange -> obj.put("type", FEE_TYPE_GLOBAL_EXCHANGE)
+                is Fee.GlobalBank -> obj.put("type", FEE_TYPE_GLOBAL_BANK)
+                is Fee.SpecificPair -> {
+                    obj.put("type", FEE_TYPE_SPECIFIC_PAIR)
+                    obj.put("from", fee.from)
+                    obj.put("to", fee.to)
+                    obj.put("bothWays", fee.bothWays)
+                }
+            }
+            arr.put(obj)
+        }
+        return arr.toString()
+    }
+
+    private fun parseFeeList(json: String): List<Fee> {
+        return try {
+            val arr = JSONArray(json)
+            (0 until arr.length()).mapNotNull { i -> parseFeeEntry(arr.optJSONObject(i)) }
+        } catch (e: JSONException) {
+            android.util.Log.w("Database", "Malformed fee JSON, resetting", e)
+            emptyList()
+        }
+    }
+
+    private fun parseFeeEntry(obj: JSONObject?): Fee? {
+        obj ?: return null
+        val id = obj.optString("id", "").ifEmpty { UUID.randomUUID().toString() }
+        val percent = obj.optString("percent", "0").toBigDecimalOrNull() ?: return null
+        val isMarkup = obj.optBoolean("isMarkup", true)
+        return when (obj.optString("type")) {
+            FEE_TYPE_GLOBAL_EXCHANGE -> Fee.GlobalExchange(id, percent, isMarkup)
+            FEE_TYPE_GLOBAL_BANK -> Fee.GlobalBank(id, percent, isMarkup)
+            FEE_TYPE_SPECIFIC_PAIR -> Fee.SpecificPair(
+                id = id,
+                percent = percent,
+                isMarkup = isMarkup,
+                from = obj.optString("from", ""),
+                to = obj.optString("to", ""),
+                bothWays = obj.optBoolean("bothWays", false),
+            )
+            else -> null
+        }
     }
 
     /* preview conversion */
