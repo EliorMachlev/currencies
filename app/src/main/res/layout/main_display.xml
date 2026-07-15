@@ -96,12 +96,13 @@
             android:id="@+id/scrollViewTrueCost"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin1x"
+            android:layout_marginTop="@dimen/margin1x"
             android:layout_marginEnd="@dimen/margin2x"
             android:scrollbars="none"
             app:layout_constraintBottom_toTopOf="@id/guideline_display"
-            app:layout_constraintEnd_toEndOf="@id/scrollViewTextFrom"
-            app:layout_constraintStart_toEndOf="@id/textFeeBadge">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/spinnerFrom"
+            app:layout_constraintTop_toBottomOf="@id/scrollViewTextFrom">
 
             <TextView
                 android:id="@+id/textTrueCost"
@@ -193,10 +194,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_display"
+            app:layout_constraintBottom_toTopOf="@id/scrollViewTrueCost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinnerFrom"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <TextView
                 android:id="@+id/textFrom"
