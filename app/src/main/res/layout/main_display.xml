@@ -58,20 +58,39 @@
             app:layout_constraintTop_toTopOf="@+id/guideline_display"
             app:tint="?attr/colorOnPrimary" />
 
-        <!-- fee ********************************************************** -->
+        <!-- fee side toggle ********************************************** -->
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_fee_side"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin1x"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/fee_side_label"
+            android:src="@drawable/ic_fee_side_original"
+            app:layout_constraintBottom_toBottomOf="@id/btn_toggle"
+            app:layout_constraintStart_toEndOf="@id/btn_toggle"
+            app:layout_constraintTop_toTopOf="@id/btn_toggle"
+            app:tint="?attr/colorPrimary" />
+
+        <!-- true cost hint *********************************************** -->
 
         <TextView
-            android:id="@+id/textFee"
+            android:id="@+id/textTrueCost"
             style="@style/TextAppearance.Material3.TitleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin2x"
+            android:alpha=".7"
             android:gravity="center_vertical|end"
-            android:textColor="@android:color/holo_red_light"
+            android:textColor="?android:attr/textColorSecondary"
             android:textDirection="ltr"
-            app:layout_constraintBottom_toTopOf="@id/scrollViewTextTo"
-            app:layout_constraintEnd_toEndOf="@id/scrollViewTextTo"
-            tools:text="+ 2.2 %" />
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/guideline_display"
+            app:layout_constraintEnd_toEndOf="@id/scrollViewTextFrom"
+            tools:text="True cost: 102.20 EUR"
+            tools:visibility="visible" />
 
         <!-- exchange rate info text ************************************** -->
 

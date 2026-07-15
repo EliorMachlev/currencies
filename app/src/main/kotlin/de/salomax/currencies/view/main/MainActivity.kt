@@ -40,8 +40,10 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.repository.Database
+import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.util.getDecimalSeparator
 import de.salomax.currencies.util.stripTimePattern
+import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
@@ -51,6 +53,7 @@ import de.salomax.currencies.viewmodel.main.MainViewModel
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -76,6 +79,8 @@ class MainActivity : BaseActivity() {
     private lateinit var spinnerTo: SearchableSpinner
     private lateinit var tvInfoConversion: TextView
     private lateinit var tvInfoDate: TextView
+    private lateinit var tvTrueCost: TextView
+    private lateinit var btnFeeSide: AppCompatImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +103,8 @@ class MainActivity : BaseActivity() {
         this.spinnerTo = findViewById(R.id.spinnerTo)
         this.tvInfoConversion = findViewById(R.id.textInfoConversion)
         this.tvInfoDate = findViewById(R.id.textInfoDate)
+        this.tvTrueCost = findViewById(R.id.textTrueCost)
+        this.btnFeeSide = findViewById(R.id.btn_fee_side)
 
         // swipe-to-refresh: color scheme (not accessible in xml)
         swipeRefresh.setColorSchemeColors(MaterialColors.getColor(this, R.attr.colorOnPrimary, null))
@@ -274,6 +281,16 @@ class MainActivity : BaseActivity() {
             viewModel.forceUpdateExchangeRate()
             swipeRefresh.isRefreshing = false
         }
+
+        // fee-side toggle
+        btnFeeSide.setOnClickListener {
+            haptic(it)
+            val next = when (viewModel.getFeeSide().value ?: FeeSide.ORIGINAL) {
+                FeeSide.ORIGINAL -> FeeSide.CONVERTED
+                FeeSide.CONVERTED -> FeeSide.ORIGINAL
+            }
+            viewModel.setFeeSide(next)
+        }
     }
 
     private fun copyToClipboard(copyText: String) {
@@ -310,6 +327,27 @@ class MainActivity : BaseActivity() {
         viewModel.getResultAsNumber().observe(this) { spinnerFrom.setCurrentSum(it) }
         viewModel.isExtendedKeypadEnabled.observe(this) { observeKeypadState(it) }
         viewModel.isHapticFeedbackEnabled.observe(this) { hapticEnabled = it }
+        viewModel.getFeeSide().observe(this) { observeFeeSide(it) }
+        viewModel.getTrueCost().observe(this) { observeTrueCost(it) }
+    }
+
+    private fun observeFeeSide(side: FeeSide?) {
+        val effective = side ?: FeeSide.ORIGINAL
+        btnFeeSide.setImageResource(
+            if (effective == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted
+            else R.drawable.ic_fee_side_original
+        )
+    }
+
+    private fun observeTrueCost(value: BigDecimal?) {
+        if (value == null) {
+            tvTrueCost.visibility = View.GONE
+            return
+        }
+        val currency = viewModel.getBaseCurrency().value?.iso4217Alpha().orEmpty()
+        val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
+        tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + amount + " " + currency
+        tvTrueCost.visibility = View.VISIBLE
     }
 
     private fun observeExchangeRates(rates: ExchangeRates?) {
