@@ -3,6 +3,7 @@ package de.salomax.currencies.repository
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import de.salomax.currencies.model.ApiProvider
@@ -387,7 +388,7 @@ class Database(context: Context) {
             val arr = JSONArray(json)
             (0 until arr.length()).mapNotNull { i -> parseFeeEntry(arr.optJSONObject(i)) }
         } catch (e: JSONException) {
-            android.util.Log.w("Database", "Malformed fee JSON, resetting", e)
+            Log.w("Database", "Malformed fee JSON, resetting", e)
             emptyList()
         }
     }
