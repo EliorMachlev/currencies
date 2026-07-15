@@ -3,6 +3,10 @@ package de.salomax.currencies.view.preference
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ImageSpan
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -18,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.salomax.currencies.R
+import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.repository.Database
@@ -133,8 +138,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
             category = categoryPair,
             entries = fees.filterIsInstance<Fee.SpecificPair>(),
             summaryFor = { fee ->
-                val arrow = if (fee.bothWays) "\u2194" else "\u2192"
-                getString(R.string.fee_specific_pair_summary, fee.from, arrow, fee.to)
+                buildPairSummary(fee.from, fee.to, fee.bothWays, requireContext())
             },
             onAdd = {
                 showSpecificPairDialog(existing = null) { db.addFee(it) }
@@ -153,7 +157,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
     private fun <T : Fee> populate(
         category: PreferenceCategory,
         entries: List<T>,
-        summaryFor: (T) -> String?,
+        summaryFor: (T) -> CharSequence?,
         onAdd: () -> Unit,
         onEdit: (T) -> Unit,
     ) {
@@ -266,11 +270,11 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         val fromButton = MaterialButton(
             ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
         ).apply {
-            text = pickedFrom ?: placeholder
+            applyCurrencyIcon(this, pickedFrom, placeholder, ctx)
             setOnClickListener {
                 openCurrencyPicker { iso ->
                     pickedFrom = iso
-                    text = iso
+                    applyCurrencyIcon(this, iso, placeholder, ctx)
                 }
             }
         }
@@ -278,11 +282,11 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         val toButton = MaterialButton(
             ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
         ).apply {
-            text = pickedTo ?: placeholder
+            applyCurrencyIcon(this, pickedTo, placeholder, ctx)
             setOnClickListener {
                 openCurrencyPicker { iso ->
                     pickedTo = iso
-                    text = iso
+                    applyCurrencyIcon(this, iso, placeholder, ctx)
                 }
             }
         }
@@ -368,5 +372,50 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         val dialog = SearchableSpinnerDialog(requireContext())
         dialog.onRateClicked = { rate, _ -> onPicked(rate.currency.iso4217Alpha()) }
         dialog.show(parentFragmentManager, null)
+    }
+
+    private fun applyCurrencyIcon(
+        button: MaterialButton,
+        iso: String?,
+        placeholder: String,
+        ctx: Context,
+    ) {
+        button.text = iso ?: placeholder
+        button.icon = iso?.let { Currency.fromString(it)?.flag(ctx) }
+    }
+
+    private fun buildPairSummary(
+        from: String,
+        to: String,
+        bothWays: Boolean,
+        ctx: Context,
+    ): CharSequence {
+        val arrow = if (bothWays) "\u2194" else "\u2192"
+        val sb = SpannableStringBuilder()
+        appendFlag(sb, from, ctx)
+        sb.append(' ').append(from).append("  ").append(arrow).append("  ")
+        appendFlag(sb, to, ctx)
+        sb.append(' ').append(to)
+        return sb
+    }
+
+    private fun appendFlag(sb: SpannableStringBuilder, iso: String, ctx: Context) {
+        val currency = Currency.fromString(iso) ?: return
+        val drawable = currency.flag(ctx)
+        val heightPx = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP, 14f, ctx.resources.displayMetrics,
+        ).toInt()
+        val intrinsicW = drawable.intrinsicWidth.coerceAtLeast(1)
+        val intrinsicH = drawable.intrinsicHeight.coerceAtLeast(1)
+        val widthPx = (heightPx.toFloat() * intrinsicW / intrinsicH).toInt()
+        drawable.setBounds(0, 0, widthPx, heightPx)
+        val start = sb.length
+        sb.append(' ')
+        sb.setSpan(
+            ImageSpan(drawable, ImageSpan.ALIGN_BASELINE),
+            start,
+            sb.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
     }
 }
