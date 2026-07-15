@@ -13,7 +13,6 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
@@ -74,27 +73,48 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         activity?.title = getString(R.string.fee_manager_title)
     }
 
-    private fun buildFeeSidePreference(ctx: Context): ListPreference {
-        return ListPreference(ctx).apply {
+    private fun buildFeeSidePreference(ctx: Context): Preference {
+        return Preference(ctx).apply {
             key = "__fee_side"
             title = getString(R.string.fee_side_label)
-            entries = resources.getStringArray(R.array.fee_side_names)
-            entryValues = resources.getStringArray(R.array.fee_side_values)
-            value = db.getFeeSideBlocking().name
             isIconSpaceReserved = false
-            summaryProvider = Preference.SummaryProvider<ListPreference> { pref ->
-                when (pref.value) {
-                    FeeSide.CONVERTED.name -> getString(R.string.fee_side_summary_converted)
-                    else -> getString(R.string.fee_side_summary_original)
+            summary = formatFeeSideSummary(db.getFeeSideBlocking())
+            setOnPreferenceClickListener {
+                showFeeSideDialog { newSide ->
+                    summary = formatFeeSideSummary(newSide)
                 }
-            }
-            setOnPreferenceChangeListener { _, newValue ->
-                val side = runCatching { FeeSide.valueOf(newValue.toString()) }
-                    .getOrDefault(FeeSide.ORIGINAL)
-                db.setFeeSide(side)
                 true
             }
         }
+    }
+
+    private fun formatFeeSideSummary(side: FeeSide): CharSequence {
+        val name = when (side) {
+            FeeSide.CONVERTED -> getString(R.string.fee_side_converted)
+            else -> getString(R.string.fee_side_original)
+        }
+        val desc = when (side) {
+            FeeSide.CONVERTED -> getString(R.string.fee_side_summary_converted)
+            else -> getString(R.string.fee_side_summary_original)
+        }
+        return "$name\n$desc"
+    }
+
+    private fun showFeeSideDialog(onPicked: (FeeSide) -> Unit) {
+        val ctx = requireContext()
+        val sides = arrayOf(FeeSide.ORIGINAL, FeeSide.CONVERTED)
+        val items = sides.map { formatFeeSideSummary(it) }.toTypedArray<CharSequence>()
+        val currentIdx = sides.indexOf(db.getFeeSideBlocking()).coerceAtLeast(0)
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.fee_side_label)
+            .setSingleChoiceItems(items, currentIdx) { dialog, which ->
+                val picked = sides[which]
+                db.setFeeSide(picked)
+                onPicked(picked)
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun renderFees(fees: List<Fee>) {
@@ -382,6 +402,9 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
     ) {
         button.text = iso ?: placeholder
         button.icon = iso?.let { Currency.fromString(it)?.flag(ctx) }
+        // Preserve the flag's own colors; the default MaterialButton icon tint
+        // would flatten it to a solid rectangle.
+        button.iconTint = null
     }
 
     private fun buildPairSummary(
