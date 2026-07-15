@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Aantal decimalen dat wordt getoond bij geconverteerde waarden.</string>
     <string name="haptic_feedback_title">Haptische feedback</string>
     <string name="haptic_feedback_summary">Trilling bij toetsaanslag\nVolgt systeeminstelling</string>
+    <string name="date_format_title">Datum- en tijdformaat</string>
     <string name="category_appearance">Uiterlijk</string>
     <string name="system_default">Systeem standaard</string>
     <string name="theme_title">Thema</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Donker</string>
     <string name="pure_black_enabled_title">OLED zwart</string>
     <string name="pure_black_enabled_summary">Gebruik puur zwart in donkere modus</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Grafiekopties</string>
+    <string name="graph_options_title">Grafiekopties</string>
+    <string name="graph_options_summary">Configureer raster, aslabels en markeringen.</string>
+    <string name="graph_grid_title">Raster tonen</string>
+    <string name="graph_grid_summary">Teken horizontale en verticale hulplijnen achter de grafiek.</string>
+    <string name="graph_x_axis_title">X-aslabels tonen</string>
+    <string name="graph_x_axis_summary">Toon datumlabels onderaan de grafiek.</string>
+    <string name="graph_y_axis_title">Y-aslabels tonen</string>
+    <string name="graph_y_axis_summary">Toon koerslabels aan de linkerkant van de grafiek.</string>
+    <string name="graph_highlight_extremes_title">Min. en max. markeren</string>
+    <string name="graph_highlight_extremes_summary">Referentielijnen weergeven bij de laagste en hoogste koersen in het zichtbare bereik.</string>
     <!-- languages -->
     <string name="language_title">App taal</string>
     <string name="language_ar">Arabisch</string>

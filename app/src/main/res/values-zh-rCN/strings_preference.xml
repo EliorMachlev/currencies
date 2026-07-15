@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">转换值显示的小数位数。</string>
     <string name="haptic_feedback_title">触感反馈</string>
     <string name="haptic_feedback_summary">按键时振动\n跟随系统设置</string>
+    <string name="date_format_title">日期和时间格式</string>
     <string name="category_appearance">外观</string>
     <string name="system_default">系统默认</string>
     <string name="theme_title">设计</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">深色</string>
     <string name="pure_black_enabled_title">OLED 黑色</string>
     <string name="pure_black_enabled_summary">在深色模式中使用纯黑主题</string>
+    <!-- graph options -->
+    <string name="category_graph_options">图表选项</string>
+    <string name="graph_options_title">图表选项</string>
+    <string name="graph_options_summary">配置网格、坐标轴标签和高亮。</string>
+    <string name="graph_grid_title">显示网格</string>
+    <string name="graph_grid_summary">在图表后面绘制水平和垂直参考线。</string>
+    <string name="graph_x_axis_title">显示 X 轴标签</string>
+    <string name="graph_x_axis_summary">在图表底部显示日期标签。</string>
+    <string name="graph_y_axis_title">显示 Y 轴标签</string>
+    <string name="graph_y_axis_summary">在图表左侧显示汇率数值标签。</string>
+    <string name="graph_highlight_extremes_title">突出显示最小值和最大值</string>
+    <string name="graph_highlight_extremes_summary">在可见范围内的最低和最高汇率处叠加参考线。</string>
     <!-- languages -->
     <string name="language_title">应用语言</string>
     <string name="language_ar">阿拉伯语</string>

@@ -18,3 +18,9 @@ fun LocalDate.toMillis() = this
     .atStartOfDay(ZoneOffset.UTC)
     .toInstant()
     .toEpochMilli()
+
+/**
+ * Returns only the date portion of a combined "date time" pattern (drops anything from the first
+ * space onward). Safe to call on a date-only pattern.
+ */
+fun stripTimePattern(pattern: String): String = pattern.substringBefore(' ').trim()

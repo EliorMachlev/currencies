@@ -1,8 +1,6 @@
 package de.salomax.currencies.view.timeline
 
 import android.annotation.SuppressLint
-import android.graphics.DashPathEffect
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -11,31 +9,33 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.bold
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.robinhood.spark.SparkView
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
-import de.salomax.currencies.util.dpToPx
-import de.salomax.currencies.util.getLocale
+import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
+import de.salomax.currencies.util.stripTimePattern
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
+import de.salomax.currencies.view.preference.GraphOptionsDialog
 import de.salomax.currencies.viewmodel.timeline.TimelineViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import kotlin.math.max
 
 private const val TEXT_WIDTH_PADDING_FACTOR = 1.25
@@ -50,7 +50,7 @@ class TimelineActivity : BaseActivity() {
     private var menuItemToggle: MenuItem? = null
 
     private lateinit var refreshIndicator: LinearProgressIndicator
-    private lateinit var timelineChart: SparkView
+    private lateinit var timelineChart: ComposeView
     private lateinit var textProvider: TextView
     private lateinit var textRateDifference: TextView
     private lateinit var divider: View
@@ -64,9 +64,7 @@ class TimelineActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        formatter = DateTimeFormatter
-            .ofLocalizedDate(FormatStyle.MEDIUM)
-            .withLocale(getLocale(this))
+        formatter = DateTimeFormatter.ofPattern(stripTimePattern(Database(this).getDateFormatBlocking()))
 
         // general layout
         setContentView(R.layout.activity_timeline)
@@ -130,6 +128,10 @@ class TimelineActivity : BaseActivity() {
                 timelineModel.toggleCurrencies()
                 true
             }
+            R.id.graph_options -> {
+                GraphOptionsDialog().show(supportFragmentManager, null)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -149,20 +151,26 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun initChartView() {
-        timelineChart.apply {
-            // dashed baseline
-            baseLinePaint = baseLinePaint.apply {
-                strokeWidth = 1f.dpToPx()
-                style = Paint.Style.STROKE
-                pathEffect = DashPathEffect(floatArrayOf(1f.dpToPx(), 4f.dpToPx()), 0f)
-            }
-            // scrub (tooltip)
-            scrubListener = SparkView.OnScrubListener { data ->
-                data as Map.Entry<*, *>?
-                timelineModel.setPastDate(data?.key as LocalDate?)
-            }
-            // adapter
-            adapter = ChartAdapter()
+        val db = Database(this)
+        val entriesLive = timelineModel.getRates().map { rates ->
+            rates?.entries?.map { entry -> entry.key to entry.value.value.toFloat() }
+        }
+        val lineColor = Color(MaterialColors.getColor(this, R.attr.colorPrimary, 0))
+        val baselineColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        val axisColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        timelineChart.setContent {
+            TimelineChart(
+                entriesLive = entriesLive,
+                showGridLive = db.isChartGridEnabled(),
+                showXAxisLive = db.isChartXAxisLabelEnabled(),
+                showYAxisLive = db.isChartYAxisLabelEnabled(),
+                highlightExtremesLive = db.isChartHighlightExtremesEnabled(),
+                dateFormatLive = db.getDateFormat(),
+                lineColor = lineColor,
+                baselineColor = baselineColor,
+                axisColor = axisColor,
+                onScrub = { date -> timelineModel.setPastDate(date) },
+            )
         }
     }
 
@@ -171,10 +179,10 @@ class TimelineActivity : BaseActivity() {
         val view2 = findViewById<View>(R.id.stats_row_2).findViewById<TextView>(R.id.text)
         val view3 = findViewById<View>(R.id.stats_row_3).findViewById<TextView>(R.id.text)
 
-        // set the title of "avg", "min", "max
-        val string1 = getString(R.string.rate_average)
-        val string2 = getString(R.string.rate_min)
-        val string3 = getString(R.string.rate_max)
+        // set the title of "max", "avg", "min" (top to bottom)
+        val string1 = getString(R.string.rate_max)
+        val string2 = getString(R.string.rate_average)
+        val string3 = getString(R.string.rate_min)
         view1.text = string1
         view2.text = string2
         view3.text = string3
@@ -215,9 +223,6 @@ class TimelineActivity : BaseActivity() {
             refreshIndicator.visibility = if (isRefreshing) View.VISIBLE else View.GONE
             menuItemToggle?.isEnabled = isRefreshing.not()
         }
-        timelineModel.getRates().observe(this) {
-            (timelineChart.adapter as ChartAdapter).entries = it?.entries?.toList()
-        }
         timelineModel.getProvider().observe(this) {
             textProvider.text = if (it != null)
                 HtmlCompat.fromHtml(getString(R.string.data_provider, it), HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -256,9 +261,15 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun observeStatistics() {
+        timelineModel.getRatesMax().observe(this) {
+            val rate = it.first
+            populateStat(
+                findViewById(R.id.stats_row_1), rate?.currency?.symbol(), rate?.value, it.second, it.third
+            )
+        }
         timelineModel.getRatesAverage().observe(this) {
             populateStat(
-                findViewById(R.id.stats_row_1),
+                findViewById(R.id.stats_row_2),
                 it.first?.currency?.symbol(),
                 it.first?.value,
                 null,
@@ -266,12 +277,6 @@ class TimelineActivity : BaseActivity() {
             )
         }
         timelineModel.getRatesMin().observe(this) {
-            val rate = it.first
-            populateStat(
-                findViewById(R.id.stats_row_2), rate?.currency?.symbol(), rate?.value, it.second, it.third
-            )
-        }
-        timelineModel.getRatesMax().observe(this) {
             val rate = it.first
             populateStat(
                 findViewById(R.id.stats_row_3), rate?.currency?.symbol(), rate?.value, it.second, it.third

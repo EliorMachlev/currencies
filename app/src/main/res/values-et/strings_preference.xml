@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Kuvatavate kümnendkohtade arv teisendatud väärtustel.</string>
     <string name="haptic_feedback_title">Haptiline tagasiside</string>
     <string name="haptic_feedback_summary">Vibratsioon klahvivajutuse korral\nJärgib süsteemi seadet</string>
+    <string name="date_format_title">Kuupäeva ja kellaaja vorming</string>
     <string name="category_appearance">Välimus</string>
     <string name="system_default">Süsteemi välimus</string>
     <string name="theme_title">Kujundus</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Tume kujundus</string>
     <string name="pure_black_enabled_title">Süsimustad värvid OLED-ekraanide jaoks</string>
     <string name="pure_black_enabled_summary">Tumeda kujunduse puhul kasuta süsimusta värvi</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Graafiku valikud</string>
+    <string name="graph_options_title">Graafiku valikud</string>
+    <string name="graph_options_summary">Seadista ruudustik, telgede sildid ja esiletõstud.</string>
+    <string name="graph_grid_title">Kuva ruudustik</string>
+    <string name="graph_grid_summary">Joonista graafiku taha horisontaalsed ja vertikaalsed abijooned.</string>
+    <string name="graph_x_axis_title">Kuva X-telje sildid</string>
+    <string name="graph_x_axis_summary">Kuva kuupäevasildid graafiku alaosas.</string>
+    <string name="graph_y_axis_title">Kuva Y-telje sildid</string>
+    <string name="graph_y_axis_summary">Kuva kursisildid graafiku vasakul küljel.</string>
+    <string name="graph_highlight_extremes_title">Rõhuta min. ja max.</string>
+    <string name="graph_highlight_extremes_summary">Aseta viitejooned nähtava vahemiku madalaimatele ja kõrgeimatele kurssidele.</string>
     <!-- languages -->
     <string name="language_title">Rakenduse keel</string>
     <string name="language_ar">araabia keel</string>

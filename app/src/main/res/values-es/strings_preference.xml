@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Número de decimales a mostrar en los valores convertidos.</string>
     <string name="haptic_feedback_title">Vibración táctil</string>
     <string name="haptic_feedback_summary">Vibrar al pulsar una tecla\nSigue la configuración del sistema</string>
+    <string name="date_format_title">Formato de fecha y hora</string>
     <string name="category_appearance">Apariencia</string>
     <string name="system_default">Predeterminado del sistema</string>
     <string name="theme_title">Tema</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Oscuro</string>
     <string name="pure_black_enabled_title">OLED negro</string>
     <string name="pure_black_enabled_summary">Utilizar el negro puro en el modo oscuro</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Opciones del gráfico</string>
+    <string name="graph_options_title">Opciones del gráfico</string>
+    <string name="graph_options_summary">Configurar cuadrícula, etiquetas de ejes y resaltados.</string>
+    <string name="graph_grid_title">Mostrar cuadrícula</string>
+    <string name="graph_grid_summary">Dibujar líneas guía horizontales y verticales detrás del gráfico.</string>
+    <string name="graph_x_axis_title">Mostrar etiquetas del eje X</string>
+    <string name="graph_x_axis_summary">Mostrar etiquetas de fecha en la parte inferior del gráfico.</string>
+    <string name="graph_y_axis_title">Mostrar etiquetas del eje Y</string>
+    <string name="graph_y_axis_summary">Mostrar etiquetas de valor de cambio en el lado izquierdo del gráfico.</string>
+    <string name="graph_highlight_extremes_title">Resaltar mín. y máx.</string>
+    <string name="graph_highlight_extremes_summary">Superponer líneas de referencia en los tipos más bajos y más altos del rango visible.</string>
     <!-- languages -->
     <string name="language_title">Idioma de la aplicación</string>
     <string name="language_ar">Árabe</string>

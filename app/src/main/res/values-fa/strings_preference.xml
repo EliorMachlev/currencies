@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">تعداد ارقام اعشاری نمایش‌داده‌شده برای مقادیر تبدیل‌شده.</string>
     <string name="haptic_feedback_title">بازخورد لمسی</string>
     <string name="haptic_feedback_summary">لرزش هنگام فشردن کلید\nبر اساس تنظیمات سیستم</string>
+    <string name="date_format_title">قالب تاریخ و زمان</string>
     <string name="category_appearance">ظاهر</string>
     <string name="system_default">پیش فرض سیستم</string>
     <string name="theme_title">طراحی</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">تاریک</string>
     <string name="pure_black_enabled_title">مشکی OLED</string>
     <string name="pure_black_enabled_summary">از مشکی خالص در حالت تاریک استفاده کنید</string>
+    <!-- graph options -->
+    <string name="category_graph_options">گزینه‌های نمودار</string>
+    <string name="graph_options_title">گزینه‌های نمودار</string>
+    <string name="graph_options_summary">پیکربندی شبکه، برچسب‌های محور و برجسته‌سازی‌ها.</string>
+    <string name="graph_grid_title">نمایش شبکه</string>
+    <string name="graph_grid_summary">خطوط راهنمای افقی و عمودی را پشت نمودار رسم کنید.</string>
+    <string name="graph_x_axis_title">نمایش برچسب‌های محور X</string>
+    <string name="graph_x_axis_summary">نمایش برچسب‌های تاریخ در پایین نمودار.</string>
+    <string name="graph_y_axis_title">نمایش برچسب‌های محور Y</string>
+    <string name="graph_y_axis_summary">نمایش برچسب‌های ارزش نرخ در سمت چپ نمودار.</string>
+    <string name="graph_highlight_extremes_title">برجسته‌سازی حداقل و حداکثر</string>
+    <string name="graph_highlight_extremes_summary">قرار دادن خطوط مرجع در پایین‌ترین و بالاترین نرخ‌های محدوده قابل مشاهده.</string>
     <!-- languages -->
     <string name="language_title">زبان برنامه</string>
     <string name="language_ar">عربی</string>

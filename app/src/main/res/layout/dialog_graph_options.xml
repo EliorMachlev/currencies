@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin3x"
+    android:paddingTop="@dimen/margin1x"
+    android:paddingBottom="@dimen/margin2x">
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin1x"
+        android:text="@string/graph_grid_title"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_x_axis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin1x"
+        android:text="@string/graph_x_axis_title"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_y_axis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin1x"
+        android:text="@string/graph_y_axis_title"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_highlight_extremes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin1x"
+        android:text="@string/graph_highlight_extremes_title"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+</LinearLayout>

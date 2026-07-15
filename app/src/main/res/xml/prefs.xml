@@ -42,6 +42,23 @@
             android:key="@string/haptic_feedback_key"
             android:summary="@string/haptic_feedback_summary"
             android:title="@string/haptic_feedback_title" />
+
+        <ListPreference
+            android:defaultValue="dd/MM/yy HH:mm"
+            android:entries="@array/date_format_names"
+            android:entryValues="@array/date_format_values"
+            android:key="@string/date_format_key"
+            android:title="@string/date_format_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_graph_options"
+        app:allowDividerAbove="false">
+        <Preference
+            android:icon="@drawable/ic_tune"
+            android:key="@string/graph_options_key"
+            android:summary="@string/graph_options_summary"
+            android:title="@string/graph_options_title" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Количество десятичных знаков, отображаемых для конвертированных значений.</string>
     <string name="haptic_feedback_title">Тактильный отклик</string>
     <string name="haptic_feedback_summary">Вибрация при нажатии клавиши\nСледует системной настройке</string>
+    <string name="date_format_title">Формат даты и времени</string>
     <string name="category_appearance">Внешний вид</string>
     <string name="system_default">Как в системе</string>
     <string name="theme_title">Тема</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Тёмная</string>
     <string name="pure_black_enabled_title">OLED чёрный</string>
     <string name="pure_black_enabled_summary">Использовать абсолютно чёрный цвет в тёмной теме</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Параметры графика</string>
+    <string name="graph_options_title">Параметры графика</string>
+    <string name="graph_options_summary">Настройка сетки, меток осей и выделений.</string>
+    <string name="graph_grid_title">Показывать сетку</string>
+    <string name="graph_grid_summary">Отрисовывать горизонтальные и вертикальные вспомогательные линии за графиком.</string>
+    <string name="graph_x_axis_title">Показывать метки оси X</string>
+    <string name="graph_x_axis_summary">Показывать метки дат в нижней части графика.</string>
+    <string name="graph_y_axis_title">Показывать метки оси Y</string>
+    <string name="graph_y_axis_summary">Показывать метки значений курса слева от графика.</string>
+    <string name="graph_highlight_extremes_title">Выделять минимум и максимум</string>
+    <string name="graph_highlight_extremes_summary">Накладывать опорные линии на самые низкие и самые высокие курсы в видимом диапазоне.</string>
     <!-- languages -->
     <string name="language_title">Язык приложения</string>
     <string name="language_ar">Арабский</string>

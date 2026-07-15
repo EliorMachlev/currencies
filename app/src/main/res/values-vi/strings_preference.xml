@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Số chữ số thập phân hiển thị cho các giá trị đã chuyển đổi.</string>
     <string name="haptic_feedback_title">Phản hồi xúc giác</string>
     <string name="haptic_feedback_summary">Rung khi nhấn phím\nTheo cài đặt hệ th���ng</string>
+    <string name="date_format_title">Định dạng ngày và giờ</string>
     <string name="category_appearance">Ngoại hình</string>
     <string name="system_default">Theo chế độ mặc định của hệ thống</string>
     <string name="theme_title">Thiết kế</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Tối</string>
     <string name="pure_black_enabled_title">Đen OLED</string>
     <string name="pure_black_enabled_summary">Sử dụng màu đen kịt ở chế độ tối</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Tùy chọn biểu đồ</string>
+    <string name="graph_options_title">Tùy chọn biểu đồ</string>
+    <string name="graph_options_summary">Cấu hình lưới, nhãn trục và điểm nổi bật.</string>
+    <string name="graph_grid_title">Hiện lưới</string>
+    <string name="graph_grid_summary">Vẽ đường dẫn ngang và dọc phía sau biểu đồ.</string>
+    <string name="graph_x_axis_title">Hiện nhãn trục X</string>
+    <string name="graph_x_axis_summary">Hiện nhãn ngày ở phía dưới biểu đồ.</string>
+    <string name="graph_y_axis_title">Hiện nhãn trục Y</string>
+    <string name="graph_y_axis_summary">Hiện nhãn giá trị tỉ lệ ở phía trái biểu đồ.</string>
+    <string name="graph_highlight_extremes_title">Đánh dấu thấp/cao nhất</string>
+    <string name="graph_highlight_extremes_summary">Phủ đường tham chiếu tại các tỉ lệ thấp nhất và cao nhất trong phạm vi hiển thị.</string>
     <!-- languages -->
     <string name="language_title">Ngôn ngữ ứng dụng</string>
     <string name="language_ar">Tiếng Ả Rập</string>

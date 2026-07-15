@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">عدد المنازل العشرية المعروضة للقيم المحولة.</string>
     <string name="haptic_feedback_title">اهتزاز اللمس</string>
     <string name="haptic_feedback_summary">اهتزاز عند الضغط على مفتاح\nيتبع إعداد النظام</string>
+    <string name="date_format_title">تنسيق التاريخ والوقت</string>
     <string name="category_appearance">المظهر</string>
     <string name="system_default">الإعداد التلقائي للنظام</string>
     <string name="theme_title">تصميم</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">غامق</string>
     <string name="pure_black_enabled_title">أسود OLED</string>
     <string name="pure_black_enabled_summary">استخدم الأسود النقي في الوضع المظلم</string>
+    <!-- graph options -->
+    <string name="category_graph_options">خيارات الرسم البياني</string>
+    <string name="graph_options_title">خيارات الرسم البياني</string>
+    <string name="graph_options_summary">تكوين الشبكة وعناوين المحاور والتمييزات.</string>
+    <string name="graph_grid_title">إظهار الشبكة</string>
+    <string name="graph_grid_summary">ارسم خطوط توجيه أفقية ورأسية خلف الرسم البياني.</string>
+    <string name="graph_x_axis_title">إظهار عناوين المحور السيني</string>
+    <string name="graph_x_axis_summary">إظهار عناوين التاريخ أسفل الرسم البياني.</string>
+    <string name="graph_y_axis_title">إظهار عناوين المحور الصادي</string>
+    <string name="graph_y_axis_summary">إظهار عناوين قيم السعر على الجانب الأيسر من الرسم البياني.</string>
+    <string name="graph_highlight_extremes_title">تمييز الحد الأدنى والأقصى</string>
+    <string name="graph_highlight_extremes_summary">تراكب خطوط مرجعية عند أدنى وأعلى الأسعار في النطاق المرئي.</string>
     <!-- languages -->
     <string name="language_title">لغة التطبيق</string>
     <string name="language_ar">العربية</string>

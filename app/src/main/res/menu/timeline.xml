@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/graph_options"
+        android:icon="@drawable/ic_tune"
+        android:title="@string/graph_options_title"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/toggle"
         android:icon="@drawable/ic_shuffle"
         android:title="@string/desc_toggle_currencies"

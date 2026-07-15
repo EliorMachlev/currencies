@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Dönüştürülmüş değerler için gösterilecek ondalık basamak sayısı.</string>
     <string name="haptic_feedback_title">Dokunsal geri bildirim</string>
     <string name="haptic_feedback_summary">Tuşa basıldığında titreşim\nSistem ayarını takip eder</string>
+    <string name="date_format_title">Tarih ve saat biçimi</string>
     <string name="category_appearance">Görünüm</string>
     <string name="system_default">Sistem varsayılanı</string>
     <string name="theme_title">Tema</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Koyu</string>
     <string name="pure_black_enabled_title">OLED siyahı</string>
     <string name="pure_black_enabled_summary">Koyu modda saf siyah kullan</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Grafik seçenekleri</string>
+    <string name="graph_options_title">Grafik seçenekleri</string>
+    <string name="graph_options_summary">Izgarayı, eksen etiketlerini ve vurguları yapılandır.</string>
+    <string name="graph_grid_title">Izgarayı göster</string>
+    <string name="graph_grid_summary">Grafiğin arkasına yatay ve dikey kılavuz çizgileri çiz.</string>
+    <string name="graph_x_axis_title">X ekseni etiketlerini göster</string>
+    <string name="graph_x_axis_summary">Grafiğin altında tarih etiketlerini göster.</string>
+    <string name="graph_y_axis_title">Y ekseni etiketlerini göster</string>
+    <string name="graph_y_axis_summary">Grafiğin sol tarafında kur değer etiketlerini göster.</string>
+    <string name="graph_highlight_extremes_title">Min. ve maks. vurgula</string>
+    <string name="graph_highlight_extremes_summary">Görünür aralıktaki en düşük ve en yüksek kurlarda referans çizgileri ekle.</string>
     <!-- languages -->
     <string name="language_title">Uygulama Dili</string>
     <string name="language_ar">Arapça</string>

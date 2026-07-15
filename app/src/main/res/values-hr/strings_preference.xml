@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Broj decimala prikazanih za pretvorene vrijednosti.</string>
     <string name="haptic_feedback_title">Haptička povratna informacija</string>
     <string name="haptic_feedback_summary">Vibracija pri pritisku tipke\nPrati postavku sustava</string>
+    <string name="date_format_title">Format datuma i vremena</string>
     <string name="category_appearance">Izgled</string>
     <string name="system_default">Zadano od sustava</string>
     <string name="theme_title">Tema</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Tamna</string>
     <string name="pure_black_enabled_title">Crna za OLED zaslone</string>
     <string name="pure_black_enabled_summary">Koristi potpuno crnu boju u tamnom načinu rada</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Opcije grafikona</string>
+    <string name="graph_options_title">Opcije grafikona</string>
+    <string name="graph_options_summary">Konfiguriraj mrežu, oznake osi i isticanja.</string>
+    <string name="graph_grid_title">Prikaži mrežu</string>
+    <string name="graph_grid_summary">Nacrtaj vodoravne i okomite pomoćne linije iza grafikona.</string>
+    <string name="graph_x_axis_title">Prikaži oznake X-osi</string>
+    <string name="graph_x_axis_summary">Prikaži oznake datuma na dnu grafikona.</string>
+    <string name="graph_y_axis_title">Prikaži oznake Y-osi</string>
+    <string name="graph_y_axis_summary">Prikaži oznake tečaja na lijevoj strani grafikona.</string>
+    <string name="graph_highlight_extremes_title">Istakni min. i maks.</string>
+    <string name="graph_highlight_extremes_summary">Prekrij referentne linije na najnižim i najvišim tečajevima u vidljivom rasponu.</string>
     <!-- languages -->
     <string name="language_title">Jezik aplikacije</string>
     <string name="language_ar">arapski</string>

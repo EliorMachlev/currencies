@@ -19,6 +19,25 @@
     <string name="haptic_feedback_key" translatable="false">KEY_HAPTIC_FEEDBACK</string>
     <string name="haptic_feedback_title">Haptic feedback</string>
     <string name="haptic_feedback_summary">Vibrate on key press\nFollows system setting</string>
+    <string name="date_format_key" translatable="false">KEY_DATE_FORMAT</string>
+    <string name="date_format_title">Date and Time format</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Graph options</string>
+    <string name="graph_options_key" translatable="false">KEY_GRAPH_OPTIONS</string>
+    <string name="graph_options_title">Graph options</string>
+    <string name="graph_options_summary">Configure grid, axis labels, and highlights.</string>
+    <string name="graph_grid_key" translatable="false">KEY_GRAPH_GRID</string>
+    <string name="graph_grid_title">Show grid</string>
+    <string name="graph_grid_summary">Draw horizontal and vertical guide lines behind the chart.</string>
+    <string name="graph_x_axis_key" translatable="false">KEY_GRAPH_X_AXIS</string>
+    <string name="graph_x_axis_title">Show X-axis labels</string>
+    <string name="graph_x_axis_summary">Show date labels along the bottom of the chart.</string>
+    <string name="graph_y_axis_key" translatable="false">KEY_GRAPH_Y_AXIS</string>
+    <string name="graph_y_axis_title">Show Y-axis labels</string>
+    <string name="graph_y_axis_summary">Show rate value labels along the left side of the chart.</string>
+    <string name="graph_highlight_extremes_key" translatable="false">KEY_GRAPH_HIGHLIGHT_EXTREMES</string>
+    <string name="graph_highlight_extremes_title">Highlight min and max</string>
+    <string name="graph_highlight_extremes_summary">Overlay reference lines at the lowest and highest rates in the visible range.</string>
     <string name="category_appearance">Appearance</string>
     <string name="system_default">System default</string>
     <string name="theme_key" translatable="false">KEY_THEME</string>

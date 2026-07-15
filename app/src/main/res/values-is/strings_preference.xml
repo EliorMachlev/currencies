@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Fjöldi aukastafa sem birtast fyrir umbreytt gildi.</string>
     <string name="haptic_feedback_title">Haptísk endurgjöf</string>
     <string name="haptic_feedback_summary">Titra við lyklakipp\nFylgir kerfisstillingu</string>
+    <string name="date_format_title">Snið dagsetningar og tíma</string>
     <string name="category_appearance">Útlit</string>
     <string name="system_default">Sjálfgildi kerfis</string>
     <string name="theme_title">Þema</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Dökk</string>
     <string name="pure_black_enabled_title">OLED svart</string>
     <string name="pure_black_enabled_summary">Nota kolsvartan fyrir dökku þemu</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Grafvalkostir</string>
+    <string name="graph_options_title">Grafvalkostir</string>
+    <string name="graph_options_summary">Stilltu hnitanet, ásamerkingar og áherslur.</string>
+    <string name="graph_grid_title">Sýna hnitanet</string>
+    <string name="graph_grid_summary">Teikna láréttar og lóðréttar hjálparlínur á bak við grafið.</string>
+    <string name="graph_x_axis_title">Sýna X-ás merkingar</string>
+    <string name="graph_x_axis_summary">Sýna dagsetningarmerkingar við neðri hluta grafsins.</string>
+    <string name="graph_y_axis_title">Sýna Y-ás merkingar</string>
+    <string name="graph_y_axis_summary">Sýna gengismerkingar vinstra megin á grafinu.</string>
+    <string name="graph_highlight_extremes_title">Auðkenna lág. og hám.</string>
+    <string name="graph_highlight_extremes_summary">Leggja viðmiðunarlínur yfir lægstu og hæstu gildin á sýnilega bilinu.</string>
     <!-- languages -->
     <string name="language_title">Tungumál forrits</string>
     <string name="language_ar">Arabíska</string>

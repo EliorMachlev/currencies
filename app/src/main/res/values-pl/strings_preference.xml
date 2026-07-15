@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Liczba miejsc dziesiętnych wyświetlanych dla przeliczonych wartości.</string>
     <string name="haptic_feedback_title">Wibracje dotykowe</string>
     <string name="haptic_feedback_summary">Wibracja przy naciśnięciu klawisza\nZgodnie z ustawieniami systemu</string>
+    <string name="date_format_title">Format daty i godziny</string>
     <string name="category_appearance">Ekran</string>
     <string name="system_default">Ustawienie domyślne systemu</string>
     <string name="theme_title">Motyw</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Ciemny</string>
     <string name="pure_black_enabled_title">OLEDowa czerń</string>
     <string name="pure_black_enabled_summary">Użyj samej czerni w ciemnym motywie</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Opcje wykresu</string>
+    <string name="graph_options_title">Opcje wykresu</string>
+    <string name="graph_options_summary">Skonfiguruj siatkę, etykiety osi i wyróżnienia.</string>
+    <string name="graph_grid_title">Pokaż siatkę</string>
+    <string name="graph_grid_summary">Narysuj poziome i pionowe linie prowadzące za wykresem.</string>
+    <string name="graph_x_axis_title">Pokaż etykiety osi X</string>
+    <string name="graph_x_axis_summary">Pokaż etykiety daty na dole wykresu.</string>
+    <string name="graph_y_axis_title">Pokaż etykiety osi Y</string>
+    <string name="graph_y_axis_summary">Pokaż etykiety wartości kursu po lewej stronie wykresu.</string>
+    <string name="graph_highlight_extremes_title">Wyróżnij min. i maks.</string>
+    <string name="graph_highlight_extremes_summary">Nałóż linie odniesienia na najniższe i najwyższe kursy w widocznym zakresie.</string>
     <!-- languages -->
     <string name="language_title">Język aplikacji</string>
     <string name="language_ar">Arabski</string>

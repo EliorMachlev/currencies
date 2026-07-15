@@ -37,8 +37,18 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         viewModel = ViewModelProvider(this)[PreferenceViewModel::class.java]
         setupFeePreference()
         setupDisplayPreferences()
+        setupGraphOptionsPreference()
         setupApiPreferences()
         setupAboutPreferences()
+    }
+
+    private fun setupGraphOptionsPreference() {
+        findPreference<Preference>(getString(R.string.graph_options_key))?.apply {
+            setOnPreferenceClickListener {
+                GraphOptionsDialog().show(childFragmentManager, null)
+                true
+            }
+        }
     }
 
     private fun setupFeePreference() {
@@ -100,6 +110,9 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 viewModel.setLanguage(newValue.toString())
                 true
             }
+        }
+        findPreference<ListPreference>(getString(R.string.date_format_key))?.apply {
+            summaryProvider = Preference.SummaryProvider<ListPreference> { pref -> pref.value }
         }
     }
 

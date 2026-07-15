@@ -9,6 +9,7 @@ import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.LocalTime
 
 class SharedPreferenceExchangeRatesLiveData(private val sharedPrefs: SharedPreferences) : LiveData<ExchangeRates?>() {
 
@@ -25,12 +26,13 @@ class SharedPreferenceExchangeRatesLiveData(private val sharedPrefs: SharedPrefe
             }
         if (rates.isEmpty()) return null
         return ExchangeRates(
-            true, // success always true, when serving cached data
-            null, // error message always null, when serving cached data
-            Currency.fromString(sharedPrefs.getString("_base", null)!!),
-            LocalDate.parse(sharedPrefs.getString("_date", null))!!,
-            rates,
-            sharedPrefs.getInt("_provider", -1).let { ApiProvider.fromId(it) }
+            success = true, // success always true, when serving cached data
+            error = null, // error message always null, when serving cached data
+            base = Currency.fromString(sharedPrefs.getString("_base", null)!!),
+            date = LocalDate.parse(sharedPrefs.getString("_date", null))!!,
+            time = sharedPrefs.getString("_time", null)?.let { LocalTime.parse(it) },
+            rates = rates,
+            provider = sharedPrefs.getInt("_provider", -1).let { ApiProvider.fromId(it) }
         )
     }
 

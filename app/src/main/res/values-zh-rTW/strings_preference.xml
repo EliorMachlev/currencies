@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">轉換數值顯示的小數位數。</string>
     <string name="haptic_feedback_title">觸覺回饋</string>
     <string name="haptic_feedback_summary">按鍵時震動\n跟隨系統設定</string>
+    <string name="date_format_title">日期與時間格式</string>
     <string name="category_appearance">應用程式外觀</string>
     <string name="system_default">系統預設值</string>
     <string name="theme_title">風格</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">暗色</string>
     <string name="pure_black_enabled_title">OLED 純黑</string>
     <string name="pure_black_enabled_summary">在暗色模式中使用純黑色</string>
+    <!-- graph options -->
+    <string name="category_graph_options">圖表選項</string>
+    <string name="graph_options_title">圖表選項</string>
+    <string name="graph_options_summary">設定格線、座標軸標籤和標示。</string>
+    <string name="graph_grid_title">顯示格線</string>
+    <string name="graph_grid_summary">在圖表後方繪製水平和垂直參考線。</string>
+    <string name="graph_x_axis_title">顯示 X 軸標籤</string>
+    <string name="graph_x_axis_summary">在圖表底部顯示日期標籤。</string>
+    <string name="graph_y_axis_title">顯示 Y 軸標籤</string>
+    <string name="graph_y_axis_summary">在圖表左側顯示匯率數值標籤。</string>
+    <string name="graph_highlight_extremes_title">標示最小值和最大值</string>
+    <string name="graph_highlight_extremes_summary">在可見範圍內的最低與最高匯率處疊加參考線。</string>
     <!-- languages -->
     <string name="language_ar">阿拉伯文</string>
     <string name="language_bg">保加利亞文</string>

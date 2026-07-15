@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Nombro de decimalaj lokoj montrataj por konvertitaj valoroj.</string>
     <string name="haptic_feedback_title">Hapta reago</string>
     <string name="haptic_feedback_summary">Vibru ĉe klav-premo\nSekvas sisteman agordon</string>
+    <string name="date_format_title">Formato de dato kaj tempo</string>
     <string name="category_appearance">Aspekto</string>
     <string name="system_default">Sistema defaŭlta</string>
     <string name="theme_title">Dezajno</string>
@@ -21,6 +22,18 @@
     <string name="theme_option_dark">Malhela</string>
     <string name="pure_black_enabled_title">OLED nigra</string>
     <string name="pure_black_enabled_summary">Uzi puran nigran en malhela reĝimo</string>
+    <!-- graph options -->
+    <string name="category_graph_options">Grafeaj agordoj</string>
+    <string name="graph_options_title">Grafeaj agordoj</string>
+    <string name="graph_options_summary">Agordi kradon, aksajn etikedojn kaj emfazojn.</string>
+    <string name="graph_grid_title">Montri kradon</string>
+    <string name="graph_grid_summary">Desegni horizontalajn kaj vertikalajn gvidliniojn malantaŭ la grafeo.</string>
+    <string name="graph_x_axis_title">Montri X-aksajn etikedojn</string>
+    <string name="graph_x_axis_summary">Montri datojn ĉe la malsupro de la grafeo.</string>
+    <string name="graph_y_axis_title">Montri Y-aksajn etikedojn</string>
+    <string name="graph_y_axis_summary">Montri kursvalorojn ĉe la maldekstra flanko de la grafeo.</string>
+    <string name="graph_highlight_extremes_title">Emfazi minimumon kaj maksimumon</string>
+    <string name="graph_highlight_extremes_summary">Surmeti referencajn liniojn ĉe la plej malaltaj kaj plej altaj kursoj en la videbla intervalo.</string>
     <!-- languages -->
     <string name="language_title">Aplikaĵa Lingvo</string>
     <string name="language_ar">Araba</string>

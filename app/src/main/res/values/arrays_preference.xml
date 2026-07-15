@@ -22,6 +22,23 @@
         <item>6</item>
     </string-array>
 
+    <!-- date and time format settings -->
+    <string-array name="date_format_values" translatable="false">
+        <item>dd/MM/yy HH:mm</item>
+        <item>dd/MM/yy hh:mm a</item>
+        <item>MM/dd/yy HH:mm</item>
+        <item>MM/dd/yy hh:mm a</item>
+    </string-array>
+
+    <!-- \u200E (LRM) forces LTR reading order for the two Latin runs so RTL locales
+         don't visually swap the date and time parts. -->
+    <string-array name="date_format_names" translatable="false">
+        <item>\u200Edd/MM/yy HH:mm\n\u200E15/07/26 14:30</item>
+        <item>\u200Edd/MM/yy hh:mm a\n\u200E15/07/26 02:30 PM</item>
+        <item>\u200EMM/dd/yy HH:mm\n\u200E07/15/26 14:30</item>
+        <item>\u200EMM/dd/yy hh:mm a\n\u200E07/15/26 02:30 PM</item>
+    </string-array>
+
     <!-- theme settings -->
     <string-array name="theme_names" translatable="false">
         <item>@string/theme_option_light</item>

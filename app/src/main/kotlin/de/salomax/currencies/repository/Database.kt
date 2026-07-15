@@ -29,6 +29,7 @@ class Database(context: Context) {
     private val prefsRates: SharedPreferences = context.getSharedPreferences("rates", MODE_PRIVATE)
 
     private val keyDate = "_date"
+    private val keyTime = "_time"
     private val keyBaseRate = "_base"
     private val keyProvider = "_provider"
 
@@ -41,6 +42,7 @@ class Database(context: Context) {
                 editor.clear()
                 // apply new ones
                 editor.putString(keyDate, items.date.toString())
+                editor.putString(keyTime, items.time?.toString())
                 editor.putString(keyBaseRate, items.base?.iso4217Alpha())
                 editor.putInt(keyProvider, items.provider?.id ?: -1)
                 items.rates?.forEach { rate ->
@@ -182,6 +184,12 @@ class Database(context: Context) {
     private val keyKeyboardType = "_keyboardType"
     private val keyHapticFeedback = "_hapticFeedback"
     private val keyDecimalPlaces = "_decimalPlaces"
+    private val keyChartGrid = "_chartGrid"
+    private val keyChartXAxisLabel = "_chartXAxisLabel"
+    private val keyChartYAxisLabel = "_chartYAxisLabel"
+    private val keyChartHighlightExtremes = "_chartHighlightExtremes"
+    private val keyDateFormat = "_dateFormat"
+    private val defaultDateFormat = "dd/MM/yy HH:mm"
 
     /* api */
 
@@ -320,6 +328,69 @@ class Database(context: Context) {
     fun getDecimalPlaces(): LiveData<Int> {
         return SharedPreferenceStringLiveData(prefs, keyDecimalPlaces, "2")
             .map { (it ?: "2").toIntOrNull()?.coerceIn(0, 6) ?: 2 }
+    }
+
+    /* graph options */
+
+    fun setChartGridEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartGrid, enabled).apply()
+    }
+
+    fun isChartGridEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartGrid, true)
+    }
+
+    fun isChartGridEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartGrid, true)
+    }
+
+    fun setChartXAxisLabelEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartXAxisLabel, enabled).apply()
+    }
+
+    fun isChartXAxisLabelEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartXAxisLabel, true)
+    }
+
+    fun isChartXAxisLabelEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartXAxisLabel, true)
+    }
+
+    fun setChartYAxisLabelEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartYAxisLabel, enabled).apply()
+    }
+
+    fun isChartYAxisLabelEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartYAxisLabel, true)
+    }
+
+    fun isChartYAxisLabelEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartYAxisLabel, true)
+    }
+
+    fun setChartHighlightExtremesEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(keyChartHighlightExtremes, enabled).apply()
+    }
+
+    fun isChartHighlightExtremesEnabled(): LiveData<Boolean> {
+        return SharedPreferenceBooleanLiveData(prefs, keyChartHighlightExtremes, true)
+    }
+
+    fun isChartHighlightExtremesEnabledBlocking(): Boolean {
+        return prefs.getBoolean(keyChartHighlightExtremes, true)
+    }
+
+    fun setDateFormat(pattern: String) {
+        prefs.edit().putString(keyDateFormat, pattern).apply()
+    }
+
+    fun getDateFormat(): LiveData<String> {
+        return SharedPreferenceStringLiveData(prefs, keyDateFormat, defaultDateFormat)
+            .map { it ?: defaultDateFormat }
+    }
+
+    fun getDateFormatBlocking(): String {
+        return prefs.getString(keyDateFormat, defaultDateFormat) ?: defaultDateFormat
     }
 
 }
