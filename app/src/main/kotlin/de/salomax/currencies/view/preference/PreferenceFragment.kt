@@ -26,6 +26,7 @@ class PreferenceFragment: PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.fitsSystemWindows = true
         activity?.setTitle(R.string.title_preferences)
     }
 
