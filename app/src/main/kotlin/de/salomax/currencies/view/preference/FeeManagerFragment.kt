@@ -7,12 +7,15 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ImageSpan
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
@@ -103,16 +106,78 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
     private fun showFeeSideDialog(onPicked: (FeeSide) -> Unit) {
         val ctx = requireContext()
         val sides = arrayOf(FeeSide.ORIGINAL, FeeSide.CONVERTED)
-        val items = sides.map { formatFeeSideSummary(it) }.toTypedArray<CharSequence>()
-        val currentIdx = sides.indexOf(db.getFeeSideBlocking()).coerceAtLeast(0)
-        MaterialAlertDialogBuilder(ctx)
-            .setTitle(R.string.fee_side_label)
-            .setSingleChoiceItems(items, currentIdx) { dialog, which ->
-                val picked = sides[which]
-                db.setFeeSide(picked)
-                onPicked(picked)
-                dialog.dismiss()
+        val current = db.getFeeSideBlocking()
+
+        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
+        val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
+        val container = LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(padH, 0, padH, 0)
+        }
+
+        val radios = mutableListOf<RadioButton>()
+        val dialogHolder = arrayOfNulls<AlertDialog>(1)
+
+        sides.forEachIndexed { index, side ->
+            val row = LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(0, padV, 0, padV)
+                isClickable = true
+                val ta = ctx.obtainStyledAttributes(
+                    intArrayOf(android.R.attr.selectableItemBackground),
+                )
+                background = ta.getDrawable(0)
+                ta.recycle()
             }
+            val radio = RadioButton(ctx).apply {
+                isChecked = side == current
+                isClickable = false
+            }
+            radios += radio
+
+            val titleView = TextView(ctx).apply {
+                text = when (side) {
+                    FeeSide.CONVERTED -> getString(R.string.fee_side_converted)
+                    else -> getString(R.string.fee_side_original)
+                }
+                setTextAppearance(
+                    com.google.android.material.R.style.TextAppearance_Material3_TitleMedium,
+                )
+            }
+            val descView = TextView(ctx).apply {
+                text = when (side) {
+                    FeeSide.CONVERTED -> getString(R.string.fee_side_summary_converted)
+                    else -> getString(R.string.fee_side_summary_original)
+                }
+                setTextAppearance(
+                    com.google.android.material.R.style.TextAppearance_Material3_BodySmall,
+                )
+                alpha = 0.7f
+            }
+            val textCol = LinearLayout(ctx).apply {
+                orientation = LinearLayout.VERTICAL
+                addView(titleView)
+                addView(descView)
+            }
+
+            row.addView(radio)
+            row.addView(
+                textCol,
+                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f),
+            )
+            row.setOnClickListener {
+                radios.forEachIndexed { i, r -> r.isChecked = i == index }
+                db.setFeeSide(side)
+                onPicked(side)
+                dialogHolder[0]?.dismiss()
+            }
+            container.addView(row)
+        }
+
+        dialogHolder[0] = MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.fee_side_label)
+            .setView(container)
             .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
@@ -370,20 +435,27 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         initialMarkup: Boolean?,
     ): Triple<MaterialButtonToggleGroup, Int, Int> {
         val group = MaterialButtonToggleGroup(ctx).apply { isSingleSelection = true }
-        val btnPlus = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
-        ).apply {
-            id = View.generateViewId()
-            text = getString(R.string.fee_edit_sign_positive)
+        val btnHeight = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DP, 56f, ctx.resources.displayMetrics,
+        ).toInt()
+        val btnWidth = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DP, 80f, ctx.resources.displayMetrics,
+        ).toInt()
+        fun makeButton(labelRes: Int): MaterialButton {
+            return MaterialButton(
+                ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
+            ).apply {
+                id = View.generateViewId()
+                text = getString(labelRes)
+                textSize = 20f
+                insetTop = 0
+                insetBottom = 0
+            }
         }
-        val btnMinus = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
-        ).apply {
-            id = View.generateViewId()
-            text = getString(R.string.fee_edit_sign_negative)
-        }
-        group.addView(btnPlus)
-        group.addView(btnMinus)
+        val btnPlus = makeButton(R.string.fee_edit_sign_positive)
+        val btnMinus = makeButton(R.string.fee_edit_sign_negative)
+        group.addView(btnPlus, LinearLayout.LayoutParams(btnWidth, btnHeight))
+        group.addView(btnMinus, LinearLayout.LayoutParams(btnWidth, btnHeight))
         group.check(if (initialMarkup == false) btnMinus.id else btnPlus.id)
         return Triple(group, btnPlus.id, btnMinus.id)
     }
