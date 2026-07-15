@@ -66,8 +66,6 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.fitsSystemWindows = true
-        view.requestApplyInsets()
         activity?.title = getString(R.string.fee_manager_title)
     }
 
