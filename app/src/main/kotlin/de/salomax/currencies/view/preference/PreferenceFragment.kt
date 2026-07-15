@@ -27,11 +27,13 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.fitsSystemWindows = true
+        activity?.setTitle(R.string.title_preferences)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.prefs, rootKey)
         viewModel = ViewModelProvider(this)[PreferenceViewModel::class.java]
+        setupFeePreference()
         setupDisplayPreferences()
         setupGraphOptionsPreference()
         setupApiPreferences()
@@ -42,6 +44,18 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         findPreference<Preference>(getString(R.string.graph_options_key))?.apply {
             setOnPreferenceClickListener {
                 GraphOptionsDialog().show(childFragmentManager, null)
+                true
+            }
+        }
+    }
+
+    private fun setupFeePreference() {
+        findPreference<Preference>(getString(R.string.fee_key))?.apply {
+            setOnPreferenceClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.preferences_fragment, FeeManagerFragment())
+                    .addToBackStack(null)
+                    .commit()
                 true
             }
         }
