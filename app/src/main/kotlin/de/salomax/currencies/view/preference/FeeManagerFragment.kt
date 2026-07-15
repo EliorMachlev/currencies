@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -16,11 +14,11 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.salomax.currencies.R
-import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.toHumanReadableNumber
+import de.salomax.currencies.view.main.spinner.SearchableSpinnerDialog
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -251,22 +249,33 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
             setPadding(padH, padV, padH, 0)
         }
 
-        val currencyCodes = Currency.entries.map { it.iso4217Alpha() }.sorted()
-        val adapter = ArrayAdapter(ctx, android.R.layout.simple_dropdown_item_1line, currencyCodes)
+        var pickedFrom: String? = existing?.from
+        var pickedTo: String? = existing?.to
+        val placeholder = getString(R.string.fee_pair_pick_currency)
 
         val fromLabel = TextView(ctx).apply { text = getString(R.string.fee_pair_from) }
-        val fromInput = AutoCompleteTextView(ctx).apply {
-            setAdapter(adapter)
-            threshold = 1
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
-            if (existing != null) setText(existing.from)
+        val fromButton = MaterialButton(
+            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
+        ).apply {
+            text = pickedFrom ?: placeholder
+            setOnClickListener {
+                openCurrencyPicker { iso ->
+                    pickedFrom = iso
+                    text = iso
+                }
+            }
         }
         val toLabel = TextView(ctx).apply { text = getString(R.string.fee_pair_to) }
-        val toInput = AutoCompleteTextView(ctx).apply {
-            setAdapter(adapter)
-            threshold = 1
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
-            if (existing != null) setText(existing.to)
+        val toButton = MaterialButton(
+            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
+        ).apply {
+            text = pickedTo ?: placeholder
+            setOnClickListener {
+                openCurrencyPicker { iso ->
+                    pickedTo = iso
+                    text = iso
+                }
+            }
         }
         val bothWays = CheckBox(ctx).apply {
             text = getString(R.string.fee_pair_both_ways)
@@ -296,16 +305,16 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
         signGroup.addView(btnMinus)
         signGroup.check(if (existing?.isMarkup == false) btnMinus.id else btnPlus.id)
 
-        listOf(fromLabel, fromInput, toLabel, toInput, bothWays, percentLabel, percentInput, signGroup)
+        listOf(fromLabel, fromButton, toLabel, toButton, bothWays, percentLabel, percentInput, signGroup)
             .forEach { container.addView(it) }
 
         MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_section_specific_pair)
             .setView(container)
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                val from = fromInput.text.toString().trim().uppercase()
-                val to = toInput.text.toString().trim().uppercase()
-                if (from.length != 3 || to.length != 3) return@setPositiveButton
+                val from = pickedFrom
+                val to = pickedTo
+                if (from == null || to == null) return@setPositiveButton
                 val percent = percentInput.text.toString().toBigDecimalOrNull()
                     ?: BigDecimal.ZERO
                 val isMarkup = signGroup.checkedButtonId != btnMinus.id
@@ -322,6 +331,14 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
+    }
+
+    private fun openCurrencyPicker(onPicked: (String) -> Unit) {
+        val dialog = SearchableSpinnerDialog(requireContext())
+        dialog.onRateClicked = { rate, _ ->
+            onPicked(rate.currency.iso4217Alpha())
+        }
+        dialog.show(parentFragmentManager, null)
     }
 
 }

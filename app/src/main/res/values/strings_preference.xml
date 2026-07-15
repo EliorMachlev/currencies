@@ -22,6 +22,7 @@
     <string name="fee_pair_both_ways">Both directions</string>
     <string name="fee_pair_from">From</string>
     <string name="fee_pair_to">To</string>
+    <string name="fee_pair_pick_currency">Select currency</string>
     <string name="fee_true_cost_prefix">True cost: </string>
     <string name="previewConversion_key" translatable="false">KEY_PREVIEW_CONVERSION</string>
     <string name="previewConversion_title">Conversion preview</string>
