@@ -15,11 +15,8 @@ import androidx.preference.SwitchPreferenceCompat
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
-import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
-import de.salomax.currencies.widget.EditTextSwitchPreference
 import de.salomax.currencies.widget.LongSummaryPreference
-import java.math.BigDecimal
 import java.util.Calendar
 
 @Suppress("unused")
@@ -35,7 +32,6 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.prefs, rootKey)
         viewModel = ViewModelProvider(this)[PreferenceViewModel::class.java]
-        setupFeePreference()
         setupDisplayPreferences()
         setupGraphOptionsPreference()
         setupApiPreferences()
@@ -48,21 +44,6 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 GraphOptionsDialog().show(childFragmentManager, null)
                 true
             }
-        }
-    }
-
-    private fun setupFeePreference() {
-        val feePreference = findPreference<EditTextSwitchPreference>(getString(R.string.fee_key))
-        feePreference?.setOnPreferenceChangeListener { _, newValue ->
-            if (newValue is String)
-                viewModel.setFee(newValue.toBigDecimalOrNull() ?: BigDecimal.ZERO)
-            else if (newValue is Boolean)
-                viewModel.setFeeEnabled(newValue)
-            true
-        }
-        viewModel.getFee().observe(this) {
-            feePreference?.summary = it.toHumanReadableNumber(requireContext(), showPositiveSign = true, suffix = "%")
-            feePreference?.text = it.toPlainString()
         }
     }
 

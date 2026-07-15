@@ -15,6 +15,8 @@ import androidx.lifecycle.map
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
+import de.salomax.currencies.model.Fee
+import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
 import de.salomax.currencies.util.combineWith
@@ -69,9 +71,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     private val currentBaseCurrency: LiveData<Currency?>
     private val currentDestinationCurrency: LiveData<Currency?>
 
-    // fee
-    private val isFeeEnabled: LiveData<Boolean>
-    private val fee: LiveData<BigDecimal>
+    // fees
+    private val fees: LiveData<List<Fee>>
+    private val feeSide: LiveData<FeeSide>
 
     /*
      * repository data =============================================================================
@@ -105,8 +107,8 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         starredLiveItems = Database(app).getStarredCurrencies()
         onlyShowStarred = Database(app).isFilterStarredEnabled()
 
-        isFeeEnabled = Database(getApplication()).isFeeEnabled()
-        fee = Database(getApplication()).getFee()
+        fees = Database(getApplication()).getFees()
+        feeSide = Database(getApplication()).getFeeSide()
 
         //
         exchangeRates = object : MediatorLiveData<ExchangeRates?>() {
@@ -238,17 +240,24 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     internal fun isUpdating(): LiveData<Boolean> = isUpdating
 
     /**
-     * whether the fee should be included in the calculation
+     * all configured fees
      */
-    internal fun isFeeEnabled(): LiveData<Boolean> {
-        return isFeeEnabled
+    internal fun getFees(): LiveData<List<Fee>> {
+        return fees
     }
 
     /**
-     * the fee amount
+     * on which side of the conversion the fee should be applied
      */
-    internal fun getFee(): LiveData<BigDecimal> {
-        return fee
+    internal fun getFeeSide(): LiveData<FeeSide> {
+        return feeSide
+    }
+
+    /**
+     * persist the fee side.
+     */
+    internal fun setFeeSide(side: FeeSide) {
+        Database(getApplication()).setFeeSide(side)
     }
 
     internal val ratesInformationFooter = object : MediatorLiveData<Spanned?>() {
@@ -393,12 +402,12 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * the total destination value
      */
     private val result = object : MediatorLiveData<String>() {
-        var rates : ExchangeRates? = null
+        var rates: ExchangeRates? = null
         var baseValue: String? = null
         var baseCurrency: Currency? = null
         var destinationCurrency: Currency? = null
-        var feeValue: BigDecimal? = null
-        var feeEnabled: Boolean? = null
+        var feeList: List<Fee>? = null
+        var side: FeeSide? = null
 
         init {
             // rates changed
@@ -409,34 +418,146 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             addSource(currentBaseCurrency) { baseCurrency = it; calculateResult() }
             // destination currency changed
             addSource(currentDestinationCurrency) { destinationCurrency = it; calculateResult() }
-            // fee changed
-            addSource(fee) { feeValue = it; calculateResult() }
-            // fee got enabled/disabled
-            addSource(isFeeEnabled) { feeEnabled = it; calculateResult() }
+            // fees changed
+            addSource(fees) { feeList = it; calculateResult() }
+            // fee side toggled
+            addSource(feeSide) { side = it; calculateResult() }
         }
 
         private fun calculateResult() {
-            val baseValue: BigDecimal = baseValue?.toBigDecimal() ?: BigDecimal.ZERO
+            val amount: BigDecimal = baseValue?.toBigDecimal() ?: BigDecimal.ZERO
             val baseRate = rates?.rates?.find { it.currency == baseCurrency }
             val destinationRate = rates?.rates?.find { it.currency == destinationCurrency }
 
             if (baseRate != null && destinationRate != null) {
-                this.value =
-                    baseValue
-                        .divide(baseRate.value, MathContext.DECIMAL128)
-                        .multiply(destinationRate.value)
-                        .let {
-                            // add fee, if enabled
-                            if (feeEnabled != null && feeEnabled == true && feeValue != null) {
-                                it + it.multiply(feeValue!!.divide(PERCENTAGE_DIVISOR, MathContext.DECIMAL128))
-                            } else {
-                                it
-                            }
-                        }
-                        .toPlainString()
+                val fair = amount
+                    .divide(baseRate.value, MathContext.DECIMAL128)
+                    .multiply(destinationRate.value)
+                val displayed = when (side ?: FeeSide.ORIGINAL) {
+                    FeeSide.ORIGINAL -> fair
+                    FeeSide.CONVERTED -> {
+                        val stack = computeTotalStack(
+                            feeList.orEmpty(),
+                            baseCurrency,
+                            destinationCurrency,
+                        )
+                        if (stack.compareTo(BigDecimal.ZERO) == 0) fair
+                        else fair.divide(stack, MathContext.DECIMAL128)
+                    }
+                }
+                this.value = displayed.toPlainString()
             }
         }
     }
+
+    /**
+     * Return only those fees that apply for the given base/destination pair.
+     */
+    private fun applicableFees(
+        all: List<Fee>,
+        base: Currency?,
+        dest: Currency?,
+    ): List<Fee> {
+        val baseCode = base?.iso4217Alpha()
+        val destCode = dest?.iso4217Alpha()
+        return all.filter { fee ->
+            when (fee) {
+                is Fee.GlobalExchange, is Fee.GlobalBank -> true
+                is Fee.SpecificPair -> {
+                    if (baseCode == null || destCode == null) false
+                    else if (fee.from == baseCode && fee.to == destCode) true
+                    else if (fee.bothWays && fee.from == destCode && fee.to == baseCode) true
+                    else false
+                }
+            }
+        }
+    }
+
+    /**
+     * Compute the multiplicative stack factor for a subset of fees:
+     * `product over subset of (1 +/- percent/100)`.
+     */
+    private fun stackFactor(subset: List<Fee>): BigDecimal {
+        var acc = BigDecimal.ONE
+        subset.forEach { fee ->
+            val delta = fee.percent.divide(PERCENTAGE_DIVISOR, MathContext.DECIMAL128)
+            val factor = if (fee.isMarkup) BigDecimal.ONE + delta else BigDecimal.ONE - delta
+            acc = acc.multiply(factor, MathContext.DECIMAL128)
+        }
+        return acc
+    }
+
+    private fun computeTotalStack(
+        all: List<Fee>,
+        base: Currency?,
+        dest: Currency?,
+    ): BigDecimal {
+        val applicable = applicableFees(all, base, dest)
+        val specific = stackFactor(applicable.filterIsInstance<Fee.SpecificPair>())
+        val exchange = stackFactor(applicable.filterIsInstance<Fee.GlobalExchange>())
+        val bank = stackFactor(applicable.filterIsInstance<Fee.GlobalBank>())
+        return specific.multiply(exchange, MathContext.DECIMAL128)
+            .multiply(bank, MathContext.DECIMAL128)
+    }
+
+    /**
+     * The combined multiplicative fee factor for the current pair.
+     * Exposed so the UI can render a hint (e.g. badge on the side toggle)
+     * when at least one fee is active for the current currencies.
+     */
+    private val totalStack = object : MediatorLiveData<BigDecimal>() {
+        var feeList: List<Fee>? = null
+        var base: Currency? = null
+        var dest: Currency? = null
+
+        init {
+            addSource(fees) { feeList = it; update() }
+            addSource(currentBaseCurrency) { base = it; update() }
+            addSource(currentDestinationCurrency) { dest = it; update() }
+        }
+
+        private fun update() {
+            this.value = computeTotalStack(feeList.orEmpty(), base, dest)
+        }
+    }
+
+    /**
+     * The additional "true cost" on the input side when [FeeSide.ORIGINAL]
+     * is active and at least one fee applies: `input * totalStack`. `null`
+     * when the total stack is trivial (== 1) or the side is [FeeSide.CONVERTED].
+     */
+    private val trueCost = object : MediatorLiveData<BigDecimal?>() {
+        var amount: BigDecimal = BigDecimal.ZERO
+        var stack: BigDecimal = BigDecimal.ONE
+        var side: FeeSide = FeeSide.ORIGINAL
+        var feeList: List<Fee> = emptyList()
+
+        init {
+            addSource(getCurrentBaseValueAsNumber()) { amount = it ?: BigDecimal.ZERO; update() }
+            addSource(totalStack) { stack = it ?: BigDecimal.ONE; update() }
+            addSource(feeSide) { side = it ?: FeeSide.ORIGINAL; update() }
+            addSource(fees) { feeList = it.orEmpty(); update() }
+        }
+
+        private fun update() {
+            this.value = when {
+                side != FeeSide.ORIGINAL -> null
+                feeList.isEmpty() -> null
+                stack.compareTo(BigDecimal.ONE) == 0 -> null
+                else -> amount.multiply(stack, MathContext.DECIMAL128)
+            }
+        }
+    }
+
+    /**
+     * See [trueCost].
+     */
+    internal fun getTrueCost(): LiveData<BigDecimal?> = trueCost
+
+    /**
+     * The combined multiplicative fee factor for the current pair.
+     */
+    internal fun getTotalStack(): LiveData<BigDecimal> = totalStack
 
     /**
      * the total destination value, as BigDecimal (internal is string)
