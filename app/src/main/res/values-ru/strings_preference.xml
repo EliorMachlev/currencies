@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Количество десятичных знаков, отображаемых для конвертированных значений.</string>
     <string name="haptic_feedback_title">Тактильный отклик</string>
     <string name="haptic_feedback_summary">Вибрация при нажатии клавиши\nСледует системной настройке</string>
+    <string name="date_format_title">Формат даты и времени</string>
     <string name="category_appearance">Внешний вид</string>
     <string name="system_default">Как в системе</string>
     <string name="theme_title">Тема</string>

@@ -30,11 +30,13 @@
         <item>MM/dd/yy hh:mm a</item>
     </string-array>
 
+    <!-- \u200E (LRM) forces LTR reading order for the two Latin runs so RTL locales
+         don't visually swap the date and time parts. -->
     <string-array name="date_format_names" translatable="false">
-        <item>dd/MM/yy HH:mm\n15/07/26 14:30</item>
-        <item>dd/MM/yy hh:mm a\n15/07/26 02:30 PM</item>
-        <item>MM/dd/yy HH:mm\n07/15/26 14:30</item>
-        <item>MM/dd/yy hh:mm a\n07/15/26 02:30 PM</item>
+        <item>\u200Edd/MM/yy HH:mm\n\u200E15/07/26 14:30</item>
+        <item>\u200Edd/MM/yy hh:mm a\n\u200E15/07/26 02:30 PM</item>
+        <item>\u200EMM/dd/yy HH:mm\n\u200E07/15/26 14:30</item>
+        <item>\u200EMM/dd/yy hh:mm a\n\u200E07/15/26 02:30 PM</item>
     </string-array>
 
     <!-- theme settings -->

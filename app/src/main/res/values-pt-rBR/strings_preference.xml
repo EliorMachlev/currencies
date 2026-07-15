@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Número de casas decimais mostradas para os valores convertidos.</string>
     <string name="haptic_feedback_title">Feedback tátil</string>
     <string name="haptic_feedback_summary">Vibrar ao pressionar tecla\nSegue configuração do sistema</string>
+    <string name="date_format_title">Formato de data e hora</string>
     <string name="category_appearance">Aparência</string>
     <string name="system_default">Padrão do sistema</string>
     <string name="theme_title">Aspeto</string>

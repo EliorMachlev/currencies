@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Dönüştürülmüş değerler için gösterilecek ondalık basamak sayısı.</string>
     <string name="haptic_feedback_title">Dokunsal geri bildirim</string>
     <string name="haptic_feedback_summary">Tuşa basıldığında titreşim\nSistem ayarını takip eder</string>
+    <string name="date_format_title">Tarih ve saat biçimi</string>
     <string name="category_appearance">Görünüm</string>
     <string name="system_default">Sistem varsayılanı</string>
     <string name="theme_title">Tema</string>

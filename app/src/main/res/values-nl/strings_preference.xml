@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Aantal decimalen dat wordt getoond bij geconverteerde waarden.</string>
     <string name="haptic_feedback_title">Haptische feedback</string>
     <string name="haptic_feedback_summary">Trilling bij toetsaanslag\nVolgt systeeminstelling</string>
+    <string name="date_format_title">Datum- en tijdformaat</string>
     <string name="category_appearance">Uiterlijk</string>
     <string name="system_default">Systeem standaard</string>
     <string name="theme_title">Thema</string>

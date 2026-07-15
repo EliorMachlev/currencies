@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">রূপান্তরিত মানের জন্য প্রদর্শিত দশমিক স্থানের সংখ্যা।</string>
     <string name="haptic_feedback_title">হ্যাপটিক ফিডব্যাক</string>
     <string name="haptic_feedback_summary">কী চাপলে কম্পন\nসিস্টেম সেটিং অনুসরণ করে</string>
+    <string name="date_format_title">তারিখ ও সময়ের ফরম্যাট</string>
     <string name="category_appearance">অবয়ব</string>
     <string name="system_default">সিস্টেম ডিফল্ট</string>
     <string name="theme_title">নকশা</string>

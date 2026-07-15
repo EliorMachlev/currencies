@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Số chữ số thập phân hiển thị cho các giá trị đã chuyển đổi.</string>
     <string name="haptic_feedback_title">Phản hồi xúc giác</string>
     <string name="haptic_feedback_summary">Rung khi nhấn phím\nTheo cài đặt hệ th���ng</string>
+    <string name="date_format_title">Định dạng ngày và giờ</string>
     <string name="category_appearance">Ngoại hình</string>
     <string name="system_default">Theo chế độ mặc định của hệ thống</string>
     <string name="theme_title">Thiết kế</string>

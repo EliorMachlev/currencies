@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Anzahl der Nachkommastellen bei umgerechneten Werten.</string>
     <string name="haptic_feedback_title">Haptisches Feedback</string>
     <string name="haptic_feedback_summary">Vibration bei Tastendruck\nRichtet sich nach der Systemeinstellung</string>
+    <string name="date_format_title">Datums- und Uhrzeitformat</string>
     <string name="category_appearance">Aussehen</string>
     <string name="system_default">Standardeinstellung des Systems</string>
     <string name="theme_title">Design</string>

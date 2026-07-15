@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">A megjelenített tizedesjegyek száma az átváltott értékeknél.</string>
     <string name="haptic_feedback_title">Haptikus visszajelzés</string>
     <string name="haptic_feedback_summary">Rezgés billentyűnyomáskor\nA rendszerbeállítást követi</string>
+    <string name="date_format_title">Dátum- és időformátum</string>
     <string name="category_appearance">Megjelenítés</string>
     <string name="system_default">Rendszerbeállítás</string>
     <string name="theme_title">Dizájn</string>

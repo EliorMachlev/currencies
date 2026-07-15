@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">പരിവർത്തനം ചെയ്ത മൂല്യങ്ങൾക്ക് കാണിക്കേണ്ട ദശാംശ സ്ഥാനങ്ങളുടെ എണ്ണം.</string>
     <string name="haptic_feedback_title">ഹാപ്റ്റിക് ഫീഡ്‌ബാക്ക്</string>
     <string name="haptic_feedback_summary">കീ അമർത്തുമ്പോൾ വൈബ്രേറ്റ് ചെയ്യുക\nസിസ്റ്റം ക്രമീകരണം പിന്തുടരുന്നു</string>
+    <string name="date_format_title">തീയതി, സമയ ഫോർമാറ്റ്</string>
     <string name="category_appearance">ദൃശ്യരൂപം</string>
     <string name="system_default">സിസ്റ്റം സ്ഥിരസ്ഥിതി</string>
     <string name="theme_title">രൂപകൽപ്പന</string>

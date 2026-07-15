@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">轉換數值顯示的小數位數。</string>
     <string name="haptic_feedback_title">觸覺回饋</string>
     <string name="haptic_feedback_summary">按鍵時震動\n跟隨系統設定</string>
+    <string name="date_format_title">日期與時間格式</string>
     <string name="category_appearance">應用程式外觀</string>
     <string name="system_default">系統預設值</string>
     <string name="theme_title">風格</string>

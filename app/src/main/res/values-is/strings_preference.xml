@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Fjöldi aukastafa sem birtast fyrir umbreytt gildi.</string>
     <string name="haptic_feedback_title">Haptísk endurgjöf</string>
     <string name="haptic_feedback_summary">Titra við lyklakipp\nFylgir kerfisstillingu</string>
+    <string name="date_format_title">Snið dagsetningar og tíma</string>
     <string name="category_appearance">Útlit</string>
     <string name="system_default">Sjálfgildi kerfis</string>
     <string name="theme_title">Þema</string>

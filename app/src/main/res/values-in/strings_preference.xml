@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Jumlah tempat desimal yang ditampilkan untuk nilai yang dikonversi.</string>
     <string name="haptic_feedback_title">Umpan balik haptic</string>
     <string name="haptic_feedback_summary">Getar saat tombol ditekan\nMengikuti pengaturan sistem</string>
+    <string name="date_format_title">Format tanggal dan waktu</string>
     <string name="category_appearance">Tampilan</string>
     <string name="system_default">Default sistem</string>
     <string name="theme_title">Desain</string>

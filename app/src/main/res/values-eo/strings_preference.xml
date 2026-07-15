@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Nombro de decimalaj lokoj montrataj por konvertitaj valoroj.</string>
     <string name="haptic_feedback_title">Hapta reago</string>
     <string name="haptic_feedback_summary">Vibru ĉe klav-premo\nSekvas sisteman agordon</string>
+    <string name="date_format_title">Formato de dato kaj tempo</string>
     <string name="category_appearance">Aspekto</string>
     <string name="system_default">Sistema defaŭlta</string>
     <string name="theme_title">Dezajno</string>

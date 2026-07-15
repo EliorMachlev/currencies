@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Liczba miejsc dziesiętnych wyświetlanych dla przeliczonych wartości.</string>
     <string name="haptic_feedback_title">Wibracje dotykowe</string>
     <string name="haptic_feedback_summary">Wibracja przy naciśnięciu klawisza\nZgodnie z ustawieniami systemu</string>
+    <string name="date_format_title">Format daty i godziny</string>
     <string name="category_appearance">Ekran</string>
     <string name="system_default">Ustawienie domyślne systemu</string>
     <string name="theme_title">Motyw</string>

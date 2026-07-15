@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Nombre de decimals a mostrar per als valors convertits.</string>
     <string name="haptic_feedback_title">Resposta tàctil</string>
     <string name="haptic_feedback_summary">Vibra en prémer una tecla\nSegueix la configuració del sistema</string>
+    <string name="date_format_title">Format de data i hora</string>
     <string name="category_appearance">Aparença</string>
     <string name="system_default">Opció predeterminada del sistema</string>
     <string name="theme_title">Tema</string>

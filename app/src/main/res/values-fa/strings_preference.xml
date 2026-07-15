@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">تعداد ارقام اعشاری نمایش‌داده‌شده برای مقادیر تبدیل‌شده.</string>
     <string name="haptic_feedback_title">بازخورد لمسی</string>
     <string name="haptic_feedback_summary">لرزش هنگام فشردن کلید\nبر اساس تنظیمات سیستم</string>
+    <string name="date_format_title">قالب تاریخ و زمان</string>
     <string name="category_appearance">ظاهر</string>
     <string name="system_default">پیش فرض سیستم</string>
     <string name="theme_title">طراحی</string>

@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">عدد المنازل العشرية المعروضة للقيم المحولة.</string>
     <string name="haptic_feedback_title">اهتزاز اللمس</string>
     <string name="haptic_feedback_summary">اهتزاز عند الضغط على مفتاح\nيتبع إعداد النظام</string>
+    <string name="date_format_title">تنسيق التاريخ والوقت</string>
     <string name="category_appearance">المظهر</string>
     <string name="system_default">الإعداد التلقائي للنظام</string>
     <string name="theme_title">تصميم</string>

@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Αριθμός δεκαδικών ψηφίων που εμφανίζονται για τις μετατραπείσες τιμές.</string>
     <string name="haptic_feedback_title">Απτική ανάδραση</string>
     <string name="haptic_feedback_summary">Δόνηση κατά το πάτημα πλήκτρου\nΑκολουθεί τη ρύθμιση συστήματος</string>
+    <string name="date_format_title">Μορφή ημερομηνίας και ώρας</string>
     <string name="category_appearance">Εμφάνιση</string>
     <string name="system_default">Συστήματος</string>
     <string name="theme_title">Θέμα</string>

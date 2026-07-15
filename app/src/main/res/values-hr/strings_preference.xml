@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Broj decimala prikazanih za pretvorene vrijednosti.</string>
     <string name="haptic_feedback_title">Haptička povratna informacija</string>
     <string name="haptic_feedback_summary">Vibracija pri pritisku tipke\nPrati postavku sustava</string>
+    <string name="date_format_title">Format datuma i vremena</string>
     <string name="category_appearance">Izgled</string>
     <string name="system_default">Zadano od sustava</string>
     <string name="theme_title">Tema</string>

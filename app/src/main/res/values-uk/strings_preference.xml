@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Кількість десяткових знаків, що показуються для конвертованих значень.</string>
     <string name="haptic_feedback_title">Тактильний відгук</string>
     <string name="haptic_feedback_summary">Вібрація при натисканні клавіші\nВідповідає системному налаштуванню</string>
+    <string name="date_format_title">Формат дати й часу</string>
     <string name="category_appearance">Зовнішній вигляд</string>
     <string name="system_default">Станадартна, як у системі</string>
     <string name="theme_title">Тема</string>

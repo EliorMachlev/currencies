@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">Nombre de décimales à afficher pour les valeurs converties.</string>
     <string name="haptic_feedback_title">Retour haptique</string>
     <string name="haptic_feedback_summary">Vibrer à chaque touche\nSuit le réglage système</string>
+    <string name="date_format_title">Format de date et d\'heure</string>
     <string name="category_appearance">Apparition</string>
     <string name="system_default">Paramètre système par défaut</string>
     <string name="theme_title">Thème</string>

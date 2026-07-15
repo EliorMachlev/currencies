@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">מספר הספרות שאחרי הנקודה שיוצגו עבור ערכים מומרים.</string>
     <string name="haptic_feedback_title">רטט מגע</string>
     <string name="haptic_feedback_summary">רטט בלחיצה על מקש\nבהתאם להגדרות המערכת</string>
+    <string name="date_format_title">תבנית תאריך ושעה</string>
     <string name="category_appearance">מראה</string>
     <string name="system_default">ברירת המחדל של המערכת</string>
     <string name="theme_title">עיצוב</string>

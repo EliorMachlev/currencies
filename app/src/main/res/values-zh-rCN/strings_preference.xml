@@ -14,6 +14,7 @@
     <string name="decimal_places_summary">转换值显示的小数位数。</string>
     <string name="haptic_feedback_title">触感反馈</string>
     <string name="haptic_feedback_summary">按键时振动\n跟随系统设置</string>
+    <string name="date_format_title">日期和时间格式</string>
     <string name="category_appearance">外观</string>
     <string name="system_default">系统默认</string>
     <string name="theme_title">设计</string>
