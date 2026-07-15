@@ -92,22 +92,33 @@
 
         <!-- true cost hint *********************************************** -->
 
-        <TextView
-            android:id="@+id/textTrueCost"
-            style="@style/TextAppearance.Material3.TitleSmall"
-            android:layout_width="wrap_content"
+        <HorizontalScrollView
+            android:id="@+id/scrollViewTrueCost"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin1x"
             android:layout_marginEnd="@dimen/margin2x"
-            android:alpha=".7"
-            android:gravity="center_vertical|end"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textDirection="ltr"
-            android:textSize="12sp"
-            android:visibility="gone"
+            android:scrollbars="none"
             app:layout_constraintBottom_toTopOf="@id/guideline_display"
             app:layout_constraintEnd_toEndOf="@id/scrollViewTextFrom"
-            tools:text="True cost: 102.20 EUR"
-            tools:visibility="visible" />
+            app:layout_constraintStart_toEndOf="@id/textFeeBadge">
+
+            <TextView
+                android:id="@+id/textTrueCost"
+                style="@style/TextAppearance.Material3.TitleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:alpha=".7"
+                android:lines="1"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textDirection="ltr"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="True cost: 102.20 EUR"
+                tools:visibility="visible" />
+
+        </HorizontalScrollView>
 
         <!-- exchange rate info text ************************************** -->
 
