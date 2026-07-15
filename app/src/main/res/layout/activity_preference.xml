@@ -3,4 +3,5 @@
     android:id="@+id/preferences_fragment"
     android:name="de.salomax.currencies.view.preference.PreferenceFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" />

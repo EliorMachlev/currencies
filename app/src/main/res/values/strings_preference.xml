@@ -24,6 +24,10 @@
     <string name="fee_pair_to">To</string>
     <string name="fee_pair_pick_currency">Select currency</string>
     <string name="fee_true_cost_prefix">True cost: </string>
+    <string name="fee_side_summary_original">Displayed converted amount stays at mid-market; fees are shown separately as \"true cost\".</string>
+    <string name="fee_side_summary_converted">Fees are baked into the displayed converted amount.</string>
+    <string name="fee_empty">No fees yet</string>
+    <string name="fee_specific_pair_summary" translatable="false">%1$s %2$s %3$s</string>
     <string name="previewConversion_key" translatable="false">KEY_PREVIEW_CONVERSION</string>
     <string name="previewConversion_title">Conversion preview</string>
     <string name="previewConversion_summary">Show the current conversion for each rate in the currency picker.</string>

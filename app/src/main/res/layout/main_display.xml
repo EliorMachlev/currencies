@@ -73,6 +73,23 @@
             app:layout_constraintTop_toTopOf="@id/btn_toggle"
             app:tint="?attr/colorPrimary" />
 
+        <!-- overall fee badge ******************************************** -->
+
+        <TextView
+            android:id="@+id/textFeeBadge"
+            style="@style/TextAppearance.Material3.LabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin1x"
+            android:textColor="?attr/colorPrimary"
+            android:textDirection="ltr"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/btn_fee_side"
+            app:layout_constraintStart_toEndOf="@id/btn_fee_side"
+            app:layout_constraintTop_toTopOf="@id/btn_fee_side"
+            tools:text="+3.02%"
+            tools:visibility="visible" />
+
         <!-- true cost hint *********************************************** -->
 
         <TextView

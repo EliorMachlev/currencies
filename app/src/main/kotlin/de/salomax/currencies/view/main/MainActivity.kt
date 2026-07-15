@@ -80,6 +80,7 @@ class MainActivity : BaseActivity() {
     private lateinit var tvInfoConversion: TextView
     private lateinit var tvInfoDate: TextView
     private lateinit var tvTrueCost: TextView
+    private lateinit var tvFeeBadge: TextView
     private lateinit var btnFeeSide: AppCompatImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,6 +105,7 @@ class MainActivity : BaseActivity() {
         this.tvInfoConversion = findViewById(R.id.textInfoConversion)
         this.tvInfoDate = findViewById(R.id.textInfoDate)
         this.tvTrueCost = findViewById(R.id.textTrueCost)
+        this.tvFeeBadge = findViewById(R.id.textFeeBadge)
         this.btnFeeSide = findViewById(R.id.btn_fee_side)
 
         // swipe-to-refresh: color scheme (not accessible in xml)
@@ -329,6 +331,7 @@ class MainActivity : BaseActivity() {
         viewModel.isHapticFeedbackEnabled.observe(this) { hapticEnabled = it }
         viewModel.getFeeSide().observe(this) { observeFeeSide(it) }
         viewModel.getTrueCost().observe(this) { observeTrueCost(it) }
+        viewModel.getTotalStack().observe(this) { observeTotalStack(it) }
     }
 
     private fun observeFeeSide(side: FeeSide?) {
@@ -337,6 +340,27 @@ class MainActivity : BaseActivity() {
             if (effective == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted
             else R.drawable.ic_fee_side_original
         )
+    }
+
+    private fun observeTotalStack(stack: BigDecimal?) {
+        val one = BigDecimal.ONE
+        val effective = stack ?: one
+        if (effective.compareTo(one) == 0) {
+            tvFeeBadge.visibility = View.GONE
+            return
+        }
+        val deltaPercent = effective
+            .subtract(one)
+            .multiply(BigDecimal(100))
+            .setScale(2, java.math.RoundingMode.HALF_EVEN)
+        val text = deltaPercent.toHumanReadableNumber(
+            this,
+            showPositiveSign = true,
+            suffix = "%",
+            trim = true,
+        )
+        tvFeeBadge.text = text
+        tvFeeBadge.visibility = View.VISIBLE
     }
 
     private fun observeTrueCost(value: BigDecimal?) {

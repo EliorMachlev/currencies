@@ -1,5 +1,6 @@
 package de.salomax.currencies.view.preference
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -8,8 +9,11 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.fragment.app.Fragment
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,157 +26,172 @@ import de.salomax.currencies.view.main.spinner.SearchableSpinnerDialog
 import java.math.BigDecimal
 import java.util.UUID
 
-class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
+class FeeManagerFragment : PreferenceFragmentCompat() {
 
     private lateinit var db: Database
 
-    private lateinit var toggleFeeSide: MaterialButtonToggleGroup
-    private lateinit var listGlobalExchange: LinearLayout
-    private lateinit var listGlobalBank: LinearLayout
-    private lateinit var listSpecificPair: LinearLayout
+    private lateinit var categoryExchange: PreferenceCategory
+    private lateinit var categoryBank: PreferenceCategory
+    private lateinit var categoryPair: PreferenceCategory
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        db = Database(requireContext())
+        val ctx = preferenceManager.context
+        val screen: PreferenceScreen = preferenceManager.createPreferenceScreen(ctx)
+
+        screen.addPreference(buildFeeSidePreference(ctx))
+
+        categoryExchange = PreferenceCategory(ctx).apply {
+            title = getString(R.string.fee_section_global_exchange)
+            isIconSpaceReserved = false
+        }
+        screen.addPreference(categoryExchange)
+
+        categoryBank = PreferenceCategory(ctx).apply {
+            title = getString(R.string.fee_section_global_bank)
+            isIconSpaceReserved = false
+        }
+        screen.addPreference(categoryBank)
+
+        categoryPair = PreferenceCategory(ctx).apply {
+            title = getString(R.string.fee_section_specific_pair)
+            isIconSpaceReserved = false
+        }
+        screen.addPreference(categoryPair)
+
+        preferenceScreen = screen
+
+        db.getFees().observe(this) { fees -> renderFees(fees) }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        db = Database(requireContext())
-
         activity?.title = getString(R.string.fee_manager_title)
-
-        toggleFeeSide = view.findViewById(R.id.toggleFeeSide)
-        listGlobalExchange = view.findViewById(R.id.listGlobalExchange)
-        listGlobalBank = view.findViewById(R.id.listGlobalBank)
-        listSpecificPair = view.findViewById(R.id.listSpecificPair)
-
-        bindFeeSide(view)
-        bindAddButtons(view)
-
-        db.getFees().observe(viewLifecycleOwner) { fees ->
-            renderFees(fees)
-        }
     }
 
-    private fun bindFeeSide(@Suppress("UNUSED_PARAMETER") view: View) {
-        val originalId = R.id.btnSideOriginal
-        val convertedId = R.id.btnSideConverted
-        val current = db.getFeeSideBlocking()
-        toggleFeeSide.check(if (current == FeeSide.ORIGINAL) originalId else convertedId)
-        toggleFeeSide.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            val side = if (checkedId == convertedId) FeeSide.CONVERTED else FeeSide.ORIGINAL
-            db.setFeeSide(side)
-        }
-    }
-
-    private fun bindAddButtons(view: View) {
-        view.findViewById<MaterialButton>(R.id.btnAddGlobalExchange).setOnClickListener {
-            showPercentSignDialog(existing = null) { percent, isMarkup ->
-                db.addFee(
-                    Fee.GlobalExchange(UUID.randomUUID().toString(), percent, isMarkup)
-                )
+    private fun buildFeeSidePreference(ctx: Context): ListPreference {
+        return ListPreference(ctx).apply {
+            key = "__fee_side"
+            title = getString(R.string.fee_side_label)
+            entries = resources.getStringArray(R.array.fee_side_names)
+            entryValues = resources.getStringArray(R.array.fee_side_values)
+            value = db.getFeeSideBlocking().name
+            isIconSpaceReserved = false
+            summaryProvider = Preference.SummaryProvider<ListPreference> { pref ->
+                when (pref.value) {
+                    FeeSide.CONVERTED.name -> getString(R.string.fee_side_summary_converted)
+                    else -> getString(R.string.fee_side_summary_original)
+                }
             }
-        }
-        view.findViewById<MaterialButton>(R.id.btnAddGlobalBank).setOnClickListener {
-            showPercentSignDialog(existing = null) { percent, isMarkup ->
-                db.addFee(
-                    Fee.GlobalBank(UUID.randomUUID().toString(), percent, isMarkup)
-                )
+            setOnPreferenceChangeListener { _, newValue ->
+                val side = runCatching { FeeSide.valueOf(newValue.toString()) }
+                    .getOrDefault(FeeSide.ORIGINAL)
+                db.setFeeSide(side)
+                true
             }
-        }
-        view.findViewById<MaterialButton>(R.id.btnAddSpecificPair).setOnClickListener {
-            showSpecificPairDialog(existing = null) { fee -> db.addFee(fee) }
         }
     }
 
     private fun renderFees(fees: List<Fee>) {
-        renderGlobalList(
-            container = listGlobalExchange,
+        populate(
+            category = categoryExchange,
             entries = fees.filterIsInstance<Fee.GlobalExchange>(),
+            summaryFor = { null },
+            onAdd = {
+                showPercentSignDialog(existing = null) { percent, isMarkup ->
+                    db.addFee(Fee.GlobalExchange(UUID.randomUUID().toString(), percent, isMarkup))
+                }
+            },
+            onEdit = { fee ->
+                showPercentSignDialog(
+                    existing = fee,
+                    onDelete = { db.deleteFee(fee.id) },
+                ) { percent, isMarkup ->
+                    db.updateFee(fee.copy(percent = percent, isMarkup = isMarkup))
+                }
+            },
         )
-        renderGlobalList(
-            container = listGlobalBank,
+        populate(
+            category = categoryBank,
             entries = fees.filterIsInstance<Fee.GlobalBank>(),
+            summaryFor = { null },
+            onAdd = {
+                showPercentSignDialog(existing = null) { percent, isMarkup ->
+                    db.addFee(Fee.GlobalBank(UUID.randomUUID().toString(), percent, isMarkup))
+                }
+            },
+            onEdit = { fee ->
+                showPercentSignDialog(
+                    existing = fee,
+                    onDelete = { db.deleteFee(fee.id) },
+                ) { percent, isMarkup ->
+                    db.updateFee(fee.copy(percent = percent, isMarkup = isMarkup))
+                }
+            },
         )
-        renderSpecificList(fees.filterIsInstance<Fee.SpecificPair>())
-    }
-
-    private fun renderGlobalList(container: LinearLayout, entries: List<Fee>) {
-        container.removeAllViews()
-        entries.forEach { fee ->
-            container.addView(
-                buildRow(
-                    label = formatPercent(fee.percent, fee.isMarkup),
-                    onClick = {
-                        showPercentSignDialog(existing = fee) { percent, isMarkup ->
-                            db.updateFee(rebuildGlobal(fee, percent, isMarkup))
-                        }
-                    },
+        populate(
+            category = categoryPair,
+            entries = fees.filterIsInstance<Fee.SpecificPair>(),
+            summaryFor = { fee ->
+                val arrow = if (fee.bothWays) "\u2194" else "\u2192"
+                getString(R.string.fee_specific_pair_summary, fee.from, arrow, fee.to)
+            },
+            onAdd = {
+                showSpecificPairDialog(existing = null) { db.addFee(it) }
+            },
+            onEdit = { fee ->
+                showSpecificPairDialog(
+                    existing = fee,
                     onDelete = { db.deleteFee(fee.id) },
-                )
-            )
-        }
+                ) { updated ->
+                    db.updateFee(updated.copy(id = fee.id))
+                }
+            },
+        )
     }
 
-    private fun renderSpecificList(entries: List<Fee.SpecificPair>) {
-        listSpecificPair.removeAllViews()
-        entries.forEach { fee ->
-            val arrow = if (fee.bothWays) "↔" else "→"
-            val label = "${fee.from} $arrow ${fee.to}   ${formatPercent(fee.percent, fee.isMarkup)}"
-            listSpecificPair.addView(
-                buildRow(
-                    label = label,
-                    onClick = {
-                        showSpecificPairDialog(existing = fee) { updated ->
-                            db.updateFee(updated.copy(id = fee.id))
+    private fun <T : Fee> populate(
+        category: PreferenceCategory,
+        entries: List<T>,
+        summaryFor: (T) -> String?,
+        onAdd: () -> Unit,
+        onEdit: (T) -> Unit,
+    ) {
+        category.removeAll()
+        val ctx = category.context
+        if (entries.isEmpty()) {
+            category.addPreference(
+                Preference(ctx).apply {
+                    title = getString(R.string.fee_empty)
+                    isSelectable = false
+                    isIconSpaceReserved = false
+                }
+            )
+        } else {
+            entries.forEach { fee ->
+                category.addPreference(
+                    Preference(ctx).apply {
+                        title = formatPercent(fee.percent, fee.isMarkup)
+                        summary = summaryFor(fee)
+                        isIconSpaceReserved = false
+                        setOnPreferenceClickListener {
+                            onEdit(fee)
+                            true
                         }
-                    },
-                    onDelete = { db.deleteFee(fee.id) },
+                    }
                 )
-            )
+            }
         }
-    }
-
-    private fun rebuildGlobal(original: Fee, percent: BigDecimal, isMarkup: Boolean): Fee {
-        return when (original) {
-            is Fee.GlobalExchange -> original.copy(percent = percent, isMarkup = isMarkup)
-            is Fee.GlobalBank -> original.copy(percent = percent, isMarkup = isMarkup)
-            is Fee.SpecificPair -> original.copy(percent = percent, isMarkup = isMarkup)
-        }
-    }
-
-    private fun buildRow(
-        label: String,
-        onClick: () -> Unit,
-        onDelete: () -> Unit,
-    ): View {
-        val ctx = requireContext()
-        val row = LinearLayout(ctx).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-            )
-            val padV = resources.getDimensionPixelSize(R.dimen.margin1x)
-            setPadding(0, padV, 0, padV)
-            isClickable = true
-            setOnClickListener { onClick() }
-        }
-        val labelView = TextView(ctx).apply {
-            text = label
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1f,
-            )
-            textDirection = View.TEXT_DIRECTION_LTR
-        }
-        val deleteBtn = AppCompatImageButton(ctx).apply {
-            setImageResource(android.R.drawable.ic_menu_delete)
-            background = null
-            contentDescription = getString(R.string.fee_delete)
-            setOnClickListener { onDelete() }
-        }
-        row.addView(labelView)
-        row.addView(deleteBtn)
-        return row
+        category.addPreference(
+            Preference(ctx).apply {
+                title = getString(R.string.fee_add)
+                setIcon(R.drawable.ic_add)
+                setOnPreferenceClickListener {
+                    onAdd()
+                    true
+                }
+            }
+        )
     }
 
     private fun formatPercent(percent: BigDecimal, isMarkup: Boolean): String {
@@ -181,19 +200,16 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
         return "$sign ${percent.toHumanReadableNumber(requireContext(), suffix = "%")}"
     }
 
-    /**
-     * Dialog to enter a percent + sign. Used for GlobalExchange, GlobalBank
-     * and the percent/sign portion of SpecificPair.
-     */
     private fun showPercentSignDialog(
         existing: Fee?,
+        onDelete: (() -> Unit)? = null,
         onConfirm: (BigDecimal, Boolean) -> Unit,
     ) {
         val ctx = requireContext()
+        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
+        val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
         val container = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
-            val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
-            val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
             setPadding(padH, padV, padH, 0)
         }
         val percentInput = EditText(ctx).apply {
@@ -201,51 +217,44 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
             inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             if (existing != null) setText(existing.percent.toPlainString())
         }
-        val signGroup = MaterialButtonToggleGroup(ctx).apply {
-            isSingleSelection = true
-        }
-        val btnPlus = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
-        ).apply {
-            id = View.generateViewId()
-            text = getString(R.string.fee_edit_sign_positive)
-        }
-        val btnMinus = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
-        ).apply {
-            id = View.generateViewId()
-            text = getString(R.string.fee_edit_sign_negative)
-        }
-        signGroup.addView(btnPlus)
-        signGroup.addView(btnMinus)
-        signGroup.check(if (existing?.isMarkup == false) btnMinus.id else btnPlus.id)
-
+        val signGroup = buildSignToggle(ctx, existing?.isMarkup)
         container.addView(percentInput)
-        container.addView(signGroup)
+        container.addView(
+            signGroup.first,
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                topMargin = resources.getDimensionPixelSize(R.dimen.margin2x)
+            },
+        )
 
-        MaterialAlertDialogBuilder(ctx)
+        val builder = MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_edit_percent)
             .setView(container)
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 val percent = percentInput.text.toString().toBigDecimalOrNull()
                     ?: BigDecimal.ZERO
-                val isMarkup = signGroup.checkedButtonId != btnMinus.id
+                val isMarkup = signGroup.first.checkedButtonId != signGroup.third
                 onConfirm(percent.abs(), isMarkup)
             }
             .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        if (onDelete != null) {
+            builder.setNeutralButton(R.string.fee_delete) { _, _ -> onDelete() }
+        }
+        builder.show()
     }
 
     private fun showSpecificPairDialog(
         existing: Fee.SpecificPair?,
+        onDelete: (() -> Unit)? = null,
         onConfirm: (Fee.SpecificPair) -> Unit,
     ) {
         val ctx = requireContext()
-
+        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
+        val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
         val container = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
-            val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
-            val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
             setPadding(padH, padV, padH, 0)
         }
 
@@ -255,7 +264,7 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
 
         val fromLabel = TextView(ctx).apply { text = getString(R.string.fee_pair_from) }
         val fromButton = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
+            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
         ).apply {
             text = pickedFrom ?: placeholder
             setOnClickListener {
@@ -267,7 +276,7 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
         }
         val toLabel = TextView(ctx).apply { text = getString(R.string.fee_pair_to) }
         val toButton = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
+            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
         ).apply {
             text = pickedTo ?: placeholder
             setOnClickListener {
@@ -286,29 +295,21 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
             inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             if (existing != null) setText(existing.percent.toPlainString())
         }
-        val signGroup = MaterialButtonToggleGroup(ctx).apply {
-            isSingleSelection = true
-        }
-        val btnPlus = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
-        ).apply {
-            id = View.generateViewId()
-            text = getString(R.string.fee_edit_sign_positive)
-        }
-        val btnMinus = MaterialButton(
-            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
-        ).apply {
-            id = View.generateViewId()
-            text = getString(R.string.fee_edit_sign_negative)
-        }
-        signGroup.addView(btnPlus)
-        signGroup.addView(btnMinus)
-        signGroup.check(if (existing?.isMarkup == false) btnMinus.id else btnPlus.id)
+        val signToggle = buildSignToggle(ctx, existing?.isMarkup)
 
-        listOf(fromLabel, fromButton, toLabel, toButton, bothWays, percentLabel, percentInput, signGroup)
+        listOf(fromLabel, fromButton, toLabel, toButton, bothWays, percentLabel, percentInput)
             .forEach { container.addView(it) }
+        container.addView(
+            signToggle.first,
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                topMargin = resources.getDimensionPixelSize(R.dimen.margin2x)
+            },
+        )
 
-        MaterialAlertDialogBuilder(ctx)
+        val builder = MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_section_specific_pair)
             .setView(container)
             .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -317,7 +318,7 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
                 if (from == null || to == null) return@setPositiveButton
                 val percent = percentInput.text.toString().toBigDecimalOrNull()
                     ?: BigDecimal.ZERO
-                val isMarkup = signGroup.checkedButtonId != btnMinus.id
+                val isMarkup = signToggle.first.checkedButtonId != signToggle.third
                 onConfirm(
                     Fee.SpecificPair(
                         id = existing?.id ?: UUID.randomUUID().toString(),
@@ -330,15 +331,42 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
                 )
             }
             .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        if (onDelete != null) {
+            builder.setNeutralButton(R.string.fee_delete) { _, _ -> onDelete() }
+        }
+        builder.show()
+    }
+
+    /**
+     * Returns (toggle group, +id, −id). Selection defaults to + unless
+     * [initialMarkup] is explicitly false.
+     */
+    private fun buildSignToggle(
+        ctx: Context,
+        initialMarkup: Boolean?,
+    ): Triple<MaterialButtonToggleGroup, Int, Int> {
+        val group = MaterialButtonToggleGroup(ctx).apply { isSingleSelection = true }
+        val btnPlus = MaterialButton(
+            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
+        ).apply {
+            id = View.generateViewId()
+            text = getString(R.string.fee_edit_sign_positive)
+        }
+        val btnMinus = MaterialButton(
+            ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
+        ).apply {
+            id = View.generateViewId()
+            text = getString(R.string.fee_edit_sign_negative)
+        }
+        group.addView(btnPlus)
+        group.addView(btnMinus)
+        group.check(if (initialMarkup == false) btnMinus.id else btnPlus.id)
+        return Triple(group, btnPlus.id, btnMinus.id)
     }
 
     private fun openCurrencyPicker(onPicked: (String) -> Unit) {
         val dialog = SearchableSpinnerDialog(requireContext())
-        dialog.onRateClicked = { rate, _ ->
-            onPicked(rate.currency.iso4217Alpha())
-        }
+        dialog.onRateClicked = { rate, _ -> onPicked(rate.currency.iso4217Alpha()) }
         dialog.show(parentFragmentManager, null)
     }
-
 }

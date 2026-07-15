@@ -52,4 +52,15 @@
         <item>2</item>
     </string-array>
 
+    <!-- fee side settings -->
+    <string-array name="fee_side_names" translatable="false">
+        <item>@string/fee_side_original</item>
+        <item>@string/fee_side_converted</item>
+    </string-array>
+
+    <string-array name="fee_side_values" translatable="false">
+        <item>ORIGINAL</item>
+        <item>CONVERTED</item>
+    </string-array>
+
 </resources>
