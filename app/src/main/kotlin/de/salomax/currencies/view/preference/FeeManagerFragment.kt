@@ -101,7 +101,6 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
         entries.forEach { fee ->
             container.addView(
                 buildRow(
-                    container = container,
                     label = formatPercent(fee.percent, fee.isMarkup),
                     onClick = {
                         showPercentSignDialog(existing = fee) { percent, isMarkup ->
@@ -121,7 +120,6 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
             val label = "${fee.from} $arrow ${fee.to}   ${formatPercent(fee.percent, fee.isMarkup)}"
             listSpecificPair.addView(
                 buildRow(
-                    container = listSpecificPair,
                     label = label,
                     onClick = {
                         showSpecificPairDialog(existing = fee) { updated ->
@@ -143,7 +141,6 @@ class FeeManagerFragment : Fragment(R.layout.fragment_fee_manager) {
     }
 
     private fun buildRow(
-        @Suppress("UNUSED_PARAMETER") container: ViewGroup,
         label: String,
         onClick: () -> Unit,
         onDelete: () -> Unit,
