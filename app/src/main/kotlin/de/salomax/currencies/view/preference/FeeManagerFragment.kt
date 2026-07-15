@@ -436,10 +436,10 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
     ): Triple<MaterialButtonToggleGroup, Int, Int> {
         val group = MaterialButtonToggleGroup(ctx).apply { isSingleSelection = true }
         val btnHeight = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DP, 56f, ctx.resources.displayMetrics,
+            TypedValue.COMPLEX_UNIT_DIP, 56f, ctx.resources.displayMetrics,
         ).toInt()
         val btnWidth = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DP, 80f, ctx.resources.displayMetrics,
+            TypedValue.COMPLEX_UNIT_DIP, 80f, ctx.resources.displayMetrics,
         ).toInt()
         fun makeButton(labelRes: Int): MaterialButton {
             return MaterialButton(
