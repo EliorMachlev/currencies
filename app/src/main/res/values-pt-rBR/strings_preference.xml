@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Configurações Gerais</string>
     <string name="fee_title">Taxa de transação estrangeira</string>
-    <string name="fee_summary">Dependendo do seu contrato de cartão de crédito, seu banco pode cobrar uma taxa em todas as transações de câmbio. Aqui você pode inserir essa taxa. Ele será adicionado no topo do cálculo, para que você saiba quanto você <i>realmente</i> paga.</string>
+    <string name="fee_summary">Gerencie taxas de câmbio, banco/cartão e específicas por par de moedas</string>
+    <string name="fee_manager_title">Taxas</string>
+    <string name="fee_side_label">Lado da taxa</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Convertido</string>
+    <string name="fee_section_global_exchange">Taxa global de câmbio</string>
+    <string name="fee_section_global_bank">Taxa global de banco/cartão</string>
+    <string name="fee_section_specific_pair">Taxa de câmbio para par específico</string>
+    <string name="fee_add">Adicionar taxa</string>
+    <string name="fee_delete">Excluir</string>
+    <string name="fee_edit_percent">Porcentagem</string>
+    <string name="fee_pair_both_ways">Ambas as direções</string>
+    <string name="fee_pair_from">De</string>
+    <string name="fee_pair_to">Para</string>
+    <string name="fee_pair_pick_currency">Selecionar moeda</string>
+    <string name="fee_true_cost_prefix">"Custo real: "</string>
+    <string name="fee_side_summary_original">O valor convertido exibido permanece na taxa média de mercado; as taxas são mostradas separadamente como \"custo real\".</string>
+    <string name="fee_side_summary_converted">As taxas estão incluídas no valor convertido exibido.</string>
+    <string name="fee_empty">Ainda não há taxas</string>
     <string name="previewConversion_title">Previsão da conversão</string>
     <string name="previewConversion_summary">Mostrar a conversão atual para cada taxa no selecionador de moeda.</string>
     <string name="keyboard_title">Teclado</string>

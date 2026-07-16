@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Opće postavke</string>
-    <string name="fee_title">Mjenjačka provizija</string>
-    <string name="fee_summary">Vaša banka može naplaćivati mjenjačku proviziju na sve transakcije u stranim valutama. Ovdje možete postaviti iznos provizije. Ta će se vrijednost nadodati preračunatom iznosu i tako vam prikazati koliko ćete <i>zaista</i> platiti.</string>
+    <string name="fee_title">Provizija za inozemne transakcije</string>
+    <string name="fee_summary">Upravljanje mjenjačkim, bankovnim/kartičnim provizijama i onima za pojedine parove</string>
+    <string name="fee_manager_title">Provizije</string>
+    <string name="fee_side_label">Strana provizije</string>
+    <string name="fee_side_original">Izvorna</string>
+    <string name="fee_side_converted">Preračunata</string>
+    <string name="fee_section_global_exchange">Globalna mjenjačka provizija</string>
+    <string name="fee_section_global_bank">Globalna bankovna/kartična provizija</string>
+    <string name="fee_section_specific_pair">Provizija za određeni valutni par</string>
+    <string name="fee_add">Dodaj proviziju</string>
+    <string name="fee_delete">Obriši</string>
+    <string name="fee_edit_percent">Postotak</string>
+    <string name="fee_pair_both_ways">Oba smjera</string>
+    <string name="fee_pair_from">Iz</string>
+    <string name="fee_pair_to">U</string>
+    <string name="fee_pair_pick_currency">Odaberi valutu</string>
+    <string name="fee_true_cost_prefix">"Stvarna cijena: "</string>
+    <string name="fee_side_summary_original">Prikazani preračunati iznos ostaje po srednjem tržišnom tečaju; provizije se prikazuju odvojeno kao \"stvarna cijena\".</string>
+    <string name="fee_side_summary_converted">Provizije su uključene u prikazani preračunati iznos.</string>
+    <string name="fee_empty">Još nema provizija</string>
     <string name="previewConversion_title">Pretpregled konverzije</string>
     <string name="previewConversion_summary">Prikazuje tečaj konverzije za svaku valutu u izborniku valuta.</string>
     <string name="keyboard_title">Tipkovnica</string>

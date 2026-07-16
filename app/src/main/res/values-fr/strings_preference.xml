@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Paramètres généraux</string>
     <string name="fee_title">Frais de transaction à l\'étranger</string>
-    <string name="fee_summary">Selon votre contrat de carte de crédit, votre banque peut facturer des frais sur toutes les transactions de change. Vous pouvez saisir ici ces frais. Elle sera ajoutée en plus du calcul, afin que vous sachiez combien vous <i>réellement</i> payez.</string>
+    <string name="fee_summary">Gérer les frais de change, de banque/carte et spécifiques à une paire</string>
+    <string name="fee_manager_title">Frais</string>
+    <string name="fee_side_label">Côté des frais</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Converti</string>
+    <string name="fee_section_global_exchange">Frais de change globaux</string>
+    <string name="fee_section_global_bank">Frais bancaires/de carte globaux</string>
+    <string name="fee_section_specific_pair">Frais de change pour une paire spécifique</string>
+    <string name="fee_add">Ajouter des frais</string>
+    <string name="fee_delete">Supprimer</string>
+    <string name="fee_edit_percent">Pourcentage</string>
+    <string name="fee_pair_both_ways">Les deux sens</string>
+    <string name="fee_pair_from">De</string>
+    <string name="fee_pair_to">Vers</string>
+    <string name="fee_pair_pick_currency">Choisir une devise</string>
+    <string name="fee_true_cost_prefix">"Coût réel : "</string>
+    <string name="fee_side_summary_original">Le montant converti affiché reste au taux du marché moyen ; les frais sont affichés séparément comme \"coût réel\".</string>
+    <string name="fee_side_summary_converted">Les frais sont inclus dans le montant converti affiché.</string>
+    <string name="fee_empty">Aucun frais pour le moment</string>
     <string name="previewConversion_title">Aperçu de la conversion</string>
     <string name="previewConversion_summary">Afficher la conversion actuelle pour chaque taux dans le sélecteur de devises.</string>
     <string name="keyboard_title">Clavier</string>

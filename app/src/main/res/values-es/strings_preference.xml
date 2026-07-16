@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Configuración general</string>
-    <string name="fee_title">Tasa de transacción extranjera</string>
-    <string name="fee_summary">Dependiendo del acuerdo de su tarjeta de crédito, su banco puede cobrar una comisión por todas las transacciones de cambio de divisas. Aquí puedes introducir esa comisión. Se añadirá al cálculo, para que sepas cuánto pagas <i>realmente</i>.</string>
+    <string name="fee_title">Comisión por transacción extranjera</string>
+    <string name="fee_summary">Administra comisiones de cambio, banco/tarjeta y específicas por par</string>
+    <string name="fee_manager_title">Comisiones</string>
+    <string name="fee_side_label">Lado de la comisión</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Convertido</string>
+    <string name="fee_section_global_exchange">Comisión global de cambio</string>
+    <string name="fee_section_global_bank">Comisión global de banco/tarjeta</string>
+    <string name="fee_section_specific_pair">Comisión de cambio de par específico</string>
+    <string name="fee_add">Añadir comisión</string>
+    <string name="fee_delete">Eliminar</string>
+    <string name="fee_edit_percent">Porcentaje</string>
+    <string name="fee_pair_both_ways">Ambas direcciones</string>
+    <string name="fee_pair_from">De</string>
+    <string name="fee_pair_to">A</string>
+    <string name="fee_pair_pick_currency">Selecciona moneda</string>
+    <string name="fee_true_cost_prefix">"Coste real: "</string>
+    <string name="fee_side_summary_original">El importe convertido mostrado se mantiene al tipo medio de mercado; las comisiones se muestran por separado como \"coste real\".</string>
+    <string name="fee_side_summary_converted">Las comisiones están incluidas en el importe convertido mostrado.</string>
+    <string name="fee_empty">Aún no hay comisiones</string>
     <string name="previewConversion_title">Vista previa de la conversión</string>
     <string name="previewConversion_summary">Mostrar la conversión actual para cada tipo de cambio en el selector de moneda.</string>
     <string name="keyboard_title">Teclado</string>

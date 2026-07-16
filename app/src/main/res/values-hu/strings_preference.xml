@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Általános beállítások</string>
-    <string name="fee_title">Tranzakciós díj</string>
-    <string name="fee_summary">Hitelkártya-szerződésedtől függően bankod díjat számíthat fel minden devizatranzakció után. Itt adhatod meg ezt a díjat. Ez hozzáadódik a számításhoz, így tudod, hogy mennyit fizetsz <i>de ténylegesen</i>.</string>
+    <string name="fee_title">Devizatranzakciós díj</string>
+    <string name="fee_summary">Váltási, banki/kártya- és pénznempár-specifikus díjak kezelése</string>
+    <string name="fee_manager_title">Díjak</string>
+    <string name="fee_side_label">Díj oldala</string>
+    <string name="fee_side_original">Eredeti</string>
+    <string name="fee_side_converted">Átváltott</string>
+    <string name="fee_section_global_exchange">Globális váltási díj</string>
+    <string name="fee_section_global_bank">Globális banki/kártyadíj</string>
+    <string name="fee_section_specific_pair">Adott pénznempár váltási díja</string>
+    <string name="fee_add">Díj hozzáadása</string>
+    <string name="fee_delete">Törlés</string>
+    <string name="fee_edit_percent">Százalék</string>
+    <string name="fee_pair_both_ways">Mindkét irány</string>
+    <string name="fee_pair_from">Innen</string>
+    <string name="fee_pair_to">Ide</string>
+    <string name="fee_pair_pick_currency">Válassz pénznemet</string>
+    <string name="fee_true_cost_prefix">"Valós költség: "</string>
+    <string name="fee_side_summary_original">A megjelenített átváltott összeg a középárfolyamon marad; a díjak külön jelennek meg \"valós költség\" néven.</string>
+    <string name="fee_side_summary_converted">A díjak bele vannak számítva a megjelenített átváltott összegbe.</string>
+    <string name="fee_empty">Még nincsenek díjak</string>
     <string name="previewConversion_title">Konverziós előnézet</string>
     <string name="previewConversion_summary">Az aktuális átváltás megjelenítése minden egyes árfolyamhoz a pénznemválasztóban.</string>
     <string name="keyboard_title">Billentyűzet</string>

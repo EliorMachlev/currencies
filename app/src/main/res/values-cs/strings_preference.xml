@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Obecná nastavení</string>
-    <string name="fee_title">Neznámý poplatek za převod</string>
-    <string name="fee_summary">V závislosti na smlouvě o kreditní kartě si může vaše banka účtovat poplatek za všechny devizové transakce. Zde můžete zadat tento poplatek. Bude připočten k výpočtu, abyste věděli, kolik <i>skutečně</i> zaplatíte.</string>
+    <string name="fee_title">Poplatek za zahraniční transakci</string>
+    <string name="fee_summary">Spravujte směnné, bankovní/kartové a specifické poplatky pro měnové páry</string>
+    <string name="fee_manager_title">Poplatky</string>
+    <string name="fee_side_label">Strana poplatku</string>
+    <string name="fee_side_original">Původní</string>
+    <string name="fee_side_converted">Převedená</string>
+    <string name="fee_section_global_exchange">Globální směnný poplatek</string>
+    <string name="fee_section_global_bank">Globální bankovní/kartový poplatek</string>
+    <string name="fee_section_specific_pair">Poplatek pro konkrétní měnový pár</string>
+    <string name="fee_add">Přidat poplatek</string>
+    <string name="fee_delete">Smazat</string>
+    <string name="fee_edit_percent">Procent</string>
+    <string name="fee_pair_both_ways">Oba směry</string>
+    <string name="fee_pair_from">Z</string>
+    <string name="fee_pair_to">Na</string>
+    <string name="fee_pair_pick_currency">Vyberte měnu</string>
+    <string name="fee_true_cost_prefix">"Skutečná cena: "</string>
+    <string name="fee_side_summary_original">Zobrazená převedená částka zůstává ve středním tržním kurzu; poplatky jsou zobrazeny samostatně jako \"skutečná cena\".</string>
+    <string name="fee_side_summary_converted">Poplatky jsou zahrnuty v zobrazené převedené částce.</string>
+    <string name="fee_empty">Zatím žádné poplatky</string>
     <string name="previewConversion_title">Náhled převodu</string>
     <string name="previewConversion_summary">Zobrazí aktuální převod u každého kurzu ve výběru měny.</string>
     <string name="keyboard_title">Klávesnice</string>

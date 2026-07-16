@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Almennar stillingar</string>
     <string name="fee_title">Gjaldeyrisviðskiptagjald</string>
-    <string name="fee_summary">Bankinn þinn gæti innheimt gjald fyrir öll gjaldeyrisviðskipti. Hér er hægt að slá því inn svo þú veist hversu mikið þú borgar <i>í raun</i> .</string>
+    <string name="fee_summary">Umsjón með skipti-, banka-/kortagjöldum og gjöldum fyrir tiltekin gjaldmiðlapör</string>
+    <string name="fee_manager_title">Gjöld</string>
+    <string name="fee_side_label">Hlið gjalds</string>
+    <string name="fee_side_original">Upprunalegt</string>
+    <string name="fee_side_converted">Umreiknað</string>
+    <string name="fee_section_global_exchange">Almennt skiptigjald</string>
+    <string name="fee_section_global_bank">Almennt banka-/kortagjald</string>
+    <string name="fee_section_specific_pair">Skiptigjald fyrir tiltekið gjaldmiðlapar</string>
+    <string name="fee_add">Bæta við gjaldi</string>
+    <string name="fee_delete">Eyða</string>
+    <string name="fee_edit_percent">Prósent</string>
+    <string name="fee_pair_both_ways">Báðar áttir</string>
+    <string name="fee_pair_from">Frá</string>
+    <string name="fee_pair_to">Til</string>
+    <string name="fee_pair_pick_currency">Veldu gjaldmiðil</string>
+    <string name="fee_true_cost_prefix">"Raunverulegur kostnaður: "</string>
+    <string name="fee_side_summary_original">Sýnd umreiknuð upphæð helst á miðgengi; gjöld eru sýnd sérstaklega sem \"raunverulegur kostnaður\".</string>
+    <string name="fee_side_summary_converted">Gjöld eru innifalin í sýndri umreiknaðri upphæð.</string>
+    <string name="fee_empty">Engin gjöld ennþá</string>
     <string name="previewConversion_title">Skiptisforskoðun</string>
     <string name="previewConversion_summary">Sýna núverandi gjaldmiðlaskipti fyrir hvert gengi í gjaldeyrisvalinu.</string>
     <string name="keyboard_title">Lyklaborð</string>

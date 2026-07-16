@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Γενικές Ρυθμίσεις</string>
     <string name="fee_title">Προμήθεια συναλλαγής εξωτερικού</string>
-    <string name="fee_summary">Ανάλογα με το συμβόλαιο της πιστωτικής σας κάρτας, η τράπεζα σας μπορεί να χρεώνει προμήθεια για όλες τις συναλλαγές συναλλάγματος. Εδώ μπορείτε να εισάγετε αυτό το τέλος. Θα προστεθεί στον υπολογισμό, ώστε να γνωρίζετε πόσα <i>πραγματικά</i> πληρώνετε.</string>
+    <string name="fee_summary">Διαχείριση προμηθειών συναλλάγματος, τράπεζας/κάρτας και ανά ζεύγος νομισμάτων</string>
+    <string name="fee_manager_title">Προμήθειες</string>
+    <string name="fee_side_label">Πλευρά προμήθειας</string>
+    <string name="fee_side_original">Αρχικό</string>
+    <string name="fee_side_converted">Μετατραπέν</string>
+    <string name="fee_section_global_exchange">Καθολική προμήθεια συναλλάγματος</string>
+    <string name="fee_section_global_bank">Καθολική προμήθεια τράπεζας/κάρτας</string>
+    <string name="fee_section_specific_pair">Προμήθεια συγκεκριμένου ζεύγους νομισμάτων</string>
+    <string name="fee_add">Προσθήκη προμήθειας</string>
+    <string name="fee_delete">Διαγραφή</string>
+    <string name="fee_edit_percent">Ποσοστό</string>
+    <string name="fee_pair_both_ways">Και οι δύο κατευθύνσεις</string>
+    <string name="fee_pair_from">Από</string>
+    <string name="fee_pair_to">Προς</string>
+    <string name="fee_pair_pick_currency">Επιλέξτε νόμισμα</string>
+    <string name="fee_true_cost_prefix">"Πραγματικό κόστος: "</string>
+    <string name="fee_side_summary_original">Το εμφανιζόμενο μετατραπέν ποσό παραμένει στη μέση τιμή αγοράς· οι προμήθειες εμφανίζονται ξεχωριστά ως \"πραγματικό κόστος\".</string>
+    <string name="fee_side_summary_converted">Οι προμήθειες περιλαμβάνονται στο εμφανιζόμενο μετατραπέν ποσό.</string>
+    <string name="fee_empty">Δεν υπάρχουν ακόμη προμήθειες</string>
     <string name="previewConversion_title">Προεπισκόπηση ισοτιμίας</string>
     <string name="previewConversion_summary">Εμφάνιση της ισοτιμίας κάθε νομίσματος στον επιλογέα νομισμάτων.</string>
     <string name="keyboard_title">Πληκτρολόγιο</string>

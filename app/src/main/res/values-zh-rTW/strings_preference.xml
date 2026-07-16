@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">一般設定</string>
     <string name="fee_title">外匯手續費</string>
-    <string name="fee_summary">根據您的信用卡合約，您的銀行可能會收取外匯手續費。這裡可以輸入，手續費會直接加上去，所以您會知道<i>實際</i>要付多少錢。</string>
+    <string name="fee_summary">管理匯兌、銀行/信用卡以及特定貨幣對的手續費</string>
+    <string name="fee_manager_title">手續費</string>
+    <string name="fee_side_label">手續費一側</string>
+    <string name="fee_side_original">原始</string>
+    <string name="fee_side_converted">已換算</string>
+    <string name="fee_section_global_exchange">全域匯兌手續費</string>
+    <string name="fee_section_global_bank">全域銀行/信用卡手續費</string>
+    <string name="fee_section_specific_pair">特定貨幣對匯兌手續費</string>
+    <string name="fee_add">新增手續費</string>
+    <string name="fee_delete">刪除</string>
+    <string name="fee_edit_percent">百分比</string>
+    <string name="fee_pair_both_ways">雙向</string>
+    <string name="fee_pair_from">從</string>
+    <string name="fee_pair_to">到</string>
+    <string name="fee_pair_pick_currency">選擇貨幣</string>
+    <string name="fee_true_cost_prefix">"實際成本："</string>
+    <string name="fee_side_summary_original">顯示的換算金額維持在中間市場匯率；手續費會單獨顯示為\"實際成本\"。</string>
+    <string name="fee_side_summary_converted">手續費已計入顯示的換算金額中。</string>
+    <string name="fee_empty">尚無手續費</string>
     <string name="previewConversion_title">匯率預覽</string>
     <string name="previewConversion_summary">在選擇貨幣頁面顯示目前匯率</string>
     <string name="keyboard_title">���盤</string>

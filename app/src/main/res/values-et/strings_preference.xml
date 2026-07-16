@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Üldised seadistused</string>
     <string name="fee_title">Valuutavahetuse teenustasu</string>
-    <string name="fee_summary">Valuutavahetuse kontor või krediitkaardi teenusepakkuja võivad kasutada eri vääringute konverteerimisel teenustasusid, mida sa saad siinkohal lisada. Kasutame seda valuutakursside arvutamisel ja seega saa tead, kui palju sa <i>tegelikult</i> maksad.</string>
+    <string name="fee_summary">Halda vahetus-, panga-/kaarditasusid ja konkreetsete valuutapaaride tasusid</string>
+    <string name="fee_manager_title">Teenustasud</string>
+    <string name="fee_side_label">Teenustasu pool</string>
+    <string name="fee_side_original">Algne</string>
+    <string name="fee_side_converted">Konverteeritud</string>
+    <string name="fee_section_global_exchange">Üldine vahetustasu</string>
+    <string name="fee_section_global_bank">Üldine panga-/kaarditasu</string>
+    <string name="fee_section_specific_pair">Konkreetse valuutapaari vahetustasu</string>
+    <string name="fee_add">Lisa teenustasu</string>
+    <string name="fee_delete">Kustuta</string>
+    <string name="fee_edit_percent">Protsent</string>
+    <string name="fee_pair_both_ways">Mõlemad suunad</string>
+    <string name="fee_pair_from">Kust</string>
+    <string name="fee_pair_to">Kuhu</string>
+    <string name="fee_pair_pick_currency">Vali valuuta</string>
+    <string name="fee_true_cost_prefix">"Tegelik hind: "</string>
+    <string name="fee_side_summary_original">Kuvatav konverteeritud summa jääb keskturukursile; teenustasud kuvatakse eraldi kui \"tegelik hind\".</string>
+    <string name="fee_side_summary_converted">Teenustasud on kuvatavasse konverteeritud summasse juba arvestatud.</string>
+    <string name="fee_empty">Teenustasusid veel pole</string>
     <string name="previewConversion_title">Konverteerimise eelvaade</string>
     <string name="previewConversion_summary">Näita valuutavalijas iga vääringu kohta viimast vahetuskurssi.</string>
     <string name="keyboard_title">Klaviatuur</string>

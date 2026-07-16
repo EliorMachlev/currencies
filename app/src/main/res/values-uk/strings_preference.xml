@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Загальні налаштування</string>
-    <string name="fee_title">Комісія за міжнарожні тразакції</string>
-    <string name="fee_summary">Залежно від угоди вашої кредитної картки, ваш банк може стягувати комісію за всі операції обміну валюти. Тут ви можете ввести її розмір. Його буде додано до розрахунку, щоб ви знали, скільки ви <i>насправді</i> платите.</string>
+    <string name="fee_title">Комісія за міжнародні транзакції</string>
+    <string name="fee_summary">Керуйте комісіями обміну, банку/картки та специфічними для пар валют</string>
+    <string name="fee_manager_title">Комісії</string>
+    <string name="fee_side_label">Сторона комісії</string>
+    <string name="fee_side_original">Вихідна</string>
+    <string name="fee_side_converted">Конвертована</string>
+    <string name="fee_section_global_exchange">Глобальна комісія за обмін</string>
+    <string name="fee_section_global_bank">Глобальна комісія банку/картки</string>
+    <string name="fee_section_specific_pair">Комісія за обмін конкретної пари валют</string>
+    <string name="fee_add">Додати комісію</string>
+    <string name="fee_delete">Видалити</string>
+    <string name="fee_edit_percent">Відсоток</string>
+    <string name="fee_pair_both_ways">Обидва напрямки</string>
+    <string name="fee_pair_from">З</string>
+    <string name="fee_pair_to">На</string>
+    <string name="fee_pair_pick_currency">Виберіть валюту</string>
+    <string name="fee_true_cost_prefix">"Реальна вартість: "</string>
+    <string name="fee_side_summary_original">Показана конвертована сума залишається за середнім ринковим курсом; комісії відображаються окремо як \"реальна вартість\".</string>
+    <string name="fee_side_summary_converted">Комісії вже враховані в показаній конвертованій сумі.</string>
+    <string name="fee_empty">Комісій ще немає</string>
     <string name="previewConversion_title">Попередній перегляд обміну</string>
     <string name="previewConversion_summary">Показувати поточні ставки в списку валют.</string>
     <string name="keyboard_title">Клавіатура</string>

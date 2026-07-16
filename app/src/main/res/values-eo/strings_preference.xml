@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Ĝeneralaj Agordoj</string>
     <string name="fee_title">Eksterlanda transakcia kotizo</string>
-    <string name="fee_summary">Depende de via kreditkarta interkonsento, via banko povas kosti kotizon por ĉiuj eksterlandaj transakcioj. Ĉi tie vi povas enigi tiun kotizon. Ĝi estos aldonita al la kalkulo, do vi sciu kiom vi <i>vere</i> pagas.</string>
+    <string name="fee_summary">Administri interŝanĝajn, bankajn/kartajn kaj para-specifajn kotizojn</string>
+    <string name="fee_manager_title">Kotizoj</string>
+    <string name="fee_side_label">Flanko de la kotizo</string>
+    <string name="fee_side_original">Originala</string>
+    <string name="fee_side_converted">Konvertita</string>
+    <string name="fee_section_global_exchange">Ĝenerala interŝanĝa kotizo</string>
+    <string name="fee_section_global_bank">Ĝenerala banka/karta kotizo</string>
+    <string name="fee_section_specific_pair">Kotizo por specifa valuta paro</string>
+    <string name="fee_add">Aldoni kotizon</string>
+    <string name="fee_delete">Forigi</string>
+    <string name="fee_edit_percent">Procento</string>
+    <string name="fee_pair_both_ways">Ambaŭ direktoj</string>
+    <string name="fee_pair_from">De</string>
+    <string name="fee_pair_to">Al</string>
+    <string name="fee_pair_pick_currency">Elekti valuton</string>
+    <string name="fee_true_cost_prefix">"Vera kosto: "</string>
+    <string name="fee_side_summary_original">La montrata konvertita sumo restas ĉe la mez-merkata kurzo; kotizoj estas montrataj aparte kiel \"vera kosto\".</string>
+    <string name="fee_side_summary_converted">Kotizoj estas inkluzivitaj en la montrata konvertita sumo.</string>
+    <string name="fee_empty">Neniuj kotizoj ankoraŭ</string>
     <string name="previewConversion_title">Antaŭrigardo de konvertiĝo</string>
     <string name="previewConversion_summary">Montri la nunan konvertiĝon por ĉiu kurzo en la valutelektilo.</string>
     <string name="keyboard_title">Klavaro</string>

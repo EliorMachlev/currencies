@@ -4,6 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Generelle indstillinger</string>
     <string name="fee_title">Gebyr for udenlandske transaktioner</string>
+    <string name="fee_summary">Administrer veksel-, bank-/kortgebyrer og gebyrer for specifikke valutapar</string>
+    <string name="fee_manager_title">Gebyrer</string>
+    <string name="fee_side_label">Gebyrside</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Konverteret</string>
+    <string name="fee_section_global_exchange">Globalt vekselgebyr</string>
+    <string name="fee_section_global_bank">Globalt bank-/kortgebyr</string>
+    <string name="fee_section_specific_pair">Vekselgebyr for specifikt valutapar</string>
+    <string name="fee_add">Tilføj gebyr</string>
+    <string name="fee_delete">Slet</string>
+    <string name="fee_edit_percent">Procent</string>
+    <string name="fee_pair_both_ways">Begge retninger</string>
+    <string name="fee_pair_from">Fra</string>
+    <string name="fee_pair_to">Til</string>
+    <string name="fee_pair_pick_currency">Vælg valuta</string>
+    <string name="fee_true_cost_prefix">"Reel pris: "</string>
+    <string name="fee_side_summary_original">Den viste konverterede værdi bliver ved mellemkursen; gebyrer vises separat som \"reel pris\".</string>
+    <string name="fee_side_summary_converted">Gebyrer er indregnet i den viste konverterede værdi.</string>
+    <string name="fee_empty">Ingen gebyrer endnu</string>
 
     <string name="previewConversion_title">Forhåndsvisning af konvertering</string>
     <string name="previewConversion_summary">Vis den nuværende konverteringsrate for hver valuta i valutavælgeren.</string>

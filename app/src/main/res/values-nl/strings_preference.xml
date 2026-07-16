@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Algemene instellingen</string>
     <string name="fee_title">Buitenlandse transactiekosten</string>
-    <string name="fee_summary">Afhankelijk van uw creditcard overeenkomst kan uw bank kosten in rekening brengen voor alle valuta transacties. Hier kunt u die kosten invullen. Deze worden bij de berekening opgeteld, zodat u weet hoeveel u <i>echt</i> betaalt.</string>
+    <string name="fee_summary">Beheer wissel-, bank-/kaartkosten en kosten voor specifieke valutaparen</string>
+    <string name="fee_manager_title">Kosten</string>
+    <string name="fee_side_label">Kant van de kosten</string>
+    <string name="fee_side_original">Origineel</string>
+    <string name="fee_side_converted">Geconverteerd</string>
+    <string name="fee_section_global_exchange">Globale wisselkosten</string>
+    <string name="fee_section_global_bank">Globale bank-/kaartkosten</string>
+    <string name="fee_section_specific_pair">Wisselkosten voor specifiek valutapaar</string>
+    <string name="fee_add">Kosten toevoegen</string>
+    <string name="fee_delete">Verwijderen</string>
+    <string name="fee_edit_percent">Percentage</string>
+    <string name="fee_pair_both_ways">Beide richtingen</string>
+    <string name="fee_pair_from">Van</string>
+    <string name="fee_pair_to">Naar</string>
+    <string name="fee_pair_pick_currency">Selecteer valuta</string>
+    <string name="fee_true_cost_prefix">"Werkelijke kosten: "</string>
+    <string name="fee_side_summary_original">Het weergegeven geconverteerde bedrag blijft op de middenkoers; kosten worden apart weergegeven als \"werkelijke kosten\".</string>
+    <string name="fee_side_summary_converted">Kosten zijn verwerkt in het weergegeven geconverteerde bedrag.</string>
+    <string name="fee_empty">Nog geen kosten</string>
     <string name="previewConversion_title">Conversie voorbeeld</string>
     <string name="previewConversion_summary">Toon de huidige conversie voor elke koers in de valutakiezer.</string>
     <string name="keyboard_title">Toetsenbord</string>

@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Haupteinstellungen</string>
     <string name="fee_title">Fremdwährungsgebühr</string>
-    <string name="fee_summary">In den Konditionen mancher Kreditkarten sind Gebühren für den Einsatz im Ausland bzw. mit Fremdwährungen enthalten. Hier kannst du die Gebühr deiner Karte eintragen. Sie wird dann auf alle Umrechnungen aufgeschlagen, damit du weißt, wie viel du <i>wirklich</i> zahlst.</string>
+    <string name="fee_summary">Wechsel-, Bank-/Karten- und paarspezifische Gebühren verwalten</string>
+    <string name="fee_manager_title">Gebühren</string>
+    <string name="fee_side_label">Gebührenseite</string>
+    <string name="fee_side_original">Ursprünglich</string>
+    <string name="fee_side_converted">Umgerechnet</string>
+    <string name="fee_section_global_exchange">Globale Wechselgebühr</string>
+    <string name="fee_section_global_bank">Globale Bank-/Kartengebühr</string>
+    <string name="fee_section_specific_pair">Gebühr für spezifisches Währungspaar</string>
+    <string name="fee_add">Gebühr hinzufügen</string>
+    <string name="fee_delete">Löschen</string>
+    <string name="fee_edit_percent">Prozent</string>
+    <string name="fee_pair_both_ways">Beide Richtungen</string>
+    <string name="fee_pair_from">Von</string>
+    <string name="fee_pair_to">Nach</string>
+    <string name="fee_pair_pick_currency">Währung auswählen</string>
+    <string name="fee_true_cost_prefix">"Tatsächliche Kosten: "</string>
+    <string name="fee_side_summary_original">Der angezeigte umgerechnete Betrag bleibt beim Mittelkurs; Gebühren werden separat als \"tatsächliche Kosten\" angezeigt.</string>
+    <string name="fee_side_summary_converted">Gebühren sind bereits im angezeigten umgerechneten Betrag enthalten.</string>
+    <string name="fee_empty">Noch keine Gebühren</string>
     <string name="previewConversion_title">Umrechnungsvorschau</string>
     <string name="previewConversion_summary">Im Währungsauswahldialog die aktuelle Umrechnung für jeden Kurs anzeigen.</string>
     <string name="keyboard_title">Tastatur</string>

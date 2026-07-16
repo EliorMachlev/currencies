@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">الاعدادات العامة</string>
     <string name="fee_title">رسوم المعاملات الخارجية</string>
-    <string name="fee_summary">اعتمادًا على اتفاقية بطاقة الائتمان الخاصة بك ، قد يفرض البنك الذي تتعامل معه رسومًا على جميع معاملات الصرف الأجنبي. هنا يمكنك إدخال تلك الرسوم. ستتم إضافته أعلى الحساب ، حتى تعرف مقدار ما تدفعه <i> حقًا </i>.</string>
+    <string name="fee_summary">إدارة رسوم الصرف والبنك/البطاقة والرسوم الخاصة بأزواج العملات</string>
+    <string name="fee_manager_title">الرسوم</string>
+    <string name="fee_side_label">جانب الرسوم</string>
+    <string name="fee_side_original">الأصلي</string>
+    <string name="fee_side_converted">المحوَّل</string>
+    <string name="fee_section_global_exchange">رسوم الصرف العامة</string>
+    <string name="fee_section_global_bank">رسوم البنك/البطاقة العامة</string>
+    <string name="fee_section_specific_pair">رسوم صرف زوج عملات محدد</string>
+    <string name="fee_add">إضافة رسوم</string>
+    <string name="fee_delete">حذف</string>
+    <string name="fee_edit_percent">نسبة مئوية</string>
+    <string name="fee_pair_both_ways">كلا الاتجاهين</string>
+    <string name="fee_pair_from">من</string>
+    <string name="fee_pair_to">إلى</string>
+    <string name="fee_pair_pick_currency">اختر عملة</string>
+    <string name="fee_true_cost_prefix">"التكلفة الحقيقية: "</string>
+    <string name="fee_side_summary_original">يبقى المبلغ المحوَّل المعروض بسعر السوق الأوسط؛ وتُعرض الرسوم بشكل منفصل باسم \"التكلفة الحقيقية\".</string>
+    <string name="fee_side_summary_converted">الرسوم مضمَّنة في المبلغ المحوَّل المعروض.</string>
+    <string name="fee_empty">لا توجد رسوم بعد</string>
     <string name="previewConversion_title">معاينة التحويل</string>
     <string name="previewConversion_summary">اعرض التحويل الحالي لكل سعر في منتقي العملات.</string>
     <string name="keyboard_title">لوحة المفاتيح</string>

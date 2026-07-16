@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Allmänna inställningar</string>
-    <string name="fee_title">Växlingspåslag</string>
-    <string name="fee_summary">Beroende på ditt avtal för ditt betalkort, så kan din bank ta ut en avgift på transaktioner i utländsk valuta. Här kan du ange vilken avgift du har. Den kommer att läggas på ovanpå kursberäkningarna, så att du vet hur mycket du <i>faktiskt</i> får betala.</string>
+    <string name="fee_title">Utländsk transaktionsavgift</string>
+    <string name="fee_summary">Hantera växlings-, bank-/kortavgifter och avgifter för specifika valutapar</string>
+    <string name="fee_manager_title">Avgifter</string>
+    <string name="fee_side_label">Avgiftssida</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Konverterad</string>
+    <string name="fee_section_global_exchange">Global växlingsavgift</string>
+    <string name="fee_section_global_bank">Global bank-/kortavgift</string>
+    <string name="fee_section_specific_pair">Växlingsavgift för specifikt valutapar</string>
+    <string name="fee_add">Lägg till avgift</string>
+    <string name="fee_delete">Ta bort</string>
+    <string name="fee_edit_percent">Procent</string>
+    <string name="fee_pair_both_ways">Båda riktningarna</string>
+    <string name="fee_pair_from">Från</string>
+    <string name="fee_pair_to">Till</string>
+    <string name="fee_pair_pick_currency">Välj valuta</string>
+    <string name="fee_true_cost_prefix">"Faktisk kostnad: "</string>
+    <string name="fee_side_summary_original">Det visade konverterade beloppet är kvar till mittkursen; avgifter visas separat som \"faktisk kostnad\".</string>
+    <string name="fee_side_summary_converted">Avgifter är inräknade i det visade konverterade beloppet.</string>
+    <string name="fee_empty">Inga avgifter ännu</string>
     <string name="previewConversion_title">Förhandsvisa konverteringar</string>
     <string name="previewConversion_summary">Visa konvertering för varje valuta i valutaväljaren.</string>
     <string name="keyboard_title">Tangentbord</string>
