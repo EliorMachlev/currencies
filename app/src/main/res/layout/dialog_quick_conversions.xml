@@ -58,7 +58,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/fee_side_label"
             android:padding="@dimen/margin1x"
-            android:src="@drawable/ic_fee_side_original"
+            android:src="@drawable/ic_fee_side_original_horizontal"
             app:tint="?attr/colorPrimary" />
 
         <LinearLayout

@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:autoMirrored="true"
+    android:tint="?attr/colorControlNormal"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Arrow pointing left: fee applied to ORIGINAL (input, left) side -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M3,12l7,-6v4h11v4H10v4z" />
+</vector>

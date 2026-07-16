@@ -49,8 +49,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
             renderHeader(ctx, flagFrom, labelFrom, from)
             renderHeader(ctx, flagTo, labelTo, to)
             btnFeeSide.setImageResource(
-                if (side == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted
-                else R.drawable.ic_fee_side_original
+                if (side == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted_horizontal
+                else R.drawable.ic_fee_side_original_horizontal
             )
             renderRows(container, feeInfo, viewModel, from, to, rates, side)
         }
