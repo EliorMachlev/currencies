@@ -20,6 +20,7 @@
     <string name="fee_pair_to">A</string>
     <string name="fee_pair_pick_currency">Seleziona valuta</string>
     <string name="fee_true_cost_prefix">"Costo reale: "</string>
+    <string name="fee_original_value_prefix">"Valore originale: "</string>
     <string name="fee_side_summary_original">L\'importo convertito mostrato resta al tasso medio di mercato; le commissioni sono mostrate separatamente come \"costo reale\".</string>
     <string name="fee_side_summary_converted">Le commissioni sono già incluse nell\'importo convertito mostrato.</string>
     <string name="fee_empty">Ancora nessuna commissione</string>

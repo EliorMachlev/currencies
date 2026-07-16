@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:alpha=".7"
             android:gravity="end"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="?attr/colorError"
             android:textDirection="ltr"
             android:visibility="gone"
             tools:text="True cost: 11.20 USD"
@@ -45,13 +45,33 @@
         android:alpha=".5"
         android:text="=" />
 
-    <TextView
-        android:id="@+id/text_amount_to"
-        style="@style/TextAppearance.Material3.BodyLarge"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
-        android:textDirection="ltr"
-        tools:text="8.76 EUR" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_amount_to"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textDirection="ltr"
+            tools:text="8.76 EUR" />
+
+        <TextView
+            android:id="@+id/text_original_value"
+            style="@style/TextAppearance.Material3.LabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".7"
+            android:gravity="start"
+            android:textColor="?attr/colorError"
+            android:textDirection="ltr"
+            android:visibility="gone"
+            tools:text="Original value: 8.90 EUR"
+            tools:visibility="visible" />
+    </LinearLayout>
 </LinearLayout>

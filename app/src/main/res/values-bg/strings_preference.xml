@@ -20,6 +20,7 @@
     <string name="fee_pair_to">До</string>
     <string name="fee_pair_pick_currency">Избери валута</string>
     <string name="fee_true_cost_prefix">"Реална цена: "</string>
+    <string name="fee_original_value_prefix">"Първоначална стойност: "</string>
     <string name="fee_side_summary_original">Показаната конвертирана сума остава на средния пазарен курс; таксите се показват отделно като \"реална цена\".</string>
     <string name="fee_side_summary_converted">Таксите са включени в показаната конвертирана сума.</string>
     <string name="fee_empty">Все още няма такси</string>

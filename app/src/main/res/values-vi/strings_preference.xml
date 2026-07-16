@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Đến</string>
     <string name="fee_pair_pick_currency">Chọn tiền tệ</string>
     <string name="fee_true_cost_prefix">"Chi phí thực: "</string>
+    <string name="fee_original_value_prefix">"Giá trị gốc: "</string>
     <string name="fee_side_summary_original">Số tiền chuyển đổi hiển thị giữ ở tỷ giá thị trường trung bình; phí được hiển thị riêng dưới dạng \"chi phí thực\".</string>
     <string name="fee_side_summary_converted">Phí đã được tính sẵn trong số tiền chuyển đổi hiển thị.</string>
     <string name="fee_empty">Chưa có phí nào</string>

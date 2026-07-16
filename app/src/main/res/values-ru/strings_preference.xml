@@ -20,6 +20,7 @@
     <string name="fee_pair_to">В</string>
     <string name="fee_pair_pick_currency">Выбрать валюту</string>
     <string name="fee_true_cost_prefix">"Реальная стоимость: "</string>
+    <string name="fee_original_value_prefix">"Исходная сумма: "</string>
     <string name="fee_side_summary_original">Отображаемая конвертированная сумма остаётся по среднерыночному курсу; комиссии показываются отдельно как \"реальная стоимость\".</string>
     <string name="fee_side_summary_converted">Комиссии уже включены в отображаемую конвертированную сумму.</string>
     <string name="fee_empty">Комиссий пока нет</string>

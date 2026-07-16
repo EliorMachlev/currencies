@@ -164,6 +164,16 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
                 trueCostView.visibility = View.GONE
             }
 
+            val originalValueView = row.findViewById<TextView>(R.id.text_original_value)
+            if (hasFees && side == FeeSide.CONVERTED) {
+                originalValueView.text = getString(
+                    R.string.fee_original_value_prefix
+                ) + "${fair.formatForRow(ctx)} ${to.iso4217Alpha()}"
+                originalValueView.visibility = View.VISIBLE
+            } else {
+                originalValueView.visibility = View.GONE
+            }
+
             container.addView(row)
         }
 

@@ -20,6 +20,7 @@
     <string name="fee_pair_to">إلى</string>
     <string name="fee_pair_pick_currency">اختر عملة</string>
     <string name="fee_true_cost_prefix">"التكلفة الحقيقية: "</string>
+    <string name="fee_original_value_prefix">"القيمة الأصلية: "</string>
     <string name="fee_side_summary_original">يبقى المبلغ المحوَّل المعروض بسعر السوق الأوسط؛ وتُعرض الرسوم بشكل منفصل باسم \"التكلفة الحقيقية\".</string>
     <string name="fee_side_summary_converted">الرسوم مضمَّنة في المبلغ المحوَّل المعروض.</string>
     <string name="fee_empty">لا توجد رسوم بعد</string>

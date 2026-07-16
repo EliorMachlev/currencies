@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Ke</string>
     <string name="fee_pair_pick_currency">Pilih mata uang</string>
     <string name="fee_true_cost_prefix">"Biaya sebenarnya: "</string>
+    <string name="fee_original_value_prefix">"Nilai asli: "</string>
     <string name="fee_side_summary_original">Jumlah konversi yang ditampilkan tetap pada kurs tengah pasar; biaya ditampilkan terpisah sebagai \"biaya sebenarnya\".</string>
     <string name="fee_side_summary_converted">Biaya sudah termasuk dalam jumlah konversi yang ditampilkan.</string>
     <string name="fee_empty">Belum ada biaya</string>

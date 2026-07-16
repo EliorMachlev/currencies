@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Ide</string>
     <string name="fee_pair_pick_currency">Válassz pénznemet</string>
     <string name="fee_true_cost_prefix">"Valós költség: "</string>
+    <string name="fee_original_value_prefix">"Eredeti érték: "</string>
     <string name="fee_side_summary_original">A megjelenített átváltott összeg a középárfolyamon marad; a díjak külön jelennek meg \"valós költség\" néven.</string>
     <string name="fee_side_summary_converted">A díjak bele vannak számítva a megjelenített átváltott összegbe.</string>
     <string name="fee_empty">Még nincsenek díjak</string>

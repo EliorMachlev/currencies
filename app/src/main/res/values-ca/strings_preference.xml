@@ -20,6 +20,7 @@
     <string name="fee_pair_to">A</string>
     <string name="fee_pair_pick_currency">Selecciona moneda</string>
     <string name="fee_true_cost_prefix">"Cost real: "</string>
+    <string name="fee_original_value_prefix">"Valor original: "</string>
     <string name="fee_side_summary_original">L\'import convertit mostrat es manté al canvi mitjà de mercat; les comissions es mostren per separat com a \"cost real\".</string>
     <string name="fee_side_summary_converted">Les comissions s\'inclouen dins de l\'import convertit mostrat.</string>
     <string name="fee_empty">Encara no hi ha comissions</string>

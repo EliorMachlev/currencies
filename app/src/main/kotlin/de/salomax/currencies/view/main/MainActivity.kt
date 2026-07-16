@@ -80,6 +80,7 @@ class MainActivity : BaseActivity() {
     private lateinit var tvInfoConversion: TextView
     private lateinit var tvInfoDate: TextView
     private lateinit var tvTrueCost: TextView
+    private lateinit var tvOriginalValue: TextView
     private lateinit var tvFeeBadge: TextView
     private lateinit var btnFeeSide: AppCompatImageButton
 
@@ -105,6 +106,7 @@ class MainActivity : BaseActivity() {
         this.tvInfoConversion = findViewById(R.id.textInfoConversion)
         this.tvInfoDate = findViewById(R.id.textInfoDate)
         this.tvTrueCost = findViewById(R.id.textTrueCost)
+        this.tvOriginalValue = findViewById(R.id.textOriginalValue)
         this.tvFeeBadge = findViewById(R.id.textFeeBadge)
         this.btnFeeSide = findViewById(R.id.btn_fee_side)
 
@@ -355,6 +357,7 @@ class MainActivity : BaseActivity() {
         viewModel.isHapticFeedbackEnabled.observe(this) { hapticEnabled = it }
         viewModel.getFeeSide().observe(this) { observeFeeSide(it) }
         viewModel.getTrueCost().observe(this) { observeTrueCost(it) }
+        viewModel.getOriginalValue().observe(this) { observeOriginalValue(it) }
         viewModel.getTotalStack().observe(this) { observeTotalStack(it) }
     }
 
@@ -396,6 +399,17 @@ class MainActivity : BaseActivity() {
         val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
         tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + amount + " " + currency
         tvTrueCost.visibility = View.VISIBLE
+    }
+
+    private fun observeOriginalValue(value: BigDecimal?) {
+        if (value == null) {
+            tvOriginalValue.visibility = View.GONE
+            return
+        }
+        val currency = viewModel.getDestinationCurrency().value?.iso4217Alpha().orEmpty()
+        val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
+        tvOriginalValue.text = getString(R.string.fee_original_value_prefix) + amount + " " + currency
+        tvOriginalValue.visibility = View.VISIBLE
     }
 
     private fun observeExchangeRates(rates: ExchangeRates?) {

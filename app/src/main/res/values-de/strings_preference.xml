@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Nach</string>
     <string name="fee_pair_pick_currency">Währung auswählen</string>
     <string name="fee_true_cost_prefix">"Tatsächliche Kosten: "</string>
+    <string name="fee_original_value_prefix">"Ursprünglicher Wert: "</string>
     <string name="fee_side_summary_original">Der angezeigte umgerechnete Betrag bleibt beim Mittelkurs; Gebühren werden separat als \"tatsächliche Kosten\" angezeigt.</string>
     <string name="fee_side_summary_converted">Gebühren sind bereits im angezeigten umgerechneten Betrag enthalten.</string>
     <string name="fee_empty">Noch keine Gebühren</string>

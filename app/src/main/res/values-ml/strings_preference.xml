@@ -20,6 +20,7 @@
     <string name="fee_pair_to">ലേക്ക്</string>
     <string name="fee_pair_pick_currency">കറൻസി തിരഞ്ഞെടുക്കുക</string>
     <string name="fee_true_cost_prefix">"യഥാർത്ഥ ചെലവ്: "</string>
+    <string name="fee_original_value_prefix">"യഥാർത്ഥ മൂല്യം: "</string>
     <string name="fee_side_summary_original">പ്രദർശിപ്പിച്ച പരിവർത്തിത തുക മധ്യ-വിപണി നിരക്കിൽ തുടരും; ഫീസുകൾ പ്രത്യേകമായി \"യഥാർത്ഥ ചെലവ്\" ആയി കാണിക്കുന്നു.</string>
     <string name="fee_side_summary_converted">ഫീസുകൾ പ്രദർശിപ്പിച്ച പരിവർത്തിത തുകയിൽ ഉൾപ്പെടുത്തിയിരിക്കുന്നു.</string>
     <string name="fee_empty">ഇതുവരെ ഫീസുകളില്ല</string>

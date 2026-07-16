@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Προς</string>
     <string name="fee_pair_pick_currency">Επιλέξτε νόμισμα</string>
     <string name="fee_true_cost_prefix">"Πραγματικό κόστος: "</string>
+    <string name="fee_original_value_prefix">"Αρχική αξία: "</string>
     <string name="fee_side_summary_original">Το εμφανιζόμενο μετατραπέν ποσό παραμένει στη μέση τιμή αγοράς· οι προμήθειες εμφανίζονται ξεχωριστά ως \"πραγματικό κόστος\".</string>
     <string name="fee_side_summary_converted">Οι προμήθειες περιλαμβάνονται στο εμφανιζόμενο μετατραπέν ποσό.</string>
     <string name="fee_empty">Δεν υπάρχουν ακόμη προμήθειες</string>

@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="@id/btn_toggle"
             app:layout_constraintStart_toEndOf="@id/btn_toggle"
             app:layout_constraintTop_toTopOf="@id/btn_toggle"
-            app:tint="?attr/colorPrimary" />
+            app:tint="?attr/colorError" />
 
         <!-- overall fee badge ******************************************** -->
 
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin1x"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorError"
             android:textDirection="ltr"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/btn_fee_side"
@@ -112,7 +112,7 @@
                 android:layout_gravity="end"
                 android:alpha=".7"
                 android:lines="1"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?attr/colorError"
                 android:textDirection="ltr"
                 android:textSize="12sp"
                 android:visibility="gone"
@@ -228,10 +228,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/scrollViewOriginalValue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinnerTo"
-            app:layout_constraintTop_toTopOf="@+id/guideline_display">
+            app:layout_constraintTop_toTopOf="@+id/guideline_display"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <TextView
                 android:id="@+id/textTo"
@@ -244,6 +245,35 @@
                 android:padding="@dimen/margin2x"
                 android:textDirection="ltr"
                 tools:text="€ 383.99" />
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/scrollViewOriginalValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin1x"
+            android:layout_marginEnd="@dimen/margin2x"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/spinnerTo"
+            app:layout_constraintTop_toBottomOf="@id/scrollViewTextTo">
+
+            <TextView
+                android:id="@+id/textOriginalValue"
+                style="@style/TextAppearance.Material3.TitleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:alpha=".7"
+                android:lines="1"
+                android:textColor="?attr/colorError"
+                android:textDirection="ltr"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="Original value: 100.00 EUR"
+                tools:visibility="visible" />
+
         </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

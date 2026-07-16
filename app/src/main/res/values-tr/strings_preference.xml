@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Kime</string>
     <string name="fee_pair_pick_currency">Para birimi seç</string>
     <string name="fee_true_cost_prefix">"Gerçek maliyet: "</string>
+    <string name="fee_original_value_prefix">"Orijinal tutar: "</string>
     <string name="fee_side_summary_original">Gösterilen dönüştürülmüş tutar orta piyasa kurunda kalır; ücretler ayrı olarak \"gerçek maliyet\" şeklinde gösterilir.</string>
     <string name="fee_side_summary_converted">Ücretler gösterilen dönüştürülmüş tutara dahil edilmiştir.</string>
     <string name="fee_empty">Henüz ücret yok</string>
