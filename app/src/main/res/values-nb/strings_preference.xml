@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Generelle innstillinger</string>
     <string name="fee_title">Valutagebyr</string>
-    <string name="fee_summary">Avhengig av avtalen for ditt bankkort kan banken din ta en avgift for alle vekslinger i utenlandsk valuta. Her kan du skrive inn dette gebyret. Det vil bli lagt til på toppen av utregningen, slik at du vet hvor mye du <i>virkelig</i> betaler.</string>
+    <string name="fee_summary">Administrer veksel-, bank-/kortgebyrer og gebyrer for spesifikke valutapar</string>
+    <string name="fee_manager_title">Gebyrer</string>
+    <string name="fee_side_label">Gebyrside</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Konvertert</string>
+    <string name="fee_section_global_exchange">Globalt vekslingsgebyr</string>
+    <string name="fee_section_global_bank">Globalt bank-/kortgebyr</string>
+    <string name="fee_section_specific_pair">Vekslingsgebyr for spesifikt valutapar</string>
+    <string name="fee_add">Legg til gebyr</string>
+    <string name="fee_delete">Slett</string>
+    <string name="fee_edit_percent">Prosent</string>
+    <string name="fee_pair_both_ways">Begge retninger</string>
+    <string name="fee_pair_from">Fra</string>
+    <string name="fee_pair_to">Til</string>
+    <string name="fee_pair_pick_currency">Velg valuta</string>
+    <string name="fee_true_cost_prefix">"Reell kostnad: "</string>
+    <string name="fee_side_summary_original">Det viste konverterte beløpet holder seg til midtkurs; gebyrer vises separat som \"reell kostnad\".</string>
+    <string name="fee_side_summary_converted">Gebyrer er inkludert i det viste konverterte beløpet.</string>
+    <string name="fee_empty">Ingen gebyrer ennå</string>
     <string name="previewConversion_title">Vekslingsoverslag</string>
     <string name="previewConversion_summary">Nåværende vekslingssats for hver kurs i valutavelgeren.</string>
     <string name="keyboard_title">Tastatur</string>

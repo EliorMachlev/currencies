@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">General Ayala</string>
     <string name="fee_title">Döviz işlem ücreti</string>
-    <string name="fee_summary">Bankan, kredi kartı sözleşmene bağlı olarak tüm döviz işlemlerinden bir işlem ücreti alabilir. Bu ücreti buraya girebilirsin. Bu miktar hesaplamaya eklenecek, böylece <i>tam olarak</i> ne kadar ödeme yapacağını öğrenebilirsin.</string>
+    <string name="fee_summary">Kur, banka/kart ve belirli para birimi çiftlerine özel ücretleri yönet</string>
+    <string name="fee_manager_title">Ücretler</string>
+    <string name="fee_side_label">Ücret tarafı</string>
+    <string name="fee_side_original">Orijinal</string>
+    <string name="fee_side_converted">Dönüştürülmüş</string>
+    <string name="fee_section_global_exchange">Genel kur ücreti</string>
+    <string name="fee_section_global_bank">Genel banka/kart ücreti</string>
+    <string name="fee_section_specific_pair">Belirli para birimi çifti için kur ücreti</string>
+    <string name="fee_add">Ücret ekle</string>
+    <string name="fee_delete">Sil</string>
+    <string name="fee_edit_percent">Yüzde</string>
+    <string name="fee_pair_both_ways">Her iki yön</string>
+    <string name="fee_pair_from">Kimden</string>
+    <string name="fee_pair_to">Kime</string>
+    <string name="fee_pair_pick_currency">Para birimi seç</string>
+    <string name="fee_true_cost_prefix">"Gerçek maliyet: "</string>
+    <string name="fee_side_summary_original">Gösterilen dönüştürülmüş tutar orta piyasa kurunda kalır; ücretler ayrı olarak \"gerçek maliyet\" şeklinde gösterilir.</string>
+    <string name="fee_side_summary_converted">Ücretler gösterilen dönüştürülmüş tutara dahil edilmiştir.</string>
+    <string name="fee_empty">Henüz ücret yok</string>
     <string name="previewConversion_title">Kur oranı önizlemesi</string>
     <string name="previewConversion_summary">Para birimi seçme ekranında mevcut kur oranlarını göster.</string>
     <string name="keyboard_title">Klavye</string>

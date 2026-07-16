@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Cài đặt chung</string>
     <string name="fee_title">Phí giao dịch nước ngoài</string>
-    <string name="fee_summary">Tùy vào thỏa thuận thẻ tín dụng của bạn, ngân hàng của bạn có thể thu phí giao dịch trao đổi nước ngoài. Ở đây bạn có thể nhập phí đó. Nó sẽ được thêm vào phép tính, để bạn biết bạn <i>thực sự</i> trả bao nhiêu tiền.</string>
+    <string name="fee_summary">Quản lý phí chuyển đổi, ngân hàng/thẻ và phí cho cặp tiền tệ cụ thể</string>
+    <string name="fee_manager_title">Phí</string>
+    <string name="fee_side_label">Bên tính phí</string>
+    <string name="fee_side_original">Gốc</string>
+    <string name="fee_side_converted">Đã chuyển đổi</string>
+    <string name="fee_section_global_exchange">Phí chuyển đổi chung</string>
+    <string name="fee_section_global_bank">Phí ngân hàng/thẻ chung</string>
+    <string name="fee_section_specific_pair">Phí chuyển đổi cho cặp tiền tệ cụ thể</string>
+    <string name="fee_add">Thêm phí</string>
+    <string name="fee_delete">Xóa</string>
+    <string name="fee_edit_percent">Phần trăm</string>
+    <string name="fee_pair_both_ways">Cả hai chiều</string>
+    <string name="fee_pair_from">Từ</string>
+    <string name="fee_pair_to">Đến</string>
+    <string name="fee_pair_pick_currency">Chọn tiền tệ</string>
+    <string name="fee_true_cost_prefix">"Chi phí thực: "</string>
+    <string name="fee_side_summary_original">Số tiền chuyển đổi hiển thị giữ ở tỷ giá thị trường trung bình; phí được hiển thị riêng dưới dạng \"chi phí thực\".</string>
+    <string name="fee_side_summary_converted">Phí đã được tính sẵn trong số tiền chuyển đổi hiển thị.</string>
+    <string name="fee_empty">Chưa có phí nào</string>
     <string name="previewConversion_title">Xem trước chuyển đổi</string>
     <string name="previewConversion_summary">Hiện việc chuyển đổi hiện tại cho mỗi tỉ lệ ở trình chọn tiền tệ.</string>
     <string name="keyboard_title">Bàn phím</string>

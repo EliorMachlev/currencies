@@ -10,6 +10,10 @@ import de.salomax.currencies.view.BaseActivity
 
 class PreferenceActivity: BaseActivity() {
 
+    companion object {
+        const val EXTRA_OPEN_FEES = "EXTRA_OPEN_FEES"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,6 +32,13 @@ class PreferenceActivity: BaseActivity() {
         // title bar
         setTitle(R.string.title_preferences)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        if (savedInstanceState == null && intent.getBooleanExtra(EXTRA_OPEN_FEES, false)) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.preferences_fragment, FeeManagerFragment())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

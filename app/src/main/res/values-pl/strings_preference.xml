@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Ustawienia ogólne</string>
     <string name="fee_title">Opłata za transakcję zagraniczną</string>
-    <string name="fee_summary">W zależności od umowy dotyczącej Twojej karty kredytowej, Twój bank może pobrać dodatkową opłatę za wszelkie transakcje zagraniczne. Tutaj możesz podać jej wysokość. Zostanie ona dodana do sumy do zapłaty, dzięki czemu będziesz wiedzieć ile <i>rzeczywiście</i> zapłacisz.</string>
+    <string name="fee_summary">Zarządzaj opłatami wymiany, bankowymi/kartowymi oraz specyficznymi dla par walut</string>
+    <string name="fee_manager_title">Opłaty</string>
+    <string name="fee_side_label">Strona opłaty</string>
+    <string name="fee_side_original">Oryginalna</string>
+    <string name="fee_side_converted">Przeliczona</string>
+    <string name="fee_section_global_exchange">Globalna opłata za wymianę</string>
+    <string name="fee_section_global_bank">Globalna opłata bankowa/kartowa</string>
+    <string name="fee_section_specific_pair">Opłata za wymianę dla określonej pary walut</string>
+    <string name="fee_add">Dodaj opłatę</string>
+    <string name="fee_delete">Usuń</string>
+    <string name="fee_edit_percent">Procent</string>
+    <string name="fee_pair_both_ways">Oba kierunki</string>
+    <string name="fee_pair_from">Z</string>
+    <string name="fee_pair_to">Na</string>
+    <string name="fee_pair_pick_currency">Wybierz walutę</string>
+    <string name="fee_true_cost_prefix">"Rzeczywisty koszt: "</string>
+    <string name="fee_side_summary_original">Wyświetlana przeliczona kwota pozostaje po średnim kursie rynkowym; opłaty są pokazywane osobno jako \"rzeczywisty koszt\".</string>
+    <string name="fee_side_summary_converted">Opłaty są uwzględnione w wyświetlanej przeliczonej kwocie.</string>
+    <string name="fee_empty">Brak opłat</string>
     <string name="previewConversion_title">Podgląd konwersji</string>
     <string name="previewConversion_summary">Pokaż obecny kurs w ekranie wyboru waluty.</string>
     <string name="keyboard_title">Klawiatura</string>

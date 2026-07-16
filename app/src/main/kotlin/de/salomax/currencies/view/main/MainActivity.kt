@@ -293,6 +293,14 @@ class MainActivity : BaseActivity() {
             }
             viewModel.setFeeSide(next)
         }
+        btnFeeSide.setOnLongClickListener {
+            haptic(it)
+            startActivity(
+                Intent(this, PreferenceActivity::class.java)
+                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
+            )
+            true
+        }
     }
 
     private fun copyToClipboard(copyText: String) {

@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">הגדרות כלליות</string>
-    <string name="fee_title">עמלת עסקה זרה</string>
-    <string name="fee_summary">בהתאם להסכמים על כרטיס האשראי שלך, הבנק שלך עלול לחייב עמלה על כל עסקאות החליפין הזרות. כאן ניתן למלא את העמלה הזאת. היא תתווסף לחישוב כדי לאפשר לך לדעת כמה התשלום <i>באמת</i>.</string>
+    <string name="fee_title">עמלת עסקה במטבע זר</string>
+    <string name="fee_summary">ניהול עמלות המרה, בנק/כרטיס ועמלות לזוגות מטבעות ספציפיים</string>
+    <string name="fee_manager_title">עמלות</string>
+    <string name="fee_side_label">צד העמלה</string>
+    <string name="fee_side_original">מקורי</string>
+    <string name="fee_side_converted">מומר</string>
+    <string name="fee_section_global_exchange">עמלת המרה גלובלית</string>
+    <string name="fee_section_global_bank">עמלת בנק/כרטיס גלובלית</string>
+    <string name="fee_section_specific_pair">עמלת המרה לזוג מטבעות ספציפי</string>
+    <string name="fee_add">הוסף עמלה</string>
+    <string name="fee_delete">מחק</string>
+    <string name="fee_edit_percent">אחוז</string>
+    <string name="fee_pair_both_ways">שני הכיוונים</string>
+    <string name="fee_pair_from">מ־</string>
+    <string name="fee_pair_to">אל</string>
+    <string name="fee_pair_pick_currency">בחר מטבע</string>
+    <string name="fee_true_cost_prefix">"עלות אמיתית: "</string>
+    <string name="fee_side_summary_original">הסכום המומר המוצג נשאר בשער היציג; העמלות מוצגות בנפרד בתור \"עלות אמיתית\".</string>
+    <string name="fee_side_summary_converted">העמלות כלולות בסכום המומר המוצג.</string>
+    <string name="fee_empty">אין עמלות עדיין</string>
     <string name="previewConversion_title">תצוגה מקדימה להמרה</string>
     <string name="previewConversion_summary">הצגת ההמרה הנוכחית לכל שער בבורר המטבעות.</string>
     <string name="keyboard_title">מקלדת</string>

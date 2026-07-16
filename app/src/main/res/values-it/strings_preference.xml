@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Impostazioni generali</string>
-    <string name="fee_title">Tassa per transazioni estere</string>
-    <string name="fee_summary">A seconda del contratto della vostra carta di credito, la vostra banca potrebbe addebitare una commissione su tutte le transazioni in valuta estera. Qui puoi inserire questa tassa. Verrà aggiunta in cima al calcolo, così saprai quanto <i>realmente</i> paghi.</string>
+    <string name="fee_title">Commissione per transazioni estere</string>
+    <string name="fee_summary">Gestisci commissioni di cambio, banca/carta e specifiche per coppia</string>
+    <string name="fee_manager_title">Commissioni</string>
+    <string name="fee_side_label">Lato della commissione</string>
+    <string name="fee_side_original">Originale</string>
+    <string name="fee_side_converted">Convertito</string>
+    <string name="fee_section_global_exchange">Commissione di cambio globale</string>
+    <string name="fee_section_global_bank">Commissione banca/carta globale</string>
+    <string name="fee_section_specific_pair">Commissione per coppia di valute specifica</string>
+    <string name="fee_add">Aggiungi commissione</string>
+    <string name="fee_delete">Elimina</string>
+    <string name="fee_edit_percent">Percentuale</string>
+    <string name="fee_pair_both_ways">Entrambe le direzioni</string>
+    <string name="fee_pair_from">Da</string>
+    <string name="fee_pair_to">A</string>
+    <string name="fee_pair_pick_currency">Seleziona valuta</string>
+    <string name="fee_true_cost_prefix">"Costo reale: "</string>
+    <string name="fee_side_summary_original">L\'importo convertito mostrato resta al tasso medio di mercato; le commissioni sono mostrate separatamente come \"costo reale\".</string>
+    <string name="fee_side_summary_converted">Le commissioni sono già incluse nell\'importo convertito mostrato.</string>
+    <string name="fee_empty">Ancora nessuna commissione</string>
     <string name="previewConversion_title">Anteprima di conversione</string>
     <string name="previewConversion_summary">Mostra la conversione corrente per ogni tasso nel selezionatore di valuta.</string>
     <string name="keyboard_title">Tastiera</string>

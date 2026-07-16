@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">പൊതു ക്രമീകരണങ്ങൾ</string>
     <string name="fee_title">വിദേശ ഇടപാട് ഫീസ്</string>
-    <string name="fee_summary">നിങ്ങളുടെ ക്രെഡിറ്റ് കാർഡ് കരാർ അനുസരിച്ച്, നിങ്ങളുടെ ബാങ്ക് എല്ലാ വിദേശ വിനിമയ ഇടപാടുകൾക്കും ഒരു ഫീസ് ഈടാക്കിയേക്കാം. ഇവിടെ നിങ്ങൾക്ക് ആ ഫീസ് നൽകാം. അത് കണക്കുകൂട്ടലിനു മുകളിൽ ചേർക്കപ്പെടും, അതിനാൽ നിങ്ങൾ <i>യഥാർത്ഥത്തിൽ</i> എത്ര നൽകുന്നുവെന്ന് നിങ്ങൾക്കറിയാം.</string>
+    <string name="fee_summary">വിനിമയ, ബാങ്ക്/കാർഡ്, കറൻസി ജോഡി അടിസ്ഥാനത്തിലുള്ള ഫീസുകൾ കൈകാര്യം ചെയ്യുക</string>
+    <string name="fee_manager_title">ഫീസുകൾ</string>
+    <string name="fee_side_label">ഫീസ് വശം</string>
+    <string name="fee_side_original">യഥാർത്ഥം</string>
+    <string name="fee_side_converted">പരിവർത്തിതം</string>
+    <string name="fee_section_global_exchange">ആഗോള വിനിമയ ഫീസ്</string>
+    <string name="fee_section_global_bank">ആഗോള ബാങ്ക്/കാർഡ് ഫീസ്</string>
+    <string name="fee_section_specific_pair">നിർദ്ദിഷ്ട കറൻസി ജോഡിയുടെ വിനിമയ ഫീസ്</string>
+    <string name="fee_add">ഫീസ് ചേർക്കുക</string>
+    <string name="fee_delete">ഇല്ലാതാക്കുക</string>
+    <string name="fee_edit_percent">ശതമാനം</string>
+    <string name="fee_pair_both_ways">ഇരു ദിശകളും</string>
+    <string name="fee_pair_from">നിന്ന്</string>
+    <string name="fee_pair_to">ലേക്ക്</string>
+    <string name="fee_pair_pick_currency">കറൻസി തിരഞ്ഞെടുക്കുക</string>
+    <string name="fee_true_cost_prefix">"യഥാർത്ഥ ചെലവ്: "</string>
+    <string name="fee_side_summary_original">പ്രദർശിപ്പിച്ച പരിവർത്തിത തുക മധ്യ-വിപണി നിരക്കിൽ തുടരും; ഫീസുകൾ പ്രത്യേകമായി \"യഥാർത്ഥ ചെലവ്\" ആയി കാണിക്കുന്നു.</string>
+    <string name="fee_side_summary_converted">ഫീസുകൾ പ്രദർശിപ്പിച്ച പരിവർത്തിത തുകയിൽ ഉൾപ്പെടുത്തിയിരിക്കുന്നു.</string>
+    <string name="fee_empty">ഇതുവരെ ഫീസുകളില്ല</string>
     <string name="previewConversion_title">പരിവർത്തന പ്രിവ്യൂ</string>
     <string name="previewConversion_summary">കറൻസി പിക്കറിൽ ഓരോ നിരക്കിന്റെയും നിലവിലെ പരിവർത്തനം കാണിക്കുക.</string>
     <string name="keyboard_title">കീബോർഡ്</string>

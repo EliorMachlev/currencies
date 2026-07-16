@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Configuració general</string>
     <string name="fee_title">Comissió per transacció amb l’estranger</string>
-    <string name="fee_summary">El vostre banc pot cobrar una comissió a les transaccions fetes a l\'estranger depenent del contracte de la targeta de crèdit. Introduïu aquí el valor d\'aquesta comissió. Aquesta s\'afegeix al càlcul per tal de determinar quant es pagarà <i>realment</i>.</string>
+    <string name="fee_summary">Gestiona comissions de canvi, banc/targeta i específiques per parell</string>
+    <string name="fee_manager_title">Comissions</string>
+    <string name="fee_side_label">Costat de la comissió</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Convertit</string>
+    <string name="fee_section_global_exchange">Comissió global de canvi</string>
+    <string name="fee_section_global_bank">Comissió global de banc/targeta</string>
+    <string name="fee_section_specific_pair">Comissió per parell de monedes específic</string>
+    <string name="fee_add">Afegeix comissió</string>
+    <string name="fee_delete">Suprimeix</string>
+    <string name="fee_edit_percent">Percentatge</string>
+    <string name="fee_pair_both_ways">Ambdues direccions</string>
+    <string name="fee_pair_from">De</string>
+    <string name="fee_pair_to">A</string>
+    <string name="fee_pair_pick_currency">Selecciona moneda</string>
+    <string name="fee_true_cost_prefix">"Cost real: "</string>
+    <string name="fee_side_summary_original">L\'import convertit mostrat es manté al canvi mitjà de mercat; les comissions es mostren per separat com a \"cost real\".</string>
+    <string name="fee_side_summary_converted">Les comissions s\'inclouen dins de l\'import convertit mostrat.</string>
+    <string name="fee_empty">Encara no hi ha comissions</string>
     <string name="previewConversion_title">Previsualització de la conversió</string>
     <string name="previewConversion_summary">Mostra la conversió actual per a cada taxa de canvi en el selector de monedes.</string>
     <string name="keyboard_title">Teclat</string>

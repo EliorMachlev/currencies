@@ -3,8 +3,26 @@
 <resources>
     <!-- main settings -->
     <string name="category_settings">Общи настройки</string>
-    <string name="fee_title">Чужда такса за транзакцията</string>
-    <string name="fee_summary">В зависимост от договора ви за кредитна карта, вашата банка може да ви таксува за всички чуждо валутни транзакции. Тук може да въведете тази такса. Тя ще бъде добавена при всяко пресмятане, за да знаете колко ще платите <i>реално</i>.</string>
+    <string name="fee_title">Такса за чуждестранна транзакция</string>
+    <string name="fee_summary">Управление на обменни, банкови/картови такси и такси за конкретни валутни двойки</string>
+    <string name="fee_manager_title">Такси</string>
+    <string name="fee_side_label">Страна на таксата</string>
+    <string name="fee_side_original">Оригинална</string>
+    <string name="fee_side_converted">Конвертирана</string>
+    <string name="fee_section_global_exchange">Глобална обменна такса</string>
+    <string name="fee_section_global_bank">Глобална банкова/картова такса</string>
+    <string name="fee_section_specific_pair">Такса за конкретна валутна двойка</string>
+    <string name="fee_add">Добави такса</string>
+    <string name="fee_delete">Изтрий</string>
+    <string name="fee_edit_percent">Процент</string>
+    <string name="fee_pair_both_ways">И в двете посоки</string>
+    <string name="fee_pair_from">От</string>
+    <string name="fee_pair_to">До</string>
+    <string name="fee_pair_pick_currency">Избери валута</string>
+    <string name="fee_true_cost_prefix">"Реална цена: "</string>
+    <string name="fee_side_summary_original">Показаната конвертирана сума остава на средния пазарен курс; таксите се показват отделно като \"реална цена\".</string>
+    <string name="fee_side_summary_converted">Таксите са включени в показаната конвертирана сума.</string>
+    <string name="fee_empty">Все още няма такси</string>
     <string name="previewConversion_title">Преглед на конвертирането</string>
     <string name="previewConversion_summary">Покажи текущото конвертиране за всеки курс при избиране на валута.</string>
     <string name="keyboard_title">Клавиатура</string>

@@ -4,7 +4,25 @@
     <!-- main settings -->
     <string name="category_settings">Pengaturan Umum</string>
     <string name="fee_title">Biaya transaksi luar negeri</string>
-    <string name="fee_summary">Tergantung kebijakan kartu kredit Anda, bank Anda mungkin mengenakan biaya untuk semua transaksi luar negeri. Di sini Anda dapat memasukkan biayanya. Ini akan ditambahkan ke hasil perhitungan, sehingga Anda tahu berapa yang <i>sebenarnya</i> Anda bayar.</string>
+    <string name="fee_summary">Kelola biaya penukaran, bank/kartu, dan biaya pasangan mata uang tertentu</string>
+    <string name="fee_manager_title">Biaya</string>
+    <string name="fee_side_label">Sisi biaya</string>
+    <string name="fee_side_original">Asli</string>
+    <string name="fee_side_converted">Dikonversi</string>
+    <string name="fee_section_global_exchange">Biaya penukaran global</string>
+    <string name="fee_section_global_bank">Biaya bank/kartu global</string>
+    <string name="fee_section_specific_pair">Biaya penukaran pasangan mata uang tertentu</string>
+    <string name="fee_add">Tambah biaya</string>
+    <string name="fee_delete">Hapus</string>
+    <string name="fee_edit_percent">Persen</string>
+    <string name="fee_pair_both_ways">Kedua arah</string>
+    <string name="fee_pair_from">Dari</string>
+    <string name="fee_pair_to">Ke</string>
+    <string name="fee_pair_pick_currency">Pilih mata uang</string>
+    <string name="fee_true_cost_prefix">"Biaya sebenarnya: "</string>
+    <string name="fee_side_summary_original">Jumlah konversi yang ditampilkan tetap pada kurs tengah pasar; biaya ditampilkan terpisah sebagai \"biaya sebenarnya\".</string>
+    <string name="fee_side_summary_converted">Biaya sudah termasuk dalam jumlah konversi yang ditampilkan.</string>
+    <string name="fee_empty">Belum ada biaya</string>
     <string name="previewConversion_title">Pratinjau konversi</string>
     <string name="previewConversion_summary">Tampilkan konversi yang dilakukan untuk setiap nilai tukar pada pemilihan mata uang.</string>
     <string name="keyboard_title">Keyboard</string>
