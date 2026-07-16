@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
+import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.viewmodel.main.MainViewModel
@@ -36,6 +37,7 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         val flagTo = view.findViewById<ImageView>(R.id.flag_to)
         val labelTo = view.findViewById<TextView>(R.id.label_to)
         val btnSwap = view.findViewById<ImageButton>(R.id.btn_swap)
+        val btnFeeSide = view.findViewById<ImageButton>(R.id.btn_fee_side)
         val container = view.findViewById<LinearLayout>(R.id.container_rows)
         val feeInfo = view.findViewById<TextView>(R.id.text_fee_info)
 
@@ -43,20 +45,41 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
             val from = viewModel.getBaseCurrency().value
             val to = viewModel.getDestinationCurrency().value
             val rates = viewModel.getExchangeRates().value
+            val side = viewModel.getFeeSide().value ?: FeeSide.ORIGINAL
             renderHeader(ctx, flagFrom, labelFrom, from)
             renderHeader(ctx, flagTo, labelTo, to)
-            renderRows(container, feeInfo, viewModel, from, to, rates)
+            btnFeeSide.setImageResource(
+                if (side == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted
+                else R.drawable.ic_fee_side_original
+            )
+            renderRows(container, feeInfo, viewModel, from, to, rates, side)
         }
 
         viewModel.getBaseCurrency().observe(this) { rebuild() }
         viewModel.getDestinationCurrency().observe(this) { rebuild() }
         viewModel.getExchangeRates().observe(this) { rebuild() }
         viewModel.getFees().observe(this) { rebuild() }
+        viewModel.getFeeSide().observe(this) { rebuild() }
 
         btnSwap.setOnClickListener {
             (activity as? MainActivity)?.toggleEvent(btnSwap)
         }
         btnSwap.setOnLongClickListener {
+            startActivity(
+                Intent(ctx, PreferenceActivity::class.java)
+                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
+            )
+            true
+        }
+
+        btnFeeSide.setOnClickListener {
+            val next = when (viewModel.getFeeSide().value ?: FeeSide.ORIGINAL) {
+                FeeSide.ORIGINAL -> FeeSide.CONVERTED
+                FeeSide.CONVERTED -> FeeSide.ORIGINAL
+            }
+            viewModel.setFeeSide(next)
+        }
+        btnFeeSide.setOnLongClickListener {
             startActivity(
                 Intent(ctx, PreferenceActivity::class.java)
                     .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
@@ -93,6 +116,7 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         from: Currency?,
         to: Currency?,
         rates: ExchangeRates?,
+        side: FeeSide,
     ) {
         container.removeAllViews()
         val ctx = container.context
@@ -111,24 +135,39 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         }
 
         val stack = viewModel.feeStackFor(from, to)
-        val applyFees = stack.compareTo(BigDecimal.ZERO) != 0 &&
+        val hasFees = stack.compareTo(BigDecimal.ZERO) != 0 &&
             stack.compareTo(BigDecimal.ONE) != 0
         val inflater = android.view.LayoutInflater.from(ctx)
 
         for (amountStr in amounts) {
             val amt = BigDecimal(amountStr)
             val fair = amt.divide(baseRate, MathContext.DECIMAL128).multiply(destRate)
-            val displayed = if (applyFees) fair.divide(stack, MathContext.DECIMAL128) else fair
+            val displayed = if (hasFees && side == FeeSide.CONVERTED)
+                fair.divide(stack, MathContext.DECIMAL128)
+            else
+                fair
 
             val row = inflater.inflate(R.layout.dialog_quick_conversions_row, container, false)
             row.findViewById<TextView>(R.id.text_amount_from).text =
                 "$amountStr ${from.iso4217Alpha()}"
             row.findViewById<TextView>(R.id.text_amount_to).text =
                 "${displayed.formatForRow(ctx)} ${to.iso4217Alpha()}"
+
+            val trueCostView = row.findViewById<TextView>(R.id.text_true_cost)
+            if (hasFees && side == FeeSide.ORIGINAL) {
+                val actual = amt.multiply(stack, MathContext.DECIMAL128)
+                trueCostView.text = getString(
+                    R.string.fee_true_cost_prefix
+                ) + "${actual.formatForRow(ctx)} ${from.iso4217Alpha()}"
+                trueCostView.visibility = View.VISIBLE
+            } else {
+                trueCostView.visibility = View.GONE
+            }
+
             container.addView(row)
         }
 
-        if (applyFees) {
+        if (hasFees) {
             val percent = (stack.subtract(BigDecimal.ONE))
                 .multiply(BigDecimal(100), MathContext.DECIMAL128)
                 .setScale(2, RoundingMode.HALF_UP)

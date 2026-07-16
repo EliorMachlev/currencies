@@ -7,15 +7,35 @@
     android:orientation="horizontal"
     android:paddingVertical="@dimen/margin1x">
 
-    <TextView
-        android:id="@+id/text_amount_from"
-        style="@style/TextAppearance.Material3.BodyLarge"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="end"
-        android:textDirection="ltr"
-        tools:text="10 USD" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_amount_from"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textDirection="ltr"
+            tools:text="10 USD" />
+
+        <TextView
+            android:id="@+id/text_true_cost"
+            style="@style/TextAppearance.Material3.LabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".7"
+            android:gravity="end"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textDirection="ltr"
+            android:visibility="gone"
+            tools:text="True cost: 11.20 USD"
+            tools:visibility="visible" />
+    </LinearLayout>
 
     <TextView
         style="@style/TextAppearance.Material3.BodyLarge"
