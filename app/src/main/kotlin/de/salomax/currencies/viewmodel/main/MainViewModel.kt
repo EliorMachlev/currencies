@@ -501,6 +501,15 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     /**
+     * Public accessor for the fee stack factor of an arbitrary pair,
+     * used by ad-hoc UIs (e.g. the quick-conversions popup) that need to
+     * apply fees outside the main result pipeline.
+     */
+    internal fun feeStackFor(base: Currency?, dest: Currency?): BigDecimal {
+        return computeTotalStack(fees.value.orEmpty(), base, dest)
+    }
+
+    /**
      * The combined multiplicative fee factor for the current pair.
      * Exposed so the UI can render a hint (e.g. badge on the side toggle)
      * when at least one fee is active for the current currencies.

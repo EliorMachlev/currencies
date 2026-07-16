@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin2x"
+    android:paddingTop="@dimen/margin2x">
+
+    <!-- header: FROM  ⇄  TO -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/flag_from"
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                tools:src="@drawable/flag_unknown" />
+
+            <TextView
+                android:id="@+id/label_from"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin1x"
+                android:textDirection="ltr"
+                tools:text="USD" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_swap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin1x"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/desc_toggle_currencies"
+            android:padding="@dimen/margin1x"
+            android:src="@drawable/ic_swap_horiz"
+            app:tint="?attr/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/flag_to"
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                tools:src="@drawable/flag_unknown" />
+
+            <TextView
+                android:id="@+id/label_to"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin1x"
+                android:textDirection="ltr"
+                tools:text="EUR" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- fees info -->
+    <TextView
+        android:id="@+id/text_fee_info"
+        style="@style/TextAppearance.Material3.LabelMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin1x"
+        android:alpha=".7"
+        android:gravity="center"
+        android:textColor="?attr/colorPrimary"
+        android:textDirection="ltr"
+        android:visibility="gone"
+        tools:text="Fees applied: +33.10%"
+        tools:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin2x"
+        android:background="?android:attr/listDivider" />
+
+    <!-- rows container -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin1x">
+
+        <LinearLayout
+            android:id="@+id/container_rows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+</LinearLayout>

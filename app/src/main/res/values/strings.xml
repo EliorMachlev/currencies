@@ -27,7 +27,12 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh rates</string>
     <string name="menu_timeline">Exchange rate chart</string>
+    <string name="menu_quick_conversions">Quick conversions</string>
     <string name="menu_historical_rates" translatable="false">@string/historical_rates_dialog_title</string>
+
+    <string name="quick_conversions_title">Quick conversions</string>
+    <string name="quick_conversions_no_rates">Rates not loaded yet.</string>
+    <string name="quick_conversions_fees_applied">Fees applied: %s</string>
     <string name="title_preferences" translatable="false">@string/menu_settings</string>
 
     <string name="tooltip_filter_starred">Show only starred currencies.</string>

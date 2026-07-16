@@ -133,9 +133,14 @@ class MainActivity : BaseActivity() {
             R.id.settings -> { startActivity(Intent(this, PreferenceActivity().javaClass)); true }
             R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
             R.id.timeline -> openTimelineActivity()
+            R.id.quick_conversions -> { openQuickConversionsDialog(); true }
             R.id.date_picker -> { openHistoricalDatePicker(); true }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openQuickConversionsDialog() {
+        QuickConversionsDialog().show(supportFragmentManager, null)
     }
 
     private fun openTimelineActivity(): Boolean {
@@ -294,6 +299,17 @@ class MainActivity : BaseActivity() {
             viewModel.setFeeSide(next)
         }
         btnFeeSide.setOnLongClickListener {
+            haptic(it)
+            startActivity(
+                Intent(this, PreferenceActivity::class.java)
+                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
+            )
+            true
+        }
+
+        // long-press on the main swap arrow also opens the Fees settings,
+        // mirroring the swap arrow inside the quick-conversions dialog.
+        findViewById<View>(R.id.btn_toggle).setOnLongClickListener {
             haptic(it)
             startActivity(
                 Intent(this, PreferenceActivity::class.java)
