@@ -397,7 +397,7 @@ class MainActivity : BaseActivity() {
         }
         val currency = viewModel.getBaseCurrency().value?.iso4217Alpha().orEmpty()
         val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
-        tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + amount + " " + currency
+        tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + ltrIsolate("$amount $currency")
         tvTrueCost.visibility = View.VISIBLE
     }
 
@@ -408,9 +408,15 @@ class MainActivity : BaseActivity() {
         }
         val currency = viewModel.getDestinationCurrency().value?.iso4217Alpha().orEmpty()
         val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
-        tvOriginalValue.text = getString(R.string.fee_original_value_prefix) + amount + " " + currency
+        tvOriginalValue.text = getString(R.string.fee_original_value_prefix) + ltrIsolate("$amount $currency")
         tvOriginalValue.visibility = View.VISIBLE
     }
+
+    // Wrap in Unicode LTR isolate (U+2066 … U+2069) so the "<amount> <currency>"
+    // chunk stays glued together as one LTR unit under RTL locales — otherwise
+    // the neutral space between number and currency gets absorbed by the RTL
+    // paragraph and the currency code drifts to the opposite side of the label.
+    private fun ltrIsolate(s: String): String = "\u2066$s\u2069"
 
     private fun observeExchangeRates(rates: ExchangeRates?) {
         rates?.let {

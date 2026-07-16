@@ -156,9 +156,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
             val trueCostView = row.findViewById<TextView>(R.id.text_true_cost)
             if (hasFees && side == FeeSide.ORIGINAL) {
                 val actual = amt.multiply(stack, MathContext.DECIMAL128)
-                trueCostView.text = getString(
-                    R.string.fee_true_cost_prefix
-                ) + "${actual.formatForRow(ctx)} ${from.iso4217Alpha()}"
+                trueCostView.text = getString(R.string.fee_true_cost_prefix) +
+                    ltrIsolate("${actual.formatForRow(ctx)} ${from.iso4217Alpha()}")
                 trueCostView.visibility = View.VISIBLE
             } else {
                 trueCostView.visibility = View.GONE
@@ -166,9 +165,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
 
             val originalValueView = row.findViewById<TextView>(R.id.text_original_value)
             if (hasFees && side == FeeSide.CONVERTED) {
-                originalValueView.text = getString(
-                    R.string.fee_original_value_prefix
-                ) + "${fair.formatForRow(ctx)} ${to.iso4217Alpha()}"
+                originalValueView.text = getString(R.string.fee_original_value_prefix) +
+                    ltrIsolate("${fair.formatForRow(ctx)} ${to.iso4217Alpha()}")
                 originalValueView.visibility = View.VISIBLE
             } else {
                 originalValueView.visibility = View.GONE
@@ -188,6 +186,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
             feeInfo.visibility = View.GONE
         }
     }
+
+    private fun ltrIsolate(s: String): String = "\u2066$s\u2069"
 
     private fun BigDecimal.formatForRow(ctx: android.content.Context): String {
         val abs = this.abs()
