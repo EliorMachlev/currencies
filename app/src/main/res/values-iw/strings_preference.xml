@@ -20,7 +20,7 @@
     <string name="fee_pair_to">אל</string>
     <string name="fee_pair_pick_currency">בחר מטבע</string>
     <string name="fee_true_cost_prefix">"עלות אמיתית: "</string>
-    <string name="fee_side_summary_original">הסכום המומר המוצג נשאר בשער האמצע של השוק; העמלות מוצגות בנפרד בתור \"עלות אמיתית\".</string>
+    <string name="fee_side_summary_original">הסכום המומר המוצג נשאר בשער היציג; העמלות מוצגות בנפרד בתור \"עלות אמיתית\".</string>
     <string name="fee_side_summary_converted">העמלות כלולות בסכום המומר המוצג.</string>
     <string name="fee_empty">אין עמלות עדיין</string>
     <string name="previewConversion_title">תצוגה מקדימה להמרה</string>
