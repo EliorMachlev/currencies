@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <PreferenceCategory android:title="@string/category_settings">
-        <de.salomax.currencies.widget.EditTextSwitchPreference
-            android:dialogLayout="@layout/preference_dialog_fee"
-            android:dialogMessage="@string/fee_summary"
+        <Preference
             android:icon="@drawable/ic_fee"
             android:key="@string/fee_key"
-            android:title="@string/fee_title"
-            tools:summary="2.0 %" />
+            android:summary="@string/fee_summary"
+            android:title="@string/fee_title" />
 
         <SwitchPreferenceCompat
             android:icon="@drawable/ic_conversion_preview"

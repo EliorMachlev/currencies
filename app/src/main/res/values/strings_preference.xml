@@ -5,7 +5,28 @@
     <string name="category_settings">General Settings</string>
     <string name="fee_key" translatable="false">KEY_FEE</string>
     <string name="fee_title">Foreign transaction fee</string>
-    <string name="fee_summary">Depending on your credit card agreement, your bank may charge a fee on all foreign exchange transactions. Here you can enter that fee. It will be added on top of the calculation, so you know how much you <i>really</i> pay.</string>
+    <string name="fee_summary">Manage exchange, bank/card, and pair-specific fees</string>
+    <!-- fee manager -->
+    <string name="fee_manager_title">Fees</string>
+    <string name="fee_side_label">Fee side</string>
+    <string name="fee_side_original">Original</string>
+    <string name="fee_side_converted">Converted</string>
+    <string name="fee_section_global_exchange">Global exchange fee</string>
+    <string name="fee_section_global_bank">Global bank/card fee</string>
+    <string name="fee_section_specific_pair">Specific currency exchange fee</string>
+    <string name="fee_add">Add fee</string>
+    <string name="fee_delete">Delete</string>
+    <string name="fee_edit_percent">Percent</string>
+    <string name="fee_edit_sign_positive" translatable="false">+</string>
+    <string name="fee_edit_sign_negative" translatable="false">−</string>
+    <string name="fee_pair_both_ways">Both directions</string>
+    <string name="fee_pair_from">From</string>
+    <string name="fee_pair_to">To</string>
+    <string name="fee_pair_pick_currency">Select currency</string>
+    <string name="fee_true_cost_prefix">"True cost: "</string>
+    <string name="fee_side_summary_original">Displayed converted amount stays at mid-market; fees are shown separately as \"true cost\".</string>
+    <string name="fee_side_summary_converted">Fees are baked into the displayed converted amount.</string>
+    <string name="fee_empty">No fees yet</string>
     <string name="previewConversion_key" translatable="false">KEY_PREVIEW_CONVERSION</string>
     <string name="previewConversion_title">Conversion preview</string>
     <string name="previewConversion_summary">Show the current conversion for each rate in the currency picker.</string>

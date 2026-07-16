@@ -58,20 +58,68 @@
             app:layout_constraintTop_toTopOf="@+id/guideline_display"
             app:tint="?attr/colorOnPrimary" />
 
-        <!-- fee ********************************************************** -->
+        <!-- fee side toggle ********************************************** -->
 
-        <TextView
-            android:id="@+id/textFee"
-            style="@style/TextAppearance.Material3.TitleSmall"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_fee_side"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin2x"
-            android:gravity="center_vertical|end"
-            android:textColor="@android:color/holo_red_light"
+            android:layout_marginStart="@dimen/margin1x"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/fee_side_label"
+            android:src="@drawable/ic_fee_side_original"
+            app:layout_constraintBottom_toBottomOf="@id/btn_toggle"
+            app:layout_constraintStart_toEndOf="@id/btn_toggle"
+            app:layout_constraintTop_toTopOf="@id/btn_toggle"
+            app:tint="?attr/colorPrimary" />
+
+        <!-- overall fee badge ******************************************** -->
+
+        <TextView
+            android:id="@+id/textFeeBadge"
+            style="@style/TextAppearance.Material3.LabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin1x"
+            android:textColor="?attr/colorPrimary"
             android:textDirection="ltr"
-            app:layout_constraintBottom_toTopOf="@id/scrollViewTextTo"
-            app:layout_constraintEnd_toEndOf="@id/scrollViewTextTo"
-            tools:text="+ 2.2 %" />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/btn_fee_side"
+            app:layout_constraintStart_toEndOf="@id/btn_fee_side"
+            app:layout_constraintTop_toTopOf="@id/btn_fee_side"
+            tools:text="+3.02%"
+            tools:visibility="visible" />
+
+        <!-- true cost hint *********************************************** -->
+
+        <HorizontalScrollView
+            android:id="@+id/scrollViewTrueCost"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin1x"
+            android:layout_marginEnd="@dimen/margin2x"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@id/guideline_display"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/spinnerFrom"
+            app:layout_constraintTop_toBottomOf="@id/scrollViewTextFrom">
+
+            <TextView
+                android:id="@+id/textTrueCost"
+                style="@style/TextAppearance.Material3.TitleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:alpha=".7"
+                android:lines="1"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textDirection="ltr"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="True cost: 102.20 EUR"
+                tools:visibility="visible" />
+
+        </HorizontalScrollView>
 
         <!-- exchange rate info text ************************************** -->
 
@@ -146,10 +194,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_display"
+            app:layout_constraintBottom_toTopOf="@id/scrollViewTrueCost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinnerFrom"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <TextView
                 android:id="@+id/textFrom"

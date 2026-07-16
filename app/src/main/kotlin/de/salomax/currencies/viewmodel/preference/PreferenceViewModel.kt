@@ -14,7 +14,6 @@ import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
 import de.salomax.currencies.view.main.MainActivity
 import de.salomax.currencies.view.preference.PreferenceActivity
-import java.math.BigDecimal
 
 class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) {
 
@@ -115,19 +114,6 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
 
         return x || y
     }
-
-    fun setFee(fee: BigDecimal) {
-        Database(app).setFee(fee)
-    }
-
-    fun getFee(): LiveData<BigDecimal> {
-        return Database(app).getFee()
-    }
-
-    fun setFeeEnabled(enabled: Boolean) {
-        Database(app).setFeeEnabled(enabled)
-    }
-
 
     fun isPreviewConversionEnabled(): LiveData<Boolean> {
         return isPreviewConversionEnabled

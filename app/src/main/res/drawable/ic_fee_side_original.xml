@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:tint="?attr/colorControlNormal"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Arrow pointing up: fee applied to ORIGINAL (input, top) side -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12,3l6,7h-4v11h-4V10H6z" />
+</vector>

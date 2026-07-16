@@ -15,11 +15,8 @@ import androidx.preference.SwitchPreferenceCompat
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
-import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
-import de.salomax.currencies.widget.EditTextSwitchPreference
 import de.salomax.currencies.widget.LongSummaryPreference
-import java.math.BigDecimal
 import java.util.Calendar
 
 @Suppress("unused")
@@ -29,7 +26,7 @@ class PreferenceFragment: PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.fitsSystemWindows = true
+        activity?.setTitle(R.string.title_preferences)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -52,17 +49,14 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     }
 
     private fun setupFeePreference() {
-        val feePreference = findPreference<EditTextSwitchPreference>(getString(R.string.fee_key))
-        feePreference?.setOnPreferenceChangeListener { _, newValue ->
-            if (newValue is String)
-                viewModel.setFee(newValue.toBigDecimalOrNull() ?: BigDecimal.ZERO)
-            else if (newValue is Boolean)
-                viewModel.setFeeEnabled(newValue)
-            true
-        }
-        viewModel.getFee().observe(this) {
-            feePreference?.summary = it.toHumanReadableNumber(requireContext(), showPositiveSign = true, suffix = "%")
-            feePreference?.text = it.toPlainString()
+        findPreference<Preference>(getString(R.string.fee_key))?.apply {
+            setOnPreferenceClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.preferences_fragment, FeeManagerFragment())
+                    .addToBackStack(null)
+                    .commit()
+                true
+            }
         }
     }
 
