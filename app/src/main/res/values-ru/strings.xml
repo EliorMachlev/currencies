@@ -20,6 +20,10 @@
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить курсы валют</string>
     <string name="menu_timeline">График обменного курса</string>
+    <string name="menu_quick_conversions">Быстрая конвертация</string>
+    <string name="quick_conversions_title">Быстрая конвертация</string>
+    <string name="quick_conversions_no_rates">Курсы ещё не загружены.</string>
+    <string name="quick_conversions_fees_applied">Применённые комиссии: %s</string>
     <string name="tooltip_filter_starred">Показывать только избранные валюты.</string>
     <string name="currency_dropdown_api_hint">Чего-то не хватает? Разные поставщики данных предлагают разные валюты. Зайдите в настройки и попробуйте другого! 🤗</string>
 </resources>

@@ -20,6 +20,10 @@
     <string name="menu_settings">Ayarlar</string>
     <string name="menu_refresh">Kurları güncelle</string>
     <string name="menu_timeline">Döviz kur grafiği</string>
+    <string name="menu_quick_conversions">Hızlı dönüşümler</string>
+    <string name="quick_conversions_title">Hızlı dönüşümler</string>
+    <string name="quick_conversions_no_rates">Kurlar henüz yüklenmedi.</string>
+    <string name="quick_conversions_fees_applied">Uygulanan ücretler: %s</string>
     <string name="tooltip_filter_starred">Sadece favori para birimlerini göster.</string>
     <string name="currency_dropdown_api_hint">Eksik bir şey mi var? Farklı veri sağlayıcıları farklı para birimleri sunar. Başka bir tane denemek için ayarlara gidin!\u00A0\uD83E\uDD17</string>
 </resources>

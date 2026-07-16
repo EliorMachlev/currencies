@@ -15,6 +15,10 @@
     <string name="menu_settings">Inställningar</string>
     <string name="menu_refresh">Uppdatera kurser</string>
     <string name="menu_timeline">Diagram över valutakurs</string>
+    <string name="menu_quick_conversions">Snabba omvandlingar</string>
+    <string name="quick_conversions_title">Snabba omvandlingar</string>
+    <string name="quick_conversions_no_rates">Kurserna har inte laddats än.</string>
+    <string name="quick_conversions_fees_applied">Tillämpade avgifter: %s</string>
     <string name="tooltip_filter_starred">Visa endast favoritvalutor.</string>
     <string name="error_empty_response">Servern har ingen data för denna förfrågan.</string>
     <string name="error_try_another_api">Men det finns andra dataleverantörer som du kan välja på i inställningarna. Prova!</string>

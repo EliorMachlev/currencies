@@ -20,6 +20,10 @@
     <string name="error_unsupported_timeline">这个 API 不支持时间线数据.</string>
     <string name="menu_refresh">更新汇率</string>
     <string name="menu_timeline">查看汇率走势图</string>
+    <string name="menu_quick_conversions">快速换算</string>
+    <string name="quick_conversions_title">快速换算</string>
+    <string name="quick_conversions_no_rates">汇率尚未加载。</string>
+    <string name="quick_conversions_fees_applied">已应用费用：%s</string>
     <string name="tooltip_filter_starred">仅显示收藏的货币。</string>
     <string name="currency_dropdown_api_hint">没找到需要的汇率？不同的数据来源提供数量不同的货币汇率。尝试在设置里换换来源！ 🤗</string>
 </resources>

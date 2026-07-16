@@ -20,6 +20,10 @@
     <string name="menu_settings">Indstillinger</string>
     <string name="menu_refresh">Opdatér valutakurser</string>
     <string name="menu_timeline">Valutakursdiagram</string>
+    <string name="menu_quick_conversions">Hurtige omregninger</string>
+    <string name="quick_conversions_title">Hurtige omregninger</string>
+    <string name="quick_conversions_no_rates">Kurser er ikke indlæst endnu.</string>
+    <string name="quick_conversions_fees_applied">Anvendte gebyrer: %s</string>
     <string name="tooltip_filter_starred">Vis kun stjernemarkeret valutaer.</string>
     <string name="currency_dropdown_api_hint">Noget der mangler? Forskellige dataudbydere tilbyder forskellige valutaer. Gå til indstillingerne for at prøve en anden! 🤗</string>
 </resources>

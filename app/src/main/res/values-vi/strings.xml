@@ -20,6 +20,10 @@
     <string name="menu_settings">Cài đặt</string>
     <string name="menu_refresh">Làm mới tỷ giá</string>
     <string name="menu_timeline">Biểu đồ tỷ giá hối đoái</string>
+    <string name="menu_quick_conversions">Chuyển đổi nhanh</string>
+    <string name="quick_conversions_title">Chuyển đổi nhanh</string>
+    <string name="quick_conversions_no_rates">Tỷ giá chưa được tải.</string>
+    <string name="quick_conversions_fees_applied">Phí đã áp dụng: %s</string>
     <string name="tooltip_filter_starred">Chỉ hiện đơn vị tiền tệ nào được gắn sao.</string>
     <string name="currency_dropdown_api_hint">Có thứ gì bị thiếu à? Những nhà cung cấp dữ liệu khác nhau sẽ có các tiền tệ khác nhau. Hãy đến cài đặt để thử nhà cung cấp khác! 🤗</string>
 </resources>

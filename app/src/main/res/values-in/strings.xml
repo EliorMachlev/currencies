@@ -15,5 +15,9 @@
     <string name="menu_settings">Pengaturan</string>
     <string name="menu_refresh">Muat ulang nilai tukar</string>
     <string name="menu_timeline">Bagan nilai tukar</string>
+    <string name="menu_quick_conversions">Konversi cepat</string>
+    <string name="quick_conversions_title">Konversi cepat</string>
+    <string name="quick_conversions_no_rates">Nilai tukar belum dimuat.</string>
+    <string name="quick_conversions_fees_applied">Biaya yang diterapkan: %s</string>
     <string name="tooltip_filter_starred">Tampilkan hanya mata uang yang dibintangi.</string>
 </resources>

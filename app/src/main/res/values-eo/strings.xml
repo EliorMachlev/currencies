@@ -17,6 +17,10 @@
     <string name="menu_settings">Agordoj</string>
     <string name="menu_refresh">Refreŝigaj tarifoj</string>
     <string name="menu_timeline">Kurza diagramo</string>
+    <string name="menu_quick_conversions">Rapidaj konvertoj</string>
+    <string name="quick_conversions_title">Rapidaj konvertoj</string>
+    <string name="quick_conversions_no_rates">Kursoj ankoraŭ ne ŝargitaj.</string>
+    <string name="quick_conversions_fees_applied">Aplikitaj kotizoj: %s</string>
     <string name="tooltip_filter_starred">Montri nur stelumitajn valutojn.</string>
     <string name="currency_dropdown_api_hint">Io mankas? Aliaj datumprovizantoj ofertas malsamajn valutojn. Iru al la agordoj por provi alian!\u00A0\uD83E\uDD17</string>
 </resources>

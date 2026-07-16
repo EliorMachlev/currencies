@@ -20,6 +20,10 @@
     <string name="menu_settings">Configuración</string>
     <string name="menu_refresh">Tarifas de actualización</string>
     <string name="menu_timeline">Historial de tipos de cambio</string>
+    <string name="menu_quick_conversions">Conversiones rápidas</string>
+    <string name="quick_conversions_title">Conversiones rápidas</string>
+    <string name="quick_conversions_no_rates">Las tasas aún no se han cargado.</string>
+    <string name="quick_conversions_fees_applied">Comisiones aplicadas: %s</string>
     <string name="tooltip_filter_starred">Mostrar solo las monedas con estrella.</string>
     <string name="currency_dropdown_api_hint">¿Falta algo? Los distintos proveedores de datos ofrecen monedas diferentes. ¡Ve a la configuración para probar con otra!\u00A0\uD83E\uDD17</string>
 </resources>
