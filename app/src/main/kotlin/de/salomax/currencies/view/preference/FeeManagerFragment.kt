@@ -314,7 +314,9 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
             ).apply {
-                topMargin = resources.getDimensionPixelSize(R.dimen.margin2x)
+                // Extra clearance below the EditText so its text-selection
+                // handle doesn't drop onto the sign toggle.
+                topMargin = resources.getDimensionPixelSize(R.dimen.margin4x)
             },
         )
 
@@ -394,7 +396,9 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
             ).apply {
-                topMargin = resources.getDimensionPixelSize(R.dimen.margin2x)
+                // Extra clearance below the EditText so its text-selection
+                // handle doesn't drop onto the sign toggle.
+                topMargin = resources.getDimensionPixelSize(R.dimen.margin4x)
             },
         )
 

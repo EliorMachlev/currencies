@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Na</string>
     <string name="fee_pair_pick_currency">Vyberte měnu</string>
     <string name="fee_true_cost_prefix">"Skutečná cena: "</string>
+    <string name="fee_original_value_prefix">"Původní hodnota: "</string>
     <string name="fee_side_summary_original">Zobrazená převedená částka zůstává ve středním tržním kurzu; poplatky jsou zobrazeny samostatně jako \"skutečná cena\".</string>
     <string name="fee_side_summary_converted">Poplatky jsou zahrnuty v zobrazené převedené částce.</string>
     <string name="fee_empty">Zatím žádné poplatky</string>

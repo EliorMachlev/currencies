@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Na</string>
     <string name="fee_pair_pick_currency">Wybierz walutę</string>
     <string name="fee_true_cost_prefix">"Rzeczywisty koszt: "</string>
+    <string name="fee_original_value_prefix">"Wartość pierwotna: "</string>
     <string name="fee_side_summary_original">Wyświetlana przeliczona kwota pozostaje po średnim kursie rynkowym; opłaty są pokazywane osobno jako \"rzeczywisty koszt\".</string>
     <string name="fee_side_summary_converted">Opłaty są uwzględnione w wyświetlanej przeliczonej kwocie.</string>
     <string name="fee_empty">Brak opłat</string>

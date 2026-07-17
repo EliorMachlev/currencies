@@ -20,6 +20,7 @@
     <string name="fee_pair_to">প্রতি</string>
     <string name="fee_pair_pick_currency">মুদ্রা নির্বাচন করো</string>
     <string name="fee_true_cost_prefix">"প্রকৃত খরচ: "</string>
+    <string name="fee_original_value_prefix">"মূল মান: "</string>
     <string name="fee_side_summary_original">প্রদর্শিত রূপান্তরিত পরিমাণ মধ্য-বাজার হারে থাকে; ফি আলাদাভাবে \"প্রকৃত খরচ\" হিসেবে দেখানো হয়।</string>
     <string name="fee_side_summary_converted">ফি প্রদর্শিত রূপান্তরিত পরিমাণে অন্তর্ভুক্ত থাকে।</string>
     <string name="fee_empty">এখনো কোনো ফি নেই</string>

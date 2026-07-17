@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Til</string>
     <string name="fee_pair_pick_currency">Velg valuta</string>
     <string name="fee_true_cost_prefix">"Reell kostnad: "</string>
+    <string name="fee_original_value_prefix">"Opprinnelig verdi: "</string>
     <string name="fee_side_summary_original">Det viste konverterte beløpet holder seg til midtkurs; gebyrer vises separat som \"reell kostnad\".</string>
     <string name="fee_side_summary_converted">Gebyrer er inkludert i det viste konverterte beløpet.</string>
     <string name="fee_empty">Ingen gebyrer ennå</string>

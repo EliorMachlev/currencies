@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Til</string>
     <string name="fee_pair_pick_currency">Veldu gjaldmiðil</string>
     <string name="fee_true_cost_prefix">"Raunverulegur kostnaður: "</string>
+    <string name="fee_original_value_prefix">"Upprunalegt verðmæti: "</string>
     <string name="fee_side_summary_original">Sýnd umreiknuð upphæð helst á miðgengi; gjöld eru sýnd sérstaklega sem \"raunverulegur kostnaður\".</string>
     <string name="fee_side_summary_converted">Gjöld eru innifalin í sýndri umreiknaðri upphæð.</string>
     <string name="fee_empty">Engin gjöld ennþá</string>

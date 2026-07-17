@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Til</string>
     <string name="fee_pair_pick_currency">Vælg valuta</string>
     <string name="fee_true_cost_prefix">"Reel pris: "</string>
+    <string name="fee_original_value_prefix">"Oprindelig værdi: "</string>
     <string name="fee_side_summary_original">Den viste konverterede værdi bliver ved mellemkursen; gebyrer vises separat som \"reel pris\".</string>
     <string name="fee_side_summary_converted">Gebyrer er indregnet i den viste konverterede værdi.</string>
     <string name="fee_empty">Ingen gebyrer endnu</string>

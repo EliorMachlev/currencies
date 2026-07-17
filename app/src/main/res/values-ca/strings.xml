@@ -20,6 +20,10 @@
     <string name="menu_settings">Configuració</string>
     <string name="menu_refresh">Actualitza les taxes</string>
     <string name="menu_timeline">Gràfic de la taxa de canvi</string>
+    <string name="menu_quick_conversions">Conversions ràpides</string>
+    <string name="quick_conversions_title">Conversions ràpides</string>
+    <string name="quick_conversions_no_rates">Les taxes encara no s\'han carregat.</string>
+    <string name="quick_conversions_fees_applied">Comissions aplicades: %s</string>
     <string name="tooltip_filter_starred">Mostra només les monedes preferides.</string>
     <string name="currency_dropdown_api_hint">Us falta res? Els diversos proveïdors de dades ofereixen divises diferents. Aneu a la configuració per a provar-ne d\'altres! 🤗</string>
 </resources>

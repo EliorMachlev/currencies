@@ -20,6 +20,10 @@
     <string name="menu_settings">پیکربندی‌ها</string>
     <string name="menu_refresh">همار نوسازی</string>
     <string name="menu_timeline">نمودار نرخ دادوستد</string>
+    <string name="menu_quick_conversions">تبدیل‌های سریع</string>
+    <string name="quick_conversions_title">تبدیل‌های سریع</string>
+    <string name="quick_conversions_no_rates">نرخ‌ها هنوز بارگذاری نشده‌اند.</string>
+    <string name="quick_conversions_fees_applied">کارمزدهای اعمال‌شده: %s</string>
     <string name="tooltip_filter_starred">تنها ارز های ستاره‌دار را نمایش دهید.</string>
     <string name="currency_dropdown_api_hint">نمی توانید ارز دلخواه خود را پیدا کنید؟ فراهم‌گران متفاوت ارز‌های متفاوت ارائه می‌کنند. به پیکربندی‌ها بروید و یکی دیگر را بیازمایید! \u00A0\uD83E\uDD17</string>
 </resources>

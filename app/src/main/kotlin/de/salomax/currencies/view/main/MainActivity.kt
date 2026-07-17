@@ -80,6 +80,7 @@ class MainActivity : BaseActivity() {
     private lateinit var tvInfoConversion: TextView
     private lateinit var tvInfoDate: TextView
     private lateinit var tvTrueCost: TextView
+    private lateinit var tvOriginalValue: TextView
     private lateinit var tvFeeBadge: TextView
     private lateinit var btnFeeSide: AppCompatImageButton
 
@@ -105,6 +106,7 @@ class MainActivity : BaseActivity() {
         this.tvInfoConversion = findViewById(R.id.textInfoConversion)
         this.tvInfoDate = findViewById(R.id.textInfoDate)
         this.tvTrueCost = findViewById(R.id.textTrueCost)
+        this.tvOriginalValue = findViewById(R.id.textOriginalValue)
         this.tvFeeBadge = findViewById(R.id.textFeeBadge)
         this.btnFeeSide = findViewById(R.id.btn_fee_side)
 
@@ -131,11 +133,23 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> { startActivity(Intent(this, PreferenceActivity().javaClass)); true }
+            R.id.fees -> {
+                startActivity(
+                    Intent(this, PreferenceActivity::class.java)
+                        .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
+                )
+                true
+            }
             R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
             R.id.timeline -> openTimelineActivity()
+            R.id.quick_conversions -> { openQuickConversionsDialog(); true }
             R.id.date_picker -> { openHistoricalDatePicker(); true }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openQuickConversionsDialog() {
+        QuickConversionsDialog().show(supportFragmentManager, null)
     }
 
     private fun openTimelineActivity(): Boolean {
@@ -301,6 +315,17 @@ class MainActivity : BaseActivity() {
             )
             true
         }
+
+        // long-press on the main swap arrow also opens the Fees settings,
+        // mirroring the swap arrow inside the quick-conversions dialog.
+        findViewById<View>(R.id.btn_toggle).setOnLongClickListener {
+            haptic(it)
+            startActivity(
+                Intent(this, PreferenceActivity::class.java)
+                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
+            )
+            true
+        }
     }
 
     private fun copyToClipboard(copyText: String) {
@@ -339,6 +364,7 @@ class MainActivity : BaseActivity() {
         viewModel.isHapticFeedbackEnabled.observe(this) { hapticEnabled = it }
         viewModel.getFeeSide().observe(this) { observeFeeSide(it) }
         viewModel.getTrueCost().observe(this) { observeTrueCost(it) }
+        viewModel.getOriginalValue().observe(this) { observeOriginalValue(it) }
         viewModel.getTotalStack().observe(this) { observeTotalStack(it) }
     }
 
@@ -355,8 +381,10 @@ class MainActivity : BaseActivity() {
         val effective = stack ?: one
         if (effective.compareTo(one) == 0) {
             tvFeeBadge.visibility = View.GONE
+            btnFeeSide.visibility = View.GONE
             return
         }
+        btnFeeSide.visibility = View.VISIBLE
         val deltaPercent = effective
             .subtract(one)
             .multiply(BigDecimal(100))
@@ -378,9 +406,26 @@ class MainActivity : BaseActivity() {
         }
         val currency = viewModel.getBaseCurrency().value?.iso4217Alpha().orEmpty()
         val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
-        tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + amount + " " + currency
+        tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + ltrIsolate("$amount $currency")
         tvTrueCost.visibility = View.VISIBLE
     }
+
+    private fun observeOriginalValue(value: BigDecimal?) {
+        if (value == null) {
+            tvOriginalValue.visibility = View.GONE
+            return
+        }
+        val currency = viewModel.getDestinationCurrency().value?.iso4217Alpha().orEmpty()
+        val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
+        tvOriginalValue.text = getString(R.string.fee_original_value_prefix) + ltrIsolate("$amount $currency")
+        tvOriginalValue.visibility = View.VISIBLE
+    }
+
+    // Wrap in Unicode LTR isolate (U+2066 … U+2069) so the "<amount> <currency>"
+    // chunk stays glued together as one LTR unit under RTL locales — otherwise
+    // the neutral space between number and currency gets absorbed by the RTL
+    // paragraph and the currency code drifts to the opposite side of the label.
+    private fun ltrIsolate(s: String): String = "\u2066$s\u2069"
 
     private fun observeExchangeRates(rates: ExchangeRates?) {
         rates?.let {

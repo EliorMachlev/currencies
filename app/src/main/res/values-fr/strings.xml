@@ -20,6 +20,10 @@
     <string name="menu_settings">Réglages</string>
     <string name="menu_refresh">Rafraîchissement des taux</string>
     <string name="menu_timeline">Historique des taux de change</string>
+    <string name="menu_quick_conversions">Conversions rapides</string>
+    <string name="quick_conversions_title">Conversions rapides</string>
+    <string name="quick_conversions_no_rates">Taux non encore chargés.</string>
+    <string name="quick_conversions_fees_applied">Frais appliqués : %s</string>
     <string name="tooltip_filter_starred">Afficher uniquement les devises étoilées.</string>
     <string name="currency_dropdown_api_hint">Quelque chose manque? Différents fournisseurs de données proposent différentes devises. Allez dans les paramètres pour en essayer un autre ! 🤗</string>
 </resources>

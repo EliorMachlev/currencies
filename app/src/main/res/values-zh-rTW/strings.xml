@@ -20,6 +20,10 @@
     <string name="menu_settings">設定</string>
     <string name="menu_refresh">更新匯率</string>
     <string name="menu_timeline">匯率走勢圖</string>
+    <string name="menu_quick_conversions">快速換算</string>
+    <string name="quick_conversions_title">快速換算</string>
+    <string name="quick_conversions_no_rates">匯率尚未載入。</string>
+    <string name="quick_conversions_fees_applied">已套用手續費：%s</string>
     <string name="tooltip_filter_starred">只顯示最愛的匯率</string>
     <string name="currency_dropdown_api_hint">有東西不見了嗎？每個資料來源提供的數量不盡相同。請到設定去調整看看！\u00A0\uD83E\uDD17</string>
 </resources>

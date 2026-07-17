@@ -20,6 +20,10 @@
     <string name="menu_settings">Instellingen</string>
     <string name="menu_refresh">Update koersen</string>
     <string name="menu_timeline">Wisselkoers grafiek</string>
+    <string name="menu_quick_conversions">Snelle omrekeningen</string>
+    <string name="quick_conversions_title">Snelle omrekeningen</string>
+    <string name="quick_conversions_no_rates">Koersen zijn nog niet geladen.</string>
+    <string name="quick_conversions_fees_applied">Toegepaste kosten: %s</string>
     <string name="tooltip_filter_starred">Toon alleen favoriete valuta\'s.</string>
     <string name="currency_dropdown_api_hint">Ontbreekt er iets? Verschillende dataproviders bieden verschillende valuta\'s aan. Ga naar de instellingen om een andere te proberen! 🤗</string>
 </resources>

@@ -20,6 +20,10 @@
     <string name="menu_settings">Impostazioni</string>
     <string name="menu_refresh">Aggiorna tassi</string>
     <string name="menu_timeline">Cronologia del tasso di cambio</string>
+    <string name="menu_quick_conversions">Conversioni rapide</string>
+    <string name="quick_conversions_title">Conversioni rapide</string>
+    <string name="quick_conversions_no_rates">Tassi non ancora caricati.</string>
+    <string name="quick_conversions_fees_applied">Commissioni applicate: %s</string>
     <string name="tooltip_filter_starred">Mostra solo le valute stellate.</string>
     <string name="currency_dropdown_api_hint">Manca qualcosa? Diversi fornitori di dati offrono valute diverse. Vai nelle impostazioni per provarne un altro! 🤗</string>
 </resources>

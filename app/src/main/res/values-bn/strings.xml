@@ -20,6 +20,10 @@
     <string name="menu_settings">সেটিংস</string>
     <string name="menu_refresh">রিফ্রেশ হার</string>
     <string name="menu_timeline">বিনিময় হার চার্ট</string>
+    <string name="menu_quick_conversions">দ্রুত রূপান্তর</string>
+    <string name="quick_conversions_title">দ্রুত রূপান্তর</string>
+    <string name="quick_conversions_no_rates">হার এখনও লোড হয়নি।</string>
+    <string name="quick_conversions_fees_applied">প্রযোজ্য ফি: %s</string>
     <string name="tooltip_filter_starred">শুধুমাত্র তারকাচিহ্নিত মুদ্রা দেখান।</string>
     <string name="currency_dropdown_api_hint">কোনকিছু পাওয়া যাচ্ছে না? ভিন্ন তথ্য সরবরাহকারী ভিন্ন ভিন্ন অর্থ দেখায়। পছন্দসমূহে গিয়ে আরেকটা চেষ্টা করে দেখো! 🤗</string>
 </resources>

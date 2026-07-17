@@ -17,6 +17,10 @@
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_refresh">Odśwież kursy</string>
     <string name="menu_timeline">Wykres kursów wymiany</string>
+    <string name="menu_quick_conversions">Szybkie przeliczenia</string>
+    <string name="quick_conversions_title">Szybkie przeliczenia</string>
+    <string name="quick_conversions_no_rates">Kursy nie zostały jeszcze załadowane.</string>
+    <string name="quick_conversions_fees_applied">Zastosowane opłaty: %s</string>
     <string name="tooltip_filter_starred">Pokaż tylko polubione waluty.</string>
     <string name="currency_dropdown_api_hint">Czegoś brakuje? Różni dostawcy danych oferują różne waluty. Przejdź do ustawień, aby wypróbować innego dostawcę!\u00A0\uD83E\uDD17</string>
 </resources>

@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Vers</string>
     <string name="fee_pair_pick_currency">Choisir une devise</string>
     <string name="fee_true_cost_prefix">"Coût réel : "</string>
+    <string name="fee_original_value_prefix">"Valeur d’origine : "</string>
     <string name="fee_side_summary_original">Le montant converti affiché reste au taux du marché moyen ; les frais sont affichés séparément comme \"coût réel\".</string>
     <string name="fee_side_summary_converted">Les frais sont inclus dans le montant converti affiché.</string>
     <string name="fee_empty">Aucun frais pour le moment</string>

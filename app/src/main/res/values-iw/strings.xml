@@ -20,6 +20,10 @@
     <string name="menu_settings">הגדרות</string>
     <string name="menu_refresh">רענון השערים</string>
     <string name="menu_timeline">תרשים שערי חליפין</string>
+    <string name="menu_quick_conversions">המרות מהירות</string>
+    <string name="quick_conversions_title">המרות מהירות</string>
+    <string name="quick_conversions_no_rates">השערים עדיין לא נטענו.</string>
+    <string name="quick_conversions_fees_applied">עמלות שהוחלו: %s</string>
     <string name="tooltip_filter_starred">הצגת מטבעות מסומנים בלבד.</string>
     <string name="currency_dropdown_api_hint">משהו חסר? ספקי נתונים שונים מציעים מטבעות שונים. אפשר לגשת להגדרות ולנסות ספק אחר!\u00A0\uD83E\uDD17</string>
 </resources>

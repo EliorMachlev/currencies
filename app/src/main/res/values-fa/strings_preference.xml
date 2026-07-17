@@ -20,6 +20,7 @@
     <string name="fee_pair_to">به</string>
     <string name="fee_pair_pick_currency">انتخاب ارز</string>
     <string name="fee_true_cost_prefix">"هزینه واقعی: "</string>
+    <string name="fee_original_value_prefix">"مقدار اصلی: "</string>
     <string name="fee_side_summary_original">مبلغ تبدیل‌شده نمایش داده شده در نرخ میانگین بازار می‌ماند؛ کارمزدها به‌طور جداگانه به‌عنوان \"هزینه واقعی\" نشان داده می‌شوند.</string>
     <string name="fee_side_summary_converted">کارمزدها در مبلغ تبدیل‌شده نمایش داده شده لحاظ شده‌اند.</string>
     <string name="fee_empty">هنوز کارمزدی وجود ندارد</string>

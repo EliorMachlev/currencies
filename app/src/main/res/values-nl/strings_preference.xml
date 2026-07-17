@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Naar</string>
     <string name="fee_pair_pick_currency">Selecteer valuta</string>
     <string name="fee_true_cost_prefix">"Werkelijke kosten: "</string>
+    <string name="fee_original_value_prefix">"Oorspronkelijke waarde: "</string>
     <string name="fee_side_summary_original">Het weergegeven geconverteerde bedrag blijft op de middenkoers; kosten worden apart weergegeven als \"werkelijke kosten\".</string>
     <string name="fee_side_summary_converted">Kosten zijn verwerkt in het weergegeven geconverteerde bedrag.</string>
     <string name="fee_empty">Nog geen kosten</string>

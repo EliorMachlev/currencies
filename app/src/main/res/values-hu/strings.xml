@@ -15,5 +15,9 @@
     <string name="menu_settings">Beállítások</string>
     <string name="menu_refresh">Árfolyamok frissítése</string>
     <string name="menu_timeline">Árfolyamgrafikon</string>
+    <string name="menu_quick_conversions">Gyors átváltások</string>
+    <string name="quick_conversions_title">Gyors átváltások</string>
+    <string name="quick_conversions_no_rates">Az árfolyamok még nincsenek betöltve.</string>
+    <string name="quick_conversions_fees_applied">Alkalmazott díjak: %s</string>
     <string name="tooltip_filter_starred">Csak a kedvenc valuták megjelenítése.</string>
 </resources>

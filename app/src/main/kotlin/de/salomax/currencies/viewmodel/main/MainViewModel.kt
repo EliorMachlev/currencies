@@ -501,6 +501,15 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     /**
+     * Public accessor for the fee stack factor of an arbitrary pair,
+     * used by ad-hoc UIs (e.g. the quick-conversions popup) that need to
+     * apply fees outside the main result pipeline.
+     */
+    internal fun feeStackFor(base: Currency?, dest: Currency?): BigDecimal {
+        return computeTotalStack(fees.value.orEmpty(), base, dest)
+    }
+
+    /**
      * The combined multiplicative fee factor for the current pair.
      * Exposed so the UI can render a hint (e.g. badge on the side toggle)
      * when at least one fee is active for the current currencies.
@@ -553,6 +562,39 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * See [trueCost].
      */
     internal fun getTrueCost(): LiveData<BigDecimal?> = trueCost
+
+    /**
+     * The undiscounted (fair) destination amount when [FeeSide.CONVERTED]
+     * is active and at least one fee applies: `result * totalStack`. `null`
+     * when the total stack is trivial (== 1) or the side is [FeeSide.ORIGINAL].
+     */
+    private val originalValue = object : MediatorLiveData<BigDecimal?>() {
+        var resultVal: BigDecimal = BigDecimal.ZERO
+        var stack: BigDecimal = BigDecimal.ONE
+        var side: FeeSide = FeeSide.ORIGINAL
+        var feeList: List<Fee> = emptyList()
+
+        init {
+            addSource(getResultAsNumber()) { resultVal = it ?: BigDecimal.ZERO; update() }
+            addSource(totalStack) { stack = it ?: BigDecimal.ONE; update() }
+            addSource(feeSide) { side = it ?: FeeSide.ORIGINAL; update() }
+            addSource(fees) { feeList = it.orEmpty(); update() }
+        }
+
+        private fun update() {
+            this.value = when {
+                side != FeeSide.CONVERTED -> null
+                feeList.isEmpty() -> null
+                stack.compareTo(BigDecimal.ONE) == 0 -> null
+                else -> resultVal.multiply(stack, MathContext.DECIMAL128)
+            }
+        }
+    }
+
+    /**
+     * See [originalValue].
+     */
+    internal fun getOriginalValue(): LiveData<BigDecimal?> = originalValue
 
     /**
      * The combined multiplicative fee factor for the current pair.

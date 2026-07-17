@@ -20,6 +20,7 @@
     <string name="fee_pair_to">Para</string>
     <string name="fee_pair_pick_currency">Selecionar moeda</string>
     <string name="fee_true_cost_prefix">"Custo real: "</string>
+    <string name="fee_original_value_prefix">"Valor original: "</string>
     <string name="fee_side_summary_original">O valor convertido exibido permanece na taxa média de mercado; as taxas são mostradas separadamente como \"custo real\".</string>
     <string name="fee_side_summary_converted">As taxas estão incluídas no valor convertido exibido.</string>
     <string name="fee_empty">Ainda não há taxas</string>
