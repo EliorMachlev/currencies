@@ -5,7 +5,6 @@ import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Bundle
@@ -24,13 +23,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.text.HtmlCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.window.layout.FoldingFeature
-import androidx.window.layout.WindowInfoTracker
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
@@ -52,8 +47,6 @@ import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.view.timeline.TimelineActivity
 import de.salomax.currencies.viewmodel.main.MainViewModel
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -487,14 +480,6 @@ class MainActivity : BaseActivity() {
         keypadRegular.findViewById<TextView>(R.id.btn_decimal).text = separator
     }
 
-    private fun getTextColorSecondary(): Int {
-        val attrs = intArrayOf(android.R.attr.textColorSecondary)
-        val a = theme.obtainStyledAttributes(R.style.AppTheme, attrs)
-        val color = a.getColor(0, Color.TRANSPARENT)
-        a.recycle()
-        return color
-    }
-
     private fun haptic(view: View) {
         if (hapticEnabled)
             view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
@@ -587,24 +572,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun prepareFoldableLayoutChanges() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                WindowInfoTracker.getOrCreate(this@MainActivity)
-                    .windowLayoutInfo(this@MainActivity)
-                    .collect { newLayoutInfo ->
-                        newLayoutInfo.displayFeatures.filterIsInstance(FoldingFeature::class.java)
-                            .firstOrNull()?.let { applyFoldingOrientation(it) }
-                    }
+        observeFoldingFeature { feature ->
+            val root = findViewById<LinearLayout>(R.id.main_root)
+            root.orientation = when {
+                feature.state == FoldingFeature.State.FLAT -> flatOrientation()
+                feature.orientation == FoldingFeature.Orientation.VERTICAL -> LinearLayout.HORIZONTAL
+                else -> LinearLayout.VERTICAL
             }
-        }
-    }
-
-    private fun applyFoldingOrientation(foldingFeature: FoldingFeature) {
-        val root = findViewById<LinearLayout>(R.id.main_root)
-        root.orientation = when {
-            foldingFeature.state == FoldingFeature.State.FLAT -> flatOrientation()
-            foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL -> LinearLayout.HORIZONTAL
-            else -> LinearLayout.VERTICAL
         }
     }
 
