@@ -33,10 +33,7 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
     private var isPreviewConversionEnabled: LiveData<Boolean> = db.isPreviewConversionEnabled()
 
     fun setApiProvider(api: ApiProvider) {
-        // first put provider to db...
-        db.setApiProvider(api)
-        // ...after that, fetch the new exchange rates
-        ExchangeRatesRepository(app).getExchangeRates()
+        persistAndRefreshRates { db.setApiProvider(api) }
     }
 
     fun getApiProvider(): LiveData<ApiProvider> {
@@ -44,9 +41,13 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
     }
 
     fun setOpenExchangeratesApiKey(id: String) {
-        // first put id to db...
-        db.setOpenExchangeRatesApiKey(id)
-        // ...after that, fetch the new exchange rates
+        persistAndRefreshRates { db.setOpenExchangeRatesApiKey(id) }
+    }
+
+    // Persist a provider-affecting change, then re-fetch rates so the UI
+    // doesn't keep showing the previous provider's cached values.
+    private fun persistAndRefreshRates(persist: () -> Unit) {
+        persist()
         ExchangeRatesRepository(app).getExchangeRates()
     }
 
