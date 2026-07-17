@@ -52,7 +52,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     private var repository: ExchangeRatesRepository = ExchangeRatesRepository(app)
-    private val db = db
+    private val db = Database(app)
 
     // repository data
     private var dbLiveItems: LiveData<ExchangeRates?>
