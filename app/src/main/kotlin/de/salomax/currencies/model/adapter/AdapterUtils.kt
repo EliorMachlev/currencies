@@ -1,5 +1,6 @@
 package de.salomax.currencies.model.adapter
 
+import com.squareup.moshi.JsonReader
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import org.xmlpull.v1.XmlPullParser
@@ -7,6 +8,19 @@ import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
 import java.time.format.DateTimeFormatter
 import kotlin.math.pow
+
+// Providers surface error payloads as { "message": "..." }. This helper reads
+// that message field out of the current object, skipping anything else.
+internal fun JsonReader.readErrorMessage(): String? {
+    beginObject()
+    var message: String? = null
+    while (hasNext()) {
+        if (nextName() == "message") message = nextString()
+        else skipValue()
+    }
+    endObject()
+    return message
+}
 
 // Bank Rossii serializes dates as dd.MM.yyyy in every response.
 internal val BANK_ROSSII_DATE_FORMATTER: DateTimeFormatter =

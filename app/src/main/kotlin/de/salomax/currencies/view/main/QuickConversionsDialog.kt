@@ -144,23 +144,20 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
             row.findViewById<TextView>(R.id.text_amount_to).text =
                 "${displayed.formatForRow(ctx)} ${to.iso4217Alpha()}"
 
-            val trueCostView = row.findViewById<TextView>(R.id.text_true_cost)
-            if (hasFees && side == FeeSide.ORIGINAL) {
+            setFeeAnnotation(
+                row.findViewById(R.id.text_true_cost),
+                visible = hasFees && side == FeeSide.ORIGINAL,
+            ) {
                 val actual = amt.multiply(stack, MathContext.DECIMAL128)
-                trueCostView.text = getString(R.string.fee_true_cost_prefix) +
+                getString(R.string.fee_true_cost_prefix) +
                     ltrIsolate("${actual.formatForRow(ctx)} ${from.iso4217Alpha()}")
-                trueCostView.visibility = View.VISIBLE
-            } else {
-                trueCostView.visibility = View.GONE
             }
-
-            val originalValueView = row.findViewById<TextView>(R.id.text_original_value)
-            if (hasFees && side == FeeSide.CONVERTED) {
-                originalValueView.text = getString(R.string.fee_original_value_prefix) +
+            setFeeAnnotation(
+                row.findViewById(R.id.text_original_value),
+                visible = hasFees && side == FeeSide.CONVERTED,
+            ) {
+                getString(R.string.fee_original_value_prefix) +
                     ltrIsolate("${fair.formatForRow(ctx)} ${to.iso4217Alpha()}")
-                originalValueView.visibility = View.VISIBLE
-            } else {
-                originalValueView.visibility = View.GONE
             }
 
             container.addView(row)
@@ -181,6 +178,15 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
     private fun openFeesSettings(ctx: Context): Boolean {
         startActivity(PreferenceActivity.feesIntent(ctx))
         return true
+    }
+
+    private inline fun setFeeAnnotation(view: TextView, visible: Boolean, text: () -> String) {
+        if (visible) {
+            view.text = text()
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
     }
 
     private fun BigDecimal.formatForRow(ctx: Context): String {

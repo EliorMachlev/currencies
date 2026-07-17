@@ -95,6 +95,20 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         }
     }
 
+    // Extra clearance below the EditText so its text-selection handle doesn't
+    // drop onto the sign toggle.
+    private fun addSignToggleWithTopMargin(container: LinearLayout, signToggle: View) {
+        container.addView(
+            signToggle,
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                topMargin = resources.getDimensionPixelSize(R.dimen.margin4x)
+            },
+        )
+    }
+
     private fun feeSideLabels(side: FeeSide): Pair<String, String> {
         return when (side) {
             FeeSide.CONVERTED -> getString(R.string.fee_side_converted) to
@@ -321,17 +335,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         }
         val signGroup = buildSignToggle(ctx, existing?.isMarkup)
         container.addView(percentInput)
-        container.addView(
-            signGroup.first,
-            LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-            ).apply {
-                // Extra clearance below the EditText so its text-selection
-                // handle doesn't drop onto the sign toggle.
-                topMargin = resources.getDimensionPixelSize(R.dimen.margin4x)
-            },
-        )
+        addSignToggleWithTopMargin(container, signGroup.first)
 
         MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_edit_percent)
@@ -397,17 +401,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
 
         listOf(fromLabel, fromButton, toLabel, toButton, bothWays, percentLabel, percentInput)
             .forEach { container.addView(it) }
-        container.addView(
-            signToggle.first,
-            LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-            ).apply {
-                // Extra clearance below the EditText so its text-selection
-                // handle doesn't drop onto the sign toggle.
-                topMargin = resources.getDimensionPixelSize(R.dimen.margin4x)
-            },
-        )
+        addSignToggleWithTopMargin(container, signToggle.first)
 
         MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_section_specific_pair)

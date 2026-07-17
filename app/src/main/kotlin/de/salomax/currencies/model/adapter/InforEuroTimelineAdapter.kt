@@ -78,16 +78,9 @@ internal class InforEuroTimelineAdapter(
     }
 
     private fun readErrorResponse(reader: JsonReader): Timeline {
-        reader.beginObject()
-        var message: String? = null
-        while (reader.hasNext()) {
-            if (reader.nextName() == "message")
-                message = reader.nextString()
-        }
-        reader.endObject()
         return Timeline(
             success = false,
-            error = message,
+            error = reader.readErrorMessage(),
             base = Currency.EUR.iso4217Alpha(),
             startDate = null,
             endDate = null,
