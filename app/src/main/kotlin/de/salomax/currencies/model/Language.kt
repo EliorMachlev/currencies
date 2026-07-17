@@ -3,6 +3,11 @@ package de.salomax.currencies.model
 import android.content.Context
 import de.salomax.currencies.R
 
+// Legacy Android-style locale separator used in this enum's iso strings
+// (e.g. "pt_BR", "zh_CN"). Kept as an underscore because it matches the
+// res/values-* folder naming that maps back to these entries.
+private const val REGION_SEPARATOR = '_'
+
 enum class Language(
     val iso: String,
     private val nameNative: String?,
@@ -57,18 +62,20 @@ enum class Language(
 
         private fun canonicalize(isoValue: String?): String? {
             if (isoValue == null) return null
-            val (lang, rest) = isoValue.split('_', limit = 2)
+            val (lang, rest) = isoValue.split(REGION_SEPARATOR, limit = 2)
                 .let { it[0] to it.getOrNull(1) }
             val canonicalLang = legacyLanguageAliases[lang] ?: lang
-            return if (rest != null) "${canonicalLang}_$rest" else canonicalLang
+            return if (rest != null) "$canonicalLang$REGION_SEPARATOR$rest" else canonicalLang
         }
+
+        private fun String.stripRegion(): String = substringBefore(REGION_SEPARATOR)
 
         fun byIso(isoValue: String?): Language? {
             val canonical = canonicalize(isoValue)
             return isoMapping[canonical]
             // either the resource string has no country, or the given locale has none:
             // use only language without country
-                ?: isoMapping.mapKeys { it.key.substringBefore("_") }[canonical?.substringBefore("_")]
+                ?: isoMapping.mapKeys { it.key.stripRegion() }[canonical?.stripRegion()]
         }
     }
 
