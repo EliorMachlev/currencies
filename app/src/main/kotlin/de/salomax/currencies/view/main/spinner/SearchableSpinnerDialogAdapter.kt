@@ -18,6 +18,18 @@ import de.salomax.currencies.util.toHumanReadableNumber
 import java.math.BigDecimal
 import java.math.MathContext
 
+private const val VIEW_TYPE_RATE = 0
+private const val VIEW_TYPE_API_HINT = 1
+
+private const val DEFAULT_DECIMAL_PLACES = 2
+private const val MIN_DECIMAL_PLACES = 0
+private const val MAX_DECIMAL_PLACES = 6
+
+// Unicode RTL mark: gets injected by the localized number formatter for some
+// locales; stripped from the "left = right" preview so it doesn't shove the
+// equals sign to the wrong side.
+private const val RTL_MARK = "\u200F"
+
 @SuppressLint("NotifyDataSetChanged")
 class SearchableSpinnerDialogAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -33,7 +45,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
     private var isPreviewConversionEnabled: Boolean = false
     private var currentBaseRate: Rate? = null
     private var currentBaseSum: BigDecimal = BigDecimal.ONE
-    private var decimalPlaces: Int = 2
+    private var decimalPlaces: Int = DEFAULT_DECIMAL_PLACES
 
     private var filterStarred = false
     private var filterText: String? = null
@@ -43,18 +55,18 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            // regular
-            0 -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown, parent, false))
-            // api hint
-            1 -> ViewHolderApiHint(
+            VIEW_TYPE_RATE -> ViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown, parent, false)
+            )
+            VIEW_TYPE_API_HINT -> ViewHolderApiHint(
                 LayoutInflater.from(context).inflate(R.layout.row_currency_dropdown_api_hint, parent, false)
             )
-            else -> throw IllegalArgumentException("View type must either be 0 or 1.")
+            else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == itemCount - 1) 1 else 0
+        return if (position == itemCount - 1) VIEW_TYPE_API_HINT else VIEW_TYPE_RATE
     }
 
     @SuppressLint("SetTextI18n")
@@ -162,7 +174,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         update()
     }
     fun setDecimalPlaces(places: Int) {
-        decimalPlaces = places.coerceIn(0, 6)
+        decimalPlaces = places.coerceIn(MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES)
         update()
     }
 
@@ -181,7 +193,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         val right = if (destinationSymbol.isEmpty()) destination
             else if (hasAppendedCurrencySymbol(context)) "$destination $destinationSymbol"
             else "$destinationSymbol $destination"
-        return "$left = $right".replace("\u200F", "").trim()
+        return "$left = $right".replace(RTL_MARK, "").trim()
     }
 
     private fun update() {
