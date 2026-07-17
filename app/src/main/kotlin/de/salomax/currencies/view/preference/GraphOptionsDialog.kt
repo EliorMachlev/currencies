@@ -15,34 +15,27 @@ class GraphOptionsDialog : AppCompatDialogFragment() {
         val view = View.inflate(context, R.layout.dialog_graph_options, null)
         val db = Database(requireContext())
 
-        val gridSwitch = view.findViewById<MaterialSwitch>(R.id.switch_grid)
-        val xAxisSwitch = view.findViewById<MaterialSwitch>(R.id.switch_x_axis)
-        val yAxisSwitch = view.findViewById<MaterialSwitch>(R.id.switch_y_axis)
-        val highlightSwitch = view.findViewById<MaterialSwitch>(R.id.switch_highlight_extremes)
-
-        gridSwitch.isChecked = db.isChartGridEnabledBlocking()
-        xAxisSwitch.isChecked = db.isChartXAxisLabelEnabledBlocking()
-        yAxisSwitch.isChecked = db.isChartYAxisLabelEnabledBlocking()
-        highlightSwitch.isChecked = db.isChartHighlightExtremesEnabledBlocking()
-
-        gridSwitch.setOnCheckedChangeListener { _, checked ->
-            db.setChartGridEnabled(checked)
-        }
-        xAxisSwitch.setOnCheckedChangeListener { _, checked ->
-            db.setChartXAxisLabelEnabled(checked)
-        }
-        yAxisSwitch.setOnCheckedChangeListener { _, checked ->
-            db.setChartYAxisLabelEnabled(checked)
-        }
-        highlightSwitch.setOnCheckedChangeListener { _, checked ->
-            db.setChartHighlightExtremesEnabled(checked)
-        }
+        bindSwitch(view, R.id.switch_grid,
+            db::isChartGridEnabledBlocking, db::setChartGridEnabled)
+        bindSwitch(view, R.id.switch_x_axis,
+            db::isChartXAxisLabelEnabledBlocking, db::setChartXAxisLabelEnabled)
+        bindSwitch(view, R.id.switch_y_axis,
+            db::isChartYAxisLabelEnabledBlocking, db::setChartYAxisLabelEnabled)
+        bindSwitch(view, R.id.switch_highlight_extremes,
+            db::isChartHighlightExtremesEnabledBlocking, db::setChartHighlightExtremesEnabled)
 
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.category_graph_options)
             .setView(view)
             .setPositiveButton(android.R.string.ok, null)
             .create()
+    }
+
+    private fun bindSwitch(root: View, id: Int, getter: () -> Boolean, setter: (Boolean) -> Unit) {
+        root.findViewById<MaterialSwitch>(id).apply {
+            isChecked = getter()
+            setOnCheckedChangeListener { _, checked -> setter(checked) }
+        }
     }
 
 }

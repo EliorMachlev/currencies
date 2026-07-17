@@ -28,10 +28,29 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.repository.Database
+import de.salomax.currencies.util.dpToPx
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.main.spinner.SearchableSpinnerDialog
 import java.math.BigDecimal
 import java.util.UUID
+
+// Preference key for the "fee side" row — the leading __ marks it as
+// UI-only state that's ignored by the settings back-up/restore pipeline.
+private const val PREF_KEY_FEE_SIDE = "__fee_side"
+
+private const val FEE_SIDE_SUMMARY_ALPHA = 0.7f
+
+// Sign-toggle button geometry (dp) and text size (sp).
+private const val SIGN_TOGGLE_BUTTON_HEIGHT_DP = 56f
+private const val SIGN_TOGGLE_BUTTON_WIDTH_DP = 80f
+private const val SIGN_TOGGLE_TEXT_SIZE_SP = 20f
+
+// Flag glyph height for inline flag spans (sp so it scales with body text).
+private const val FLAG_INLINE_HEIGHT_SP = 14f
+
+// Arrows used in the "specific pair" summary.
+private const val ARROW_ONE_WAY = "\u2192"
+private const val ARROW_BOTH_WAYS = "\u2194"
 
 class FeeManagerFragment : PreferenceFragmentCompat() {
 
@@ -48,27 +67,41 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
 
         screen.addPreference(buildFeeSidePreference(ctx))
 
-        categoryExchange = PreferenceCategory(ctx).apply {
-            title = getString(R.string.fee_section_global_exchange)
-            isIconSpaceReserved = false
-        }
-        screen.addPreference(categoryExchange)
-
-        categoryBank = PreferenceCategory(ctx).apply {
-            title = getString(R.string.fee_section_global_bank)
-            isIconSpaceReserved = false
-        }
-        screen.addPreference(categoryBank)
-
-        categoryPair = PreferenceCategory(ctx).apply {
-            title = getString(R.string.fee_section_specific_pair)
-            isIconSpaceReserved = false
-        }
-        screen.addPreference(categoryPair)
+        categoryExchange = addCategory(screen, ctx, R.string.fee_section_global_exchange)
+        categoryBank = addCategory(screen, ctx, R.string.fee_section_global_bank)
+        categoryPair = addCategory(screen, ctx, R.string.fee_section_specific_pair)
 
         preferenceScreen = screen
 
         db.getFees().observe(this) { fees -> renderFees(fees) }
+    }
+
+    private fun addCategory(screen: PreferenceScreen, ctx: Context, titleRes: Int): PreferenceCategory =
+        PreferenceCategory(ctx).apply {
+            title = getString(titleRes)
+            isIconSpaceReserved = false
+        }.also(screen::addPreference)
+
+    /**
+     * A vertical LinearLayout with the standard dialog horizontal padding, used
+     * as the `setView` container for the fee-side / percent / pair dialogs so
+     * the inner rows sit inside Material dialog gutters.
+     */
+    private fun paddedDialogContainer(ctx: Context, topPadding: Int = 0): LinearLayout {
+        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
+        return LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(padH, topPadding, padH, 0)
+        }
+    }
+
+    private fun feeSideLabels(side: FeeSide): Pair<String, String> {
+        return when (side) {
+            FeeSide.CONVERTED -> getString(R.string.fee_side_converted) to
+                getString(R.string.fee_side_summary_converted)
+            else -> getString(R.string.fee_side_original) to
+                getString(R.string.fee_side_summary_original)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,7 +111,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
 
     private fun buildFeeSidePreference(ctx: Context): Preference {
         return Preference(ctx).apply {
-            key = "__fee_side"
+            key = PREF_KEY_FEE_SIDE
             title = getString(R.string.fee_side_label)
             isIconSpaceReserved = false
             summary = formatFeeSideSummary(db.getFeeSideBlocking())
@@ -92,14 +125,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
     }
 
     private fun formatFeeSideSummary(side: FeeSide): CharSequence {
-        val name = when (side) {
-            FeeSide.CONVERTED -> getString(R.string.fee_side_converted)
-            else -> getString(R.string.fee_side_original)
-        }
-        val desc = when (side) {
-            FeeSide.CONVERTED -> getString(R.string.fee_side_summary_converted)
-            else -> getString(R.string.fee_side_summary_original)
-        }
+        val (name, desc) = feeSideLabels(side)
         return "$name\n$desc"
     }
 
@@ -108,12 +134,8 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         val sides = arrayOf(FeeSide.ORIGINAL, FeeSide.CONVERTED)
         val current = db.getFeeSideBlocking()
 
-        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
         val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
-        val container = LinearLayout(ctx).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(padH, 0, padH, 0)
-        }
+        val container = paddedDialogContainer(ctx)
 
         val radios = mutableListOf<RadioButton>()
         val dialogHolder = arrayOfNulls<AlertDialog>(1)
@@ -136,24 +158,19 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
             }
             radios += radio
 
+            val (titleText, descText) = feeSideLabels(side)
             val titleView = TextView(ctx).apply {
-                text = when (side) {
-                    FeeSide.CONVERTED -> getString(R.string.fee_side_converted)
-                    else -> getString(R.string.fee_side_original)
-                }
+                text = titleText
                 setTextAppearance(
                     com.google.android.material.R.style.TextAppearance_Material3_TitleMedium,
                 )
             }
             val descView = TextView(ctx).apply {
-                text = when (side) {
-                    FeeSide.CONVERTED -> getString(R.string.fee_side_summary_converted)
-                    else -> getString(R.string.fee_side_summary_original)
-                }
+                text = descText
                 setTextAppearance(
                     com.google.android.material.R.style.TextAppearance_Material3_BodySmall,
                 )
-                alpha = 0.7f
+                alpha = FEE_SIDE_SUMMARY_ALPHA
             }
             val textCol = LinearLayout(ctx).apply {
                 orientation = LinearLayout.VERTICAL
@@ -295,12 +312,8 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         onConfirm: (BigDecimal, Boolean) -> Unit,
     ) {
         val ctx = requireContext()
-        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
         val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
-        val container = LinearLayout(ctx).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(padH, padV, padH, 0)
-        }
+        val container = paddedDialogContainer(ctx, topPadding = padV)
         val percentInput = EditText(ctx).apply {
             hint = getString(R.string.fee_edit_percent)
             inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
@@ -320,7 +333,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
             },
         )
 
-        val builder = MaterialAlertDialogBuilder(ctx)
+        MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_edit_percent)
             .setView(container)
             .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -330,10 +343,8 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
                 onConfirm(percent.abs(), isMarkup)
             }
             .setNegativeButton(android.R.string.cancel, null)
-        if (onDelete != null) {
-            builder.setNeutralButton(R.string.fee_delete) { _, _ -> onDelete() }
-        }
-        builder.show()
+            .withDeleteButton(onDelete)
+            .show()
     }
 
     private fun showSpecificPairDialog(
@@ -342,12 +353,8 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         onConfirm: (Fee.SpecificPair) -> Unit,
     ) {
         val ctx = requireContext()
-        val padH = resources.getDimensionPixelSize(R.dimen.margin3x)
         val padV = resources.getDimensionPixelSize(R.dimen.margin2x)
-        val container = LinearLayout(ctx).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(padH, padV, padH, 0)
-        }
+        val container = paddedDialogContainer(ctx, topPadding = padV)
 
         var pickedFrom: String? = existing?.from
         var pickedTo: String? = existing?.to
@@ -402,7 +409,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
             },
         )
 
-        val builder = MaterialAlertDialogBuilder(ctx)
+        MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.fee_section_specific_pair)
             .setView(container)
             .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -424,10 +431,15 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
                 )
             }
             .setNegativeButton(android.R.string.cancel, null)
+            .withDeleteButton(onDelete)
+            .show()
+    }
+
+    private fun MaterialAlertDialogBuilder.withDeleteButton(onDelete: (() -> Unit)?): MaterialAlertDialogBuilder {
         if (onDelete != null) {
-            builder.setNeutralButton(R.string.fee_delete) { _, _ -> onDelete() }
+            setNeutralButton(R.string.fee_delete) { _, _ -> onDelete() }
         }
-        builder.show()
+        return this
     }
 
     /**
@@ -439,19 +451,15 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         initialMarkup: Boolean?,
     ): Triple<MaterialButtonToggleGroup, Int, Int> {
         val group = MaterialButtonToggleGroup(ctx).apply { isSingleSelection = true }
-        val btnHeight = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 56f, ctx.resources.displayMetrics,
-        ).toInt()
-        val btnWidth = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 80f, ctx.resources.displayMetrics,
-        ).toInt()
+        val btnHeight = SIGN_TOGGLE_BUTTON_HEIGHT_DP.dpToPx().toInt()
+        val btnWidth = SIGN_TOGGLE_BUTTON_WIDTH_DP.dpToPx().toInt()
         fun makeButton(labelRes: Int): MaterialButton {
             return MaterialButton(
                 ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle,
             ).apply {
                 id = View.generateViewId()
                 text = getString(labelRes)
-                textSize = 20f
+                textSize = SIGN_TOGGLE_TEXT_SIZE_SP
                 insetTop = 0
                 insetBottom = 0
             }
@@ -489,7 +497,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         bothWays: Boolean,
         ctx: Context,
     ): CharSequence {
-        val arrow = if (bothWays) "\u2194" else "\u2192"
+        val arrow = if (bothWays) ARROW_BOTH_WAYS else ARROW_ONE_WAY
         val sb = SpannableStringBuilder()
         appendFlag(sb, from, ctx)
         sb.append(' ').append(from).append("  ").append(arrow).append("  ")
@@ -502,7 +510,7 @@ class FeeManagerFragment : PreferenceFragmentCompat() {
         val currency = Currency.fromString(iso) ?: return
         val drawable = currency.flag(ctx)
         val heightPx = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_SP, 14f, ctx.resources.displayMetrics,
+            TypedValue.COMPLEX_UNIT_SP, FLAG_INLINE_HEIGHT_SP, ctx.resources.displayMetrics,
         ).toInt()
         val intrinsicW = drawable.intrinsicWidth.coerceAtLeast(1)
         val intrinsicH = drawable.intrinsicHeight.coerceAtLeast(1)
