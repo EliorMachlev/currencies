@@ -28,6 +28,14 @@ private const val WEEK_DAYS = 7L
 private const val SIGNIFICANT_DIGITS = 3
 private const val MAX_DECIMAL_PLACES = 7
 
+// Restrict a set of (date -> rate) entries to those on/after the user's scrub
+// point on the timeline. When [scrubDate] is null, no filtering happens.
+private fun Set<Map.Entry<LocalDate, Rate?>>.fromScrub(
+    scrubDate: LocalDate?
+): List<Map.Entry<LocalDate, Rate?>> =
+    if (scrubDate == null) this.toList()
+    else this.filter { !it.key.isBefore(scrubDate) }
+
 class TimelineViewModel(
     private val app: Application,
     private var base: Currency,
@@ -219,7 +227,7 @@ class TimelineViewModel(
 
             fun update() {
                 val values = rates
-                    ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
+                    ?.fromScrub(scrubDate)
                     ?.mapNotNull { entry -> entry.value?.value }
                 val avg: Rate? = if (values.isNullOrEmpty()) null
                     else values
@@ -246,57 +254,27 @@ class TimelineViewModel(
         }
     }
 
-    fun getRatesMin(): LiveData<Triple<Rate?, LocalDate?, Int>> {
+    fun getRatesMin(): LiveData<Triple<Rate?, LocalDate?, Int>> =
+        extremeLiveData(pickMax = false)
+
+    fun getRatesMax(): LiveData<Triple<Rate?, LocalDate?, Int>> =
+        extremeLiveData(pickMax = true)
+
+    private fun extremeLiveData(pickMax: Boolean): LiveData<Triple<Rate?, LocalDate?, Int>> {
         return MediatorLiveData<Triple<Rate?, LocalDate?, Int>>().apply {
             var scrubDate: LocalDate? = null
             var rates: Set<Map.Entry<LocalDate, Rate?>>? = null
 
             fun update() {
-                val min: Rate? = rates
-                    ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
+                val slice = rates?.fromScrub(scrubDate)
+                val extreme: Rate? = slice
                     ?.mapNotNull { entry -> entry.value }
-                    ?.minByOrNull { rate -> rate.value }
+                    ?.let { if (pickMax) it.maxByOrNull { r -> r.value } else it.minByOrNull { r -> r.value } }
                     ?.let { Rate(target, it.value) }
-                val date: LocalDate? = rates
-                    ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.findLast { entry -> entry.value?.value?.compareTo(min?.value) == 0 }
+                val date: LocalDate? = slice
+                    ?.findLast { entry -> entry.value?.value?.compareTo(extreme?.value) == 0 }
                     ?.key
-                this.value = Triple(min, date, decimalPlaces)
-            }
-
-            addSource(dbLiveItems) {
-                rates = it?.rates?.entries
-                update()
-            }
-
-            addSource(scrubDateLiveData) {
-                scrubDate = it
-                update()
-            }
-
-            addSource(getDecimalPlaces()) {
-                decimalPlaces = it
-                update()
-            }
-        }
-    }
-
-    fun getRatesMax(): LiveData<Triple<Rate?, LocalDate?, Int>> {
-        return MediatorLiveData<Triple<Rate?, LocalDate?, Int>>().apply {
-            var scrubDate: LocalDate? = null
-            var rates: Set<Map.Entry<LocalDate, Rate?>>? = null
-
-            fun update() {
-                val max: Rate? = rates
-                    ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.mapNotNull { entry -> entry.value }
-                    ?.maxByOrNull { rate -> rate.value }
-                    ?.let { Rate(target, it.value) }
-                val date: LocalDate? = rates
-                    ?.filter { map -> scrubDate?.let { !map.key.isBefore(it) } ?: true }
-                    ?.findLast { entry -> entry.value?.value?.compareTo(max?.value) == 0 }
-                    ?.key
-                this.value = Triple(max, date, decimalPlaces)
+                this.value = Triple(extreme, date, decimalPlaces)
             }
 
             addSource(dbLiveItems) {

@@ -15,15 +15,26 @@ import de.salomax.currencies.repository.ExchangeRatesRepository
 import de.salomax.currencies.view.main.MainActivity
 import de.salomax.currencies.view.preference.PreferenceActivity
 
+// Same numeric contract as Database.getTheme() / BaseActivity: 0 = light,
+// 1 = dark, 2 = follow system.
+private const val THEME_LIGHT = 0
+private const val THEME_DARK = 1
+private const val THEME_SYSTEM = 2
+
+// Language.SYSTEM.iso — matches the enum value that means "follow system
+// locale" without pulling the enum into this file.
+private const val LANGUAGE_SYSTEM = "system"
+
 class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) {
 
-    private var apiProvider: LiveData<ApiProvider> = Database(app).getApiProviderAsync()
-    private var openExchangeratesApiKey: LiveData<String?> = Database(app).getOpenExchangeRatesApiKeyAsync()
-    private var isPreviewConversionEnabled: LiveData<Boolean> = Database(app).isPreviewConversionEnabled()
+    private val db = Database(app)
+    private var apiProvider: LiveData<ApiProvider> = db.getApiProviderAsync()
+    private var openExchangeratesApiKey: LiveData<String?> = db.getOpenExchangeRatesApiKeyAsync()
+    private var isPreviewConversionEnabled: LiveData<Boolean> = db.isPreviewConversionEnabled()
 
     fun setApiProvider(api: ApiProvider) {
         // first put provider to db...
-        Database(app).setApiProvider(api)
+        db.setApiProvider(api)
         // ...after that, fetch the new exchange rates
         ExchangeRatesRepository(app).getExchangeRates()
     }
@@ -34,7 +45,7 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
 
     fun setOpenExchangeratesApiKey(id: String) {
         // first put id to db...
-        Database(app).setOpenExchangeRatesApiKey(id)
+        db.setOpenExchangeRatesApiKey(id)
         // ...after that, fetch the new exchange rates
         ExchangeRatesRepository(app).getExchangeRates()
     }
@@ -44,12 +55,12 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
     }
 
     fun setTheme(theme: Int) {
-        Database(app).setTheme(theme)
+        db.setTheme(theme)
         // switch theme
         AppCompatDelegate.setDefaultNightMode(
             when (theme) {
-                0 -> AppCompatDelegate.MODE_NIGHT_NO
-                1 -> AppCompatDelegate.MODE_NIGHT_YES
+                THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                THEME_DARK -> AppCompatDelegate.MODE_NIGHT_YES
                 else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
         )
@@ -57,7 +68,7 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
 
     fun setLanguage(language: String) {
         val appLocale: LocaleListCompat =
-            if (language == "system")
+            if (language == LANGUAGE_SYSTEM)
                 LocaleListCompat.getEmptyLocaleList()
             else
                 LocaleListCompat.forLanguageTags(
@@ -84,7 +95,7 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
     }
 
     fun setPureBlackEnabled(enabled: Boolean) {
-        Database(app).setPureBlackEnabled(enabled)
+        db.setPureBlackEnabled(enabled)
         // switch theme
         app.setTheme(
             if (enabled)
@@ -107,12 +118,13 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
 
     private fun isDarkThemeActive(): Boolean {
         // app theme is dark
-        val x = Database(app).getTheme() == 1
+        val explicitlyDark = db.getTheme() == THEME_DARK
         // app theme is system default && current state is dark
         val nightMode = app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val y = Database(app).getTheme() == 2 && (nightMode == Configuration.UI_MODE_NIGHT_YES)
+        val systemDark = db.getTheme() == THEME_SYSTEM &&
+                nightMode == Configuration.UI_MODE_NIGHT_YES
 
-        return x || y
+        return explicitlyDark || systemDark
     }
 
     fun isPreviewConversionEnabled(): LiveData<Boolean> {
@@ -120,19 +132,19 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
     }
 
     fun setPreviewConversionEnabled(enabled: Boolean) {
-        Database(app).setPreviewConversionEnabled(enabled)
+        db.setPreviewConversionEnabled(enabled)
     }
 
     fun setKeyboardType(type: Int) {
-        Database(app).setKeyboardType(type)
+        db.setKeyboardType(type)
     }
 
     fun setHapticFeedbackEnabled(enabled: Boolean) {
-        Database(app).setHapticFeedbackEnabled(enabled)
+        db.setHapticFeedbackEnabled(enabled)
     }
 
     fun setDecimalPlaces(places: Int) {
-        Database(app).setDecimalPlaces(places)
+        db.setDecimalPlaces(places)
     }
 
 }

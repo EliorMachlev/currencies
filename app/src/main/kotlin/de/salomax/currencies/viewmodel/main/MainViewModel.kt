@@ -33,6 +33,10 @@ import java.time.ZoneId
 
 private val PERCENTAGE_DIVISOR = BigDecimal("100")
 
+// KeyboardType value used by the basic (non-extended) keypad. Any other value
+// (currently only "1" = calculator/extended) unlocks the operators row.
+private const val KEYBOARD_TYPE_BASIC = 0
+
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidViewModel(app) {
 
@@ -48,6 +52,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     private var repository: ExchangeRatesRepository = ExchangeRatesRepository(app)
+    private val db = db
 
     // repository data
     private var dbLiveItems: LiveData<ExchangeRates?>
@@ -58,9 +63,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     // ui
     private var isUpdating: LiveData<Boolean> = repository.isUpdating()
-    val isExtendedKeypadEnabled: LiveData<Boolean> = Database(app).getKeyboardType().map { it != 0 }
-    val isHapticFeedbackEnabled: LiveData<Boolean> = Database(app).isHapticFeedbackEnabled()
-    private val decimalPlaces: LiveData<Int> = Database(app).getDecimalPlaces()
+    val isExtendedKeypadEnabled: LiveData<Boolean> = db.getKeyboardType().map { it != KEYBOARD_TYPE_BASIC }
+    val isHapticFeedbackEnabled: LiveData<Boolean> = db.isHapticFeedbackEnabled()
+    private val decimalPlaces: LiveData<Int> = db.getDecimalPlaces()
 
 
     // number input
@@ -83,32 +88,32 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         // only update if data is old: https://github.com/Formicka/exchangerate.host
         // "Rates are updated around midnight UTC every working day."
         val currentDate = LocalDate.now(ZoneId.of("UTC"))
-        val cachedDate = Database(app).getDate()
-        val historicalDate = Database(app).getHistoricalDate()
+        val cachedDate = db.getDate()
+        val historicalDate = db.getHistoricalDate()
 
         dbLiveItems = when {
             // force-use cache
-            onlyCache -> Database(app).getExchangeRates()
+            onlyCache -> db.getExchangeRates()
             // first run: fetch data
             cachedDate == null -> repository.getExchangeRates()
             // historical rates in use...
             historicalDate != null -> {
                 // ...and already cached
-                if (historicalDate == cachedDate) Database(app).getExchangeRates()
+                if (historicalDate == cachedDate) db.getExchangeRates()
                 // ...and not cached
                 else repository.getExchangeRates()
             }
             // fetch if stored date is before the current date
             cachedDate.isBefore(currentDate) -> repository.getExchangeRates()
             // else just use the cached value
-            else -> Database(app).getExchangeRates()
+            else -> db.getExchangeRates()
         }
 
-        starredLiveItems = Database(app).getStarredCurrencies()
-        onlyShowStarred = Database(app).isFilterStarredEnabled()
+        starredLiveItems = db.getStarredCurrencies()
+        onlyShowStarred = db.isFilterStarredEnabled()
 
-        fees = Database(getApplication()).getFees()
-        feeSide = Database(getApplication()).getFeeSide()
+        fees = db.getFees()
+        feeSide = db.getFeeSide()
 
         //
         exchangeRates = object : MediatorLiveData<ExchangeRates?>() {
@@ -140,8 +145,8 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
         // update currently selected currencies when rates are updated:
         // sometimes the selected rates aren't available anymore, so reset them
-        val baseCurrency = Database(app).getLastBaseCurrency()
-        val destinationCurrency = Database(app).getLastDestinationCurrency()
+        val baseCurrency = db.getLastBaseCurrency()
+        val destinationCurrency = db.getLastDestinationCurrency()
         currentBaseCurrency = object : MediatorLiveData<Currency?>() {
             var base: Currency? = null
             var rates: ExchangeRates? = null
@@ -205,7 +210,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * persist the user's manual ordering of starred currencies
      */
     internal fun setStarredCurrencyOrder(currencies: List<Currency>) {
-        Database(getApplication()).setStarredCurrencyOrder(currencies)
+        db.setStarredCurrencyOrder(currencies)
     }
 
     /**
@@ -219,14 +224,14 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * switch the starred-filter on/off
      */
     internal fun toggleStarredActive() {
-        Database(getApplication()).toggleStarredActive()
+        db.toggleStarredActive()
     }
 
     /**
      * de-/star a currency
      */
     internal fun toggleCurrencyStar(currencyCode: Currency) {
-        Database(getApplication()).toggleCurrencyStar(currencyCode)
+        db.toggleCurrencyStar(currencyCode)
     }
 
     /**
@@ -257,7 +262,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * persist the fee side.
      */
     internal fun setFeeSide(side: FeeSide) {
-        Database(getApplication()).setFeeSide(side)
+        db.setFeeSide(side)
     }
 
     internal val ratesInformationFooter = object : MediatorLiveData<Spanned?>() {
@@ -791,14 +796,14 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      */
 
     internal fun setBaseCurrency(currency: Currency) {
-        Database(getApplication()).saveLastUsedRates(
+        db.saveLastUsedRates(
             currency,
             currentDestinationCurrency.value
         )
     }
 
     internal fun setDestinationCurrency(currency: Currency) {
-        Database(getApplication()).saveLastUsedRates(
+        db.saveLastUsedRates(
             currentBaseCurrency.value,
             currency
         )
@@ -818,20 +823,20 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     internal fun setHistoricalDate(date: LocalDate?) {
         // check if previous date was "latest" or historical
-        val wasLatestActive = Database(app).getHistoricalDate() == null
+        val wasLatestActive = db.getHistoricalDate() == null
         // save selected historical date to db
-        Database(getApplication()).setHistoricalDate(date)
+        db.setHistoricalDate(date)
         // refresh, if new date != cached date or if last state was "latest"
-        if (date != Database(app).getDate() || wasLatestActive)
+        if (date != db.getDate() || wasLatestActive)
             forceUpdateExchangeRate()
     }
 
     internal fun getHistoricalDate(): LocalDate? {
-        return Database(getApplication()).getHistoricalDate()
+        return db.getHistoricalDate()
     }
 
     internal fun getHistoricalLiveDate(): LiveData<LocalDate?> {
-        return Database(getApplication()).getHistoricalLiveDate()
+        return db.getHistoricalLiveDate()
     }
 
 
