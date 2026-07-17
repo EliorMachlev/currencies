@@ -81,10 +81,7 @@ class NorgesBankRatesXmlParser {
     private fun addSyntheticRates() {
         if (rates.isEmpty()) return
         rates.add(Rate(Currency.NOK, BigDecimal.ONE))
-        if (rates.find { it.currency == Currency.FOK } == null)
-            rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
-                rates.add(Rate(Currency.FOK, dkk))
-            }
+        rates.addFokFromDkkIfMissing()
     }
 
 }
