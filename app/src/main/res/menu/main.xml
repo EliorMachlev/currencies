@@ -29,6 +29,12 @@
         app:showAsAction="never" />
 
     <item
+        android:orderInCategory="500"
+        android:id="@+id/fees"
+        android:title="@string/fee_manager_title"
+        app:showAsAction="never" />
+
+    <item
         android:orderInCategory="1000"
         android:id="@+id/settings"
         android:title="@string/menu_settings"

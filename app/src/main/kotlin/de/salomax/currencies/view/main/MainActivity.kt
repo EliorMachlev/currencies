@@ -133,6 +133,13 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> { startActivity(Intent(this, PreferenceActivity().javaClass)); true }
+            R.id.fees -> {
+                startActivity(
+                    Intent(this, PreferenceActivity::class.java)
+                        .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
+                )
+                true
+            }
             R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
             R.id.timeline -> openTimelineActivity()
             R.id.quick_conversions -> { openQuickConversionsDialog(); true }
@@ -374,8 +381,10 @@ class MainActivity : BaseActivity() {
         val effective = stack ?: one
         if (effective.compareTo(one) == 0) {
             tvFeeBadge.visibility = View.GONE
+            btnFeeSide.visibility = View.GONE
             return
         }
+        btnFeeSide.visibility = View.VISIBLE
         val deltaPercent = effective
             .subtract(one)
             .multiply(BigDecimal(100))
