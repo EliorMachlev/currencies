@@ -68,9 +68,8 @@ class InforEuro : ApiProvider.Api() {
         startDate: LocalDate,
         endDate: LocalDate
     ): Result<Timeline, FuelError> {
-        // can't search for FOK - have to use DKK instead
-        val parameterBase = if (base == Currency.FOK) "DKK" else base.iso4217Alpha()
-        val parameterSymbol = if (symbol == Currency.FOK) "DKK" else symbol.iso4217Alpha()
+        val parameterBase = base.apiCodeOrDkkForFok()
+        val parameterSymbol = symbol.apiCodeOrDkkForFok()
 
         // InforEuro needs 2 calls: the API only provides EUR <-> symbol, without changing the base.
         // So, we make 2 calls: EUR <-> base & EUR <-> symbol

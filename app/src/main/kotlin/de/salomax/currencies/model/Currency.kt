@@ -6,6 +6,12 @@ import androidx.core.content.ContextCompat
 import com.squareup.moshi.JsonClass
 import de.salomax.currencies.R
 
+// Unicode bidi controls used to force LTR display of an RTL currency symbol
+// (embedding form: LRE + PDF). The isolate form (FSI + PDI) is theoretically
+// nicer but not universally supported, so we stick with embedding.
+private const val LTR_EMBEDDING = "\u202A"
+private const val POP_DIRECTIONAL_FORMATTING = "\u202C"
+
 private object Iso4217Codes {
     const val AED = 784
     const val AFN = 971
@@ -423,7 +429,7 @@ enum class Currency(
         // isolate (recommended, but too new - FSI + PDI)
         // return "\u2067" + this + "\u2069"
         // embedding (discouraged - LRE + PDF)
-        return "\u202A" + this + "\u202C"
+        return LTR_EMBEDDING + this + POP_DIRECTIONAL_FORMATTING
     }
 
     private fun String.hasRtlChar(): Boolean {

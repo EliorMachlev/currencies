@@ -13,6 +13,34 @@ import java.util.*
 private const val SYMBOL_DETECTION_VALUE = 1.23
 private const val THOUSANDS_GROUP_SIZE = 3
 
+private const val LTR_ISOLATE = '\u2066'
+private const val POP_DIRECTIONAL_ISOLATE = '\u2069'
+
+// Unicode RTL mark (U+200F) injected by some locales' number/date formatters.
+// Stripped before rendering side-by-side "left = right" strings so the equals
+// sign doesn't get pushed to the opposite side of the display.
+private const val RTL_MARK = "\u200F"
+
+// User-configurable decimal places for displayed conversion results.
+// Kept in one place so PreferenceFragment (writer) and the spinner list
+// (reader) can't drift on the allowed range or the fallback default.
+internal const val DECIMAL_PLACES_DEFAULT = 2
+internal const val DECIMAL_PLACES_MIN = 0
+internal const val DECIMAL_PLACES_MAX = 6
+
+/**
+ * Wrap [s] in Unicode LTR isolate (U+2066 … U+2069) so an "<amount> <currency>"
+ * chunk stays glued together as one LTR unit inside an RTL paragraph — otherwise
+ * the neutral space between number and currency gets absorbed by the RTL run and
+ * the currency code drifts to the opposite side.
+ */
+fun ltrIsolate(s: String): String = "$LTR_ISOLATE$s$POP_DIRECTIONAL_ISOLATE"
+
+/**
+ * Removes any Unicode RTL mark (U+200F) from the string.
+ */
+fun String.stripRtlMark(): String = replace(RTL_MARK, "")
+
 /**
  * Return the *used* Locale, based on the currently active resource folder,
  * not the one set in the System (which one would get with context.resources.configuration.locales[0]).
@@ -132,14 +160,15 @@ private fun isNonNegative(raw: String): Boolean {
 }
 
 private fun String.groupNumbers(context: Context): String {
+    val separator = getGroupingSeparator(context)
     val sb = StringBuilder(this.length * 2)
     for ((i, c) in this.reversed().withIndex()) {
         if (i % THOUSANDS_GROUP_SIZE == 0 && i != 0)
-            sb.append(getGroupingSeparator(context))
+            sb.append(separator)
         sb.append(c)
     }
     return sb.toString().reversed()
-        .replace("-${getGroupingSeparator(context)}", "-")
+        .replace("-$separator", "-")
 }
 
 // *************************************************************************************************

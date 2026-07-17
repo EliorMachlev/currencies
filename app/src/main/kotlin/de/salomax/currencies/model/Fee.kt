@@ -48,5 +48,10 @@ sealed class Fee {
  */
 enum class FeeSide {
     ORIGINAL,
-    CONVERTED,
+    CONVERTED;
+
+    fun toggled(): FeeSide = when (this) {
+        ORIGINAL -> CONVERTED
+        CONVERTED -> ORIGINAL
+    }
 }

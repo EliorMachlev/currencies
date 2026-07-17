@@ -1,16 +1,13 @@
 package de.salomax.currencies.model.adapter
 
 import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
 
 class BankRossiiCurrencyCodesXmlParser {
     private val items = mutableMapOf<String, String>()
 
     fun parse(inputStream: InputStream): MutableMap<String, String> {
-        val parser = XmlPullParserFactory.newInstance()
-            .apply { isNamespaceAware = false }.newPullParser()
-            .apply { setInput(inputStream, null) }
+        val parser = newXmlPullParser(inputStream)
 
         var tagname: String? = null
         var eventType = parser.eventType

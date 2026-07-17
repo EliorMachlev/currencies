@@ -32,11 +32,7 @@ internal class FrankfurterAppRatesAdapter(private val base: Currency) {
         // add base - but only if it's missing in the api response!
         if (list.find { rate -> rate.currency == base } == null)
             list.add(Rate(base, BigDecimal.ONE))
-        // also add Faroese króna (same as Danish krone) if it isn't already there - I simply like it!
-        if (list.find { it.currency == Currency.FOK } == null)
-            list.find { it.currency == Currency.DKK }?.value?.let { dkk ->
-                list.add(Rate(Currency.FOK, dkk))
-            }
+        list.addFokFromDkkIfMissing()
         return list
     }
 

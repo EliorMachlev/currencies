@@ -15,6 +15,10 @@ class ChangelogDialog : AppCompatDialogFragment() {
     companion object {
         private const val SEMVER_MAJOR_MULTIPLIER = 10_000
         private const val SEMVER_MINOR_MULTIPLIER = 100
+        // R.array entries whose name begins with this prefix are treated as
+        // per-version changelog bullet lists; the rest of the name is the
+        // version string with underscores in place of dots.
+        private const val CHANGELOG_ARRAY_PREFIX = "changelog_"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -23,7 +27,7 @@ class ChangelogDialog : AppCompatDialogFragment() {
 
         // HINT: needs proguard rule to work in release config
         for (declaredField in R.array::class.java.declaredFields
-            .filter { field -> field.name.startsWith("changelog_") }
+            .filter { field -> field.name.startsWith(CHANGELOG_ARRAY_PREFIX) }
             .sortedByDescending { field ->
                 val s = field.name.substringAfter('_').split('_')
                 try {

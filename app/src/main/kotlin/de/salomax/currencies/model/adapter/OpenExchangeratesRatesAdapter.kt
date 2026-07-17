@@ -49,7 +49,7 @@ internal class OpenExchangeratesRatesAdapter {
         }
 
         reader.endObject()
-        addFokIfMissing(rates)
+        rates.addFokFromDkkIfMissing()
 
         return if (rates.isNotEmpty())
             ExchangeRates(success = true, error = null, base = base, date = date, time = time,
@@ -70,13 +70,6 @@ internal class OpenExchangeratesRatesAdapter {
         }
         reader.endObject()
         return rates
-    }
-
-    private fun addFokIfMissing(rates: MutableList<Rate>) {
-        if (rates.find { it.currency == Currency.FOK } != null) return
-        rates.find { it.currency == Currency.DKK }?.value?.let { dkk ->
-            rates.add(Rate(Currency.FOK, dkk))
-        }
     }
 
     @Synchronized

@@ -5,12 +5,10 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
 import java.math.BigDecimal
 import java.math.MathContext
 import java.time.LocalDate
-import kotlin.math.pow
 
 class NorgesBankTimelineXmlParser(
     val base: Currency,
@@ -21,9 +19,7 @@ class NorgesBankTimelineXmlParser(
     private val ratesList = mutableListOf<Map<LocalDate, Rate>>()
 
     fun parse(inputStream: InputStream): Timeline {
-        val parser = XmlPullParserFactory.newInstance()
-            .apply { isNamespaceAware = false }.newPullParser()
-            .apply { setInput(inputStream, null) }
+        val parser = newXmlPullParser(inputStream)
 
         var eventType = parser.eventType
         var seriesCurrency: Currency? = null
@@ -37,8 +33,7 @@ class NorgesBankTimelineXmlParser(
                     seriesCurrency = Currency.fromString(
                         parser.getAttributeValue(null, "BASE_CUR")
                     )
-                    multiplier = parser.getAttributeValue(null, "UNIT_MULT")
-                        ?.toIntOrNull()?.let { 10.0.pow(it).toInt() } ?: 1
+                    multiplier = parser.norgesBankUnitMultiplier()
                 }
                 eventType == XmlPullParser.START_TAG
                     && tagname.equals("Obs", ignoreCase = true) -> {

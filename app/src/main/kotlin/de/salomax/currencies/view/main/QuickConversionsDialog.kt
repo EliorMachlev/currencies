@@ -1,10 +1,9 @@
 package de.salomax.currencies.view.main
 
 import android.app.Dialog
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -16,6 +15,7 @@ import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.FeeSide
+import de.salomax.currencies.util.ltrIsolate
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.viewmodel.main.MainViewModel
@@ -23,9 +23,15 @@ import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
 
-class QuickConversionsDialog : AppCompatDialogFragment() {
+private val QUICK_AMOUNTS = listOf("1", "5", "10", "20", "50", "100", "500", "1000")
 
-    private val amounts = listOf("1", "5", "10", "20", "50", "100", "500", "1000")
+private const val PERCENT_MULTIPLIER = 100
+private const val FEE_PERCENT_DECIMAL_PLACES = 2
+private const val ROW_DEFAULT_DECIMALS = 2
+private const val ROW_SMALL_AMOUNT_DECIMALS = 4
+private val ROW_SMALL_AMOUNT_THRESHOLD: BigDecimal = BigDecimal.ONE
+
+class QuickConversionsDialog : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val ctx = requireContext()
@@ -52,6 +58,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
                 if (side == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted_horizontal
                 else R.drawable.ic_fee_side_original_horizontal
             )
+            btnFeeSide.visibility =
+                if (hasFeesFor(viewModel, from, to)) View.VISIBLE else View.GONE
             renderRows(container, feeInfo, viewModel, from, to, rates, side)
         }
 
@@ -64,28 +72,13 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         btnSwap.setOnClickListener {
             (activity as? MainActivity)?.toggleEvent(btnSwap)
         }
-        btnSwap.setOnLongClickListener {
-            startActivity(
-                Intent(ctx, PreferenceActivity::class.java)
-                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
-            )
-            true
-        }
+        btnSwap.setOnLongClickListener { openFeesSettings(ctx) }
 
         btnFeeSide.setOnClickListener {
-            val next = when (viewModel.getFeeSide().value ?: FeeSide.ORIGINAL) {
-                FeeSide.ORIGINAL -> FeeSide.CONVERTED
-                FeeSide.CONVERTED -> FeeSide.ORIGINAL
-            }
-            viewModel.setFeeSide(next)
+            val current = viewModel.getFeeSide().value ?: FeeSide.ORIGINAL
+            viewModel.setFeeSide(current.toggled())
         }
-        btnFeeSide.setOnLongClickListener {
-            startActivity(
-                Intent(ctx, PreferenceActivity::class.java)
-                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
-            )
-            true
-        }
+        btnFeeSide.setOnLongClickListener { openFeesSettings(ctx) }
 
         return AlertDialog.Builder(ctx)
             .setTitle(R.string.quick_conversions_title)
@@ -135,11 +128,10 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         }
 
         val stack = viewModel.feeStackFor(from, to)
-        val hasFees = stack.compareTo(BigDecimal.ZERO) != 0 &&
-            stack.compareTo(BigDecimal.ONE) != 0
+        val hasFees = stack.isFeeStack()
         val inflater = android.view.LayoutInflater.from(ctx)
 
-        for (amountStr in amounts) {
+        for (amountStr in QUICK_AMOUNTS) {
             val amt = BigDecimal(amountStr)
             val fair = amt.divide(baseRate, MathContext.DECIMAL128).multiply(destRate)
             val displayed = if (hasFees && side == FeeSide.CONVERTED)
@@ -153,23 +145,20 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
             row.findViewById<TextView>(R.id.text_amount_to).text =
                 "${displayed.formatForRow(ctx)} ${to.iso4217Alpha()}"
 
-            val trueCostView = row.findViewById<TextView>(R.id.text_true_cost)
-            if (hasFees && side == FeeSide.ORIGINAL) {
+            setFeeAnnotation(
+                row.findViewById(R.id.text_true_cost),
+                visible = hasFees && side == FeeSide.ORIGINAL,
+            ) {
                 val actual = amt.multiply(stack, MathContext.DECIMAL128)
-                trueCostView.text = getString(R.string.fee_true_cost_prefix) +
+                getString(R.string.fee_true_cost_prefix) +
                     ltrIsolate("${actual.formatForRow(ctx)} ${from.iso4217Alpha()}")
-                trueCostView.visibility = View.VISIBLE
-            } else {
-                trueCostView.visibility = View.GONE
             }
-
-            val originalValueView = row.findViewById<TextView>(R.id.text_original_value)
-            if (hasFees && side == FeeSide.CONVERTED) {
-                originalValueView.text = getString(R.string.fee_original_value_prefix) +
+            setFeeAnnotation(
+                row.findViewById(R.id.text_original_value),
+                visible = hasFees && side == FeeSide.CONVERTED,
+            ) {
+                getString(R.string.fee_original_value_prefix) +
                     ltrIsolate("${fair.formatForRow(ctx)} ${to.iso4217Alpha()}")
-                originalValueView.visibility = View.VISIBLE
-            } else {
-                originalValueView.visibility = View.GONE
             }
 
             container.addView(row)
@@ -177,8 +166,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
 
         if (hasFees) {
             val percent = (stack.subtract(BigDecimal.ONE))
-                .multiply(BigDecimal(100), MathContext.DECIMAL128)
-                .setScale(2, RoundingMode.HALF_UP)
+                .multiply(BigDecimal(PERCENT_MULTIPLIER), MathContext.DECIMAL128)
+                .setScale(FEE_PERCENT_DECIMAL_PLACES, RoundingMode.HALF_UP)
             val sign = if (percent.signum() >= 0) "+" else ""
             feeInfo.text = getString(R.string.quick_conversions_fees_applied, "$sign$percent%")
             feeInfo.visibility = View.VISIBLE
@@ -187,15 +176,32 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         }
     }
 
-    private fun ltrIsolate(s: String): String = "\u2066$s\u2069"
+    private fun openFeesSettings(ctx: Context): Boolean {
+        startActivity(PreferenceActivity.feesIntent(ctx))
+        return true
+    }
 
-    private fun BigDecimal.formatForRow(ctx: android.content.Context): String {
-        val abs = this.abs()
-        val decimals = when {
-            abs >= BigDecimal(1000) -> 2
-            abs >= BigDecimal(1) -> 2
-            else -> 4
+    private fun hasFeesFor(viewModel: MainViewModel, from: Currency?, to: Currency?): Boolean {
+        if (from == null || to == null) return false
+        return viewModel.feeStackFor(from, to).isFeeStack()
+    }
+
+    private fun BigDecimal.isFeeStack(): Boolean =
+        compareTo(BigDecimal.ZERO) != 0 && compareTo(BigDecimal.ONE) != 0
+
+    private inline fun setFeeAnnotation(view: TextView, visible: Boolean, text: () -> String) {
+        if (visible) {
+            view.text = text()
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
         }
+    }
+
+    private fun BigDecimal.formatForRow(ctx: Context): String {
+        val decimals =
+            if (this.abs() >= ROW_SMALL_AMOUNT_THRESHOLD) ROW_DEFAULT_DECIMALS
+            else ROW_SMALL_AMOUNT_DECIMALS
         return this.setScale(decimals, RoundingMode.HALF_UP).toHumanReadableNumber(ctx)
     }
 }

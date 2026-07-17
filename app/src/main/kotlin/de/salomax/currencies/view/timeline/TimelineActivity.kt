@@ -1,6 +1,8 @@
 package de.salomax.currencies.view.timeline
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -13,13 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.bold
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.layout.FoldingFeature
-import androidx.window.layout.WindowInfoTracker
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import de.salomax.currencies.R
@@ -31,16 +29,25 @@ import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.preference.GraphOptionsDialog
 import de.salomax.currencies.viewmodel.timeline.TimelineViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.math.max
 
 private const val TEXT_WIDTH_PADDING_FACTOR = 1.25
+private const val RATE_DIFF_DECIMALS = 2
+private const val STAT_DEFAULT_DECIMALS = 3
 
 class TimelineActivity : BaseActivity() {
+
+    companion object {
+        const val EXTRA_FROM = "ARG_FROM"
+        const val EXTRA_TO = "ARG_TO"
+
+        fun newIntent(context: Context, from: Currency, to: Currency): Intent =
+            Intent(context, TimelineActivity::class.java)
+                .putExtra(EXTRA_FROM, from)
+                .putExtra(EXTRA_TO, to)
+    }
 
     //
     private lateinit var formatter: DateTimeFormatter
@@ -74,19 +81,8 @@ class TimelineActivity : BaseActivity() {
         }
 
         // what currencies to convert
-        val currencyFrom =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                intent.getSerializableExtra("ARG_FROM", Currency::class.java) ?: Currency.EUR
-            else
-                @Suppress("DEPRECATION")
-                intent.getSerializableExtra("ARG_FROM")?.let { it as Currency } ?: Currency.EUR
-
-        val currencyTo =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                intent.getSerializableExtra("ARG_TO", Currency::class.java) ?: Currency.USD
-            else
-                @Suppress("DEPRECATION")
-                intent.getSerializableExtra("ARG_TO")?.let { it as Currency } ?: Currency.USD
+        val currencyFrom = readCurrencyExtra(EXTRA_FROM, Currency.EUR)
+        val currencyTo = readCurrencyExtra(EXTRA_TO, Currency.USD)
 
         // model
         this.timelineModel = ViewModelProvider(
@@ -156,8 +152,9 @@ class TimelineActivity : BaseActivity() {
             rates?.entries?.map { entry -> entry.key to entry.value.value.toFloat() }
         }
         val lineColor = Color(MaterialColors.getColor(this, R.attr.colorPrimary, 0))
-        val baselineColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
-        val axisColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        val secondaryColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        val baselineColor = secondaryColor
+        val axisColor = secondaryColor
         timelineChart.setContent {
             TimelineChart(
                 entriesLive = entriesLive,
@@ -175,26 +172,19 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun initStatsView() {
-        val view1 = findViewById<View>(R.id.stats_row_1).findViewById<TextView>(R.id.text)
-        val view2 = findViewById<View>(R.id.stats_row_2).findViewById<TextView>(R.id.text)
-        val view3 = findViewById<View>(R.id.stats_row_3).findViewById<TextView>(R.id.text)
-
-        // set the title of "max", "avg", "min" (top to bottom)
-        val string1 = getString(R.string.rate_max)
-        val string2 = getString(R.string.rate_average)
-        val string3 = getString(R.string.rate_min)
-        view1.text = string1
-        view2.text = string2
-        view3.text = string3
-
-        // set the width of "avg", "min", "max" to the same value
-        val width1 = view1.paint.measureText(string1)
-        val width2 = view2.paint.measureText(string2)
-        val width3 = view3.paint.measureText(string3)
-        val maxWidth = (max(width1, max(width2, width3)) * TEXT_WIDTH_PADDING_FACTOR).toInt()
-        view1.width = maxWidth
-        view2.width = maxWidth
-        view3.width = maxWidth
+        val labels = listOf(
+            findViewById<View>(R.id.stats_row_1).findViewById<TextView>(R.id.text)
+                to getString(R.string.rate_max),
+            findViewById<View>(R.id.stats_row_2).findViewById<TextView>(R.id.text)
+                to getString(R.string.rate_average),
+            findViewById<View>(R.id.stats_row_3).findViewById<TextView>(R.id.text)
+                to getString(R.string.rate_min),
+        )
+        labels.forEach { (view, text) -> view.text = text }
+        // equalize label column width across max/avg/min
+        val maxWidth = (labels.maxOf { (view, text) -> view.paint.measureText(text) } *
+            TEXT_WIDTH_PADDING_FACTOR).toInt()
+        labels.forEach { (view, _) -> view.width = maxWidth }
     }
 
     private fun setListeners() {
@@ -229,7 +219,7 @@ class TimelineActivity : BaseActivity() {
             else null
         }
         timelineModel.getRatesDifferencePercent().observe(this) {
-            textRateDifference.text = it?.toHumanReadableNumber(this, 2, true, "%")
+            textRateDifference.text = it?.toHumanReadableNumber(this, RATE_DIFF_DECIMALS, true, "%")
             if (it != null)
                 textRateDifference.setTextColor(
                     if (it < BigDecimal.ZERO) MaterialColors.getColor(this, R.attr.colorError, null)
@@ -284,7 +274,7 @@ class TimelineActivity : BaseActivity() {
         }
     }
 
-    private fun populateStat(parent: View, symbol: String?, value: BigDecimal?, date: LocalDate?, places: Int = 3) {
+    private fun populateStat(parent: View, symbol: String?, value: BigDecimal?, date: LocalDate?, places: Int = STAT_DEFAULT_DECIMALS) {
         // hide entire row when there's no data
         parent.visibility = if (symbol == null) View.GONE else View.VISIBLE
         // hide dotted line when there's no date
@@ -324,34 +314,28 @@ class TimelineActivity : BaseActivity() {
     }
 
     private fun prepareFoldableLayoutChanges() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                WindowInfoTracker.getOrCreate(this@TimelineActivity)
-                    .windowLayoutInfo(this@TimelineActivity)
-                    .collect { newLayoutInfo ->
-                        newLayoutInfo.displayFeatures.filterIsInstance(FoldingFeature::class.java)
-                            .firstOrNull ()?.let { foldingFeature ->
-                                val root = findViewById<LinearLayout>(R.id.timeline_root)
-                                // portrait
-                                if (foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL) {
-                                    if (foldingFeature.state == FoldingFeature.State.HALF_OPENED)
-                                        root.orientation = LinearLayout.HORIZONTAL
-                                    else
-                                        root.orientation = LinearLayout.VERTICAL
-                                }
-                                // landscape
-                                else {
-                                    val flat = FoldingFeature.State.FLAT
-                                    val halfOpen = FoldingFeature.State.HALF_OPENED
-                                    if (foldingFeature.state == flat || foldingFeature.state == halfOpen)
-                                        root.orientation = LinearLayout.VERTICAL
-                                    else
-                                        root.orientation = LinearLayout.HORIZONTAL
-                                }
-                            }
-                    }
-            }
+        observeFoldingFeature { feature ->
+            val root = findViewById<LinearLayout>(R.id.timeline_root)
+            root.orientation = orientationFor(feature)
         }
     }
+
+    private fun orientationFor(feature: FoldingFeature): Int {
+        val isPortrait = feature.orientation == FoldingFeature.Orientation.VERTICAL
+        val isBent = feature.state == FoldingFeature.State.HALF_OPENED ||
+            (!isPortrait && feature.state == FoldingFeature.State.FLAT)
+        return if (isPortrait) {
+            if (isBent) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL
+        } else {
+            if (isBent) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
+        }
+    }
+
+    private fun readCurrencyExtra(key: String, default: Currency): Currency =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            intent.getSerializableExtra(key, Currency::class.java) ?: default
+        else
+            @Suppress("DEPRECATION")
+            (intent.getSerializableExtra(key) as? Currency) ?: default
 
 }

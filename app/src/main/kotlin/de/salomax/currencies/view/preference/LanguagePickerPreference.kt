@@ -17,6 +17,10 @@ import de.salomax.currencies.R
 import de.salomax.currencies.model.Language
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 
+// Matches AdapterView.INVALID_POSITION / ListPreference contract for
+// findIndexOfValue: -1 means "not found".
+private const val INDEX_NOT_FOUND = -1
+
 @Suppress("unused")
 class LanguagePickerPreference: ListPreference {
 
@@ -42,7 +46,7 @@ class LanguagePickerPreference: ListPreference {
     }
 
     override fun findIndexOfValue(value: String?): Int {
-        return Language.byIso(value)?.ordinal ?: -1
+        return Language.byIso(value)?.ordinal ?: INDEX_NOT_FOUND
     }
 
     override fun setValue(value: String?) {

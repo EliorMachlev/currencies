@@ -1,5 +1,7 @@
 package de.salomax.currencies.view.preference
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.view.ViewCompat
@@ -12,6 +14,10 @@ class PreferenceActivity: BaseActivity() {
 
     companion object {
         const val EXTRA_OPEN_FEES = "EXTRA_OPEN_FEES"
+
+        fun feesIntent(context: Context): Intent =
+            Intent(context, PreferenceActivity::class.java)
+                .putExtra(EXTRA_OPEN_FEES, true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

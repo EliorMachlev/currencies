@@ -55,16 +55,9 @@ internal class InforEuroRatesAdapter(private val date: LocalDate) {
     }
 
     private fun readErrorResponse(reader: JsonReader): ExchangeRates {
-        reader.beginObject()
-        var message: String? = null
-        while (reader.hasNext()) {
-            if (reader.nextName() == "message")
-                message = reader.nextString()
-        }
-        reader.endObject()
         return ExchangeRates(
             success = false,
-            error = message,
+            error = reader.readErrorMessage(),
             base = Currency.EUR,
             date = date,
             rates = null,

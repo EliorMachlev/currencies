@@ -11,6 +11,11 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
+import de.salomax.currencies.util.KEY_RATES_BASE
+import de.salomax.currencies.util.KEY_RATES_DATE
+import de.salomax.currencies.util.KEY_RATES_PROVIDER
+import de.salomax.currencies.util.KEY_RATES_TIME
+import de.salomax.currencies.util.NO_PROVIDER_ID
 import de.salomax.currencies.util.SharedPreferenceBooleanLiveData
 import de.salomax.currencies.util.SharedPreferenceExchangeRatesLiveData
 import de.salomax.currencies.util.SharedPreferenceIntLiveData
@@ -32,17 +37,21 @@ private const val FEE_TYPE_GLOBAL_EXCHANGE = "global_exchange"
 private const val FEE_TYPE_GLOBAL_BANK = "global_bank"
 private const val FEE_TYPE_SPECIFIC_PAIR = "specific_pair"
 
+// AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM. Duplicated here so the DB layer
+// doesn't need to import androidx.appcompat just to name the default.
+private const val DEFAULT_THEME_MODE = 2
+
+// Sentinel for "no historical date stored" in the millis-since-epoch pref.
+// -1L is used because it can't collide with any real epoch millis (1970-01-01
+// stores as 0L; anything after is positive).
+private const val NO_HISTORICAL_DATE = -1L
+
 class Database(context: Context) {
 
     /*
      * current exchange rates from api =============================================================
      */
     private val prefsRates: SharedPreferences = context.getSharedPreferences("rates", MODE_PRIVATE)
-
-    private val keyDate = "_date"
-    private val keyTime = "_time"
-    private val keyBaseRate = "_base"
-    private val keyProvider = "_provider"
 
     fun insertExchangeRates(items: ExchangeRates) {
         // don't insert null-values. this would clear the cache
@@ -52,10 +61,10 @@ class Database(context: Context) {
                 // clear old values
                 editor.clear()
                 // apply new ones
-                editor.putString(keyDate, items.date.toString())
-                editor.putString(keyTime, items.time?.toString())
-                editor.putString(keyBaseRate, items.base?.iso4217Alpha())
-                editor.putInt(keyProvider, items.provider?.id ?: -1)
+                editor.putString(KEY_RATES_DATE, items.date.toString())
+                editor.putString(KEY_RATES_TIME, items.time?.toString())
+                editor.putString(KEY_RATES_BASE, items.base?.iso4217Alpha())
+                editor.putInt(KEY_RATES_PROVIDER, items.provider?.id ?: NO_PROVIDER_ID)
                 items.rates?.forEach { rate ->
                     editor.putString(rate.currency.iso4217Alpha(), rate.value.toPlainString())
                 }
@@ -69,7 +78,7 @@ class Database(context: Context) {
     }
 
     fun getDate(): LocalDate? {
-        return prefsRates.getString(keyDate, null)?.let { LocalDate.parse(it) }
+        return prefsRates.getString(KEY_RATES_DATE, null)?.let { LocalDate.parse(it) }
     }
 
     /*
@@ -108,19 +117,19 @@ class Database(context: Context) {
     }
 
     fun setHistoricalDate(date: LocalDate?) {
-        prefsLastState.edit().putLong(keyHistoricalDate, date?.toMillis() ?: -1).apply()
+        prefsLastState.edit().putLong(keyHistoricalDate, date?.toMillis() ?: NO_HISTORICAL_DATE).apply()
     }
 
     fun getHistoricalLiveDate(): LiveData<LocalDate?> {
-        return SharedPreferenceLongLiveData(prefsLastState, keyHistoricalDate, -1).map {
-            if (it == -1L) null
+        return SharedPreferenceLongLiveData(prefsLastState, keyHistoricalDate, NO_HISTORICAL_DATE).map {
+            if (it == NO_HISTORICAL_DATE) null
             else it.toLocalDate()
         }
     }
 
     fun getHistoricalDate(): LocalDate? {
-        return when (val date = prefsLastState.getLong(keyHistoricalDate, -1)) {
-            -1L -> null
+        return when (val date = prefsLastState.getLong(keyHistoricalDate, NO_HISTORICAL_DATE)) {
+            NO_HISTORICAL_DATE -> null
             else -> date.toLocalDate()
         }
     }
@@ -211,11 +220,11 @@ class Database(context: Context) {
     }
 
     fun getApiProvider(): ApiProvider {
-        return ApiProvider.fromId(prefs.getInt(keyApi, -1))
+        return ApiProvider.fromId(prefs.getInt(keyApi, NO_PROVIDER_ID))
     }
 
     fun getApiProviderAsync(): LiveData<ApiProvider> {
-        return SharedPreferenceIntLiveData(prefs, keyApi, -1).map {
+        return SharedPreferenceIntLiveData(prefs, keyApi, NO_PROVIDER_ID).map {
             ApiProvider.fromId(it)
         }
     }
@@ -248,7 +257,7 @@ class Database(context: Context) {
      * 2 = MODE_NIGHT_FOLLOW_SYSTEM
      */
     fun getTheme(): Int {
-        return prefs.getInt("_theme", 2)
+        return prefs.getInt(keyTheme, DEFAULT_THEME_MODE)
     }
 
     fun setPureBlackEnabled(enabled: Boolean) {

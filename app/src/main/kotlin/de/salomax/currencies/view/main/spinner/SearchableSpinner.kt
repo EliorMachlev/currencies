@@ -13,6 +13,10 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import java.math.BigDecimal
 
+// Matches AdapterView.INVALID_POSITION; used when there's no rate for the
+// requested currency so the spinner clears its selection.
+private const val NO_SELECTION = -1
+
 class SearchableSpinner : AppCompatSpinner {
 
     private val mContext = context
@@ -56,7 +60,7 @@ class SearchableSpinner : AppCompatSpinner {
     }
 
     fun setSelection(currency: Currency?) {
-        setSelection(currency?.let { adapter.getPosition(it) } ?: -1)
+        setSelection(currency?.let { adapter.getPosition(it) } ?: NO_SELECTION)
     }
 
     override fun setAdapter(adapter: SpinnerAdapter?) {

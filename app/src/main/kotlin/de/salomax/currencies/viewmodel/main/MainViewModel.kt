@@ -33,6 +33,21 @@ import java.time.ZoneId
 
 private val PERCENTAGE_DIVISOR = BigDecimal("100")
 
+// KeyboardType value used by the basic (non-extended) keypad. Any other value
+// (currently only "1" = calculator/extended) unlocks the operators row.
+private const val KEYBOARD_TYPE_BASIC = 0
+
+// Calculator operator glyphs shown to the user. Kept as constants so the
+// "which operator?" check and the "insert this operator" call agree on the
+// exact Unicode codepoint (typographical minus and multiplication signs
+// differ from ASCII "-" and "*").
+private const val OPERATOR_PLUS = "\u002B"      // +
+private const val OPERATOR_MINUS = "\u2212"     // − (minus sign, not hyphen)
+private const val OPERATOR_MULTIPLY = "\u00D7"  // ×
+private const val OPERATOR_DIVIDE = "\u00F7"    // ÷
+private val OPERATOR_REGEX =
+    Regex("[$OPERATOR_PLUS$OPERATOR_MINUS$OPERATOR_MULTIPLY$OPERATOR_DIVIDE]")
+
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidViewModel(app) {
 
@@ -48,6 +63,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     private var repository: ExchangeRatesRepository = ExchangeRatesRepository(app)
+    private val db = Database(app)
 
     // repository data
     private var dbLiveItems: LiveData<ExchangeRates?>
@@ -58,9 +74,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     // ui
     private var isUpdating: LiveData<Boolean> = repository.isUpdating()
-    val isExtendedKeypadEnabled: LiveData<Boolean> = Database(app).getKeyboardType().map { it != 0 }
-    val isHapticFeedbackEnabled: LiveData<Boolean> = Database(app).isHapticFeedbackEnabled()
-    private val decimalPlaces: LiveData<Int> = Database(app).getDecimalPlaces()
+    val isExtendedKeypadEnabled: LiveData<Boolean> = db.getKeyboardType().map { it != KEYBOARD_TYPE_BASIC }
+    val isHapticFeedbackEnabled: LiveData<Boolean> = db.isHapticFeedbackEnabled()
+    private val decimalPlaces: LiveData<Int> = db.getDecimalPlaces()
 
 
     // number input
@@ -83,32 +99,32 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         // only update if data is old: https://github.com/Formicka/exchangerate.host
         // "Rates are updated around midnight UTC every working day."
         val currentDate = LocalDate.now(ZoneId.of("UTC"))
-        val cachedDate = Database(app).getDate()
-        val historicalDate = Database(app).getHistoricalDate()
+        val cachedDate = db.getDate()
+        val historicalDate = db.getHistoricalDate()
 
         dbLiveItems = when {
             // force-use cache
-            onlyCache -> Database(app).getExchangeRates()
+            onlyCache -> db.getExchangeRates()
             // first run: fetch data
             cachedDate == null -> repository.getExchangeRates()
             // historical rates in use...
             historicalDate != null -> {
                 // ...and already cached
-                if (historicalDate == cachedDate) Database(app).getExchangeRates()
+                if (historicalDate == cachedDate) db.getExchangeRates()
                 // ...and not cached
                 else repository.getExchangeRates()
             }
             // fetch if stored date is before the current date
             cachedDate.isBefore(currentDate) -> repository.getExchangeRates()
             // else just use the cached value
-            else -> Database(app).getExchangeRates()
+            else -> db.getExchangeRates()
         }
 
-        starredLiveItems = Database(app).getStarredCurrencies()
-        onlyShowStarred = Database(app).isFilterStarredEnabled()
+        starredLiveItems = db.getStarredCurrencies()
+        onlyShowStarred = db.isFilterStarredEnabled()
 
-        fees = Database(getApplication()).getFees()
-        feeSide = Database(getApplication()).getFeeSide()
+        fees = db.getFees()
+        feeSide = db.getFeeSide()
 
         //
         exchangeRates = object : MediatorLiveData<ExchangeRates?>() {
@@ -140,8 +156,8 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
         // update currently selected currencies when rates are updated:
         // sometimes the selected rates aren't available anymore, so reset them
-        val baseCurrency = Database(app).getLastBaseCurrency()
-        val destinationCurrency = Database(app).getLastDestinationCurrency()
+        val baseCurrency = db.getLastBaseCurrency()
+        val destinationCurrency = db.getLastDestinationCurrency()
         currentBaseCurrency = object : MediatorLiveData<Currency?>() {
             var base: Currency? = null
             var rates: ExchangeRates? = null
@@ -205,7 +221,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * persist the user's manual ordering of starred currencies
      */
     internal fun setStarredCurrencyOrder(currencies: List<Currency>) {
-        Database(getApplication()).setStarredCurrencyOrder(currencies)
+        db.setStarredCurrencyOrder(currencies)
     }
 
     /**
@@ -219,14 +235,14 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * switch the starred-filter on/off
      */
     internal fun toggleStarredActive() {
-        Database(getApplication()).toggleStarredActive()
+        db.toggleStarredActive()
     }
 
     /**
      * de-/star a currency
      */
     internal fun toggleCurrencyStar(currencyCode: Currency) {
-        Database(getApplication()).toggleCurrencyStar(currencyCode)
+        db.toggleCurrencyStar(currencyCode)
     }
 
     /**
@@ -257,7 +273,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * persist the fee side.
      */
     internal fun setFeeSide(side: FeeSide) {
-        Database(getApplication()).setFeeSide(side)
+        db.setFeeSide(side)
     }
 
     internal val ratesInformationFooter = object : MediatorLiveData<Spanned?>() {
@@ -327,9 +343,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             // change nice operators to proper computer operators
             var s = this
                 .replace(" ", "")
-                .replace("\u2212", "-")
-                .replace("\u00D7", "*")
-                .replace("\u00F7", "/")
+                .replace(OPERATOR_MINUS, "-")
+                .replace(OPERATOR_MULTIPLY, "*")
+                .replace(OPERATOR_DIVIDE, "/")
             // smart percentage: A+B% = A+(A*B/100), A-B% = A-(A*B/100)
             s = s.replace(Regex("""(\d+(?:\.\d+)?)([+\-])(\d+(?:\.\d+)?)%""")) { m ->
                 "${m.groupValues[1]}${m.groupValues[2]}(${m.groupValues[1]}*${m.groupValues[3]}/100)"
@@ -372,18 +388,22 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                 trim = isInCalculationMode(),
                 decimalPlaces = if (isInCalculationMode()) 2 else null
             ) ?: "0")
-            val symbol = currency?.symbol()
-
-            if (hasAppendedCurrencySymbol(app))
-                SpannableStringBuilder() // 123 $
-                    .bold { append(number) }
-                    .append(if (symbol != null) " $symbol" else "")
-            else
-                SpannableStringBuilder() // $ 123
-                    .append(if (symbol != null) "$symbol " else "")
-                    .bold { append(number) }
+            buildBoldNumberWithSymbol(number, currency?.symbol())
         }
     }
+
+    // Bold [number] plus the currency [symbol] on the side dictated by the
+    // active locale. Extracted so the base-value and result displays can't
+    // disagree on which side the symbol lands.
+    private fun buildBoldNumberWithSymbol(number: String, symbol: String?): SpannableStringBuilder =
+        if (hasAppendedCurrencySymbol(app))
+            SpannableStringBuilder() // 123 $
+                .bold { append(number) }
+                .append(if (symbol != null) " $symbol" else "")
+        else
+            SpannableStringBuilder() // $ 123
+                .append(if (symbol != null) "$symbol " else "")
+                .bold { append(number) }
 
     // ===============================
 
@@ -631,17 +651,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                     trim = true,
                     decimalPlaces = places
                 ) ?: "0")
-                val symbol = currency?.symbol()
-
-                this.value =
-                    if (hasAppendedCurrencySymbol(app))
-                        SpannableStringBuilder() // 123 $
-                            .bold { append(number) }
-                            .append(if (symbol != null) " $symbol" else "")
-                    else
-                        SpannableStringBuilder() // $ 123
-                            .append(if (symbol != null) "$symbol " else "")
-                            .bold { append(number) }
+                this.value = buildBoldNumberWithSymbol(number, currency?.symbol())
             }
         }
     }
@@ -726,7 +736,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             if (currentCalculationValueText.value!!.trim().last().isDigit())
                 currentCalculationValueText.value = currentCalculationValueText.value!!.trim()
             // if only a number is left without an operator, delete it completely
-            if (!currentCalculationValueText.value!!.contains("[\\u002B\\u2212\\u00D7\\u00F7]".toRegex()))
+            if (!currentCalculationValueText.value!!.contains(OPERATOR_REGEX))
                 currentCalculationValueText.value = null
         }
         // delete from lower row
@@ -744,32 +754,25 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     internal fun addition() {
-        addOperator("\u002B")
+        addOperator(OPERATOR_PLUS)
     }
 
     internal fun subtraction() {
-        addOperator("\u2212")
+        addOperator(OPERATOR_MINUS)
     }
 
     internal fun multiplication() {
-        addOperator("\u00D7")
+        addOperator(OPERATOR_MULTIPLY)
     }
 
     internal fun division() {
-        addOperator("\u00F7")
+        addOperator(OPERATOR_DIVIDE)
     }
 
     private fun addOperator(operator: String) {
 
-        fun Char.isOperator(): Boolean {
-            return when (this) {
-                '\u002B' -> true // +
-                '\u2212' -> true // -
-                '\u00D7' -> true // *
-                '\u00F7' -> true // /
-                else -> false
-            }
-        }
+        fun Char.isOperator(): Boolean =
+            this.toString().matches(OPERATOR_REGEX)
 
         // in calculation mode & already has operator at end position: exchange it!
         if (isInCalculationMode() && currentCalculationValueText.value!!.trim().last().isOperator())
@@ -791,14 +794,14 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      */
 
     internal fun setBaseCurrency(currency: Currency) {
-        Database(getApplication()).saveLastUsedRates(
+        db.saveLastUsedRates(
             currency,
             currentDestinationCurrency.value
         )
     }
 
     internal fun setDestinationCurrency(currency: Currency) {
-        Database(getApplication()).saveLastUsedRates(
+        db.saveLastUsedRates(
             currentBaseCurrency.value,
             currency
         )
@@ -818,20 +821,20 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
     internal fun setHistoricalDate(date: LocalDate?) {
         // check if previous date was "latest" or historical
-        val wasLatestActive = Database(app).getHistoricalDate() == null
+        val wasLatestActive = db.getHistoricalDate() == null
         // save selected historical date to db
-        Database(getApplication()).setHistoricalDate(date)
+        db.setHistoricalDate(date)
         // refresh, if new date != cached date or if last state was "latest"
-        if (date != Database(app).getDate() || wasLatestActive)
+        if (date != db.getDate() || wasLatestActive)
             forceUpdateExchangeRate()
     }
 
     internal fun getHistoricalDate(): LocalDate? {
-        return Database(getApplication()).getHistoricalDate()
+        return db.getHistoricalDate()
     }
 
     internal fun getHistoricalLiveDate(): LiveData<LocalDate?> {
-        return Database(getApplication()).getHistoricalLiveDate()
+        return db.getHistoricalLiveDate()
     }
 
 

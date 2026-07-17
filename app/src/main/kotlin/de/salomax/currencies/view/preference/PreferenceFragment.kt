@@ -15,9 +15,27 @@ import androidx.preference.SwitchPreferenceCompat
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
+import de.salomax.currencies.util.DECIMAL_PLACES_MAX
+import de.salomax.currencies.util.DECIMAL_PLACES_MIN
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import de.salomax.currencies.widget.LongSummaryPreference
 import java.util.Calendar
+
+private const val TAG = "PreferenceFragment"
+
+// Sentinel returned by ApiProvider.fromId when the stored value is unknown /
+// unset; the pref layer treats this as "use the default provider".
+private const val UNKNOWN_PROVIDER_ID = -1
+
+// Build flavor served through Play; other flavors get the donation entry
+// instead of the "rate on Play" entry.
+private const val FLAVOR_PLAY = "play"
+
+private const val URL_SOURCE_CODE = "https://github.com/sal0max/currencies"
+private const val URL_DONATE = "https://www.paypal.com/donate?hosted_button_id=2JCY7E99V9DGC"
+private const val URL_PLAY_MARKET = "market://details?id=de.salomax.currencies"
+private const val URL_PLAY_WEB = "https://play.google.com/store/apps/details?id=de.salomax.currencies"
 
 @Suppress("unused")
 class PreferenceFragment: PreferenceFragmentCompat() {
@@ -76,7 +94,8 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         findPreference<ListPreference>(getString(R.string.decimal_places_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 viewModel.setDecimalPlaces(
-                    (newValue.toString().toIntOrNull() ?: 2).coerceIn(0, 6)
+                    (newValue.toString().toIntOrNull() ?: DECIMAL_PLACES_DEFAULT)
+                        .coerceIn(DECIMAL_PLACES_MIN, DECIMAL_PLACES_MAX)
                 )
                 true
             }
@@ -129,17 +148,17 @@ class PreferenceFragment: PreferenceFragmentCompat() {
             entries = providers.map { it.getName() }.toTypedArray()
             entryValues = providers.map { it.id.toString() }.toTypedArray()
             setOnPreferenceChangeListener { _, newValue ->
-                val provider = ApiProvider.fromId(newValue.toString().toIntOrNull() ?: -1)
+                val provider = ApiProvider.fromId(newValue.toString().toIntOrNull() ?: UNKNOWN_PROVIDER_ID)
                 viewModel.setApiProvider(provider)
                 apiKeyPref?.isVisible = provider == ApiProvider.OPEN_EXCHANGERATES
                 true
             }
             if (entry == null) {
-                val defaultProvider = ApiProvider.fromId(-1)
+                val defaultProvider = ApiProvider.fromId(UNKNOWN_PROVIDER_ID)
                 viewModel.setApiProvider(defaultProvider)
                 value = defaultProvider.id.toString()
             }
-            apiKeyPref?.isVisible = ApiProvider.fromId(value.toIntOrNull() ?: -1) == ApiProvider.OPEN_EXCHANGERATES
+            apiKeyPref?.isVisible = ApiProvider.fromId(value.toIntOrNull() ?: UNKNOWN_PROVIDER_ID) == ApiProvider.OPEN_EXCHANGERATES
         }
         viewModel.getApiProvider().observe(this) {
             findPreference<LongSummaryPreference>(getString(R.string.key_apiProvider))?.apply {
@@ -154,33 +173,27 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     private fun setupAboutPreferences() {
         findPreference<Preference>(getString(R.string.sourcecode_key))?.apply {
             setOnPreferenceClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/sal0max/currencies")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL_SOURCE_CODE)))
                 true
             }
         }
         findPreference<Preference>(getString(R.string.donate_key))?.apply {
             @Suppress("KotlinConstantConditions")
-            isVisible = when (BuildConfig.FLAVOR) {
-                "play" -> false
-                else -> true
-            }
+            isVisible = BuildConfig.FLAVOR != FLAVOR_PLAY
             setOnPreferenceClickListener {
-                startActivity(createIntent("https://www.paypal.com/donate?hosted_button_id=2JCY7E99V9DGC"))
+                startActivity(createIntent(URL_DONATE))
                 true
             }
         }
         findPreference<Preference>(getString(R.string.rate_key))?.apply {
             @Suppress("KotlinConstantConditions")
-            isVisible = when (BuildConfig.FLAVOR) {
-                "play" -> true
-                else -> false
-            }
+            isVisible = BuildConfig.FLAVOR == FLAVOR_PLAY
             setOnPreferenceClickListener {
                 try {
-                    startActivity(createIntent("market://details?id=de.salomax.currencies"))
+                    startActivity(createIntent(URL_PLAY_MARKET))
                 } catch (e: ActivityNotFoundException) {
-                    Log.d("PreferenceFragment", "Play Store not available, opening browser", e)
-                    startActivity(createIntent("https://play.google.com/store/apps/details?id=de.salomax.currencies"))
+                    Log.d(TAG, "Play Store not available, opening browser", e)
+                    startActivity(createIntent(URL_PLAY_WEB))
                 }
                 true
             }

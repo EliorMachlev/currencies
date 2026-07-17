@@ -92,7 +92,7 @@ fun TimelineChart(
         CartesianValueFormatter { _, value, _ ->
             val lastIdx = data.size - 1
             if (lastIdx < 0) {
-                "—"
+                AXIS_LABEL_EMPTY_PLACEHOLDER
             } else {
                 val idx = value.toInt().coerceIn(0, lastIdx)
                 data[idx].first.format(axisDateFormatter)
@@ -125,7 +125,7 @@ fun TimelineChart(
         }
     }
 
-    val axisLabelStyle = TextStyle(color = axisColor, fontSize = 12.sp)
+    val axisLabelStyle = TextStyle(color = axisColor, fontSize = AXIS_LABEL_FONT_SIZE_SP.sp)
 
     val markerValueFormatter = remember {
         DefaultCartesianMarker.ValueFormatter.default(decimalCount = MARKER_DECIMAL_COUNT)
@@ -162,7 +162,7 @@ fun TimelineChart(
                     x = idx.toDouble(),
                     line = LineComponent(
                         fill = Fill(MONTH_CHANGE_COLOR),
-                        thickness = 1.dp,
+                        thickness = CHART_LINE_THICKNESS_DP.dp,
                         shape = dashedShape,
                     ),
                 )
@@ -174,7 +174,7 @@ fun TimelineChart(
                     x = idx.toDouble(),
                     line = LineComponent(
                         fill = Fill(YEAR_CHANGE_COLOR),
-                        thickness = 1.dp,
+                        thickness = CHART_LINE_THICKNESS_DP.dp,
                         shape = dashedShape,
                     ),
                 )
@@ -184,7 +184,7 @@ fun TimelineChart(
             add(
                 HorizontalLine(
                     y = { baseline },
-                    line = LineComponent(fill = Fill(baselineColor), thickness = 1.dp),
+                    line = LineComponent(fill = Fill(baselineColor), thickness = CHART_LINE_THICKNESS_DP.dp),
                 )
             )
         }
@@ -194,13 +194,13 @@ fun TimelineChart(
             add(
                 HorizontalLine(
                     y = { minValue },
-                    line = LineComponent(fill = minFill, thickness = 1.dp),
+                    line = LineComponent(fill = minFill, thickness = CHART_LINE_THICKNESS_DP.dp),
                 )
             )
             add(
                 HorizontalLine(
                     y = { maxValue },
-                    line = LineComponent(fill = maxFill, thickness = 1.dp),
+                    line = LineComponent(fill = maxFill, thickness = CHART_LINE_THICKNESS_DP.dp),
                 )
             )
         }
@@ -213,7 +213,14 @@ fun TimelineChart(
         itemPlacer = yAxisItemPlacer,
     )
     val axisItemPlacer = remember(data.size) {
-        val spacing = (data.size / X_AXIS_TARGET_LABEL_COUNT).coerceAtLeast(1)
+        // Aligned placer emits labels at 0, spacing, 2*spacing, … up to n-1, so the
+        // label count is floor((n-1)/spacing) + 1. To cap at exactly
+        // X_AXIS_TARGET_LABEL_COUNT (never one over), pick the smallest spacing that
+        // fits (count-1) hops across (n-1) values: ceil((n-1) / (count-1)). For a
+        // 365-point year this gives spacing=61 → 7 labels instead of spacing=52 → 8.
+        val span = (data.size - 1).coerceAtLeast(1)
+        val spacing = ((span + X_AXIS_TARGET_LABEL_COUNT - 2) / (X_AXIS_TARGET_LABEL_COUNT - 1))
+            .coerceAtLeast(1)
         HorizontalAxis.ItemPlacer.aligned(spacing = { spacing })
     }
     val bottomAxis = HorizontalAxis.rememberBottom(
@@ -269,6 +276,9 @@ private const val MARKER_DECIMAL_COUNT = 5
 private const val DASH_LENGTH = 4f
 private const val DASH_GAP_LENGTH = 4f
 private const val YEAR_VIEW_MIN_POINTS = 90
+private const val AXIS_LABEL_FONT_SIZE_SP = 12
+private const val CHART_LINE_THICKNESS_DP = 1
+private const val AXIS_LABEL_EMPTY_PLACEHOLDER = "—"
 private val MIN_LINE_COLOR = Color(0xFFE53935)
 private val YEAR_CHANGE_COLOR = Color(0xFF1E88E5)
 private val MONTH_CHANGE_COLOR = Color(0xFF8E24AA)

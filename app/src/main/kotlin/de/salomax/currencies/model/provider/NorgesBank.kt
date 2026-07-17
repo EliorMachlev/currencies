@@ -71,10 +71,9 @@ class NorgesBank: ApiProvider.Api() {
         startDate: LocalDate,
         endDate: LocalDate
     ): Result<Timeline, FuelError> {
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        // can't search for FOK - have to use DKK instead
-        val parameterBase = if (base == Currency.FOK) "DKK" else base.iso4217Alpha()
-        val parameterSymbol = if (symbol == Currency.FOK) "DKK" else symbol.iso4217Alpha()
+        val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
+        val parameterBase = base.apiCodeOrDkkForFok()
+        val parameterSymbol = symbol.apiCodeOrDkkForFok()
 
         // if we request NOK->NOK, the response would be empty. Add EUR in that case.
         val eur = if (base == Currency.NOK && symbol == Currency.NOK) "EUR" else ""
