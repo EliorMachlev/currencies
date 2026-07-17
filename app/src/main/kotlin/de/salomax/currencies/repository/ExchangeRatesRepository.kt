@@ -22,25 +22,26 @@ private const val MIN_UPDATE_DISPLAY_MS = 750L
 
 class ExchangeRatesRepository(private val context: Context) {
 
-    private val liveExchangeRates = Database(context).getExchangeRates()
+    private val db = Database(context)
+    private val liveExchangeRates = db.getExchangeRates()
     private val liveTimeline = MutableLiveData<Timeline?>()
     private var liveError = MutableLiveData<String?>()
-    private var isUpdating = Database(context).isUpdating()
+    private var isUpdating = db.isUpdating()
 
     /**
      * Gets and returns all latest exchange rates from the API.
      */
     fun getExchangeRates(): LiveData<ExchangeRates?> {
         val start = System.currentTimeMillis()
-        Database(context).setUpdating(true)
+        db.setUpdating(true)
 
         // run in background
         CoroutineScope(Dispatchers.IO).launch {
             // call api
             ExchangeRatesService.getRates(
                 // use the right api
-                apiProvider = Database(context).getApiProvider(),
-                date = Database(context).getHistoricalDate(),
+                apiProvider = db.getApiProvider(),
+                date = db.getHistoricalDate(),
                 context
             ).run  {
                 val rates = component1()
@@ -50,7 +51,7 @@ class ExchangeRatesRepository(private val context: Context) {
                     // SUCCESS! update /store rates to preferences
                     if (rates.success == null || rates.success == true) {
                         postIsUpdating(start)
-                        Database(context).insertExchangeRates(rates)
+                        db.insertExchangeRates(rates)
                         // reset error
                         liveError.postValue(null)
                     }
@@ -72,14 +73,14 @@ class ExchangeRatesRepository(private val context: Context) {
      */
     fun getTimeline(base: Currency, symbol: Currency): LiveData<Timeline?> {
         val start = System.currentTimeMillis()
-        Database(context).setUpdating(true)
+        db.setUpdating(true)
 
         // run in background
         CoroutineScope(Dispatchers.IO).launch {
             // call api
             ExchangeRatesService.getTimeline(
                 // use the right api
-                apiProvider = Database(context).getApiProvider(),
+                apiProvider = db.getApiProvider(),
                 base = base,
                 symbol = symbol,
                 context = context
@@ -156,21 +157,21 @@ class ExchangeRatesRepository(private val context: Context) {
     private suspend fun postIsUpdating(start: Long) {
         val now = System.currentTimeMillis()
         if (now - start < MIN_UPDATE_DISPLAY_MS) {
-            Database(context).setUpdating(true)
+            db.setUpdating(true)
 
             withContext(Dispatchers.Main) {
                 launch {
                     delay(MIN_UPDATE_DISPLAY_MS - (now - start))
-                    Database(context).setUpdating(false)
+                    db.setUpdating(false)
                 }
             }
         } else
-            Database(context).setUpdating(false)
+            db.setUpdating(false)
     }
 
     private fun postError(message: String?) {
         // disable progress bar
-        Database(context).setUpdating(false)
+        db.setUpdating(false)
 
         // post error
         var errorMessage = "<b>" + (message ?: R.string.error_api_error.text()) + "\u00A0\uD83D\uDC40</b>"
