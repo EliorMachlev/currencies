@@ -213,7 +213,14 @@ fun TimelineChart(
         itemPlacer = yAxisItemPlacer,
     )
     val axisItemPlacer = remember(data.size) {
-        val spacing = (data.size / X_AXIS_TARGET_LABEL_COUNT).coerceAtLeast(1)
+        // Aligned placer emits labels at 0, spacing, 2*spacing, … up to n-1, so the
+        // label count is floor((n-1)/spacing) + 1. To cap at exactly
+        // X_AXIS_TARGET_LABEL_COUNT (never one over), pick the smallest spacing that
+        // fits (count-1) hops across (n-1) values: ceil((n-1) / (count-1)). For a
+        // 365-point year this gives spacing=61 → 7 labels instead of spacing=52 → 8.
+        val span = (data.size - 1).coerceAtLeast(1)
+        val spacing = ((span + X_AXIS_TARGET_LABEL_COUNT - 2) / (X_AXIS_TARGET_LABEL_COUNT - 1))
+            .coerceAtLeast(1)
         HorizontalAxis.ItemPlacer.aligned(spacing = { spacing })
     }
     val bottomAxis = HorizontalAxis.rememberBottom(
