@@ -13,6 +13,17 @@ import java.util.*
 private const val SYMBOL_DETECTION_VALUE = 1.23
 private const val THOUSANDS_GROUP_SIZE = 3
 
+private const val LTR_ISOLATE = '\u2066'
+private const val POP_DIRECTIONAL_ISOLATE = '\u2069'
+
+/**
+ * Wrap [s] in Unicode LTR isolate (U+2066 … U+2069) so an "<amount> <currency>"
+ * chunk stays glued together as one LTR unit inside an RTL paragraph — otherwise
+ * the neutral space between number and currency gets absorbed by the RTL run and
+ * the currency code drifts to the opposite side.
+ */
+fun ltrIsolate(s: String): String = "$LTR_ISOLATE$s$POP_DIRECTIONAL_ISOLATE"
+
 /**
  * Return the *used* Locale, based on the currently active resource folder,
  * not the one set in the System (which one would get with context.resources.configuration.locales[0]).

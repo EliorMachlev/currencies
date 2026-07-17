@@ -1,6 +1,8 @@
 package de.salomax.currencies.view.timeline
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -42,6 +44,16 @@ private const val TEXT_WIDTH_PADDING_FACTOR = 1.25
 
 class TimelineActivity : BaseActivity() {
 
+    companion object {
+        const val EXTRA_FROM = "ARG_FROM"
+        const val EXTRA_TO = "ARG_TO"
+
+        fun newIntent(context: Context, from: Currency, to: Currency): Intent =
+            Intent(context, TimelineActivity::class.java)
+                .putExtra(EXTRA_FROM, from)
+                .putExtra(EXTRA_TO, to)
+    }
+
     //
     private lateinit var formatter: DateTimeFormatter
     private lateinit var timelineModel: TimelineViewModel
@@ -74,19 +86,8 @@ class TimelineActivity : BaseActivity() {
         }
 
         // what currencies to convert
-        val currencyFrom =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                intent.getSerializableExtra("ARG_FROM", Currency::class.java) ?: Currency.EUR
-            else
-                @Suppress("DEPRECATION")
-                intent.getSerializableExtra("ARG_FROM")?.let { it as Currency } ?: Currency.EUR
-
-        val currencyTo =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                intent.getSerializableExtra("ARG_TO", Currency::class.java) ?: Currency.USD
-            else
-                @Suppress("DEPRECATION")
-                intent.getSerializableExtra("ARG_TO")?.let { it as Currency } ?: Currency.USD
+        val currencyFrom = readCurrencyExtra(EXTRA_FROM, Currency.EUR)
+        val currencyTo = readCurrencyExtra(EXTRA_TO, Currency.USD)
 
         // model
         this.timelineModel = ViewModelProvider(
@@ -353,5 +354,12 @@ class TimelineActivity : BaseActivity() {
             }
         }
     }
+
+    private fun readCurrencyExtra(key: String, default: Currency): Currency =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            intent.getSerializableExtra(key, Currency::class.java) ?: default
+        else
+            @Suppress("DEPRECATION")
+            (intent.getSerializableExtra(key) as? Currency) ?: default
 
 }

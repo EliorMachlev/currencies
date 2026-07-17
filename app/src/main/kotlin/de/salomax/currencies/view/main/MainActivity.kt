@@ -42,6 +42,7 @@ import de.salomax.currencies.model.Rate
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.util.getDecimalSeparator
+import de.salomax.currencies.util.ltrIsolate
 import de.salomax.currencies.util.stripTimePattern
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
@@ -60,6 +61,26 @@ import java.time.format.DateTimeFormatter
 private const val HISTORICAL_MIN_YEAR = 2010
 private const val STALE_RATES_DAYS = 3L
 private const val MAX_ERROR_TEXT_LINES = 20
+
+// context-menu item ids for the from/to text views
+private const val CTX_MENU_COPY_FROM = 0
+private const val CTX_MENU_PASTE_FROM = 1
+private const val CTX_MENU_COPY_TO = 2
+
+// fee badge / true-cost formatting
+private const val PERCENT_MULTIPLIER = 100
+private const val FEE_BADGE_DECIMAL_PLACES = 2
+private const val AMOUNT_DECIMAL_PLACES = 2
+
+// calculator button labels
+private const val KEY_PLUS = "+"
+private const val KEY_MINUS = "−"
+private const val KEY_TIMES = "×"
+private const val KEY_DIVIDE = "÷"
+
+// Arabic-Indic bidi mark that some locales inject into formatted dates; strip
+// it before rendering so LTR/RTL text alignment stays predictable.
+private const val RTL_MARK = "\u200F"
 
 class MainActivity : BaseActivity() {
 
@@ -132,14 +153,8 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.settings -> { startActivity(Intent(this, PreferenceActivity().javaClass)); true }
-            R.id.fees -> {
-                startActivity(
-                    Intent(this, PreferenceActivity::class.java)
-                        .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
-                )
-                true
-            }
+            R.id.settings -> { startActivity(Intent(this, PreferenceActivity::class.java)); true }
+            R.id.fees -> { startActivity(PreferenceActivity.feesIntent(this)); true }
             R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
             R.id.timeline -> openTimelineActivity()
             R.id.quick_conversions -> { openQuickConversionsDialog(); true }
@@ -153,15 +168,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openTimelineActivity(): Boolean {
-        val from = viewModel.getBaseCurrency().value
-        val to = viewModel.getDestinationCurrency().value
-        if (from == null || to == null) return false
-        startActivity(
-            Intent(Intent(this, TimelineActivity().javaClass)).apply {
-                putExtra("ARG_FROM", from)
-                putExtra("ARG_TO", to)
-            }
-        )
+        val from = viewModel.getBaseCurrency().value ?: return false
+        val to = viewModel.getDestinationCurrency().value ?: return false
+        startActivity(TimelineActivity.newIntent(this, from, to))
         return true
     }
 
@@ -209,43 +218,38 @@ class MainActivity : BaseActivity() {
         super.onCreateContextMenu(menu, v, menuInfo)
         when (v.id) {
             R.id.textFrom -> {
-                // copy
-                menu.add(0, 0, 0, android.R.string.copy)
-                // paste
-                val paste = menu.add(0, 1, 0, android.R.string.paste)
+                menu.add(0, CTX_MENU_COPY_FROM, 0, android.R.string.copy)
+                val paste = menu.add(0, CTX_MENU_PASTE_FROM, 0, android.R.string.paste)
                 // only show "paste" when applicable
-                val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clipboardContent = clipboard.primaryClip?.getItemAt(0)?.text?.toNumber()
-                paste.isVisible = (clipboard.hasPrimaryClip()
-                        && clipboard.primaryClipDescription?.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) == true
-                        &&  clipboardContent != null)
+                paste.isVisible = clipboardHasNumber()
             }
             R.id.textTo -> {
-                menu.add(0, 2, 0, android.R.string.copy)
+                menu.add(0, CTX_MENU_COPY_TO, 0, android.R.string.copy)
             }
         }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            0 -> { // copy "from"
-                val copyText = findViewById<TextView>(R.id.textFrom).text
-                copyToClipboard(copyText.toString())
-            }
-            1 -> { // paste "from"
-                val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                // no need to check if clipboard is filled -> menu item only shown when it is
-                clipboard.primaryClip?.getItemAt(0)?.text?.toNumber()?.let {
-                    viewModel.paste(it)
-                }
-            }
-            2 -> { // copy "to"
-                val copyText = findViewById<TextView>(R.id.textTo).text
-                copyToClipboard(copyText.toString())
-            }
+            CTX_MENU_COPY_FROM -> copyToClipboard(findViewById<TextView>(R.id.textFrom).text.toString())
+            CTX_MENU_PASTE_FROM -> clipboardNumber()?.let { viewModel.paste(it) }
+            CTX_MENU_COPY_TO -> copyToClipboard(findViewById<TextView>(R.id.textTo).text.toString())
         }
         return true
     }
+
+    private fun clipboardManager(): ClipboardManager =
+        getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+    private fun clipboardHasNumber(): Boolean {
+        val clipboard = clipboardManager()
+        return clipboard.hasPrimaryClip()
+            && clipboard.primaryClipDescription?.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) == true
+            && clipboardNumber() != null
+    }
+
+    private fun clipboardNumber(): Number? =
+        clipboardManager().primaryClip?.getItemAt(0)?.text?.toNumber()
 
     private fun setListeners() {
         // long click on delete
@@ -301,47 +305,32 @@ class MainActivity : BaseActivity() {
         // fee-side toggle
         btnFeeSide.setOnClickListener {
             haptic(it)
-            val next = when (viewModel.getFeeSide().value ?: FeeSide.ORIGINAL) {
-                FeeSide.ORIGINAL -> FeeSide.CONVERTED
-                FeeSide.CONVERTED -> FeeSide.ORIGINAL
-            }
-            viewModel.setFeeSide(next)
+            val current = viewModel.getFeeSide().value ?: FeeSide.ORIGINAL
+            viewModel.setFeeSide(current.toggled())
         }
-        btnFeeSide.setOnLongClickListener {
-            haptic(it)
-            startActivity(
-                Intent(this, PreferenceActivity::class.java)
-                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
-            )
-            true
-        }
+        btnFeeSide.setOnLongClickListener { openFeesSettings(it) }
 
         // long-press on the main swap arrow also opens the Fees settings,
         // mirroring the swap arrow inside the quick-conversions dialog.
-        findViewById<View>(R.id.btn_toggle).setOnLongClickListener {
-            haptic(it)
-            startActivity(
-                Intent(this, PreferenceActivity::class.java)
-                    .putExtra(PreferenceActivity.EXTRA_OPEN_FEES, true)
-            )
-            true
-        }
+        findViewById<View>(R.id.btn_toggle).setOnLongClickListener { openFeesSettings(it) }
+    }
+
+    private fun openFeesSettings(source: View): Boolean {
+        haptic(source)
+        startActivity(PreferenceActivity.feesIntent(this))
+        return true
     }
 
     private fun copyToClipboard(copyText: String) {
-        // copy
-        val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText(null, copyText))
-        // notify
-        HtmlCompat.fromHtml(
+        clipboardManager().setPrimaryClip(ClipData.newPlainText(null, copyText))
+        val message = HtmlCompat.fromHtml(
             getString(R.string.copied_to_clipboard, copyText),
             HtmlCompat.FROM_HTML_MODE_LEGACY
-        ).let {
-            Snackbar.make(this, findViewById(R.id.snackbar_top_position), it, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(MaterialColors.getColor(this, R.attr.colorPrimary, null))
-                .setTextColor(MaterialColors.getColor(this, R.attr.colorOnPrimary, null))
-                .show()
-        }
+        )
+        Snackbar.make(this, findViewById(R.id.snackbar_top_position), message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(MaterialColors.getColor(this, R.attr.colorPrimary, null))
+            .setTextColor(MaterialColors.getColor(this, R.attr.colorOnPrimary, null))
+            .show()
     }
 
     private fun observe() {
@@ -377,55 +366,43 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observeTotalStack(stack: BigDecimal?) {
-        val one = BigDecimal.ONE
-        val effective = stack ?: one
-        if (effective.compareTo(one) == 0) {
+        val effective = stack ?: BigDecimal.ONE
+        if (effective.compareTo(BigDecimal.ONE) == 0) {
             tvFeeBadge.visibility = View.GONE
             btnFeeSide.visibility = View.GONE
             return
         }
         btnFeeSide.visibility = View.VISIBLE
         val deltaPercent = effective
-            .subtract(one)
-            .multiply(BigDecimal(100))
-            .setScale(2, java.math.RoundingMode.HALF_EVEN)
-        val text = deltaPercent.toHumanReadableNumber(
+            .subtract(BigDecimal.ONE)
+            .multiply(BigDecimal(PERCENT_MULTIPLIER))
+            .setScale(FEE_BADGE_DECIMAL_PLACES, java.math.RoundingMode.HALF_EVEN)
+        tvFeeBadge.text = deltaPercent.toHumanReadableNumber(
             this,
             showPositiveSign = true,
             suffix = "%",
             trim = true,
         )
-        tvFeeBadge.text = text
         tvFeeBadge.visibility = View.VISIBLE
     }
 
     private fun observeTrueCost(value: BigDecimal?) {
-        if (value == null) {
-            tvTrueCost.visibility = View.GONE
-            return
-        }
-        val currency = viewModel.getBaseCurrency().value?.iso4217Alpha().orEmpty()
-        val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
-        tvTrueCost.text = getString(R.string.fee_true_cost_prefix) + ltrIsolate("$amount $currency")
-        tvTrueCost.visibility = View.VISIBLE
+        renderFeeAmount(tvTrueCost, R.string.fee_true_cost_prefix, value, viewModel.getBaseCurrency().value)
     }
 
     private fun observeOriginalValue(value: BigDecimal?) {
-        if (value == null) {
-            tvOriginalValue.visibility = View.GONE
-            return
-        }
-        val currency = viewModel.getDestinationCurrency().value?.iso4217Alpha().orEmpty()
-        val amount = value.toHumanReadableNumber(this, decimalPlaces = 2)
-        tvOriginalValue.text = getString(R.string.fee_original_value_prefix) + ltrIsolate("$amount $currency")
-        tvOriginalValue.visibility = View.VISIBLE
+        renderFeeAmount(tvOriginalValue, R.string.fee_original_value_prefix, value, viewModel.getDestinationCurrency().value)
     }
 
-    // Wrap in Unicode LTR isolate (U+2066 … U+2069) so the "<amount> <currency>"
-    // chunk stays glued together as one LTR unit under RTL locales — otherwise
-    // the neutral space between number and currency gets absorbed by the RTL
-    // paragraph and the currency code drifts to the opposite side of the label.
-    private fun ltrIsolate(s: String): String = "\u2066$s\u2069"
+    private fun renderFeeAmount(target: TextView, prefixRes: Int, value: BigDecimal?, currency: Currency?) {
+        if (value == null) {
+            target.visibility = View.GONE
+            return
+        }
+        val amount = value.toHumanReadableNumber(this, decimalPlaces = AMOUNT_DECIMAL_PLACES)
+        target.text = getString(prefixRes) + ltrIsolate("$amount ${currency?.iso4217Alpha().orEmpty()}")
+        target.visibility = View.VISIBLE
+    }
 
     private fun observeExchangeRates(rates: ExchangeRates?) {
         rates?.let {
@@ -440,7 +417,7 @@ class MainActivity : BaseActivity() {
             }
             val dateString = temporal
                 ?.let { DateTimeFormatter.ofPattern(effectivePattern).format(it) }
-                ?.replace("\u200F", "")
+                ?.replace(RTL_MARK, "")
             val providerString = it.provider?.getName()
             tvInfoDate.text =
                 if (dateString != null && providerString != null)
@@ -561,10 +538,10 @@ class MainActivity : BaseActivity() {
     fun calculationEvent(view: View) {
         haptic(view)
         when ((view as AppCompatButton).text.toString()) {
-            "+" -> viewModel.addition()
-            "−" -> viewModel.subtraction()
-            "×" -> viewModel.multiplication()
-            "÷" -> viewModel.division()
+            KEY_PLUS -> viewModel.addition()
+            KEY_MINUS -> viewModel.subtraction()
+            KEY_TIMES -> viewModel.multiplication()
+            KEY_DIVIDE -> viewModel.division()
         }
     }
 
