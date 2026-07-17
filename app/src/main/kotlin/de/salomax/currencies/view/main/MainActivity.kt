@@ -38,6 +38,7 @@ import de.salomax.currencies.repository.Database
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.util.getDecimalSeparator
 import de.salomax.currencies.util.ltrIsolate
+import de.salomax.currencies.util.stripRtlMark
 import de.salomax.currencies.util.stripTimePattern
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
@@ -70,10 +71,6 @@ private const val KEY_PLUS = "+"
 private const val KEY_MINUS = "−"
 private const val KEY_TIMES = "×"
 private const val KEY_DIVIDE = "÷"
-
-// Arabic-Indic bidi mark that some locales inject into formatted dates; strip
-// it before rendering so LTR/RTL text alignment stays predictable.
-private const val RTL_MARK = "\u200F"
 
 class MainActivity : BaseActivity() {
 
@@ -410,7 +407,7 @@ class MainActivity : BaseActivity() {
             }
             val dateString = temporal
                 ?.let { DateTimeFormatter.ofPattern(effectivePattern).format(it) }
-                ?.replace(RTL_MARK, "")
+                ?.stripRtlMark()
             val providerString = it.provider?.getName()
             tvInfoDate.text =
                 if (dateString != null && providerString != null)

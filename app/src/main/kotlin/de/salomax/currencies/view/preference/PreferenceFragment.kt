@@ -15,15 +15,14 @@ import androidx.preference.SwitchPreferenceCompat
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
+import de.salomax.currencies.util.DECIMAL_PLACES_MAX
+import de.salomax.currencies.util.DECIMAL_PLACES_MIN
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import de.salomax.currencies.widget.LongSummaryPreference
 import java.util.Calendar
 
 private const val TAG = "PreferenceFragment"
-
-private const val DEFAULT_DECIMAL_PLACES = 2
-private const val MIN_DECIMAL_PLACES = 0
-private const val MAX_DECIMAL_PLACES = 6
 
 // Sentinel returned by ApiProvider.fromId when the stored value is unknown /
 // unset; the pref layer treats this as "use the default provider".
@@ -95,8 +94,8 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         findPreference<ListPreference>(getString(R.string.decimal_places_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 viewModel.setDecimalPlaces(
-                    (newValue.toString().toIntOrNull() ?: DEFAULT_DECIMAL_PLACES)
-                        .coerceIn(MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES)
+                    (newValue.toString().toIntOrNull() ?: DECIMAL_PLACES_DEFAULT)
+                        .coerceIn(DECIMAL_PLACES_MIN, DECIMAL_PLACES_MAX)
                 )
                 true
             }

@@ -13,22 +13,17 @@ import com.google.android.material.imageview.ShapeableImageView
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
+import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
+import de.salomax.currencies.util.DECIMAL_PLACES_MAX
+import de.salomax.currencies.util.DECIMAL_PLACES_MIN
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
+import de.salomax.currencies.util.stripRtlMark
 import de.salomax.currencies.util.toHumanReadableNumber
 import java.math.BigDecimal
 import java.math.MathContext
 
 private const val VIEW_TYPE_RATE = 0
 private const val VIEW_TYPE_API_HINT = 1
-
-private const val DEFAULT_DECIMAL_PLACES = 2
-private const val MIN_DECIMAL_PLACES = 0
-private const val MAX_DECIMAL_PLACES = 6
-
-// Unicode RTL mark: gets injected by the localized number formatter for some
-// locales; stripped from the "left = right" preview so it doesn't shove the
-// equals sign to the wrong side.
-private const val RTL_MARK = "\u200F"
 
 @SuppressLint("NotifyDataSetChanged")
 class SearchableSpinnerDialogAdapter(private val context: Context) :
@@ -45,7 +40,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
     private var isPreviewConversionEnabled: Boolean = false
     private var currentBaseRate: Rate? = null
     private var currentBaseSum: BigDecimal = BigDecimal.ONE
-    private var decimalPlaces: Int = DEFAULT_DECIMAL_PLACES
+    private var decimalPlaces: Int = DECIMAL_PLACES_DEFAULT
 
     private var filterStarred = false
     private var filterText: String? = null
@@ -174,7 +169,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         update()
     }
     fun setDecimalPlaces(places: Int) {
-        decimalPlaces = places.coerceIn(MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES)
+        decimalPlaces = places.coerceIn(DECIMAL_PLACES_MIN, DECIMAL_PLACES_MAX)
         update()
     }
 
@@ -193,7 +188,7 @@ class SearchableSpinnerDialogAdapter(private val context: Context) :
         val right = if (destinationSymbol.isEmpty()) destination
             else if (hasAppendedCurrencySymbol(context)) "$destination $destinationSymbol"
             else "$destinationSymbol $destination"
-        return "$left = $right".replace(RTL_MARK, "").trim()
+        return "$left = $right".stripRtlMark().trim()
     }
 
     private fun update() {
