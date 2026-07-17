@@ -71,7 +71,11 @@
 
         <!-- remove color tint from popup menu -->
         <item name="popupMenuBackground">?attr/colorBackground</item>
-        <item name="android:popupBackground">?attr/colorBackground</item>
+        <!-- Keep theme-wide popupBackground transparent so the text-selection
+             handle's PopupWindow doesn't render a white square behind the
+             handle drawable. Popup menus are handled by popupMenuBackground
+             and AppTheme.PopupMenu.Overflow above. -->
+        <item name="android:popupBackground">@android:color/transparent</item>
     </style>
 
     <style name="BaseAppTheme.PureBlack" parent="AppTheme">
