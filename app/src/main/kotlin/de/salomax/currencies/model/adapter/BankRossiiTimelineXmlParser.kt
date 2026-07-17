@@ -5,20 +5,16 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
 import java.math.BigDecimal
 import java.math.MathContext
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
     private val rates = mutableMapOf<LocalDate, Rate>()
 
     fun parse(inputStream: InputStream): Timeline {
-        val parser = XmlPullParserFactory.newInstance()
-            .apply { isNamespaceAware = false }.newPullParser()
-            .apply { setInput(inputStream, null) }
+        val parser = newXmlPullParser(inputStream)
 
         var tagname: String? = null
         var eventType = parser.eventType
@@ -32,7 +28,7 @@ class BankRossiiTimelineXmlParser(private val ids: Map<String, String>) {
                 XmlPullParser.START_TAG -> if (tagname == "Record") {
                     date = LocalDate.parse(
                         parser.getAttributeValue(null, "Date"),
-                        DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                        BANK_ROSSII_DATE_FORMATTER
                     )
                     currencyId = parser.getAttributeValue(null, "Id")
                 }

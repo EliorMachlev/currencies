@@ -5,21 +5,17 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Rate
 import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
 import java.io.InputStream
 import java.math.BigDecimal
 import java.math.MathContext
 import java.time.LocalDate
-import kotlin.math.pow
 
 class NorgesBankRatesXmlParser {
     private var date: LocalDate? = null
     private val rates = mutableListOf<Rate>()
 
     fun parse(inputStream: InputStream, requestedDate: LocalDate): ExchangeRates {
-        val parser = XmlPullParserFactory.newInstance()
-            .apply { isNamespaceAware = false }.newPullParser()
-            .apply { setInput(inputStream, null) }
+        val parser = newXmlPullParser(inputStream)
 
         var eventType = parser.eventType
         var base: Currency? = null
@@ -30,7 +26,7 @@ class NorgesBankRatesXmlParser {
                 when {
                     tagname.equals("Series", ignoreCase = true) -> {
                         base = Currency.fromString(parser.getAttributeValue(null, "BASE_CUR"))
-                        multiplier = parseMultiplier(parser)
+                        multiplier = parser.norgesBankUnitMultiplier()
                     }
                     tagname.equals("Obs", ignoreCase = true) -> {
                         val obsDate = LocalDate.parse(parser.getAttributeValue(null, "TIME_PERIOD"))
@@ -54,10 +50,6 @@ class NorgesBankRatesXmlParser {
             provider = ApiProvider.NORGES_BANK
         )
     }
-
-    private fun parseMultiplier(parser: XmlPullParser): Int =
-        parser.getAttributeValue(null, "UNIT_MULT")?.toIntOrNull()
-            ?.let { 10.0.pow(it).toInt() } ?: 1
 
     private fun recordObservation(
         base: Currency?,

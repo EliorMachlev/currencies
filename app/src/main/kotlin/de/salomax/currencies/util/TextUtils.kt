@@ -143,14 +143,15 @@ private fun isNonNegative(raw: String): Boolean {
 }
 
 private fun String.groupNumbers(context: Context): String {
+    val separator = getGroupingSeparator(context)
     val sb = StringBuilder(this.length * 2)
     for ((i, c) in this.reversed().withIndex()) {
         if (i % THOUSANDS_GROUP_SIZE == 0 && i != 0)
-            sb.append(getGroupingSeparator(context))
+            sb.append(separator)
         sb.append(c)
     }
     return sb.toString().reversed()
-        .replace("-${getGroupingSeparator(context)}", "-")
+        .replace("-$separator", "-")
 }
 
 // *************************************************************************************************
