@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.kittinunf.fuel.core.FuelError
+import com.github.kittinunf.result.Result
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
@@ -20,6 +21,13 @@ private const val NO_HTTP_STATUS = -1
 private const val HTTP_OK = 200
 private const val MIN_UPDATE_DISPLAY_MS = 750L
 
+// Non-breaking space + 👀 emoji, used as the trailing eyeballs on the bold
+// error message shown in the UI (rendered as HTML by the calling view).
+private const val EYES_SUFFIX = "\u00A0\uD83D\uDC40"
+// Non-breaking space + 🤓 emoji, used at the end of the "try another API"
+// suggestion line.
+private const val NERD_SUFFIX = "\u00A0\uD83E\uDD13"
+
 class ExchangeRatesRepository(private val context: Context) {
 
     private val db = Database(context)
@@ -32,39 +40,18 @@ class ExchangeRatesRepository(private val context: Context) {
      * Gets and returns all latest exchange rates from the API.
      */
     fun getExchangeRates(): LiveData<ExchangeRates?> {
-        val start = System.currentTimeMillis()
-        db.setUpdating(true)
-
-        // run in background
-        CoroutineScope(Dispatchers.IO).launch {
-            // call api
+        launchApiCall { start ->
             ExchangeRatesService.getRates(
-                // use the right api
                 apiProvider = db.getApiProvider(),
                 date = db.getHistoricalDate(),
                 context
-            ).run  {
-                val rates = component1()
-                val fuelError = component2()
-                // received some json
-                if (rates != null && fuelError == null) {
-                    // SUCCESS! update /store rates to preferences
-                    if (rates.success == null || rates.success == true) {
-                        postIsUpdating(start)
-                        db.insertExchangeRates(rates)
-                        // reset error
-                        liveError.postValue(null)
-                    }
-                    // ERROR: got response from API, but just an error message
-                    else {
-                        postError(rates.error)
-                    }
-                }
-                // generic error
-                else handleGenericError(fuelError)
-            }
+            ).processResponse(
+                start = start,
+                successFlag = { success },
+                errorMessage = { error },
+                onSuccess = { db.insertExchangeRates(it) }
+            )
         }
-
         return liveExchangeRates
     }
 
@@ -72,43 +59,52 @@ class ExchangeRatesRepository(private val context: Context) {
      * Gets and returns the timeline of the last year of the given base and target currency
      */
     fun getTimeline(base: Currency, symbol: Currency): LiveData<Timeline?> {
-        val start = System.currentTimeMillis()
-        db.setUpdating(true)
-
-        // run in background
-        CoroutineScope(Dispatchers.IO).launch {
-            // call api
+        launchApiCall { start ->
             ExchangeRatesService.getTimeline(
-                // use the right api
                 apiProvider = db.getApiProvider(),
                 base = base,
                 symbol = symbol,
                 context = context
-            ).run {
-                val timeline = component1()
-                val fuelError = component2()
-                // received some json
-                if (timeline != null && fuelError == null) {
-                    // SUCCESS! update /store rates to preferences
-                    if (timeline.success == null || timeline.success == true) {
-                        postIsUpdating(start)
-                        CoroutineScope(Dispatchers.Main).launch {
-                            liveTimeline.setValue(timeline)
-                        }
-                        // reset error
-                        liveError.postValue(null)
-                    }
-                    // ERROR! got response from API, but just an error message
-                    else {
-                        postError(timeline.error)
+            ).processResponse(
+                start = start,
+                successFlag = { success },
+                errorMessage = { error },
+                onSuccess = { timeline ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        liveTimeline.setValue(timeline)
                     }
                 }
-                // generic error
-                else handleGenericError(fuelError)
-            }
+            )
         }
-
         return liveTimeline
+    }
+
+    private fun launchApiCall(block: suspend (start: Long) -> Unit) {
+        val start = System.currentTimeMillis()
+        db.setUpdating(true)
+        CoroutineScope(Dispatchers.IO).launch { block(start) }
+    }
+
+    private suspend fun <T : Any> Result<T, FuelError>.processResponse(
+        start: Long,
+        successFlag: T.() -> Boolean?,
+        errorMessage: T.() -> String?,
+        onSuccess: suspend (T) -> Unit,
+    ) {
+        val data = component1()
+        val fuelError = component2()
+        if (data != null && fuelError == null) {
+            val ok = data.successFlag()
+            if (ok == null || ok == true) {
+                postIsUpdating(start)
+                onSuccess(data)
+                liveError.postValue(null)
+            } else {
+                postError(data.errorMessage())
+            }
+        } else {
+            handleGenericError(fuelError)
+        }
     }
 
     private fun handleGenericError(fuelError: FuelError?) {
@@ -174,10 +170,10 @@ class ExchangeRatesRepository(private val context: Context) {
         db.setUpdating(false)
 
         // post error
-        var errorMessage = "<b>" + (message ?: R.string.error_api_error.text()) + "\u00A0\uD83D\uDC40</b>"
+        var errorMessage = "<b>" + (message ?: R.string.error_api_error.text()) + "$EYES_SUFFIX</b>"
         // tell the user the API can be changed
         if (message?.contains(R.string.error_no_data.text()) != true)
-            errorMessage += "\n<br>${R.string.error_try_another_api.text()}\u00A0\uD83E\uDD13"
+            errorMessage += "\n<br>${R.string.error_try_another_api.text()}$NERD_SUFFIX"
         liveError.postValue(errorMessage)
 
         // reset timeline
