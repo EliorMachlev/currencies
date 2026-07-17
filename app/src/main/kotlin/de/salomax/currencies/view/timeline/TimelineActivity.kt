@@ -152,8 +152,9 @@ class TimelineActivity : BaseActivity() {
             rates?.entries?.map { entry -> entry.key to entry.value.value.toFloat() }
         }
         val lineColor = Color(MaterialColors.getColor(this, R.attr.colorPrimary, 0))
-        val baselineColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
-        val axisColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        val secondaryColor = Color(MaterialColors.getColor(this, android.R.attr.textColorSecondary, 0))
+        val baselineColor = secondaryColor
+        val axisColor = secondaryColor
         timelineChart.setContent {
             TimelineChart(
                 entriesLive = entriesLive,
