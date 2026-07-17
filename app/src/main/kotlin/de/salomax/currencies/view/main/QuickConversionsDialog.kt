@@ -58,6 +58,8 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
                 if (side == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted_horizontal
                 else R.drawable.ic_fee_side_original_horizontal
             )
+            btnFeeSide.visibility =
+                if (hasFeesFor(viewModel, from, to)) View.VISIBLE else View.GONE
             renderRows(container, feeInfo, viewModel, from, to, rates, side)
         }
 
@@ -126,8 +128,7 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         }
 
         val stack = viewModel.feeStackFor(from, to)
-        val hasFees = stack.compareTo(BigDecimal.ZERO) != 0 &&
-            stack.compareTo(BigDecimal.ONE) != 0
+        val hasFees = stack.isFeeStack()
         val inflater = android.view.LayoutInflater.from(ctx)
 
         for (amountStr in QUICK_AMOUNTS) {
@@ -179,6 +180,14 @@ class QuickConversionsDialog : AppCompatDialogFragment() {
         startActivity(PreferenceActivity.feesIntent(ctx))
         return true
     }
+
+    private fun hasFeesFor(viewModel: MainViewModel, from: Currency?, to: Currency?): Boolean {
+        if (from == null || to == null) return false
+        return viewModel.feeStackFor(from, to).isFeeStack()
+    }
+
+    private fun BigDecimal.isFeeStack(): Boolean =
+        compareTo(BigDecimal.ZERO) != 0 && compareTo(BigDecimal.ONE) != 0
 
     private inline fun setFeeAnnotation(view: TextView, visible: Boolean, text: () -> String) {
         if (visible) {
