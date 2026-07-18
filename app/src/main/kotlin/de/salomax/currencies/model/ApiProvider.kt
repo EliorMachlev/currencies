@@ -42,7 +42,7 @@ enum class ApiProvider(
     companion object {
         fun fromId(value: Int): ApiProvider = entries.firstOrNull { it.id == value }
             // this is our fallback, e.g. if an API is removed from the app
-            ?: BANK_ROSSII
+            ?: BANK_OF_ISRAEL
     }
 
     fun getName(): CharSequence =
