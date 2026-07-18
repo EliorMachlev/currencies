@@ -4,6 +4,10 @@
     <string name="api_bankOfCanada_descriptionShort">About 23 exchange rates\nSource: Central Bank of Canada</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">The rates are published once each business day by 16:30 ET</string>
 
+    <string name="api_bankOfIsrael_descriptionFull">Representative exchange rates, as published by the Israeli central bank <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Rates are quoted against the Israeli new shekel.\n<b>Bank of Israel lists about 14 exchange rates.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">About 14 exchange rates\nSource: Central Bank of Israel</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Representative rates are published once each business day around 15:30 Israel time.</string>
+
     <string name="api_bankRossii_descriptionFull">Exchange rates, as provided by the Russian central bank <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. With the current sanctions, this source gives probably the most reliable exchange rates for Russian Ruble.\n<b>Bank Rossii lists some 44 exchange rates.</b></string>
     <string name="api_bankRossii_descriptionShort">About 44 exchange rates\nSource: Central Bank of Russia</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Rates are updated on a daily basis, except on <a href="https://cbr.ru/eng/other/holidays/">public holidays in Russia</a>.</string>

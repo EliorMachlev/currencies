@@ -12,6 +12,7 @@ Currencies supports multiple exchange-rate data sources. The active provider is 
 | [Bank of Canada](https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/) | ~23 | Business days | CAD | Canadian Central Bank |
 | [Norges Bank](https://www.norges-bank.no/en/topics/Statistics/exchange_rates/) | ~40 | Business days | NOK | Norwegian Central Bank |
 | [Bank Rossii](https://cbr.ru/eng/currency_base/daily/) | ~44 | Business days | RUB | Russian Central Bank |
+| [Bank of Israel](https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/) | ~14 | Business days | ILS | Israeli Central Bank |
 
 ## Deactivated / Removed Providers
 
