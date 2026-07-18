@@ -8,13 +8,11 @@ import com.github.kittinunf.fuel.moshi.moshiDeserializerOf
 import com.github.kittinunf.result.Result
 import com.github.kittinunf.result.map
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Timeline
-import de.salomax.currencies.model.adapter.LocalDateAdapter
 import de.salomax.currencies.model.adapter.FrankfurterAppRatesAdapter
 import de.salomax.currencies.model.adapter.FrankfurterAppTimelineAdapter
 import java.time.LocalDate
@@ -52,10 +50,10 @@ class FerEe : ApiProvider.Api() {
         ).awaitResult(
             moshiDeserializerOf(
                 Moshi.Builder()
-                    .addLast(KotlinJsonAdapterFactory())
+                    .addLast(SHARED_KOTLIN_JSON_ADAPTER_FACTORY)
                     .apply {
                         add(FrankfurterAppRatesAdapter(base))
-                        add(LocalDateAdapter())
+                        add(SHARED_LOCAL_DATE_ADAPTER)
                     }
                     .build()
                     .adapter(ExchangeRates::class.java)
@@ -84,10 +82,10 @@ class FerEe : ApiProvider.Api() {
         ).awaitResult(
             moshiDeserializerOf(
                 Moshi.Builder()
-                    .addLast(KotlinJsonAdapterFactory())
+                    .addLast(SHARED_KOTLIN_JSON_ADAPTER_FACTORY)
                     .apply {
                         add(FrankfurterAppRatesAdapter(base))
-                        add(LocalDateAdapter())
+                        add(SHARED_LOCAL_DATE_ADAPTER)
                         add(FrankfurterAppTimelineAdapter(symbol))
                     }
                     .build()

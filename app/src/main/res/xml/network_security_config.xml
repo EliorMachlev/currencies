@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Cleartext HTTP is refused globally. Every exchange-rate provider currently
+  configured (see ApiProvider) exposes HTTPS-only endpoints, so this closes
+  off downgrade/MITM avenues without breaking any real traffic.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

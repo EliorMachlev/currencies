@@ -78,6 +78,10 @@ class MainActivity : BaseActivity() {
     private lateinit var preferenceModel: PreferenceViewModel
 
     private var hapticEnabled = false
+    // Cached date pattern so the frequently-fired `observeExchangeRates`
+    // handler doesn't hit SharedPreferences on the main thread on every rate
+    // emission. Kept in sync via the `getDateFormat()` LiveData below.
+    private var dateFormatPattern: String = "dd/MM/yy HH:mm"
 
     private lateinit var refreshIndicator: LinearProgressIndicator
     private lateinit var swipeRefresh: SwipeRefreshLayout
@@ -324,6 +328,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observe() {
+        Database(this).getDateFormat().observe(this) { pattern ->
+            dateFormatPattern = pattern
+            // Re-render the rates footer so a pattern change from Settings
+            // takes effect immediately without waiting for the next refresh.
+            observeExchangeRates(viewModel.getExchangeRates().value)
+        }
         viewModel.ratesInformationFooter.observe(this) { tvInfoConversion.text = it }
         viewModel.getExchangeRates().observe(this) { observeExchangeRates(it) }
         viewModel.getError().observe(this) { showErrorSnackbar(it) }
@@ -398,8 +408,8 @@ class MainActivity : BaseActivity() {
         rates?.let {
             val date = it.date
             val time = it.time
-            val pattern = Database(this).getDateFormatBlocking()
-            val effectivePattern = if (time != null) pattern else stripTimePattern(pattern)
+            val effectivePattern =
+                if (time != null) dateFormatPattern else stripTimePattern(dateFormatPattern)
             val temporal = when {
                 date == null -> null
                 time != null -> date.atTime(time)
