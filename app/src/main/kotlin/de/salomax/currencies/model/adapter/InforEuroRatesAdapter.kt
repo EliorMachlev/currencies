@@ -19,15 +19,15 @@ internal class InforEuroRatesAdapter(private val date: LocalDate) {
     @FromJson
     @Throws(IOException::class)
     fun fromJson(reader: JsonReader): ExchangeRates {
-        val rates = mutableListOf<Rate>()
-
         if (reader.peek() != JsonReader.Token.BEGIN_ARRAY) return readErrorResponse(reader)
 
-        reader.beginArray()
-        while (reader.hasNext()) {
-            parseEntry(reader)?.let { rates.add(it) }
+        val rates = buildList {
+            reader.beginArray()
+            while (reader.hasNext()) {
+                parseEntry(reader)?.let { add(it) }
+            }
+            reader.endArray()
         }
-        reader.endArray()
 
         return ExchangeRates(
             success = rates.isNotEmpty(),

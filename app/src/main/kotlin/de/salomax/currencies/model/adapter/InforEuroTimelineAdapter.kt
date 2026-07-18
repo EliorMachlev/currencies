@@ -23,16 +23,17 @@ internal class InforEuroTimelineAdapter(
     @FromJson
     @Throws(IOException::class)
     fun fromJson(reader: JsonReader): Timeline {
-        val rates = mutableMapOf<LocalDate, Rate>()
         val datePattern = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
         if (reader.peek() != JsonReader.Token.BEGIN_ARRAY) return readErrorResponse(reader)
 
-        reader.beginArray()
-        while (reader.hasNext()) {
-            processEntry(reader, datePattern, rates)
+        val rates = buildMap {
+            reader.beginArray()
+            while (reader.hasNext()) {
+                processEntry(reader, datePattern, this)
+            }
+            reader.endArray()
         }
-        reader.endArray()
 
         return Timeline(
             success = rates.isNotEmpty(),
