@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -51,6 +52,7 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.prefs, rootKey)
         viewModel = ViewModelProvider(this)[PreferenceViewModel::class.java]
         setupFeePreference()
+        setupBackupPreference()
         setupDisplayPreferences()
         setupGraphOptionsPreference()
         setupApiPreferences()
@@ -67,14 +69,20 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     }
 
     private fun setupFeePreference() {
-        findPreference<Preference>(getString(R.string.fee_key))?.apply {
-            setOnPreferenceClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.preferences_fragment, FeeManagerFragment())
-                    .addToBackStack(null)
-                    .commit()
-                true
-            }
+        pushFragmentOnClick(R.string.fee_key, ::FeeManagerFragment)
+    }
+
+    private fun setupBackupPreference() {
+        pushFragmentOnClick(R.string.backup_key, ::BackupFragment)
+    }
+
+    private fun pushFragmentOnClick(keyRes: Int, factory: () -> Fragment) {
+        findPreference<Preference>(getString(keyRes))?.setOnPreferenceClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.preferences_fragment, factory())
+                .addToBackStack(null)
+                .commit()
+            true
         }
     }
 

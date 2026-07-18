@@ -30,6 +30,14 @@ Weekly scan of the runtime classpath against the NVD database. Fails the workflo
 - No API keys are stored in source code. OpenExchangerates key (if used) is expected as an environment variable or build config field.
 - Gitleaks scans the full repository weekly for accidental credential commits.
 
+## User-initiated Backup
+
+Users can export their settings from **Settings → Backup & Restore** to a location of their choosing via the Storage Access Framework (`ACTION_CREATE_DOCUMENT` / `ACTION_OPEN_DOCUMENT`). The backup file contains three SharedPreferences namespaces (`prefs`, `last_state`, `starred_currencies`) as versioned JSON; the cached exchange-rate table is deliberately excluded.
+
+The app requests **no storage permission** — the SAF picker returns a scoped `content://` URI that the user has explicitly granted for that single file.
+
+Automatic Android backup remains disabled (`android:allowBackup="false"`) — user-initiated export is the only supported path off-device.
+
 ## Runtime Permissions
 
 The app declares a single permission:
