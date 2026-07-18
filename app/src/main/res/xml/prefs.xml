@@ -10,6 +10,11 @@
             android:summary="@string/fee_summary"
             android:title="@string/fee_title" />
 
+        <Preference
+            android:key="@string/backup_key"
+            android:summary="@string/backup_summary"
+            android:title="@string/backup_title" />
+
         <SwitchPreferenceCompat
             android:icon="@drawable/ic_conversion_preview"
             android:key="@string/previewConversion_key"

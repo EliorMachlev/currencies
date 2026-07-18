@@ -43,6 +43,26 @@
     <string name="haptic_feedback_summary">Vibrate on key press\nFollows system setting</string>
     <string name="date_format_key" translatable="false">KEY_DATE_FORMAT</string>
     <string name="date_format_title">Date and Time format</string>
+    <!-- backup -->
+    <string name="backup_key" translatable="false">KEY_BACKUP</string>
+    <string name="backup_title">Backup &amp; Restore</string>
+    <string name="backup_summary">Save your settings to a file, or restore from a previous backup</string>
+    <string name="backup_manager_title">Backup</string>
+    <string name="backup_section_local">Local backup</string>
+    <string name="backup_section_restore">Restore</string>
+    <string name="backup_export_title">Export to file</string>
+    <string name="backup_export_summary">Choose a location on this device to save an encrypted or plain settings file</string>
+    <string name="backup_import_title">Import from file</string>
+    <string name="backup_import_summary">Overwrite current settings from a previously exported backup file</string>
+    <string name="backup_default_filename">currencies-backup.json</string>
+    <string name="backup_mime_json" translatable="false">application/json</string>
+    <string name="backup_export_success">Backup saved</string>
+    <string name="backup_export_failed">Backup failed: %1$s</string>
+    <string name="backup_import_success">Settings restored — restart to apply</string>
+    <string name="backup_import_failed">Restore failed: %1$s</string>
+    <string name="backup_import_confirm_title">Restore backup?</string>
+    <string name="backup_import_confirm_message">Your current settings will be overwritten with those in the file. This can\'t be undone.</string>
+    <string name="backup_import_confirm_positive">Restore</string>
     <!-- graph options -->
     <string name="category_graph_options">Graph options</string>
     <string name="graph_options_key" translatable="false">KEY_GRAPH_OPTIONS</string>
