@@ -131,6 +131,9 @@ dependencies {
     // charts
     val vicoVersion = "3.2.3"
     implementation("com.patrykandpatrick.vico:compose:$vicoVersion")
+    // crypto: BouncyCastle provides pure-Java Argon2id, used by BackupManager
+    // for password-based backup encryption (quantum-resistant KDF).
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
     // test
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")
