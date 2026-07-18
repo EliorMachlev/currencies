@@ -109,6 +109,10 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0")
     implementation("androidx.window:window:1.5.1")
+    // scheduled backup: WorkManager for periodic exports, DocumentFile for
+    // writing into the user-picked SAF tree URI.
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+    implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("com.google.android.material:material:1.14.0")
     // downloader
     val fuelVersion = "2.3.1"

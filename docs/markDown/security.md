@@ -47,6 +47,14 @@ At export time the user may tick **Encrypt with a password**. When set:
 
 On import the app detects the `encryption` block, prompts for the password, and re-prompts on GCM tag failure. Plaintext files still import unchanged; an earlier revision that used PBKDF2-HMAC-SHA256 (210 000 iterations) is still readable via a fallback branch keyed on the file's `kdf` field.
 
+### Scheduled backup
+
+The user may opt in to periodic backups from **Settings → Backup & Restore → Scheduled backup**. Frequency is a single-choice list (Off / Daily / Weekly / Monthly) driven by WorkManager `PeriodicWorkRequest`. The destination is a directory chosen via `ACTION_OPEN_DOCUMENT_TREE`; the read/write grant is made persistable so it survives reboots.
+
+- Scheduled exports are always **plaintext**. Prompting the user for a password at midnight defeats the point of a scheduled job, and stashing the password in preferences would defeat the point of the password. Users who require encryption at rest use the manual export flow.
+- Files are named `currencies-backup-YYYYMMDD-HHmmss.json` so lexicographic sort matches chronological order; the worker keeps the most recent N (default 5) and deletes older ones, matching only files with the `currencies-backup-` prefix so nothing else in the folder is touched.
+- WorkManager persists jobs across reboots, but the app also calls `BackupScheduler.reschedule` on `Application.onCreate` to recover from app-update or force-stop edge cases where jobs are dropped.
+
 Automatic Android backup remains disabled (`android:allowBackup="false"`) — user-initiated export is the only supported path off-device.
 
 ## Runtime Permissions

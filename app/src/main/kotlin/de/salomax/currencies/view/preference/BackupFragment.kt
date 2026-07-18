@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.documentfile.provider.DocumentFile
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
@@ -23,25 +24,43 @@ import com.google.android.material.textfield.TextInputLayout
 import de.salomax.currencies.R
 import de.salomax.currencies.repository.BackupManager
 import de.salomax.currencies.repository.BackupResult
+import de.salomax.currencies.repository.BackupScheduler
+import de.salomax.currencies.repository.FREQUENCY_DAILY
+import de.salomax.currencies.repository.FREQUENCY_MONTHLY
+import de.salomax.currencies.repository.FREQUENCY_OFF
+import de.salomax.currencies.repository.FREQUENCY_WEEKLY
 
 // Preference row keys — leading __ marks them as UI-only (not persisted).
 private const val PREF_KEY_EXPORT = "__backup_export"
 private const val PREF_KEY_IMPORT = "__backup_import"
+private const val PREF_KEY_SCHEDULE_FREQ = "__backup_schedule_frequency"
+private const val PREF_KEY_SCHEDULE_FOLDER = "__backup_schedule_folder"
+private const val PREF_KEY_SCHEDULE_RETENTION = "__backup_schedule_retention"
 
 // Minimum password length for encrypted export. Chosen to nudge users
 // toward something that survives a modest offline attack — PBKDF2 stretches
 // still buy time, but a 4-char password is broken in seconds.
 private const val MIN_PASSWORD_LENGTH = 8
 
+// Frequency + retention choices. Order matters — the index into these arrays
+// maps to the checked row in the single-choice dialog.
+private val FREQUENCY_VALUES = arrayOf(
+    FREQUENCY_OFF, FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY
+)
+private val RETENTION_VALUES = intArrayOf(1, 3, 5, 10, 20)
+
 class BackupFragment : PreferenceFragmentCompat() {
 
     private lateinit var backupManager: BackupManager
     private lateinit var exportLauncher: ActivityResultLauncher<Intent>
     private lateinit var importLauncher: ActivityResultLauncher<Intent>
+    private lateinit var folderLauncher: ActivityResultLauncher<Intent>
 
     // The password chosen in the pre-export dialog, held only long enough to
     // hand off to BackupManager (which zeroes it after use).
     private var pendingExportPassword: CharArray? = null
+
+    private var folderPreference: Preference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +77,11 @@ class BackupFragment : PreferenceFragmentCompat() {
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             result.data?.data?.let(::beginImport)
+        }
+        folderLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            result.data?.data?.let(::onFolderPicked)
         }
     }
 
@@ -85,6 +109,39 @@ class BackupFragment : PreferenceFragmentCompat() {
                 summaryRes = R.string.backup_import_summary,
                 onClick = ::launchImport,
             )
+        )
+
+        val scheduleCategory = addCategory(screen, ctx, R.string.backup_section_schedule)
+        scheduleCategory.addPreference(
+            buildActionPreference(
+                ctx = ctx,
+                key = PREF_KEY_SCHEDULE_FREQ,
+                titleRes = R.string.backup_schedule_frequency_title,
+                summaryRes = 0,
+                onClick = ::promptFrequency,
+            ).also { it.summary = frequencySummary(BackupScheduler.getFrequency(ctx)) }
+        )
+        folderPreference = buildActionPreference(
+            ctx = ctx,
+            key = PREF_KEY_SCHEDULE_FOLDER,
+            titleRes = R.string.backup_schedule_folder_title,
+            summaryRes = 0,
+            onClick = ::launchFolderPicker,
+        ).also { it.summary = folderSummary(BackupScheduler.getTreeUri(ctx)) }
+        scheduleCategory.addPreference(folderPreference!!)
+        scheduleCategory.addPreference(
+            buildActionPreference(
+                ctx = ctx,
+                key = PREF_KEY_SCHEDULE_RETENTION,
+                titleRes = R.string.backup_schedule_retention_title,
+                summaryRes = 0,
+                onClick = ::promptRetention,
+            ).also {
+                it.summary = getString(
+                    R.string.backup_schedule_retention_summary,
+                    BackupScheduler.getRetention(ctx)
+                )
+            }
         )
 
         preferenceScreen = screen
@@ -117,7 +174,9 @@ class BackupFragment : PreferenceFragmentCompat() {
         Preference(ctx).apply {
             this.key = key
             title = getString(titleRes)
-            summary = getString(summaryRes)
+            // summaryRes == 0 means "set the summary dynamically at the call
+            // site" (e.g. schedule rows that show current state).
+            if (summaryRes != 0) summary = getString(summaryRes)
             isIconSpaceReserved = false
             setOnPreferenceClickListener {
                 onClick()
@@ -265,6 +324,76 @@ class BackupFragment : PreferenceFragmentCompat() {
             is BackupResult.PasswordRequired -> promptImportPassword(uri, isRetry = false)
             is BackupResult.WrongPassword -> promptImportPassword(uri, isRetry = true)
         }
+    }
+
+    private fun promptFrequency() {
+        val ctx = requireContext()
+        val labels = FREQUENCY_VALUES.map { getString(frequencyLabelRes(it)) }.toTypedArray()
+        val current = FREQUENCY_VALUES.indexOf(BackupScheduler.getFrequency(ctx)).coerceAtLeast(0)
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.backup_schedule_frequency_title)
+            .setSingleChoiceItems(labels, current) { dialog, which ->
+                val chosen = FREQUENCY_VALUES[which]
+                if (chosen != FREQUENCY_OFF && BackupScheduler.getTreeUri(ctx) == null) {
+                    toast(getString(R.string.backup_schedule_needs_folder))
+                    dialog.dismiss()
+                    return@setSingleChoiceItems
+                }
+                BackupScheduler.setFrequency(ctx, chosen)
+                findPreference<Preference>(PREF_KEY_SCHEDULE_FREQ)?.summary =
+                    frequencySummary(chosen)
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun launchFolderPicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        folderLauncher.launch(intent)
+    }
+
+    private fun onFolderPicked(uri: Uri) {
+        // Persist the read/write grant across process death and reboots; without
+        // this the URI becomes unusable as soon as the picker Activity is gone.
+        val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        requireContext().contentResolver.takePersistableUriPermission(uri, flags)
+        BackupScheduler.setTreeUri(requireContext(), uri)
+        folderPreference?.summary = folderSummary(uri)
+    }
+
+    private fun promptRetention() {
+        val ctx = requireContext()
+        val labels = RETENTION_VALUES.map { it.toString() }.toTypedArray()
+        val current = RETENTION_VALUES.indexOf(BackupScheduler.getRetention(ctx)).coerceAtLeast(0)
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.backup_schedule_retention_title)
+            .setSingleChoiceItems(labels, current) { dialog, which ->
+                val chosen = RETENTION_VALUES[which]
+                BackupScheduler.setRetention(ctx, chosen)
+                findPreference<Preference>(PREF_KEY_SCHEDULE_RETENTION)?.summary =
+                    getString(R.string.backup_schedule_retention_summary, chosen)
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun frequencySummary(frequency: String): String =
+        getString(frequencyLabelRes(frequency))
+
+    private fun frequencyLabelRes(frequency: String): Int = when (frequency) {
+        FREQUENCY_DAILY -> R.string.backup_schedule_frequency_daily
+        FREQUENCY_WEEKLY -> R.string.backup_schedule_frequency_weekly
+        FREQUENCY_MONTHLY -> R.string.backup_schedule_frequency_monthly
+        else -> R.string.backup_schedule_frequency_off
+    }
+
+    private fun folderSummary(uri: Uri?): String {
+        if (uri == null) return getString(R.string.backup_schedule_folder_none)
+        val name = DocumentFile.fromTreeUri(requireContext(), uri)?.name
+        return name ?: uri.toString()
     }
 
     private fun extractCharArray(input: EditText): CharArray {

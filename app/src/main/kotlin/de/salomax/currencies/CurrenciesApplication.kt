@@ -1,6 +1,7 @@
 package de.salomax.currencies
 
 import android.app.Application
+import de.salomax.currencies.repository.BackupScheduler
 import de.salomax.currencies.repository.Database
 import java.net.InetAddress
 import kotlin.concurrent.thread
@@ -11,6 +12,17 @@ class CurrenciesApplication : Application() {
         super.onCreate()
         warmSharedPreferences()
         prewarmProviderDns()
+        reregisterScheduledBackup()
+    }
+
+    // WorkManager persists jobs, but re-enqueuing on startup is a cheap way to
+    // recover from edge cases (app updates that changed the worker class,
+    // "Force stop" that dropped scheduled work, users who cleared app data).
+    // No-op when the user hasn't enabled scheduled backups.
+    private fun reregisterScheduledBackup() {
+        thread(name = "backup-scheduler-init", isDaemon = true) {
+            runCatching { BackupScheduler.reschedule(this) }
+        }
     }
 
     // Force each SharedPreferences file the app uses to load from disk on a

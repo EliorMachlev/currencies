@@ -68,6 +68,17 @@
     <string name="backup_password_prompt_title">Enter password</string>
     <string name="backup_password_wrong">Password didn\'t decrypt this file. Try again.</string>
     <string name="backup_password_too_short">Password must be at least %1$d characters</string>
+    <string name="backup_section_schedule">Scheduled backup</string>
+    <string name="backup_schedule_frequency_title">Frequency</string>
+    <string name="backup_schedule_frequency_off">Off</string>
+    <string name="backup_schedule_frequency_daily">Daily</string>
+    <string name="backup_schedule_frequency_weekly">Weekly</string>
+    <string name="backup_schedule_frequency_monthly">Monthly</string>
+    <string name="backup_schedule_folder_title">Destination folder</string>
+    <string name="backup_schedule_folder_none">Not selected</string>
+    <string name="backup_schedule_retention_title">Keep last</string>
+    <string name="backup_schedule_retention_summary">Keep %1$d most recent backups</string>
+    <string name="backup_schedule_needs_folder">Pick a destination folder first</string>
     <!-- graph options -->
     <string name="category_graph_options">Graph options</string>
     <string name="graph_options_key" translatable="false">KEY_GRAPH_OPTIONS</string>
