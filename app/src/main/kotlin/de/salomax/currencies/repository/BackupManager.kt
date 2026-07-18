@@ -5,10 +5,13 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Base64
+import org.bouncycastle.crypto.generators.Argon2BytesGenerator
+import org.bouncycastle.crypto.params.Argon2Parameters
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.nio.charset.StandardCharsets
 import java.security.GeneralSecurityException
 import java.security.SecureRandom
 import java.time.Instant
@@ -37,16 +40,30 @@ private const val ENC_CIPHER = "cipher"
 private const val ENC_IV = "iv"
 private const val ENC_CIPHERTEXT = "ciphertext"
 
+// Argon2id-only block keys.
+private const val ENC_MEMORY_KIB = "memoryKib"
+private const val ENC_PARALLELISM = "parallelism"
+
 // KDF & cipher identifiers stored verbatim in the file so a future reader can
 // reject algorithms it doesn't understand instead of silently mis-decrypting.
-private const val KDF_ID = "PBKDF2-HMAC-SHA256"
+// New exports use ARGON2ID_ID; PBKDF2_ID is retained only as a reader path
+// for files exported by an earlier revision of this branch.
+private const val ARGON2ID_ID = "ARGON2ID-v1.3"
+private const val PBKDF2_ID = "PBKDF2-HMAC-SHA256"
 private const val CIPHER_ID = "AES-256-GCM"
 
-// PBKDF2 parameters. OWASP 2023 baseline is 600_000 for HMAC-SHA256, but
-// mobile devices are slow enough that 210_000 keeps unlock under ~1s on
-// mid-range hardware while still costing an attacker meaningfully.
-private const val PBKDF2_ITERATIONS = 210_000
-private const val PBKDF2_KEY_LENGTH_BITS = 256
+private const val KEY_LENGTH_BITS = 256
+private const val KEY_LENGTH_BYTES = KEY_LENGTH_BITS / 8
+
+// Argon2id parameters. OWASP 2023 gives several equivalent-strength profiles;
+// we pick m=32 MiB, t=3, p=1 as a balance between mid-range Android RAM
+// headroom and cost to an offline attacker with GPU/ASIC. Memory-hardness is
+// the property that resists quantum speedups (Grover parallelizes compute,
+// not memory bandwidth).
+private const val ARGON2_MEMORY_KIB = 32 * 1024
+private const val ARGON2_ITERATIONS = 3
+private const val ARGON2_PARALLELISM = 1
+
 private const val SALT_LENGTH_BYTES = 32
 private const val GCM_IV_LENGTH_BYTES = 12
 private const val GCM_TAG_LENGTH_BITS = 128
@@ -191,21 +208,23 @@ class BackupManager(private val context: Context) {
     private fun encryptNamespaces(namespaces: JSONObject, password: CharArray): JSONObject {
         // Key-IV reuse invariant: on every call we draw a fresh 32-byte salt
         // AND a fresh 12-byte IV from SecureRandom. Because the AES key is
-        // derived as PBKDF2(password, salt), a new salt yields a new key —
+        // derived as Argon2id(password, salt), a new salt yields a new key —
         // so even if two exports somehow drew the same IV, they'd still use
         // distinct keys. This is why the Semgrep GCM heuristic is a
         // false-positive here.
         val salt = ByteArray(SALT_LENGTH_BYTES).also(secureRandom::nextBytes)
         val iv = ByteArray(GCM_IV_LENGTH_BYTES).also(secureRandom::nextBytes)
-        val key = deriveKey(password, salt)
+        val key = deriveKeyArgon2id(password, salt, ARGON2_MEMORY_KIB, ARGON2_ITERATIONS, ARGON2_PARALLELISM)
         // nosemgrep: kotlin.lang.security.gcm-detection.gcm-detection
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, key, GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv))
         val plaintext = namespaces.toString().toByteArray(Charsets.UTF_8)
         val ciphertext = cipher.doFinal(plaintext)
         return JSONObject().apply {
-            put(ENC_KDF, KDF_ID)
-            put(ENC_ITERATIONS, PBKDF2_ITERATIONS)
+            put(ENC_KDF, ARGON2ID_ID)
+            put(ENC_MEMORY_KIB, ARGON2_MEMORY_KIB)
+            put(ENC_ITERATIONS, ARGON2_ITERATIONS)
+            put(ENC_PARALLELISM, ARGON2_PARALLELISM)
             put(ENC_SALT, base64(salt))
             put(ENC_CIPHER, CIPHER_ID)
             put(ENC_IV, base64(iv))
@@ -216,15 +235,29 @@ class BackupManager(private val context: Context) {
     private fun decryptNamespaces(encBlock: JSONObject, password: CharArray): JSONObject {
         val kdf = encBlock.optString(ENC_KDF)
         val cipherId = encBlock.optString(ENC_CIPHER)
-        if (kdf != KDF_ID || cipherId != CIPHER_ID) {
-            throw GeneralSecurityException("Unsupported algorithms: kdf=$kdf cipher=$cipherId")
+        if (cipherId != CIPHER_ID) {
+            throw GeneralSecurityException("Unsupported cipher: $cipherId")
         }
-        val iterations = encBlock.optInt(ENC_ITERATIONS, -1)
-        if (iterations <= 0) throw GeneralSecurityException("Invalid iteration count")
         val salt = decodeBase64(encBlock, ENC_SALT)
         val iv = decodeBase64(encBlock, ENC_IV)
         val ciphertext = decodeBase64(encBlock, ENC_CIPHERTEXT)
-        val key = deriveKey(password, salt, iterations)
+        val key = when (kdf) {
+            ARGON2ID_ID -> {
+                val memoryKib = encBlock.optInt(ENC_MEMORY_KIB, -1)
+                val iterations = encBlock.optInt(ENC_ITERATIONS, -1)
+                val parallelism = encBlock.optInt(ENC_PARALLELISM, -1)
+                if (memoryKib <= 0 || iterations <= 0 || parallelism <= 0) {
+                    throw GeneralSecurityException("Invalid Argon2 parameters")
+                }
+                deriveKeyArgon2id(password, salt, memoryKib, iterations, parallelism)
+            }
+            PBKDF2_ID -> {
+                val iterations = encBlock.optInt(ENC_ITERATIONS, -1)
+                if (iterations <= 0) throw GeneralSecurityException("Invalid iteration count")
+                deriveKeyPbkdf2(password, salt, iterations)
+            }
+            else -> throw GeneralSecurityException("Unsupported KDF: $kdf")
+        }
         // Decrypt path — same GCM Semgrep heuristic; IV comes from the file
         // and is uniquely paired with its key (see encryptNamespaces).
         // nosemgrep: kotlin.lang.security.gcm-detection.gcm-detection
@@ -238,12 +271,43 @@ class BackupManager(private val context: Context) {
         return JSONObject(String(plaintext, Charsets.UTF_8))
     }
 
-    private fun deriveKey(
+    /**
+     * Argon2id is memory-hard, which is the property that neutralises the
+     * √N speedup Grover's algorithm gives a quantum attacker against a
+     * password-guessing loop — parallelism gains from Grover don't help
+     * when memory bandwidth dominates the cost of each guess.
+     */
+    private fun deriveKeyArgon2id(
         password: CharArray,
         salt: ByteArray,
-        iterations: Int = PBKDF2_ITERATIONS,
+        memoryKib: Int,
+        iterations: Int,
+        parallelism: Int,
     ): SecretKeySpec {
-        val spec = PBEKeySpec(password, salt, iterations, PBKDF2_KEY_LENGTH_BITS)
+        val passwordBytes = password.toUtf8Bytes()
+        try {
+            val params = Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
+                .withVersion(Argon2Parameters.ARGON2_VERSION_13)
+                .withSalt(salt)
+                .withMemoryAsKB(memoryKib)
+                .withIterations(iterations)
+                .withParallelism(parallelism)
+                .build()
+            val generator = Argon2BytesGenerator().apply { init(params) }
+            val out = ByteArray(KEY_LENGTH_BYTES)
+            generator.generateBytes(passwordBytes, out)
+            return SecretKeySpec(out, "AES")
+        } finally {
+            passwordBytes.fill(0)
+        }
+    }
+
+    private fun deriveKeyPbkdf2(
+        password: CharArray,
+        salt: ByteArray,
+        iterations: Int,
+    ): SecretKeySpec {
+        val spec = PBEKeySpec(password, salt, iterations, KEY_LENGTH_BITS)
         try {
             val raw = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
                 .generateSecret(spec).encoded
@@ -251,6 +315,18 @@ class BackupManager(private val context: Context) {
         } finally {
             spec.clearPassword()
         }
+    }
+
+    /**
+     * UTF-8 encode without going through String (which would linger in the
+     * String pool). CharArray → ByteArray via NIO CharBuffer.
+     */
+    private fun CharArray.toUtf8Bytes(): ByteArray {
+        val charBuffer = java.nio.CharBuffer.wrap(this)
+        val byteBuffer = StandardCharsets.UTF_8.encode(charBuffer)
+        val bytes = ByteArray(byteBuffer.remaining())
+        byteBuffer.get(bytes)
+        return bytes
     }
 
     private fun serializeNamespace(prefs: SharedPreferences): JSONObject {
