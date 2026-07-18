@@ -269,8 +269,10 @@ class BackupFragment : PreferenceFragmentCompat() {
 
     private fun extractCharArray(input: EditText): CharArray {
         val editable = input.text ?: return CharArray(0)
+        // Copy char-by-char rather than `toString().toCharArray()` so the
+        // password never lands in the JVM String pool.
         val chars = CharArray(editable.length)
-        editable.getChars(0, editable.length, chars, 0)
+        for (i in 0 until editable.length) chars[i] = editable[i]
         return chars
     }
 
