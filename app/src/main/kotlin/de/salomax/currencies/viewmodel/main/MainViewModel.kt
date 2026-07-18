@@ -8,7 +8,6 @@ import androidx.core.text.bold
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
@@ -16,37 +15,29 @@ import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
+import de.salomax.currencies.model.FeeCalculator
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
+import de.salomax.currencies.util.OPERATOR_DIVIDE
+import de.salomax.currencies.util.OPERATOR_MINUS
+import de.salomax.currencies.util.OPERATOR_MULTIPLY
+import de.salomax.currencies.util.OPERATOR_PLUS
 import de.salomax.currencies.util.combineWith
+import de.salomax.currencies.util.evaluateCalculatorExpression
 import de.salomax.currencies.util.getDecimalSeparator
 import de.salomax.currencies.util.getSignificantDecimalPlaces
 import de.salomax.currencies.util.hasAppendedCurrencySymbol
 import de.salomax.currencies.util.toHumanReadableNumber
-import org.mariuszgromada.math.mxparser.Expression
 import java.math.BigDecimal
 import java.math.MathContext
 import java.text.Collator
 import java.time.LocalDate
 import java.time.ZoneId
 
-private val PERCENTAGE_DIVISOR = BigDecimal("100")
-
 // KeyboardType value used by the basic (non-extended) keypad. Any other value
 // (currently only "1" = calculator/extended) unlocks the operators row.
 private const val KEYBOARD_TYPE_BASIC = 0
-
-// Calculator operator glyphs shown to the user. Kept as constants so the
-// "which operator?" check and the "insert this operator" call agree on the
-// exact Unicode codepoint (typographical minus and multiplication signs
-// differ from ASCII "-" and "*").
-private const val OPERATOR_PLUS = "\u002B"      // +
-private const val OPERATOR_MINUS = "\u2212"     // − (minus sign, not hyphen)
-private const val OPERATOR_MULTIPLY = "\u00D7"  // ×
-private const val OPERATOR_DIVIDE = "\u00F7"    // ÷
-private val OPERATOR_REGEX =
-    Regex("[$OPERATOR_PLUS$OPERATOR_MINUS$OPERATOR_MULTIPLY$OPERATOR_DIVIDE]")
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidViewModel(app) {
@@ -80,8 +71,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
 
 
     // number input
-    private val currentBaseValueText = MutableLiveData("0")
-    private val currentCalculationValueText = MutableLiveData<String?>()
+    private val input = CalculatorInputState()
+    private val currentBaseValueText: LiveData<String?> = input.baseValueText
+    private val currentCalculationValueText: LiveData<String?> = input.calculationValueText
 
     // currency selection
     private val currentBaseCurrency: LiveData<Currency?>
@@ -332,40 +324,9 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         }
 
         fun update() {
-            if (isInCalculationMode())
-                this.value = calculationValueText?.evaluateMathExpression()
-            else
-                this.value = baseValueText
-        }
-
-        // Turns e.g. "1 + 2 × 4" to "9"
-        fun String.evaluateMathExpression(): String? {
-            // change nice operators to proper computer operators
-            var s = this
-                .replace(" ", "")
-                .replace(OPERATOR_MINUS, "-")
-                .replace(OPERATOR_MULTIPLY, "*")
-                .replace(OPERATOR_DIVIDE, "/")
-            // smart percentage: A+B% = A+(A*B/100), A-B% = A-(A*B/100)
-            s = s.replace(Regex("""(\d+(?:\.\d+)?)([+\-])(\d+(?:\.\d+)?)%""")) { m ->
-                "${m.groupValues[1]}${m.groupValues[2]}(${m.groupValues[1]}*${m.groupValues[3]}/100)"
-            }
-            // simple percentage: B% = B/100
-            s = s.replace("%", "/100")
-            // fill, if last character is an operator
-            when (s.trim().last()) {
-                '/' -> s += "1"
-                '*' -> s += "1"
-                '+' -> s += "0"
-                '-' -> s += "0"
-                '.' -> s += "0"
-            }
-            // calculate
-            val result = Expression(s).calculate()
-            return if (result.isNaN())
-                "0"
-            else
-                result.toBigDecimal().toPlainString()
+            this.value =
+                if (isInCalculationMode()) calculationValueText?.evaluateCalculatorExpression()
+                else baseValueText
         }
     }
 
@@ -456,7 +417,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
                 val displayed = when (side ?: FeeSide.ORIGINAL) {
                     FeeSide.ORIGINAL -> fair
                     FeeSide.CONVERTED -> {
-                        val stack = computeTotalStack(
+                        val stack = FeeCalculator.totalStack(
                             feeList.orEmpty(),
                             baseCurrency,
                             destinationCurrency,
@@ -471,62 +432,12 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     }
 
     /**
-     * Return only those fees that apply for the given base/destination pair.
-     */
-    private fun applicableFees(
-        all: List<Fee>,
-        base: Currency?,
-        dest: Currency?,
-    ): List<Fee> {
-        val baseCode = base?.iso4217Alpha()
-        val destCode = dest?.iso4217Alpha()
-        return all.filter { fee ->
-            when (fee) {
-                is Fee.GlobalExchange, is Fee.GlobalBank -> true
-                is Fee.SpecificPair -> {
-                    if (baseCode == null || destCode == null) false
-                    else if (fee.from == baseCode && fee.to == destCode) true
-                    else if (fee.bothWays && fee.from == destCode && fee.to == baseCode) true
-                    else false
-                }
-            }
-        }
-    }
-
-    /**
-     * Compute the multiplicative stack factor for a subset of fees:
-     * `product over subset of (1 +/- percent/100)`.
-     */
-    private fun stackFactor(subset: List<Fee>): BigDecimal {
-        var acc = BigDecimal.ONE
-        subset.forEach { fee ->
-            val delta = fee.percent.divide(PERCENTAGE_DIVISOR, MathContext.DECIMAL128)
-            val factor = if (fee.isMarkup) BigDecimal.ONE + delta else BigDecimal.ONE - delta
-            acc = acc.multiply(factor, MathContext.DECIMAL128)
-        }
-        return acc
-    }
-
-    private fun computeTotalStack(
-        all: List<Fee>,
-        base: Currency?,
-        dest: Currency?,
-    ): BigDecimal {
-        val applicable = applicableFees(all, base, dest)
-        val specific = stackFactor(applicable.filterIsInstance<Fee.SpecificPair>())
-        val exchange = stackFactor(applicable.filterIsInstance<Fee.GlobalExchange>())
-        val bank = stackFactor(applicable.filterIsInstance<Fee.GlobalBank>())
-        return specific.multiply(exchange, MathContext.DECIMAL128)
-            .multiply(bank, MathContext.DECIMAL128)
-    }
-
-    /**
      * Public accessor for the fee stack factor of an arbitrary pair,
      * used by ad-hoc UIs (e.g. the quick-conversions popup) that need to
      * apply fees outside the main result pipeline.
      */
     internal fun feeStackFor(base: Currency?, dest: Currency?): BigDecimal {
-        return computeTotalStack(fees.value.orEmpty(), base, dest)
+        return FeeCalculator.totalStack(fees.value.orEmpty(), base, dest)
     }
 
     /**
@@ -546,7 +457,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
         }
 
         private fun update() {
-            this.value = computeTotalStack(feeList.orEmpty(), base, dest)
+            this.value = FeeCalculator.totalStack(feeList.orEmpty(), base, dest)
         }
     }
 
@@ -667,127 +578,16 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * user input **********************************************************************************
      */
 
-    internal fun addNumber(value: String) {
-        // in calculation mode: add to upper row
-        if (isInCalculationMode()) {
-            // last input was "0"
-            if (currentCalculationValueText.value!!.split(" ").last().trim() == "0") {
-                // replace that "0" with any other number
-                if (value != "0" && value != "00" && value != "000")
-                    currentCalculationValueText.value =
-                        currentCalculationValueText.value?.trim()?.dropLast(1)?.plus(value)
-            }
-            // last input was an operator: replace "00" and "000" with "0"
-            else if (currentCalculationValueText.value!!.split(" ").last().isEmpty()
-                && (value == "00" || value == "000"))
-                currentCalculationValueText.value += 0
-            else
-                currentCalculationValueText.value += value
-        }
-        // else: add to lower row
-        else {
-            currentBaseValueText.value =
-                if (currentBaseValueText.value == "0") {
-                    if (value == "00" || value == "000") "0"
-                    else value
-                } else currentBaseValueText.value.plus(value)
-        }
-    }
-
-    internal fun paste(value: Number) {
-        // clear base value (but not calculation row!)
-        currentBaseValueText.value = "0"
-        // paste
-        value.toString().forEach {
-            addNumber(it.toString())
-        }
-    }
-
-    internal fun addPercent() {
-        if (!isInCalculationMode())
-            currentCalculationValueText.value = currentBaseValueText.value
-        val current = currentCalculationValueText.value?.trim() ?: return
-        if (current.isNotEmpty() && (current.last().isDigit() || current.last() == '.'))
-            currentCalculationValueText.value =
-                if (current.last() == '.') current.dropLast(1) + "%" else current + "%"
-    }
-
-    internal fun addDecimal() {
-        // in calculation mode: add to upper row
-        if (isInCalculationMode()) {
-            if (!currentCalculationValueText.value!!.substringAfterLast(" ").contains(".")) {
-                // if last char is not a number: add 0
-                if (currentCalculationValueText.value!!.trim().last().isDigit().not())
-                    currentCalculationValueText.value += "0"
-                currentCalculationValueText.value += "."
-            }
-        }
-        // add to lower row
-        else
-            if (!currentBaseValueText.value!!.contains("."))
-                currentBaseValueText.value += "."
-    }
-
-    internal fun delete() {
-        // in calculation mode: delete from upper row
-        if (isInCalculationMode()) {
-            currentCalculationValueText.value = currentCalculationValueText.value!!.trim().dropLast(1)
-            // if last char is a number: trim!
-            if (currentCalculationValueText.value!!.trim().last().isDigit())
-                currentCalculationValueText.value = currentCalculationValueText.value!!.trim()
-            // if only a number is left without an operator, delete it completely
-            if (!currentCalculationValueText.value!!.contains(OPERATOR_REGEX))
-                currentCalculationValueText.value = null
-        }
-        // delete from lower row
-        else {
-            if (currentBaseValueText.value!!.length > 1)
-                currentBaseValueText.value = currentBaseValueText.value?.dropLast(1)
-            else
-                clear()
-        }
-    }
-
-    internal fun clear() {
-        currentBaseValueText.value = "0"
-        currentCalculationValueText.value = null
-    }
-
-    internal fun addition() {
-        addOperator(OPERATOR_PLUS)
-    }
-
-    internal fun subtraction() {
-        addOperator(OPERATOR_MINUS)
-    }
-
-    internal fun multiplication() {
-        addOperator(OPERATOR_MULTIPLY)
-    }
-
-    internal fun division() {
-        addOperator(OPERATOR_DIVIDE)
-    }
-
-    private fun addOperator(operator: String) {
-
-        fun Char.isOperator(): Boolean =
-            this.toString().matches(OPERATOR_REGEX)
-
-        // in calculation mode & already has operator at end position: exchange it!
-        if (isInCalculationMode() && currentCalculationValueText.value!!.trim().last().isOperator())
-            currentCalculationValueText.value = currentCalculationValueText.value?.trim()?.dropLast(1) + "$operator "
-        // in calculation mode & last position is '.' -> remove it and add operator
-        else if (isInCalculationMode() && currentCalculationValueText.value!!.trim().last() == '.')
-            currentCalculationValueText.value = currentCalculationValueText.value?.trim()?.dropLast(1) + " $operator "
-        else {
-            // switch to calculation mode if necessary
-            if (!isInCalculationMode())
-                currentCalculationValueText.value = currentBaseValueText.value
-            // add operator
-            currentCalculationValueText.value = currentCalculationValueText.value?.trim().plus(" $operator ")
-        }
-    }
+    internal fun addNumber(value: String) = input.addNumber(value)
+    internal fun paste(value: Number) = input.paste(value)
+    internal fun addPercent() = input.addPercent()
+    internal fun addDecimal() = input.addDecimal()
+    internal fun delete() = input.delete()
+    internal fun clear() = input.clear()
+    internal fun addition() = input.addOperator(OPERATOR_PLUS)
+    internal fun subtraction() = input.addOperator(OPERATOR_MINUS)
+    internal fun multiplication() = input.addOperator(OPERATOR_MULTIPLY)
+    internal fun division() = input.addOperator(OPERATOR_DIVIDE)
 
     /*
      * selected currencies *************************************************************************
@@ -842,8 +642,6 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
      * helpers =====================================================================================
      */
 
-    private fun isInCalculationMode(): Boolean {
-        return currentCalculationValueText.value.isNullOrBlank().not()
-    }
+    private fun isInCalculationMode(): Boolean = input.isInCalculationMode()
 
 }
