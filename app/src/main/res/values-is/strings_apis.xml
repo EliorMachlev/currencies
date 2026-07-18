@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Viðmiðunargengi, eins og gefið út af ísraelska seðlabankanum <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Gengi er skráð gagnvart nýja ísraelska sekelnum.\n<b>Bank of Israel skráir um 14 gengi.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Um 14 gengi\nHeimild: Seðlabanki Ísraels</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Viðmiðunargengi eru birt einu sinni á hverjum virkum degi um kl. 15:30 að ísraelskum tíma.</string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">Gengi eru uppfærð um miðnætti UTC alla virka daga.</string>
     <string name="api_ferEe_descriptionUpdateInterval">Gengi eru uppfærð alla virka daga.</string>
     <string name="api_frankfurterApp_descriptionUpdateInterval">Gengi eru uppfærð um 16:00 CET alla virka daga.</string>

@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">میانگین روزانه نرخ ارز <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>بانک کانادا</b></a>.\n<b>حدود 23 ارز گنجانده شده است.</b></string>
     <string name="api_bankOfCanada_descriptionShort">حدود 23 نرخ ارز\nمنبع: بانک مرکزی کانادا</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">نرخ ها یک بار در هر روز کاری تا ساعت 16:30 ET منتشر می شود</string>
+    <string name="api_bankOfIsrael_descriptionFull">نرخ‌های ارز نمایندگی، همانطور که توسط بانک مرکزی اسرائیل <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>بانک اسرائیل</b></a> منتشر می‌شود. نرخ‌ها در برابر شکل جدید اسرائیل ذکر می‌شوند.\n<b>بانک اسرائیل حدود 14 نرخ ارز را فهرست کرده است.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">حدود 14 نرخ ارز\nمنبع: بانک مرکزی اسرائیل</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">نرخ‌های نمایندگی یک بار در هر روز کاری در حدود ساعت 15:30 به وقت اسرائیل منتشر می‌شود.</string>
     <string name="api_bankRossii_descriptionFull">نرخ ارز، همانطور که توسط بانک مرکزی روسیه <a href="https://cbr.ru/eng/currency_base/daily/"><b>بانک Rossii</b></a> ارائه شده است. با تحریم های فعلی، این منبع احتمالاً مطمئن ترین نرخ های مبادله روبل روسیه را ارائه می دهد.\n<b>بانک روسی 44 نرخ ارز را فهرست کرده است.</b></string>
     <string name="api_bankRossii_descriptionShort">حدود 44 نرخ ارز\nمنبع: بانک مرکزی روسیه</string>
     <string name="api_bankRossii_descriptionUpdateInterval">نرخ ها به طور روزانه به روز می شوند، به جز در <a href="https://cbr.ru/eng/other/holidays/">تعطیلات رسمی در روسیه</a>.</string>

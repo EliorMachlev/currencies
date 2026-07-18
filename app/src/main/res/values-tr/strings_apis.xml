@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull"><a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Kanada Merkez Bankası</b></a>\'nın günlük ortalama döviz kurları.\n<b>Yaklaşık 23 para birimi dahildir.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Yaklaşık 23 para birimi\nKaynak: Kanada Merkez Bankası</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Kurlar her iş günü 16:30 ET\'ye kadar bir kez yayınlanır</string>
+    <string name="api_bankOfIsrael_descriptionFull">İsrail merkez bankası <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a> tarafından yayınlanan temsili döviz kurları. Kurlar yeni İsrail şekeline karşı verilmektedir.\n<b>Bank of Israel yaklaşık 14 döviz kurunu listeler.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Yaklaşık 14 para birimi\nKaynak: İsrail Merkez Bankası</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Temsili kurlar her iş günü İsrail saatiyle yaklaşık 15:30\'da yayınlanır.</string>
     <string name="api_bankRossii_descriptionFull">Rusya merkez bankası <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a> tarafından sağlanan döviz kurları. Şu anki yaptırımlarla birlikte, bu kaynak muhtemelen Rus Rublesi için en güvenilir döviz kuru verilerini vermektedir.\n<b>Bank Rossii yaklaşık 44 döviz kurunu listeler.</b></string>
     <string name="api_bankRossii_descriptionShort">Yaklaşık 44 para birimi\nKaynak: Rusya Merkez Bankası</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Kurlar, <a href="https://cbr.ru/eng/other/holidays/">Rusya\'daki resmi tatiller</a> dışında günlük olarak güncellenir.</string>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Representative valutakurser, som publisert av den israelske sentralbanken <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Kursene noteres mot den nye israelske shekelen.\n<b>Bank of Israel oppgir ca. 14 valutakurser.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Ca. 14 valutakurser\nKilde: Israels sentralbank</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Representative kurser publiseres én gang hver arbeidsdag rundt kl. 15:30 israelsk tid.</string>
     <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> henter inn valutakurser fra forskjellige finansdatatilbydere og banker, inkludert den Europeiske sentralbanken. All vekslingsdata leveres som midpunktsdata- Disse kursene bestemmes ved å regne ut gjen. medianrate fra tilbud og etterspørsel.\n<b>Ca. 160 valutaer.</b></string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">Valutakurser oppdateres rundt midnatt UTC hver arbeidsdag.</string>
     <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> er en relativt ny tjeneste, som (akkurat som Frankfurter.app) sporer referansekursene (forex) som publisert av den Europeiske sentralbanken.\n<b>Ca. 30 valutaer.</b></string>

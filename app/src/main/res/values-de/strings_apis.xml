@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Tägliche Durchschnittswechselkurse von der <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>.\n<b>Etwa 23 Währungen sind enthalten.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Ungefähr 23 Wechselkurse\nQuelle: Kanadische Zentralbank</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Die Kurse werden an jedem Werktag um 16:30 ET veröffentlicht.</string>
+    <string name="api_bankOfIsrael_descriptionFull">Repräsentative Wechselkurse, veröffentlicht von der israelischen Zentralbank <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Die Kurse werden gegen den neuen israelischen Schekel notiert.\n<b>Bank of Israel listet etwa 14 Wechselkurse.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Ungefähr 14 Wechselkurse\nQuelle: Israelische Zentralbank</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Repräsentative Kurse werden an jedem Werktag um ca. 15:30 israelischer Zeit veröffentlicht.</string>
     <string name="api_bankRossii_descriptionFull">Wechselkurse, Angeboten von der russischen Zentralbank <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. Mit den aktuellen Sanktionen liefert diese Quelle vermutlich die zuverlässigsten Wechselkursdaten zum russischen Rubel.\n<b>Bank Rossii listet etwa 44 Wechselkurse.</b></string>
     <string name="api_bankRossii_descriptionShort">Ungefähr 44 Wechselkurse\nQuelle: Zentralbank der Russischen Föderation</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Kurse werden täglich aktualisiert, außer an <a href="https://cbr.ru/eng/other/holidays/">gesetzlichen Feiertagen in Russland</a>.</string>

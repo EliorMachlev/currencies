@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">متوسط أسعار الصرف اليومية في <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>بنك كندا</b></a>.\n<b>يتم تضمين حوالي 23 عملة.</b></string>
     <string name="api_bankOfCanada_descriptionShort">حوالي 23 سعر صرف\nالمصدر: البنك المركزي الكندي</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">يتم نشر الأسعار مرة واحدة كل يوم عمل بحلول الساعة 16:30 بالتوقيت الشرقي ET</string>
+    <string name="api_bankOfIsrael_descriptionFull">أسعار الصرف التمثيلية، على النحو الذي ينشره البنك المركزي الإسرائيلي <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>بنك إسرائيل</b></a>. يتم اقتباس الأسعار مقابل الشيكل الإسرائيلي الجديد.\n<b>يدرج بنك إسرائيل حوالي 14 سعر صرف.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">حوالي 14 سعر صرف\nالمصدر: البنك المركزي الإسرائيلي</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">يتم نشر الأسعار التمثيلية مرة واحدة كل يوم عمل حوالي الساعة 15:30 بتوقيت إسرائيل.</string>
     <string name="api_bankRossii_descriptionFull">أسعار الصرف، على النحو المنصوص عليه من قبل البنك المركزي الروسي <a href="https://cbr.ru/eng/currency_base/daily/"><b>بنك روسي</b></a>. وفي ظل العقوبات الحالية، ربما يقدم هذا المصدر أسعار الصرف الأكثر موثوقية للروبل الروسي.\n<b>يدرج بنك روسي حوالي 44 سعر صرف.</b></string>
     <string name="api_bankRossii_descriptionShort">حوالي 44 سعر صرف\nالمصدر: البنك المركزي الروسي</string>
     <string name="api_bankRossii_descriptionUpdateInterval">يتم تحديث الأسعار يوميًا، باستثناء <a href="https://cbr.ru/eng/other/holidays/">العطلات الرسمية في روسيا</a>.</string>

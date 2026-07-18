@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Reprezentatywne kursy wymiany, publikowane przez izraelski bank centralny <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Kursy są podawane w odniesieniu do nowego szekla izraelskiego.\n<b>Bank of Israel wymienia około 14 kursów wymiany.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Około 14 kursów wymiany\nŹródło: Bank Centralny Izraela</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Reprezentatywne kursy są publikowane raz w każdy dzień roboczy około godziny 15:30 czasu izraelskiego.</string>
     <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> jest zewnętrznym dostawcą usługi dostarczającej informacje na temat różnych banków, nawet Europejskiego Banku Centralnego. Wszystkie dane są dostarczane w danych środkowych. Dane środkowe są obliczane na podstawie mediany <i>Bid and Ask</i>.\n<b>Około 160 walut jest zawartych.</b></string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">Kursy walut aktualizowane są każdego dnia roboczego o północy czasu Greenwich.</string>
     <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> jest stosunkowo nową usługą, która (podobnie jak Frankfurter.app) śledzi kursy referencyjnej wymiany walut (Forex) publikowane przez Europejski Bank Centralny.\n<b>Uwzględniono około 30 walut.</b></string>
