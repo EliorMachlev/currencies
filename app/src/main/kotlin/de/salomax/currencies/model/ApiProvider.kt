@@ -11,6 +11,7 @@ import de.salomax.currencies.model.provider.FrankfurterApp
 import de.salomax.currencies.model.provider.InforEuro
 import de.salomax.currencies.model.provider.NorgesBank
 import de.salomax.currencies.model.provider.OpenExchangerates
+import java.net.URI
 import java.time.LocalDate
 
 private const val ID_FRANKFURTER_APP = 1
@@ -55,6 +56,10 @@ enum class ApiProvider(
 
     fun getHint(context: Context): CharSequence? =
         this.implementation.descriptionHint(context)
+
+    // Host portion of [baseUrl], used to prewarm DNS at app start.
+    fun getHost(): String? =
+        runCatching { URI(this.implementation.baseUrl).host }.getOrNull()
 
     suspend fun getRates(context: Context?, date: LocalDate?): Result<ExchangeRates, FuelError> =
         this.implementation.getRates(context, date)

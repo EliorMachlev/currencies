@@ -24,6 +24,8 @@ Convert between 30–160+ world currencies using live exchange rates fetched fro
 | Starred currencies | Favourite/filter currencies for quick access |
 | Themes | Light, dark, and pure-black modes; follows system setting |
 | Foldable support | Adaptive multi-pane layout via WindowInfoTracker |
+| Predictive back gesture | Opted in via `android:enableOnBackInvokedCallback` (API 33+) |
+| DNS prewarm | Selected provider's host is resolved at app startup on a background thread |
 | Internationalization | 20+ languages via Weblate |
 
 ## Distribution
