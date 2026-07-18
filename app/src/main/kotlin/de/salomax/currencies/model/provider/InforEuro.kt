@@ -8,7 +8,6 @@ import com.github.kittinunf.fuel.moshi.moshiDeserializerOf
 import com.github.kittinunf.result.Result
 import com.github.kittinunf.result.map
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.model.Currency
@@ -49,7 +48,7 @@ class InforEuro : ApiProvider.Api() {
         ).awaitResult(
             moshiDeserializerOf(
                 Moshi.Builder()
-                    .addLast(KotlinJsonAdapterFactory())
+                    .addLast(SHARED_KOTLIN_JSON_ADAPTER_FACTORY)
                     .apply {
                         add(InforEuroRatesAdapter(date ?: LocalDate.now(ZoneOffset.UTC)))
                     }
@@ -76,7 +75,7 @@ class InforEuro : ApiProvider.Api() {
 
         val deserializer = moshiDeserializerOf(
             Moshi.Builder()
-                .addLast(KotlinJsonAdapterFactory())
+                .addLast(SHARED_KOTLIN_JSON_ADAPTER_FACTORY)
                 .add(InforEuroTimelineAdapter(startDate, endDate))
                 .build()
                 .adapter(Timeline::class.java)

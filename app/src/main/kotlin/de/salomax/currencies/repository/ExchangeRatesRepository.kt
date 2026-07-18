@@ -11,6 +11,7 @@ import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Timeline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,21 +37,31 @@ class ExchangeRatesRepository(private val context: Context) {
     private var liveError = MutableLiveData<String?>()
     private var isUpdating = db.isUpdating()
 
+    // Track in-flight fetches so rapid re-triggers (swipe-to-refresh spam,
+    // toolbar tap during pull, currency swap chains) share the current job
+    // instead of spawning parallel HTTP requests against the same endpoint.
+    // A single key per fetch shape is enough: rates has no args, timeline
+    // is keyed by "base|symbol".
+    private var ratesJob: Job? = null
+    private val timelineJobs = mutableMapOf<String, Job>()
+
     /**
      * Gets and returns all latest exchange rates from the API.
      */
     fun getExchangeRates(): LiveData<ExchangeRates?> {
-        launchApiCall { start ->
-            ExchangeRatesService.getRates(
-                apiProvider = db.getApiProvider(),
-                date = db.getHistoricalDate(),
-                context
-            ).processResponse(
-                start = start,
-                successFlag = { success },
-                errorMessage = { error },
-                onSuccess = { db.insertExchangeRates(it) }
-            )
+        if (ratesJob?.isActive != true) {
+            ratesJob = launchApiCall { start ->
+                ExchangeRatesService.getRates(
+                    apiProvider = db.getApiProvider(),
+                    date = db.getHistoricalDate(),
+                    context
+                ).processResponse(
+                    start = start,
+                    successFlag = { success },
+                    errorMessage = { error },
+                    onSuccess = { db.insertExchangeRates(it) }
+                )
+            }
         }
         return liveExchangeRates
     }
@@ -59,30 +70,35 @@ class ExchangeRatesRepository(private val context: Context) {
      * Gets and returns the timeline of the last year of the given base and target currency
      */
     fun getTimeline(base: Currency, symbol: Currency): LiveData<Timeline?> {
-        launchApiCall { start ->
-            ExchangeRatesService.getTimeline(
-                apiProvider = db.getApiProvider(),
-                base = base,
-                symbol = symbol,
-                context = context
-            ).processResponse(
-                start = start,
-                successFlag = { success },
-                errorMessage = { error },
-                onSuccess = { timeline ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        liveTimeline.setValue(timeline)
+        val key = "${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
+        val existing = timelineJobs[key]
+        if (existing?.isActive != true) {
+            val job = launchApiCall { start ->
+                ExchangeRatesService.getTimeline(
+                    apiProvider = db.getApiProvider(),
+                    base = base,
+                    symbol = symbol,
+                    context = context
+                ).processResponse(
+                    start = start,
+                    successFlag = { success },
+                    errorMessage = { error },
+                    onSuccess = { timeline ->
+                        CoroutineScope(Dispatchers.Main).launch {
+                            liveTimeline.setValue(timeline)
+                        }
                     }
-                }
-            )
+                )
+            }
+            timelineJobs[key] = job
         }
         return liveTimeline
     }
 
-    private fun launchApiCall(block: suspend (start: Long) -> Unit) {
+    private fun launchApiCall(block: suspend (start: Long) -> Unit): Job {
         val start = System.currentTimeMillis()
         db.setUpdating(true)
-        CoroutineScope(Dispatchers.IO).launch { block(start) }
+        return CoroutineScope(Dispatchers.IO).launch { block(start) }
     }
 
     private suspend fun <T : Any> Result<T, FuelError>.processResponse(

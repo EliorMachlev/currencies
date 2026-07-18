@@ -48,6 +48,16 @@ The app declares a single permission:
 
 No location, contacts, storage, camera, or microphone access.
 
+## Network Security
+
+`res/xml/network_security_config.xml` refuses cleartext HTTP globally. Every configured exchange-rate provider serves HTTPS only, so the config closes off downgrade / MITM avenues without breaking real traffic.
+
+## Backups
+
+`android:allowBackup="false"` and `android:fullBackupContent="false"` are set in the manifest, backed by an explicit `res/xml/data_extraction_rules.xml` that excludes every domain (`root`, `database`, `sharedpref`, `external`, `file`) from both **cloud backups** and **device-to-device transfers** on Android 12+.
+
+Rationale: SharedPreferences contain the user's OpenExchangeRates API key (if any), their fee config, and starred currencies — none of which should leak into an off-device Google backup by default. Users who want backups get an in-app, opt-in mechanism (see the Backup feature in Settings) with optional password encryption.
+
 ## Code Analysis
 
 | Tool | Scope | Frequency |

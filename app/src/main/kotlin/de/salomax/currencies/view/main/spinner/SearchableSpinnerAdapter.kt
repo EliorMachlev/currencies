@@ -70,11 +70,14 @@ class SearchableSpinnerAdapter(context: Context, resource: Int) :
     }
 
     fun setRates(rates: List<Rate>?) {
-        if (rates == null)
-            this.rates = ArrayList()
-        else
-            this.rates = rates
-        notifyDataSetChanged()
+        val next = rates ?: emptyList()
+        // The spinner row only renders currency + flag; the rate value never
+        // shows. Compare by currency list so no-op updates (same currencies,
+        // fresh values) don't force a full rebind cycle.
+        val sameCurrencies = next.size == this.rates.size &&
+            next.asSequence().zip(this.rates.asSequence()).all { (a, b) -> a.currency == b.currency }
+        this.rates = next
+        if (!sameCurrencies) notifyDataSetChanged()
     }
 
     internal class ViewHolder {

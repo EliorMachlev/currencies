@@ -2,6 +2,8 @@ package de.salomax.currencies.util
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.model.Currency
@@ -25,7 +27,17 @@ internal const val NO_PROVIDER_ID = -1
 
 private const val METADATA_KEY_PREFIX = "_"
 
+// insertExchangeRates() writes ~180 currency keys in a single edit(); the
+// OnSharedPreferenceChangeListener still fires once per key. Debouncing the
+// recompute collapses that burst into a single O(n) pass instead of O(n²).
+// 50 ms is well below any human-perceptible refresh latency and long enough
+// to cover the whole apply() cycle even on slow devices.
+private const val DEBOUNCE_MS = 50L
+
 class SharedPreferenceExchangeRatesLiveData(private val sharedPrefs: SharedPreferences) : LiveData<ExchangeRates?>() {
+
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private val recomputeRunnable = Runnable { postValue(getValueFromPreferences()) }
 
     private fun getValueFromPreferences(): ExchangeRates? {
         if (sharedPrefs.getString(KEY_RATES_BASE, null) == null || sharedPrefs.getString(KEY_RATES_DATE, null) == null)
@@ -51,7 +63,8 @@ class SharedPreferenceExchangeRatesLiveData(private val sharedPrefs: SharedPrefe
     }
 
     private val preferenceChangeListener = OnSharedPreferenceChangeListener { _: SharedPreferences?, _: String? ->
-            postValue(getValueFromPreferences())
+        mainHandler.removeCallbacks(recomputeRunnable)
+        mainHandler.postDelayed(recomputeRunnable, DEBOUNCE_MS)
     }
 
     override fun onActive() {
@@ -62,6 +75,7 @@ class SharedPreferenceExchangeRatesLiveData(private val sharedPrefs: SharedPrefe
 
     override fun onInactive() {
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
+        mainHandler.removeCallbacks(recomputeRunnable)
         super.onInactive()
     }
 
