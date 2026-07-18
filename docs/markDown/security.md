@@ -36,6 +36,16 @@ Users can export their settings from **Settings → Backup & Restore** to a loca
 
 The app requests **no storage permission** — the SAF picker returns a scoped `content://` URI that the user has explicitly granted for that single file.
 
+### Optional password encryption
+
+At export time the user may tick **Encrypt with a password**. When set:
+
+- Password → 256-bit AES key via **PBKDF2-HMAC-SHA256** with a random 32-byte salt and **210 000 iterations** (OWASP mobile-friendly baseline).
+- The `namespaces` block is encrypted with **AES-256-GCM** using a random 12-byte IV and 128-bit auth tag.
+- The wrapper JSON still records `version`, `createdAt`, and the KDF / cipher identifiers so a future reader can reject algorithms it doesn't understand.
+
+On import the app detects the `encryption` block, prompts for the password, and re-prompts on GCM tag failure. Plaintext files exported before this feature landed still import unchanged.
+
 Automatic Android backup remains disabled (`android:allowBackup="false"`) — user-initiated export is the only supported path off-device.
 
 ## Runtime Permissions
