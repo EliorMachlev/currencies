@@ -189,9 +189,16 @@ class BackupManager(private val context: Context) {
     }
 
     private fun encryptNamespaces(namespaces: JSONObject, password: CharArray): JSONObject {
+        // Key-IV reuse invariant: on every call we draw a fresh 32-byte salt
+        // AND a fresh 12-byte IV from SecureRandom. Because the AES key is
+        // derived as PBKDF2(password, salt), a new salt yields a new key —
+        // so even if two exports somehow drew the same IV, they'd still use
+        // distinct keys. This is why the Semgrep GCM heuristic is a
+        // false-positive here.
         val salt = ByteArray(SALT_LENGTH_BYTES).also(secureRandom::nextBytes)
         val iv = ByteArray(GCM_IV_LENGTH_BYTES).also(secureRandom::nextBytes)
         val key = deriveKey(password, salt)
+        // nosemgrep: kotlin.lang.security.gcm-detection.gcm-detection
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, key, GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv))
         val plaintext = namespaces.toString().toByteArray(Charsets.UTF_8)
@@ -218,6 +225,9 @@ class BackupManager(private val context: Context) {
         val iv = decodeBase64(encBlock, ENC_IV)
         val ciphertext = decodeBase64(encBlock, ENC_CIPHERTEXT)
         val key = deriveKey(password, salt, iterations)
+        // Decrypt path — same GCM Semgrep heuristic; IV comes from the file
+        // and is uniquely paired with its key (see encryptNamespaces).
+        // nosemgrep: kotlin.lang.security.gcm-detection.gcm-detection
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.DECRYPT_MODE, key, GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv))
         val plaintext = try {
