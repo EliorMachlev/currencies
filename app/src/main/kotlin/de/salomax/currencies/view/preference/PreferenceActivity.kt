@@ -39,10 +39,14 @@ class PreferenceActivity: BaseActivity() {
         setTitle(R.string.title_preferences)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // When opened directly via feesIntent (from Main / Quick conversions),
+        // make FeeManager the root fragment with no back-stack entry, so pressing
+        // back finishes this activity and returns to the caller — not to Settings.
+        // The path from Settings itself uses its own fragment transaction in
+        // PreferenceFragment (with addToBackStack), so back there still pops to Settings.
         if (savedInstanceState == null && intent.getBooleanExtra(EXTRA_OPEN_FEES, false)) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.preferences_fragment, FeeManagerFragment())
-                .addToBackStack(null)
                 .commit()
         }
     }
