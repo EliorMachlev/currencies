@@ -105,20 +105,21 @@ class BankOfIsrael : ApiProvider.Api() {
         base: Currency,
         symbol: Currency,
     ): Timeline {
-        val ilsFactorByCurrencyDate = observations.groupBy { it.currency }
+        val ilsPerForeignByDate = observations.groupBy { it.currency }
             .mapValues { (_, obs) ->
                 obs.associate { it.date to it.rawValue.divide(unitFor(it.currency), MathContext.DECIMAL128) }
             }
         val baseCode = base.iso4217Alpha()
         val symbolCode = symbol.iso4217Alpha()
 
-        val allDates = ilsFactorByCurrencyDate.values.flatMap { it.keys }.toSortedSet()
+        val allDates = ilsPerForeignByDate.values.flatMap { it.keys }.toSortedSet()
         val rates = sortedMapOf<LocalDate, Rate>()
         for (date in allDates) {
-            val basePerIls = perIlsFor(baseCode, date, ilsFactorByCurrencyDate) ?: continue
-            val symbolPerIls = perIlsFor(symbolCode, date, ilsFactorByCurrencyDate) ?: continue
-            // 1 base = (basePerIls) / (symbolPerIls) symbol
-            val ratio = basePerIls.divide(symbolPerIls, MathContext.DECIMAL128)
+            val ilsPerBase = ilsPerFor(baseCode, date, ilsPerForeignByDate) ?: continue
+            val ilsPerSymbol = ilsPerFor(symbolCode, date, ilsPerForeignByDate) ?: continue
+            if (ilsPerSymbol.signum() == 0) continue
+            // 1 base = ilsPerBase ILS = ilsPerBase / ilsPerSymbol of symbol.
+            val ratio = ilsPerBase.divide(ilsPerSymbol, MathContext.DECIMAL128)
             rates[date] = Rate(symbol, ratio)
         }
 
@@ -133,16 +134,14 @@ class BankOfIsrael : ApiProvider.Api() {
         )
     }
 
-    // Value V (ILS per foreign) → foreign-per-ILS = 1/V. For ILS itself, 1.
-    private fun perIlsFor(
+    // How many ILS one unit of [currencyCode] was worth on [date]. ILS→1.
+    private fun ilsPerFor(
         currencyCode: String,
         date: LocalDate,
-        ilsFactorByCurrencyDate: Map<String, Map<LocalDate, BigDecimal>>,
+        ilsPerForeignByDate: Map<String, Map<LocalDate, BigDecimal>>,
     ): BigDecimal? {
         if (currencyCode == Currency.ILS.iso4217Alpha()) return BigDecimal.ONE
-        val ilsPerCurrency = ilsFactorByCurrencyDate[currencyCode]?.get(date) ?: return null
-        if (ilsPerCurrency.signum() == 0) return null
-        return BigDecimal.ONE.divide(ilsPerCurrency, MathContext.DECIMAL128)
+        return ilsPerForeignByDate[currencyCode]?.get(date)
     }
 
     private fun latestObservationPerCurrency(
