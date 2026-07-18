@@ -33,6 +33,7 @@ Currencies follows **MVVM** (Model-View-ViewModel) with a Repository layer, impl
 
 ```
 app/src/main/kotlin/de/salomax/currencies/
+├── CurrenciesApplication.kt   # Application subclass — prewarms provider DNS at startup
 ├── model/
 │   ├── ApiProvider.kt          # Enum of 6 providers + abstract Api interface
 │   ├── Currency.kt             # 190+ ISO-4217 currencies with symbols & flags
@@ -101,6 +102,18 @@ Behavior preserved: dashed reference line at the last value, scrub-to-past-date 
 ### Graph options: user-tunable chart chrome
 
 Four `SharedPreferenceLiveData<Boolean>` streams — grid, X-axis labels, Y-axis labels, and highlight-extremes — flow from `Database` through the `TimelineActivity` into `TimelineChart`. All default to `true` so first-run appearance is unchanged. Inside the composable each toggle swaps a Vico component for `null` (e.g. `guideline = if (showGrid) rememberAxisGuidelineComponent() else null`); Vico treats `null` as "don't draw," so no branching in the layer definitions is needed.
+
+### Application subclass prewarms DNS for the selected provider
+
+`CurrenciesApplication` is registered via `android:name=".CurrenciesApplication"` on the manifest's `<application>` tag. Its only responsibility today is to resolve the currently-selected `ApiProvider`'s host on a background daemon thread during `onCreate()`, so the first exchange-rate request doesn't pay for DNS.
+
+The preference read (`Database(this).getApiProvider()`) and the `InetAddress.getAllByName(host)` call both run **inside** the background thread — SharedPreferences load and DNS resolution are both blocking I/O and neither belongs on the main thread during app startup. Failures (offline, DNS outage) are swallowed with `runCatching`; this is a best-effort warm-up, not a health check.
+
+`ApiProvider.getHost()` (a narrow accessor over the enum's `private implementation.baseUrl`) exposes only the hostname to callers, so the `Application` never touches the full base URL.
+
+### Predictive back gesture
+
+Opted in via `android:enableOnBackInvokedCallback="true"` on the manifest's `<application>` tag. This is a global opt-in for the predictive back animation on Android 13+ (API 33). No per-screen `OnBackInvokedCallback` wiring is added — the app's existing back behavior is compatible with the default animated preview.
 
 ### Build Flavors: `play` vs `fdroid`
 
