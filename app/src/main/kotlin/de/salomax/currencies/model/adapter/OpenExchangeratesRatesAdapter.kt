@@ -23,33 +23,33 @@ internal class OpenExchangeratesRatesAdapter {
     @FromJson
     @Throws(IOException::class)
     fun fromJson(reader: JsonReader): ExchangeRates? {
-        val rates = mutableListOf<Rate>()
         var base: Currency? = null
         var date: LocalDate? = null
         var time: LocalTime? = null
         var errorMessage: String? = null
 
         if (reader.peek() != JsonReader.Token.BEGIN_OBJECT) return null
-        reader.beginObject()
 
-        while (reader.hasNext()) {
-            if (reader.peek() != JsonReader.Token.NAME) continue
-            when (reader.nextName()) {
-                "rates" -> rates.addAll(parseRates(reader))
-                "timestamp" -> {
-                    val zoned = Instant.ofEpochSecond(reader.nextLong())
-                        .atZone(ZoneId.systemDefault())
-                    date = zoned.toLocalDate()
-                    time = zoned.toLocalTime().withSecond(0).withNano(0)
+        val rates = buildList {
+            reader.beginObject()
+            while (reader.hasNext()) {
+                if (reader.peek() != JsonReader.Token.NAME) continue
+                when (reader.nextName()) {
+                    "rates" -> addAll(parseRates(reader))
+                    "timestamp" -> {
+                        val zoned = Instant.ofEpochSecond(reader.nextLong())
+                            .atZone(ZoneId.systemDefault())
+                        date = zoned.toLocalDate()
+                        time = zoned.toLocalTime().withSecond(0).withNano(0)
+                    }
+                    "base" -> base = Currency.fromString(reader.nextString())
+                    "message" -> errorMessage = reader.nextString()
+                    else -> reader.skipValue()
                 }
-                "base" -> base = Currency.fromString(reader.nextString())
-                "message" -> errorMessage = reader.nextString()
-                else -> reader.skipValue()
             }
+            reader.endObject()
+            addFokFromDkkIfMissing()
         }
-
-        reader.endObject()
-        rates.addFokFromDkkIfMissing()
 
         return if (rates.isNotEmpty())
             ExchangeRates(success = true, error = null, base = base, date = date, time = time,
@@ -59,17 +59,15 @@ internal class OpenExchangeratesRatesAdapter {
                 rates = null, provider = ApiProvider.OPEN_EXCHANGERATES)
     }
 
-    private fun parseRates(reader: JsonReader): List<Rate> {
-        val rates = mutableListOf<Rate>()
+    private fun parseRates(reader: JsonReader): List<Rate> = buildList {
         reader.beginObject()
         while (reader.hasNext()) {
             val name = Currency.fromString(reader.nextName())
             val value: BigDecimal = BigDecimal(reader.nextString())
             if (name != null)
-                rates.add(Rate(name, value))
+                add(Rate(name, value))
         }
         reader.endObject()
-        return rates
     }
 
     @Synchronized

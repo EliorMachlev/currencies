@@ -9,6 +9,21 @@ import java.io.InputStream
 import java.time.format.DateTimeFormatter
 import kotlin.math.pow
 
+// Both InforEuro endpoints return a JSON array on success and an
+// { "message": "..." } object on failure. Peek at the token: on an array,
+// walk it via [onArray] (begin/endArray are handled here); otherwise pass
+// the error message to [onError].
+internal inline fun <T> JsonReader.readArrayOrError(
+    onError: (String?) -> T,
+    onArray: (JsonReader) -> T
+): T {
+    if (peek() != JsonReader.Token.BEGIN_ARRAY) return onError(readErrorMessage())
+    beginArray()
+    val result = onArray(this)
+    endArray()
+    return result
+}
+
 // Providers surface error payloads as { "message": "..." }. This helper reads
 // that message field out of the current object, skipping anything else.
 internal fun JsonReader.readErrorMessage(): String? {
@@ -25,6 +40,10 @@ internal fun JsonReader.readErrorMessage(): String? {
 // Bank Rossii serializes dates as dd.MM.yyyy in every response.
 internal val BANK_ROSSII_DATE_FORMATTER: DateTimeFormatter =
     DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
+// InforEuro's timeline endpoint uses dd/MM/yyyy for dateStart/dateEnd.
+internal val INFOR_EURO_DATE_FORMATTER: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
 // Faroese króna isn't listed by upstream APIs; mirror the Danish krone
 // value into the response so FOK still shows up in the UI as a 1:1 peg.

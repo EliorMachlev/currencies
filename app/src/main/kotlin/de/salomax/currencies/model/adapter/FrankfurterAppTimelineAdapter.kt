@@ -20,8 +20,7 @@ internal class FrankfurterAppTimelineAdapter(private val symbol: Currency) {
 
     @Synchronized
     @FromJson
-    fun fromJson(reader: JsonReader): Map<LocalDate, Rate> {
-        val map = mutableMapOf<LocalDate, Rate>()
+    fun fromJson(reader: JsonReader): Map<LocalDate, Rate> = buildMap {
         reader.beginObject()
         // convert
         while (reader.hasNext()) {
@@ -43,11 +42,10 @@ internal class FrankfurterAppTimelineAdapter(private val symbol: Currency) {
                         null
             }
             if (rate != null)
-                map[date] = rate
+                put(date, rate)
             reader.endObject()
         }
         reader.endObject()
-        return map
     }
 
     @Synchronized

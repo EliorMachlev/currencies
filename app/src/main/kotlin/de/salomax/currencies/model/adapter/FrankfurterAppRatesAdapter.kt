@@ -19,21 +19,19 @@ internal class FrankfurterAppRatesAdapter(private val base: Currency) {
     @Synchronized
     @FromJson
     @Throws(IOException::class)
-    fun fromJson(reader: JsonReader): List<Rate> {
-        val list = mutableListOf<Rate>()
+    fun fromJson(reader: JsonReader): List<Rate> = buildList {
         reader.beginObject()
         // convert
         while (reader.hasNext()) {
             val name: String = reader.nextName()
             val value: BigDecimal = BigDecimal(reader.nextString())
-            Currency.fromString(name)?.let { list.add(Rate(it, value)) }
+            Currency.fromString(name)?.let { add(Rate(it, value)) }
         }
         reader.endObject()
         // add base - but only if it's missing in the api response!
-        if (list.find { rate -> rate.currency == base } == null)
-            list.add(Rate(base, BigDecimal.ONE))
-        list.addFokFromDkkIfMissing()
-        return list
+        if (none { rate -> rate.currency == base })
+            add(Rate(base, BigDecimal.ONE))
+        addFokFromDkkIfMissing()
     }
 
     @Synchronized

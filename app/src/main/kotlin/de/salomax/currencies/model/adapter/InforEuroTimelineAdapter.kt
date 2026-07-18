@@ -11,7 +11,6 @@ import de.salomax.currencies.model.Timeline
 import java.io.IOException
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Suppress("unused", "UNUSED_PARAMETER")
 internal class InforEuroTimelineAdapter(
@@ -19,25 +18,23 @@ internal class InforEuroTimelineAdapter(
     private val endDate: LocalDate
 ) {
 
+    private val base: String = Currency.EUR.iso4217Alpha()
+
     @Synchronized
     @FromJson
     @Throws(IOException::class)
-    fun fromJson(reader: JsonReader): Timeline {
-        val rates = mutableMapOf<LocalDate, Rate>()
-        val datePattern = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
-        if (reader.peek() != JsonReader.Token.BEGIN_ARRAY) return readErrorResponse(reader)
-
-        reader.beginArray()
-        while (reader.hasNext()) {
-            processEntry(reader, datePattern, rates)
+    fun fromJson(reader: JsonReader): Timeline = reader.readArrayOrError(
+        onError = ::errorResponse
+    ) { r ->
+        val rates = buildMap {
+            while (r.hasNext()) {
+                processEntry(r, this)
+            }
         }
-        reader.endArray()
-
-        return Timeline(
+        Timeline(
             success = rates.isNotEmpty(),
             error = null,
-            base = Currency.EUR.iso4217Alpha(),
+            base = base,
             startDate = startDate,
             endDate = endDate,
             rates = rates.toSortedMap(compareBy { it }),
@@ -47,7 +44,6 @@ internal class InforEuroTimelineAdapter(
 
     private fun processEntry(
         reader: JsonReader,
-        datePattern: DateTimeFormatter,
         rates: MutableMap<LocalDate, Rate>
     ) {
         reader.beginObject()
@@ -59,8 +55,8 @@ internal class InforEuroTimelineAdapter(
             when (reader.nextName()) {
                 "currencyIso" -> currencyIso = Currency.fromString(reader.nextString())
                 "amount" -> value = BigDecimal(reader.nextString())
-                "dateStart" -> dateStart = LocalDate.parse(reader.nextString(), datePattern)
-                "dateEnd" -> dateEnd = LocalDate.parse(reader.nextString(), datePattern)
+                "dateStart" -> dateStart = LocalDate.parse(reader.nextString(), INFOR_EURO_DATE_FORMATTER)
+                "dateEnd" -> dateEnd = LocalDate.parse(reader.nextString(), INFOR_EURO_DATE_FORMATTER)
                 else -> reader.skipValue()
             }
         }
@@ -70,24 +66,23 @@ internal class InforEuroTimelineAdapter(
         // inclusive: before-or-equal start
         if (startDate.withDayOfMonth(1).isAfter(dateStart)) return
 
+        val rate = Rate(currencyIso, value)
         var date: LocalDate = dateEnd
         while (!date.isBefore(dateStart)) {
-            rates[date] = Rate(currencyIso, value)
+            rates[date] = rate
             date = date.minusDays(1)
         }
     }
 
-    private fun readErrorResponse(reader: JsonReader): Timeline {
-        return Timeline(
-            success = false,
-            error = reader.readErrorMessage(),
-            base = Currency.EUR.iso4217Alpha(),
-            startDate = null,
-            endDate = null,
-            rates = null,
-            provider = ApiProvider.INFOR_EURO
-        )
-    }
+    private fun errorResponse(message: String?): Timeline = Timeline(
+        success = false,
+        error = message,
+        base = base,
+        startDate = null,
+        endDate = null,
+        rates = null,
+        provider = ApiProvider.INFOR_EURO
+    )
 
     @Synchronized
     @ToJson
