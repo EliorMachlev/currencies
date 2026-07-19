@@ -57,6 +57,13 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         setupGraphOptionsPreference()
         setupApiPreferences()
         setupAboutPreferences()
+
+        // Open the API provider picker directly when launched via
+        // PreferenceActivity.apiPickerIntent (main menu shortcut).
+        if (savedInstanceState == null &&
+            activity?.intent?.getBooleanExtra(PreferenceActivity.EXTRA_OPEN_API_PICKER, false) == true) {
+            findPreference<ProviderPickerPreference>(getString(R.string.api_key))?.performClick()
+        }
     }
 
     private fun setupGraphOptionsPreference() {

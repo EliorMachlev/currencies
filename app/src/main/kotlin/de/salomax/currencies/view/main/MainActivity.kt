@@ -149,12 +149,24 @@ class MainActivity : BaseActivity() {
         return when (item.itemId) {
             R.id.settings -> { startActivity(Intent(this, PreferenceActivity::class.java)); true }
             R.id.fees -> { startActivity(PreferenceActivity.feesIntent(this)); true }
+            R.id.change_api -> { startActivity(PreferenceActivity.apiPickerIntent(this)); true }
             R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
+            R.id.share -> { shareCurrentConversion(); true }
             R.id.timeline -> openTimelineActivity()
             R.id.quick_conversions -> { openQuickConversionsDialog(); true }
             R.id.date_picker -> { openHistoricalDatePicker(); true }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun shareCurrentConversion() {
+        val text = tvInfoConversion.text?.toString().orEmpty()
+        if (text.isBlank()) return
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        startActivity(Intent.createChooser(intent, null))
     }
 
     private fun openQuickConversionsDialog() {

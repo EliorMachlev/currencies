@@ -14,10 +14,15 @@ class PreferenceActivity: BaseActivity() {
 
     companion object {
         const val EXTRA_OPEN_FEES = "EXTRA_OPEN_FEES"
+        const val EXTRA_OPEN_API_PICKER = "EXTRA_OPEN_API_PICKER"
 
         fun feesIntent(context: Context): Intent =
             Intent(context, PreferenceActivity::class.java)
                 .putExtra(EXTRA_OPEN_FEES, true)
+
+        fun apiPickerIntent(context: Context): Intent =
+            Intent(context, PreferenceActivity::class.java)
+                .putExtra(EXTRA_OPEN_API_PICKER, true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
