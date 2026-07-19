@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Tỉ lệ chuyển đổi trung bình hàng ngày của <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Ngân hàng Canada</b></a>.\n<b>Có khoảng 23 tiền tệ.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Khoảng 23 tỉ lệ chuyển đổi\nNguồn: Ngân hàng Trung tâm Canada</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Tỉ lệ được công bố mỗi ngày làm việc một lần trước 16:30 ET</string>
+    <string name="api_bankOfIsrael_descriptionFull">Tỉ lệ chuyển đổi đại diện, được công bố bởi ngân hàng trung ương Israel <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Ngân hàng Israel</b></a>. Tỉ lệ được niêm yết đối với đồng shekel mới của Israel.\n<b>Ngân hàng Israel liệt kê khoảng 14 tỉ lệ chuyển đổi.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Khoảng 14 tỉ lệ chuyển đổi\nNguồn: Ngân hàng Trung ương Israel</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Tỉ lệ đại diện được công bố mỗi ngày làm việc một lần vào khoảng 15:30 giờ Israel.</string>
     <string name="api_bankRossii_descriptionFull">Tỉ lệ chuyển đổi được cung cấp bởi ngân hàng trung tâm nước Nga <a href="https://cbr.ru/eng/currency_base/daily/"><b>Ngân hàng Rossii</b></a>. Với lệnh cấm vận hiện tại, nguồn này có lẽ là đưa ra tỉ lệ chuyển đổi đồng Ruble Nga đáng tin cậy nhất.\n<b>Ngân hàng Rossii liệt kê khoảng 44 tỉ lệ chuyển đổi.</b></string>
     <string name="api_bankRossii_descriptionShort">Khoảng 44 tỉ lệ chuyển đổi\nNguồn: Ngân hàng Trung tâm Nga</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Tỉ lệ được cập nhật hàng ngày, trừ <a href="https://cbr.ru/eng/other/holidays/">những ngày nghỉ toàn nước Nga</a>.</string>

@@ -4,6 +4,10 @@
     <string name="api_bankOfCanada_descriptionShort">ഏകദേശം 23 വിനിമയ നിരക്കുകൾ\nഉറവിടം: കാനഡയുടെ കേന്ദ്ര ബാങ്ക്</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">നിരക്കുകൾ ഓരോ പ്രവൃത്തി ദിനത്തിലും 16:30 ET-ന് പ്രസിദ്ധീകരിക്കുന്നു</string>
 
+    <string name="api_bankOfIsrael_descriptionFull">ഇസ്രായേലി കേന്ദ്ര ബാങ്ക് <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>ബാങ്ക് ഓഫ് ഇസ്രായേൽ</b></a> പ്രസിദ്ധീകരിക്കുന്ന പ്രാതിനിധ്യ വിനിമയ നിരക്കുകൾ. നിരക്കുകൾ ഇസ്രായേലി പുതിയ ഷെക്കലിനെതിരെ ഉദ്ധരിച്ചിരിക്കുന്നു.\n<b>ബാങ്ക് ഓഫ് ഇസ്രായേൽ ഏകദേശം 14 വിനിമയ നിരക്കുകൾ പട്ടികപ്പെടുത്തുന്നു.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">ഏകദേശം 14 വിനിമയ നിരക്കുകൾ\nഉറവിടം: ഇസ്രായേലിന്റെ കേന്ദ്ര ബാങ്ക്</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">പ്രാതിനിധ്യ നിരക്കുകൾ ഓരോ പ്രവൃത്തി ദിനത്തിലും ഏകദേശം 15:30 ഇസ്രായേലി സമയത്ത് പ്രസിദ്ധീകരിക്കുന്നു.</string>
+
     <string name="api_bankRossii_descriptionFull">റഷ്യൻ കേന്ദ്ര ബാങ്ക് <a href="https://cbr.ru/eng/currency_base/daily/"><b>ബാങ്ക് റോസ്സി</b></a> നൽകുന്ന വിനിമയ നിരക്കുകൾ. നിലവിലെ ഉപരോധങ്ങളോടെ, റഷ്യൻ റൂബിളിന് ഏറ്റവും വിശ്വസനീയമായ വിനിമയ നിരക്കുകൾ ഈ ഉറവിടം നൽകാൻ സാധ്യതയുണ്ട്.\n<b>ബാങ്ക് റോസ്സി ഏകദേശം 44 വിനിമയ നിരക്കുകൾ പട്ടികപ്പെടുത്തുന്നു.</b></string>
     <string name="api_bankRossii_descriptionShort">ഏകദേശം 44 വിനിമയ നിരക്കുകൾ\nഉറവിടം: റഷ്യയുടെ കേന്ദ്ര ബാങ്ക്</string>
     <string name="api_bankRossii_descriptionUpdateInterval">നിരക്കുകൾ ദിവസേന അപ്ഡേറ്റ് ചെയ്യുന്നു, <a href="https://cbr.ru/eng/other/holidays/">റഷ്യയിലെ പൊതു അവധി ദിവസങ്ങൾ</a> ഒഴികെ.</string>

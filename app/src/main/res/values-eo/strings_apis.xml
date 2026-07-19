@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Reprezentaj valutkurzoj, publikigitaj de la israela centra banko <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Kurzoj estas kvotitaj kontraŭ la nova israela ŝekelo.\n<b>Bank of Israel listigas ĉirkaŭ 14 valutkurzojn.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Ĉirkaŭ 14 valutkurzoj\nFonto: Centra Banko de Israelo</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Reprezentaj kurzoj estas publikigitaj unufoje ĉiun labortagon ĉirkaŭ la 15:30 israela tempo.</string>
     <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> fontas la valutajn kurzoj el diversaj financaj datumprovizantoj kaj bankoj, inkluzive de la Eŭropa Centra Banko. Ĉiuj kurzoj-datumoj estas liveritaj en mezpunkto-datumoj. Mezpunktaj kurzoj estas determinitaj kalkulante la mezan kurzon de Bid and Ask.\n<b>Proksime 160 valutoj estas inkluzivitaj.</b></string>
 </resources>

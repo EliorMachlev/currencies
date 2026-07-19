@@ -5,6 +5,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.result.Result
 import com.squareup.moshi.JsonClass
 import de.salomax.currencies.model.provider.BankOfCanada
+import de.salomax.currencies.model.provider.BankOfIsrael
 import de.salomax.currencies.model.provider.BankRossii
 import de.salomax.currencies.model.provider.FerEe
 import de.salomax.currencies.model.provider.FrankfurterApp
@@ -20,6 +21,7 @@ private const val ID_NORGES_BANK = 4
 private const val ID_BANK_ROSSII = 5
 private const val ID_BANK_OF_CANADA = 6
 private const val ID_OPEN_EXCHANGERATES = 7
+private const val ID_BANK_OF_ISRAEL = 8
 
 @JsonClass(generateAdapter = false) // see https://stackoverflow.com/a/64085370/421140
 enum class ApiProvider(
@@ -34,12 +36,13 @@ enum class ApiProvider(
     NORGES_BANK(ID_NORGES_BANK, NorgesBank()),
     BANK_ROSSII(ID_BANK_ROSSII, BankRossii()),
     BANK_OF_CANADA(ID_BANK_OF_CANADA, BankOfCanada()),
-    OPEN_EXCHANGERATES(ID_OPEN_EXCHANGERATES, OpenExchangerates());
+    OPEN_EXCHANGERATES(ID_OPEN_EXCHANGERATES, OpenExchangerates()),
+    BANK_OF_ISRAEL(ID_BANK_OF_ISRAEL, BankOfIsrael());
 
     companion object {
         fun fromId(value: Int): ApiProvider = entries.firstOrNull { it.id == value }
             // this is our fallback, e.g. if an API is removed from the app
-            ?: BANK_ROSSII
+            ?: BANK_OF_ISRAEL
     }
 
     fun getName(): CharSequence =

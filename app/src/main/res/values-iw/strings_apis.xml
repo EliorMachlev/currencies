@@ -4,6 +4,10 @@
     <string name="api_bankOfCanada_descriptionShort">כ־23 שערי חליפין\nמקור: הבנק המרכזי של קנדה</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">השערים מתפרסמים פעם ביום עבודה עד השעה 16:30 ET.</string>
 
+    <string name="api_bankOfIsrael_descriptionFull">שערים יציגים, כפי שמפרסם הבנק המרכזי של ישראל <a href="https://www.boi.org.il/he/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>בנק ישראל</b></a>. השערים מצוטטים מול השקל החדש.\n<b>בנק ישראל מפרסם כ־14 שערי חליפין.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">כ־14 שערי חליפין\nמקור: הבנק המרכזי של ישראל</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">השערים היציגים מתפרסמים פעם ביום עבודה בסביבות 15:30 שעון ישראל.</string>
+
     <string name="api_bankRossii_descriptionFull">שערי חליפין, בחסות הבנק המרכזי הרוסי <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. לאור הסנקציות הנוכחיות, מקור זה מספק כנראה את שערי החליפין האמינים ביותר עבור הרובל הרוסי.\n<b>Bank Rossii מציג כ־44 שערי חליפין.</b></string>
     <string name="api_bankRossii_descriptionShort">כ־44 שערי חליפין\nמקור: הבנק המרכזי של רוסיה</string>
     <string name="api_bankRossii_descriptionUpdateInterval">השערים מתעדכנים על בסיס יומי, למעט <a href="https://cbr.ru/eng/other/holidays/">חגים לאומיים ברוסיה</a>.</string>

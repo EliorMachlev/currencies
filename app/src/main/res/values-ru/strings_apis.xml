@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Среднесуточные обменные курсы <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Банка Канады</b></a>.\n<b>Включено около 23 валют.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Около 23 обменных курсов\nИсточник: Центральный банк Канады</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Курсы публикуются один раз в рабочий день до 16:30 по восточному времени</string>
+    <string name="api_bankOfIsrael_descriptionFull">Репрезентативные обменные курсы, публикуемые центральным банком Израиля <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Банком Израиля</b></a>. Курсы указываются по отношению к новому израильскому шекелю.\n<b>Банк Израиля включает около 14 обменных курсов.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Около 14 обменных курсов\nИсточник: Центральный банк Израиля</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Репрезентативные курсы публикуются один раз в рабочий день около 15:30 по израильскому времени.</string>
     <string name="api_bankRossii_descriptionFull">Обменные курсы, предоставленные центральным банком России <a href="https://cbr.ru/eng/currency_base/daily/"><b>Банк России</b></a>. В условиях действующих санкций этот источник предоставляет, вероятно, наиболее надежные обменные курсы для российского рубля.\n<b>Банк России включает около 44 обменных курсов.</b></string>
     <string name="api_bankRossii_descriptionShort">Около 44 обменных курсов\nИсточник: Центральный банк России</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Курсы обновляются ежедневно, за исключением <a href="https://cbr.ru/eng/other/holidays/">государственных праздников в России</a>.</string>

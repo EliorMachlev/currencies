@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Denní průměrné kurzy banky <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>.\n<b>Obsahuje asi 23 měn.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Okolo 23 kurzů\nZdroj: Kanadská centrální banka</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Kurzy jsou zveřejňované každý pracovní den v 16.30 VSČ (22:30 SEČ)</string>
+    <string name="api_bankOfIsrael_descriptionFull">Reprezentativní směnné kurzy zveřejňované izraelskou centrální bankou <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Kurzy jsou uváděny vůči novému izraelskému šekelu.\n<b>Bank of Israel uvádí přibližně 14 směnných kurzů.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Okolo 14 kurzů\nZdroj: Izraelská centrální banka</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Reprezentativní kurzy jsou zveřejňovány jednou za každý pracovní den okolo 15:30 izraelského času.</string>
     <string name="api_bankRossii_descriptionFull">Kurzy poskytované Ruskou centrální bankou <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rosii</b></a>. Při aktuálních sankcích udává tento zdroj nejspíše nejdůvěryhodnější data směnných kurzů na ruský rubl.\n<b>Bank Rosii uvádí přibližně 40 směnných kurzů.</b></string>
     <string name="api_bankRossii_descriptionShort">Okolo 44 kurzů\nZdroj: Ruská centrální banka</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Kurzy jsou aktualizovány každý den kromě <a href="https://cbr.ru/eng/other/holidays/">veřejných svátů v Rusku</a>.</string>

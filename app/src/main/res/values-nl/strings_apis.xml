@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Dagelijkse gemiddelde wisselkoersen van de <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>.\n<b>Ongeveer 23 valuta\'s zijn opgenomen.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Ongeveer 23 wisselkoersen\nBron: Centrale Bank van Canada</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">De tarieven worden elke werkdag om 16:30 ET gepubliceerd</string>
+    <string name="api_bankOfIsrael_descriptionFull">Representatieve wisselkoersen, zoals gepubliceerd door de Israëlische centrale bank <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Koersen worden genoteerd ten opzichte van de nieuwe Israëlische sjekel.\n<b>Bank of Israel vermeldt een lijst van ongeveer 14 wisselkoersen.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Ongeveer 14 wisselkoersen\nBron: Centrale Bank van Israël</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Representatieve koersen worden eens per werkdag rond 15:30 Israëlische tijd gepubliceerd.</string>
     <string name="api_bankRossii_descriptionFull">Wisselkoersen, zoals verstrekt door de Russische centrale bank <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. Met de huidige sancties geeft deze bron waarschijnlijk de meest betrouwbare wisselkoersen voor de Russische roebel.\n<b>Bank Rossii vermeldt een lijst van ongeveer 44 wisselkoersen.</b></string>
     <string name="api_bankRossii_descriptionShort">Over 44 wisselkoersen\nBron: Centrale Bank van Rusland</string>
     <string name="api_bankRossii_descriptionUpdateInterval">De tarieven worden dagelijks bijgewerkt, behalve op <a href="https://cbr.ru/eng/other/holidays/">feestdagen in Rusland</a>.</string>

@@ -8,6 +8,7 @@ import androidx.core.text.bold
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
@@ -82,6 +83,14 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
     // fees
     private val fees: LiveData<List<Fee>>
     private val feeSide: LiveData<FeeSide>
+
+    // Background timeline prefetcher: fires whenever the selected base/target
+    // resolves (including cold-start defaults) so the graph screen paints
+    // instantly when the user opens it. MediatorLiveData needs at least one
+    // active observer to receive updates from its sources; the value itself is
+    // never read, so a no-op keep-alive observer is enough.
+    private val timelinePrefetch = MediatorLiveData<Unit>()
+    private val timelinePrefetchKeepAlive = Observer<Unit> { /* no-op */ }
 
     /*
      * repository data =============================================================================
@@ -185,6 +194,22 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             }
         }
 
+        // Also prefetch on cold start, once both base/target resolve from prefs
+        // or defaults — otherwise the very first graph tap still pays the full
+        // network fetch. The repository dedupes per-pair, so the redundant
+        // callbacks (base fires, then target fires) collapse into one fetch.
+        timelinePrefetch.addSource(currentBaseCurrency) {
+            prefetchTimeline(it, currentDestinationCurrency.value)
+        }
+        timelinePrefetch.addSource(currentDestinationCurrency) {
+            prefetchTimeline(currentBaseCurrency.value, it)
+        }
+        timelinePrefetch.observeForever(timelinePrefetchKeepAlive)
+    }
+
+    override fun onCleared() {
+        timelinePrefetch.removeObserver(timelinePrefetchKeepAlive)
+        super.onCleared()
     }
 
     /**
@@ -598,6 +623,7 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             currency,
             currentDestinationCurrency.value
         )
+        prefetchTimeline(currency, currentDestinationCurrency.value)
     }
 
     internal fun setDestinationCurrency(currency: Currency) {
@@ -605,6 +631,16 @@ class MainViewModel(val app: Application, onlyCache: Boolean = false) : AndroidV
             currentBaseCurrency.value,
             currency
         )
+        prefetchTimeline(currentBaseCurrency.value, currency)
+    }
+
+    // Warm the timeline for the currently-selected pair in the background so
+    // the graph screen paints instantly when the user opens it. The repository
+    // dedupes in-flight fetches per pair and merges into its per-pair cache,
+    // so repeated calls are cheap.
+    private fun prefetchTimeline(base: Currency?, target: Currency?) {
+        if (base == null || target == null) return
+        repository.getTimeline(base, target)
     }
 
     internal fun getBaseCurrency(): LiveData<Currency?> {

@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">দৈনিক গড় বিনিময় হার <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>ব্যাংক অফ কানাডার</b></a>।\n<b>২৩ টি অর্থ অন্তর্ভুক্ত।</b></string>
     <string name="api_bankOfCanada_descriptionShort">২৩টি বিনিময় হার অন্তর্ভুক্ত\nউৎস: কানাডার কেন্দ্রীয় ব্যাংক</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">বিনিময় হার প্রতি কর্মদিবসের ১৬:৩০ ইটি সময়ে প্রকাশিত হয়</string>
+    <string name="api_bankOfIsrael_descriptionFull">প্রতিনিধিত্বমূলক বিনিময় হার, ইসরায়েলি কেন্দ্রীয় ব্যাংক <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>ব্যাংক অফ ইসরায়েল</b></a> দ্বারা প্রকাশিত। হারগুলি ইসরায়েলি নতুন শেকেলের বিপরীতে উদ্ধৃত করা হয়।\n<b>ব্যাংক অফ ইসরায়েল প্রায় ১৪টি বিনিময় হার তালিকাবদ্ধ করে।</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">প্রায় ১৪টি বিনিময় হার\nউৎস: ইসরায়েলের কেন্দ্রীয় ব্যাংক</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">প্রতিনিধিত্বমূলক হার প্রতি কর্মদিবসে ইসরায়েলি সময় প্রায় ১৫:৩০ এ প্রকাশিত হয়।</string>
     <string name="api_bankRossii_descriptionFull">বিনিময় হার, রুশ কেন্দ্রীয় ব্যাংক সরবরাহ করা তথ্যানুযায়ী <a href="https://cbr.ru/eng/currency_base/daily/"><b>ব্যাংক রোসি</b></a>। বর্তমান নিষেধাজ্ঞার জন্য, এই উৎসটি রুশ রুবলের জন্য সম্ভবত সবচেয়ে নির্ভরযোগ্য বিনিময় হার দেয়।\n<b>ব্যাংক রোসি ৪৪টির মতো বিনিময় হার তালিকাবদ্ধ করে।</b></string>
     <string name="api_bankRossii_descriptionShort">প্রায় ৪৪টি বিনিময় হার\nউৎস: রুশ কেন্দ্রীয় ব্যাংক</string>
     <string name="api_bankRossii_descriptionUpdateInterval">বিনিময় হার দৈনিক ভিত্তিতে হালনাগাদকৃত, <a href="https://cbr.ru/eng/other/holidays/">রুশ জাতীয় ছুটির দিবস</a> ছাড়া।</string>

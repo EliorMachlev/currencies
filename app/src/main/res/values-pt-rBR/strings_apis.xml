@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Taxas de câmbio representativas, conforme publicadas pelo banco central israelense <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. As taxas são cotadas em relação ao novo shekel israelense.\n<b>O Bank of Israel lista cerca de 14 taxas de câmbio.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Cerca de 14 taxas de câmbio\nFonte: Banco Central de Israel</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">As taxas representativas são publicadas uma vez a cada dia útil por volta das 15:30 no horário de Israel.</string>
     <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> apresenta as taxas de câmbios de vários fornecedores de informação financeira e bancos, incluindo o European Central Bank. Todas as taxas de câmbios derivam de um ponto médio. Pontos médios são determinados por cálculo da taxa média da oferta e procura.\n<b>Cerca de 160 moedas estão incluídas.</b></string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">Taxas de câmbios são atualizadas perto da meia noite UTC a cada dia útil.</string>
     <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> é um serviço relativamente novo, que (como o Frankfurter.app) segue as taxas de câmbio de referência (forex) que são publicadas pelo European Central Bank.\n<b>Cerca de 30 moedas estão incluídas.</b></string>

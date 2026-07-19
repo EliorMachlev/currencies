@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Prosječni dnevni tečajevi <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>.\n<b>Uključuje oko 23 valute.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Oko 23 valute\nIzvor: Central Bank of Canada</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Tečajna lista objavljuje se svakog radnog dana do 16:30 po istočnoameričkom vremenu</string>
+    <string name="api_bankOfIsrael_descriptionFull">Reprezentativni tečajevi koje objavljuje izraelska središnja banka <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Tečajevi se izražavaju u odnosu na novi izraelski šekel.\n<b>Bank of Israel objavljuje tečajeve za oko 14 valuta.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Oko 14 valuta\nIzvor: Central Bank of Israel</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Reprezentativni tečajevi objavljuju se jednom svakog radnog dana oko 15:30 po izraelskom vremenu.</string>
     <string name="api_bankRossii_descriptionFull">Tečajevi koje objavljuje ruska središnja banka <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. Uz trenutne sankcije ovaj izvor ima vjerojatno najpouzdanije podatke o tečajevima u odnosu na ruski rubalj.\n<b>Bank Rossii objavljuje tečajeve za 44 valute.</b></string>
     <string name="api_bankRossii_descriptionShort">Oko 44 valute\nIzvor: Central Bank of Russia</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Tečajevi se objavljuju svakodnevno, osim na <a href="https://cbr.ru/eng/other/holidays/">državne praznike u Rusiji</a>.</string>

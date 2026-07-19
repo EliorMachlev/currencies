@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Tassi di cambio medi giornalieri della <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>.\n<b>Sono incluse circa 23 valute.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Circa 23 tassi di cambio\nFonte: Central Bank of Canada</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">I tassi sono pubblicati una volta ogni giorno lavorativo entro le 16:30 ET</string>
+    <string name="api_bankOfIsrael_descriptionFull">Tassi di cambio rappresentativi, come pubblicati dalla banca centrale israeliana <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. I tassi sono quotati rispetto al nuovo shekel israeliano.\n<b>Bank of Israel elenca circa 14 tassi di cambio.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Circa 14 tassi di cambio\nFonte: Central Bank of Israel</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">I tassi rappresentativi sono pubblicati una volta al giorno lavorativo intorno alle 15:30, ora di Israele.</string>
     <string name="api_bankRossii_descriptionFull">Tassi di cambio, come forniti dalla banca centrale russa <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. Con le attuali sanzioni, questa fonte fornisce probabilmente i tassi di cambio più affidabili per il Rublo russo.\n<b>Bank Rossii elenca circa 44 tassi di cambio.</b></string>
     <string name="api_bankRossii_descriptionShort">Circa 44 tassi di cambio\nFonte: Banca centrale della Russia</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Le tariffe sono aggiornate quotidianamente, tranne nei <a href="https://cbr.ru/eng/other/holidays/">giorni festivi in Russia</a>.</string>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Представителни обменни курсове, публикувани от Израелската централна банка <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Курсовете се котират спрямо новия израелски шекел.\n<b>Bank of Israel предоставя около 14 обменни курса.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Около 14 обменни курса\nИзточник: Централна банка на Израел</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Представителните курсове се публикуват веднъж всеки работен ден около 15:30 израелско време.</string>
     <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> взима обменните курсове от различни финансови източници и и банки, включително от Европейската Централна Банка. Всички курсове са средна стойност. Средната стойност се изчислява като средното между продава и купува.\n<b>Включени са около 160 валути.</b></string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">Обмени курсове се обновяват около полунощ UTC всеки работен ден.</string>
     <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> е относително нова услуга, която (точно като Frankfurter.app) следи референтните обменни (форекс) курсове публикувани от Европейската Централна Банка.\n<b>Включва около 30 валути.</b></string>

@@ -11,6 +11,8 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
+import de.salomax.currencies.model.Rate
+import de.salomax.currencies.model.Timeline
 import de.salomax.currencies.util.KEY_RATES_BASE
 import de.salomax.currencies.util.KEY_RATES_DATE
 import de.salomax.currencies.util.KEY_RATES_PROVIDER
@@ -79,6 +81,60 @@ class Database(context: Context) {
 
     fun getDate(): LocalDate? {
         return prefsRates.getString(KEY_RATES_DATE, null)?.let { LocalDate.parse(it) }
+    }
+
+    /*
+     * cached timelines ============================================================================
+     *
+     * Historical rate observations are immutable once a business day closes,
+     * so we persist per-pair timelines and refresh only the tail on each open.
+     * Keyed by "<providerId>|<baseCode>|<symbolCode>"; the JSON value is a
+     * flat {date -> plainString value} map (provider/base/symbol are already
+     * in the key).
+     */
+    private val prefsTimelines: SharedPreferences =
+        context.getSharedPreferences("timelines", MODE_PRIVATE)
+
+    private fun timelineKey(providerId: Int, base: Currency, symbol: Currency): String =
+        "${providerId}|${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
+
+    fun getCachedTimeline(provider: ApiProvider, base: Currency, symbol: Currency): Timeline? {
+        val json = prefsTimelines.getString(timelineKey(provider.id, base, symbol), null)
+            ?: return null
+        return try {
+            val obj = JSONObject(json)
+            val rates = sortedMapOf<LocalDate, Rate>()
+            obj.keys().forEach { key ->
+                val date = runCatching { LocalDate.parse(key) }.getOrNull() ?: return@forEach
+                val value = obj.optString(key).toBigDecimalOrNull() ?: return@forEach
+                rates[date] = Rate(symbol, value)
+            }
+            if (rates.isEmpty()) return null
+            Timeline(
+                success = true,
+                error = null,
+                base = base.iso4217Alpha(),
+                startDate = rates.keys.first(),
+                endDate = rates.keys.last(),
+                rates = rates,
+                provider = provider,
+            )
+        } catch (e: JSONException) {
+            Log.w("Database", "Malformed cached timeline, dropping", e)
+            null
+        }
+    }
+
+    fun putCachedTimeline(timeline: Timeline, base: Currency, symbol: Currency) {
+        val provider = timeline.provider ?: return
+        val rates = timeline.rates ?: return
+        val obj = JSONObject()
+        rates.forEach { (date, rate) ->
+            obj.put(date.toString(), rate.value.toPlainString())
+        }
+        prefsTimelines.edit()
+            .putString(timelineKey(provider.id, base, symbol), obj.toString())
+            .apply()
     }
 
     /*

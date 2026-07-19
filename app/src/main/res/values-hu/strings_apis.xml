@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="api_bankOfIsrael_descriptionFull">Reprezentatív devizaárfolyamok, ahogyan azokat az izraeli központi bank, a <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a> közzéteszi. Az árfolyamokat az új izraeli sékelhez képest jegyzik.\n<b>A Bank of Israel körülbelül 14 devizaárfolyamot listáz.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Körülbelül 14 devizaárfolyam\nForrás: Izraeli központi bank</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">A reprezentatív árfolyamokat minden munkanapon egyszer, körülbelül 15:30-kor izraeli idő szerint teszik közzé.</string>
     <string name="api_exchangerateHost_descriptionFull"><a href="https://exchangerate.host/"><b>Exchangerate.host</b></a> a devizaárfolyamokat különböző pénzügyi adatszolgáltatóktól és bankoktól, köztük az Európai Központi Banktól szerzi be. Minden árfolyamadatot középárfolyam-adatokban szolgáltatnak. A középárfolyamok meghatározása a vételi és eladási árfolyamok átlagos mediánjának kiszámításával történik.\n<b>Körülbelül 160 pénznemet tartalmaz.</b></string>
     <string name="api_exchangerateHost_descriptionUpdateInterval">Az árfolyamok minden munkanapon éjfél körül frissülnek.</string>
     <string name="api_ferEe_descriptionFull"><a href="https://fer.ee/"><b>Fer.ee</b></a> egy viszonylag új szolgáltatás, amely (a Frankfurter.app-hoz hasonlóan) az Európai Központi Bank által közzétett referencia devizaárfolyamokat követi.\n<b>Körülbelül 30 pénznemet tartalmaz.</b></string>

@@ -8,6 +8,7 @@ import com.github.kittinunf.result.Result
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
+import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.time.LocalDate
 
 private const val NO_HTTP_STATUS = -1
 private const val HTTP_OK = 200
 private const val MIN_UPDATE_DISPLAY_MS = 750L
+// How far back to keep timeline data. The UI only renders the last year, but a
+// small buffer avoids re-fetching when the sliding window shifts by a day.
+private const val TIMELINE_WINDOW_DAYS = 400L
 
 // Non-breaking space + 👀 emoji, used as the trailing eyeballs on the bold
 // error message shown in the UI (rendered as HTML by the calling view).
@@ -45,6 +50,19 @@ class ExchangeRatesRepository(private val context: Context) {
     private var ratesJob: Job? = null
     private val timelineJobs = mutableMapOf<String, Job>()
 
+    // The pair the user most recently requested. Timeline fetches for any other
+    // pair still complete and populate the on-disk cache, but their result is
+    // not posted to [liveTimeline] — otherwise a stale prefetch finishing after
+    // the user switched currencies would clobber the visible chart. Volatile
+    // because it's written from Main and read from IO in the fetch callback.
+    @Volatile private var latestTimelineKey: String? = null
+
+    private fun timelineKey(base: Currency, symbol: Currency): String =
+        "${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
+
+    private fun isCurrentTimelinePair(key: String): Boolean =
+        key == latestTimelineKey
+
     /**
      * Gets and returns all latest exchange rates from the API.
      */
@@ -67,25 +85,57 @@ class ExchangeRatesRepository(private val context: Context) {
     }
 
     /**
-     * Gets and returns the timeline of the last year of the given base and target currency
+     * Gets and returns the timeline of the last year of the given base and target currency.
+     *
+     * Persists per-pair timelines and refreshes only the missing tail on each call, so
+     * repeated opens paint instantly from cache and hit the network only for the days
+     * that were added since the last fetch.
      */
     fun getTimeline(base: Currency, symbol: Currency): LiveData<Timeline?> {
-        val key = "${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
+        val key = timelineKey(base, symbol)
+        // Record intent before any dedup check so rapid pair switches always
+        // update the gate, even when the fetch itself is skipped due to an
+        // in-flight job for the same pair.
+        latestTimelineKey = key
         val existing = timelineJobs[key]
         if (existing?.isActive != true) {
+            val provider = db.getApiProvider()
+            val cached = db.getCachedTimeline(provider, base, symbol)
+            // Fast-paint: show cached data while the tail refresh runs. Gated on
+            // latestTimelineKey so a prefetch for a stale pair can't paint over
+            // whatever the user is currently looking at.
+            if (cached != null && isCurrentTimelinePair(key)) liveTimeline.postValue(cached)
+
+            val today = LocalDate.now()
+            val windowStart = today.minusDays(TIMELINE_WINDOW_DAYS)
+            // Re-fetch the last cached day (in case it was preliminary) plus everything
+            // after it. If we have no cache, fetch the full window.
+            val fetchStart = cached?.rates?.keys?.lastOrNull()
+                ?.let { maxOf(it, windowStart) }
+                ?: windowStart
+
             val job = launchApiCall { start ->
                 ExchangeRatesService.getTimeline(
-                    apiProvider = db.getApiProvider(),
+                    apiProvider = provider,
                     base = base,
                     symbol = symbol,
+                    startDate = fetchStart,
+                    endDate = today,
                     context = context
                 ).processResponse(
                     start = start,
                     successFlag = { success },
                     errorMessage = { error },
-                    onSuccess = { timeline ->
-                        CoroutineScope(Dispatchers.Main).launch {
-                            liveTimeline.setValue(timeline)
+                    onSuccess = { fresh ->
+                        val merged = mergeTimeline(cached, fresh, base, symbol, windowStart)
+                        // Always persist — even for pairs the user has since navigated
+                        // away from, so switching back fast-paints from fresh cache.
+                        db.putCachedTimeline(merged, base, symbol)
+                        // Only notify the UI if this pair is still the one the user cares about.
+                        if (isCurrentTimelinePair(key)) {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                liveTimeline.setValue(merged)
+                            }
                         }
                     }
                 )
@@ -93,6 +143,30 @@ class ExchangeRatesRepository(private val context: Context) {
             timelineJobs[key] = job
         }
         return liveTimeline
+    }
+
+    private fun mergeTimeline(
+        cached: Timeline?,
+        fresh: Timeline,
+        base: Currency,
+        symbol: Currency,
+        windowStart: LocalDate,
+    ): Timeline {
+        val merged = sortedMapOf<LocalDate, Rate>()
+        cached?.rates?.forEach { (date, rate) ->
+            if (!date.isBefore(windowStart)) merged[date] = rate
+        }
+        // Fresh values overwrite cached values for the same date.
+        fresh.rates?.forEach { (date, rate) -> merged[date] = rate }
+        return Timeline(
+            success = merged.isNotEmpty(),
+            error = if (merged.isEmpty()) fresh.error else null,
+            base = base.iso4217Alpha(),
+            startDate = merged.keys.firstOrNull(),
+            endDate = merged.keys.lastOrNull(),
+            rates = merged,
+            provider = fresh.provider ?: cached?.provider,
+        )
     }
 
     private fun launchApiCall(block: suspend (start: Long) -> Unit): Job {
@@ -191,9 +265,8 @@ class ExchangeRatesRepository(private val context: Context) {
         if (message?.contains(R.string.error_no_data.text()) != true)
             errorMessage += "\n<br>${R.string.error_try_another_api.text()}$NERD_SUFFIX"
         liveError.postValue(errorMessage)
-
-        // reset timeline
-        liveTimeline.postValue(null)
+        // Preserve any cached/previously-fetched timeline instead of wiping it —
+        // showing stale-but-valid data beats a blank chart when the network hiccups.
     }
 
     private fun Int.text(vararg message: Any): String {

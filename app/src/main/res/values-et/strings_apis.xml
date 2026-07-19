@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull"><a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Kanada Keskpanga</b></a> igapäevased keskmised vahetuskursid.\n<b>Valuutasid: 23</b></string>
     <string name="api_bankOfCanada_descriptionShort">23 vahetuskurssi\nAndmeallikas: Kanada Keskpank (Central Bank of Canada)</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Uued kursid avaldatakse igal äripäeval 16:30 ET (EST: UTC-05:00; EDT UTC-04:00)</string>
+    <string name="api_bankOfIsrael_descriptionFull">Iisraeli keskpanga <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a> avaldatavad esinduslikud vahetuskursid. Kursid on esitatud Iisraeli uue seekli suhtes.\n<b>Valuutasid: 14.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">14 vahetuskurssi\nAndmeallikas: Iisraeli Keskpank (Bank of Israel)</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Esinduslikud kursid avaldatakse igal äripäeval umbes kell 15:30 Iisraeli aja järgi.</string>
     <string name="api_bankRossii_descriptionFull"><a href="https://cbr.ru/eng/currency_base/daily/"><b>Vene keskpanga</b></a> vahetuskursid. Sanktsioonide kontekstis võib see olla üks alternatiiv Venemaa rubla kursi hindamiseks.\n<b>Vene keskpanga liidestusest on leitavad 44 valuutakurssi.</b></string>
     <string name="api_bankRossii_descriptionShort">Umbes 44 vahetuskurssi\nAndmeallikas: Venemaa Föderatsiooni Keskpank</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Kursid uuenevad iga päev, välja arvatud <a href="https://cbr.ru/eng/other/holidays/">Venemaa riigipühadel</a>.</string>

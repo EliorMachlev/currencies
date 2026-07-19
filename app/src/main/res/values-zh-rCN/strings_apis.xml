@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull"><a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>加拿大银行</b></a> 的每日平均汇率。\n<b>包括约 23 种货币的汇率。</b></string>
     <string name="api_bankOfCanada_descriptionShort">约 23 种汇率\n来源：加拿大中央银行</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">汇率在每个工作日 16:30 （美国东部时间）前更新</string>
+    <string name="api_bankOfIsrael_descriptionFull">由以色列中央银行<a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>以色列银行</b></a>发布的代表性汇率。汇率以以色列新谢克尔为基准。\n<b>以色列银行提供了大约 14 种汇率。</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">约 14 种汇率\n来源：以色列中央银行</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">代表性汇率在每个工作日约 15:30（以色列时间）发布一次。</string>
     <string name="api_bankRossii_descriptionFull">汇率由俄罗斯中央银行<a href="https://cbr.ru/eng/currency_base/daily/"><b>俄罗斯中央银行</b></a>提供。在当前制裁的情况下，该来源提供的俄罗斯卢布汇率可能是最可靠的。\n<b>俄俄罗斯中央银行提供了大约 44 种汇率。</b></string>
     <string name="api_bankRossii_descriptionShort">约 44 种汇率\n来源：俄罗斯中央银行</string>
     <string name="api_bankRossii_descriptionUpdateInterval">汇率会在<a href="https://cbr.ru/eng/other/holidays/">俄国公众假期</a>之外的时间每日更新。</string>

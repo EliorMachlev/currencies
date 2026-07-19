@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull">Mitjana diària de les taxes de canvi del <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Banc de Canadà</b></a>.\n<b>S\'inclouen 23 divises.</b></string>
     <string name="api_bankOfCanada_descriptionShort">Unes 23 taxes de canvi\nFont: Banc Central de Canadà</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">Les taxes es publiquen un cop cada dia laborable abans de les 16:30 ET</string>
+    <string name="api_bankOfIsrael_descriptionFull">Taxes de canvi representatives, publicades pel banc central israelià <a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>Bank of Israel</b></a>. Les taxes es cotitzen respecte al nou xéquel israelià.\n<b>Bank of Israel ofereix unes 14 taxes de canvi.</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">Unes 14 taxes de canvi\nFont: Banc Central d\'Israel</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">Les taxes representatives es publiquen un cop cada dia laborable al voltant de les 15:30 hora d\'Israel.</string>
     <string name="api_bankRossii_descriptionFull">Taxes de canvi facilitades pel banc central rus <a href="https://cbr.ru/eng/currency_base/daily/"><b>Bank Rossii</b></a>. Amb les sancions actuals, aquesta font proporciona possiblement les dades més precises sobre les taxes de canvi del ruble rus.\n<b>El Banc de Rússia ofereix 44 taxes de canvi diferents.</b></string>
     <string name="api_bankRossii_descriptionShort">Unes 44 taxes de canvi.\nFont: Banc Central de la Federació Russa</string>
     <string name="api_bankRossii_descriptionUpdateInterval">Les taxes s\'actualitzen diàriament, exceptuant els <a href="https://cbr.ru/eng/other/holidays/">dies festius a Rússia</a>.</string>

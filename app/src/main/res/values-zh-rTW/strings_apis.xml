@@ -3,6 +3,9 @@
     <string name="api_bankOfCanada_descriptionFull"><a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/"><b>Bank of Canada</b></a>的日平均匯率\n<b>大約包含 23 種貨幣</b></string>
     <string name="api_bankOfCanada_descriptionShort">大約有 23 種匯率\n來源：加拿大中央銀行</string>
     <string name="api_bankOfCanada_descriptionUpdateInterval">在每個工作日的 16:30 ET 發布一次匯率</string>
+    <string name="api_bankOfIsrael_descriptionFull">由以色列中央銀行<a href="https://www.boi.org.il/en/economic-roles/statistics/foreign-exchange-market/exchange-rates/"><b>以色列銀行</b></a>發布的代表性匯率。匯率以以色列新謝克爾為基準。\n<b>以色列銀行列出約 14 種貨幣匯率</b></string>
+    <string name="api_bankOfIsrael_descriptionShort">大約有 14 種匯率\n來源：以色列中央銀行</string>
+    <string name="api_bankOfIsrael_descriptionUpdateInterval">代表性匯率在每個工作日的 15:30（以色列時間）左右發布一次。</string>
     <string name="api_bankRossii_descriptionFull">匯率由俄羅斯的中央銀行<a href="https://cbr.ru/eng/currency_base/daily/"><b>俄羅斯銀行</b></a>提供。在目前的制裁環境下，這個來源可能提供對俄羅斯盧布匯率最可靠的數據。\n<b>俄羅斯銀行列出約 44 種貨幣匯率</b></string>
     <string name="api_bankRossii_descriptionShort">大約有 44 種匯率\n來源：俄羅斯中央銀行</string>
     <string name="api_bankRossii_descriptionUpdateInterval">匯率根據每天的需求更新，除了<a href="https://cbr.ru/eng/other/holidays/">俄羅斯國定假日</a>。</string>
