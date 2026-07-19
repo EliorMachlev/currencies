@@ -50,6 +50,16 @@ class ExchangeRatesRepository(private val context: Context) {
     private var ratesJob: Job? = null
     private val timelineJobs = mutableMapOf<String, Job>()
 
+    // The pair the user most recently requested. Timeline fetches for any other
+    // pair still complete and populate the on-disk cache, but their result is
+    // not posted to [liveTimeline] — otherwise a stale prefetch finishing after
+    // the user switched currencies would clobber the visible chart. Volatile
+    // because it's written from Main and read from IO in the fetch callback.
+    @Volatile private var latestTimelineKey: String? = null
+
+    private fun timelineKey(base: Currency, symbol: Currency): String =
+        "${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
+
     /**
      * Gets and returns all latest exchange rates from the API.
      */
@@ -79,13 +89,19 @@ class ExchangeRatesRepository(private val context: Context) {
      * that were added since the last fetch.
      */
     fun getTimeline(base: Currency, symbol: Currency): LiveData<Timeline?> {
-        val key = "${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
+        val key = timelineKey(base, symbol)
+        // Record intent before any dedup check so rapid pair switches always
+        // update the gate, even when the fetch itself is skipped due to an
+        // in-flight job for the same pair.
+        latestTimelineKey = key
         val existing = timelineJobs[key]
         if (existing?.isActive != true) {
             val provider = db.getApiProvider()
             val cached = db.getCachedTimeline(provider, base, symbol)
-            // Fast-paint: show cached data while the tail refresh runs.
-            if (cached != null) liveTimeline.postValue(cached)
+            // Fast-paint: show cached data while the tail refresh runs. Gated on
+            // latestTimelineKey so a prefetch for a stale pair can't paint over
+            // whatever the user is currently looking at.
+            if (cached != null && key == latestTimelineKey) liveTimeline.postValue(cached)
 
             val today = LocalDate.now()
             val windowStart = today.minusDays(TIMELINE_WINDOW_DAYS)
@@ -109,9 +125,14 @@ class ExchangeRatesRepository(private val context: Context) {
                     errorMessage = { error },
                     onSuccess = { fresh ->
                         val merged = mergeTimeline(cached, fresh, base, symbol, windowStart)
+                        // Always persist — even for pairs the user has since navigated
+                        // away from, so switching back fast-paints from fresh cache.
                         db.putCachedTimeline(merged, base, symbol)
-                        CoroutineScope(Dispatchers.Main).launch {
-                            liveTimeline.setValue(merged)
+                        // Only notify the UI if this pair is still the one the user cares about.
+                        if (key == latestTimelineKey) {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                liveTimeline.setValue(merged)
+                            }
                         }
                     }
                 )
