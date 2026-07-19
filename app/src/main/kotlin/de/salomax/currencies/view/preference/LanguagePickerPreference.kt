@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
 import com.google.android.material.radiobutton.MaterialRadioButton
@@ -67,16 +70,34 @@ class LanguagePickerPreference: ListPreference {
 
     // open dialog
     override fun onClick() {
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.searchable_language_picker_dialog, null)
         val adapter = LanguagePickerDialogAdapter(context, currentValue)
         val dialog = AlertDialog.Builder(context)
-            .setSingleChoiceItems(adapter, findIndexOfValue(value), null)
             .setTitle(R.string.language_title)
+            .setView(view)
             .setNegativeButton(android.R.string.cancel, null)
             .create()
         adapter.onLanguageClicked = { language: Language ->
             callChangeListener(language.iso)
             dialog.dismiss()
         }
+
+        view.findViewById<ListView>(R.id.listView).adapter = adapter
+        view.findViewById<SearchView>(R.id.searchView).apply {
+            clearFocus()
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(query: String?): Boolean {
+                    adapter.filter(query)
+                    return true
+                }
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    clearFocus()
+                    return true
+                }
+            })
+        }
+
         dialog.show()
     }
 
@@ -90,7 +111,8 @@ class LanguagePickerPreference: ListPreference {
 
         // listener
         var onLanguageClicked: ((Language) -> Unit)? = null
-        private val languages = Language.entries
+        private val allLanguages = Language.entries
+        private var languages: List<Language> = allLanguages
 
         override fun getCount() = languages.size
 
@@ -98,6 +120,13 @@ class LanguagePickerPreference: ListPreference {
 
         override fun getItemId(position: Int): Long {
             return getItem(position).hashCode().toLong()
+        }
+
+        fun filter(query: String?) {
+            val q = query?.trim().orEmpty()
+            languages = if (q.isEmpty()) allLanguages
+            else allLanguages.filter { it.matches(context, q) }
+            notifyDataSetChanged()
         }
 
         @SuppressLint("InflateParams")
@@ -139,6 +168,12 @@ class LanguagePickerPreference: ListPreference {
             }
 
             return view!!
+        }
+
+        private fun Language.matches(context: Context, query: String): Boolean {
+            if (localizedName(context).contains(query, ignoreCase = true)) return true
+            if (this == Language.SYSTEM) return false
+            return nativeName(context).contains(query, ignoreCase = true)
         }
 
         internal class ViewHolder {
