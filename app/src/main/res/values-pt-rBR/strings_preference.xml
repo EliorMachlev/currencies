@@ -39,6 +39,8 @@
     <string name="theme_title">Aspeto</string>
     <string name="theme_option_light">Claro</string>
     <string name="theme_option_dark">Escuro</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Padrão do sistema (OLED)</string>
     <string name="pure_black_enabled_title">escuro OLED</string>
     <string name="pure_black_enabled_summary">Usar modo escuro puro no modo escuro</string>
     <!-- graph options -->

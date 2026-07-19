@@ -39,6 +39,8 @@
     <string name="theme_title">עיצוב</string>
     <string name="theme_option_light">בהיר</string>
     <string name="theme_option_dark">כהה</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">ברירת המחדל של המערכת (OLED)</string>
     <string name="pure_black_enabled_title">שחור OLED</string>
     <string name="pure_black_enabled_summary">להשתמש בשחור טהור במצב כהה</string>
     <!-- graph options -->

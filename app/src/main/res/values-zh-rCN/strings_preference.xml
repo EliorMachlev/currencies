@@ -39,6 +39,8 @@
     <string name="theme_title">设计</string>
     <string name="theme_option_light">浅色</string>
     <string name="theme_option_dark">深色</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">系统默认 (OLED)</string>
     <string name="pure_black_enabled_title">OLED 黑色</string>
     <string name="pure_black_enabled_summary">在深色模式中使用纯黑主题</string>
     <!-- graph options -->

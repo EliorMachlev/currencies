@@ -39,6 +39,8 @@
     <string name="theme_title">تصميم</string>
     <string name="theme_option_light">فاتح</string>
     <string name="theme_option_dark">غامق</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">الإعداد التلقائي للنظام (OLED)</string>
     <string name="pure_black_enabled_title">أسود OLED</string>
     <string name="pure_black_enabled_summary">استخدم الأسود النقي في الوضع المظلم</string>
     <!-- graph options -->

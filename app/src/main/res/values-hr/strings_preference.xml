@@ -39,6 +39,8 @@
     <string name="theme_title">Tema</string>
     <string name="theme_option_light">Svijetla</string>
     <string name="theme_option_dark">Tamna</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Zadano od sustava (OLED)</string>
     <string name="pure_black_enabled_title">Crna za OLED zaslone</string>
     <string name="pure_black_enabled_summary">Koristi potpuno crnu boju u tamnom načinu rada</string>
     <!-- graph options -->

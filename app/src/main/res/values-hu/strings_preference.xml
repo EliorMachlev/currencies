@@ -39,6 +39,8 @@
     <string name="theme_title">Dizájn</string>
     <string name="theme_option_light">Világos</string>
     <string name="theme_option_dark">Sötét</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Rendszerbeállítás (OLED)</string>
     <string name="pure_black_enabled_title">OLED fekete</string>
     <string name="pure_black_enabled_summary">Tiszta fekete használata sötét módban</string>
     <!-- graph options -->

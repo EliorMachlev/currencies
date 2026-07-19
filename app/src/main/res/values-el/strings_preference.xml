@@ -39,6 +39,8 @@
     <string name="theme_title">Θέμα</string>
     <string name="theme_option_light">Ανοικτό</string>
     <string name="theme_option_dark">Σκούρο</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Συστήματος (OLED)</string>
     <string name="pure_black_enabled_title">Μαύρο OLED</string>
     <string name="pure_black_enabled_summary">Χρήση μαύρου στο σκούρο θέμα</string>
     <!-- graph options -->

@@ -39,6 +39,8 @@
     <string name="theme_title">Design</string>
     <string name="theme_option_light">Hell</string>
     <string name="theme_option_dark">Dunkel</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Standardeinstellung des Systems (OLED)</string>
     <string name="pure_black_enabled_title">OLED-Schwarz</string>
     <string name="pure_black_enabled_summary">Komplett schwarzes Design im Dark-Modus verwenden</string>
     <!-- graph options -->

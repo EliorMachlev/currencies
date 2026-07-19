@@ -39,6 +39,8 @@
     <string name="theme_title">Thema</string>
     <string name="theme_option_light">Licht</string>
     <string name="theme_option_dark">Donker</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Systeem standaard (OLED)</string>
     <string name="pure_black_enabled_title">OLED zwart</string>
     <string name="pure_black_enabled_summary">Gebruik puur zwart in donkere modus</string>
     <!-- graph options -->

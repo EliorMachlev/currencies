@@ -39,6 +39,8 @@
     <string name="theme_title">Motyw</string>
     <string name="theme_option_light">Jasny</string>
     <string name="theme_option_dark">Ciemny</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Ustawienie domyślne systemu (OLED)</string>
     <string name="pure_black_enabled_title">OLEDowa czerń</string>
     <string name="pure_black_enabled_summary">Użyj samej czerni w ciemnym motywie</string>
     <!-- graph options -->

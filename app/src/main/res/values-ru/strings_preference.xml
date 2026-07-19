@@ -39,6 +39,8 @@
     <string name="theme_title">Тема</string>
     <string name="theme_option_light">Светлая</string>
     <string name="theme_option_dark">Тёмная</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Как в системе (OLED)</string>
     <string name="pure_black_enabled_title">OLED чёрный</string>
     <string name="pure_black_enabled_summary">Использовать абсолютно чёрный цвет в тёмной теме</string>
     <!-- graph options -->

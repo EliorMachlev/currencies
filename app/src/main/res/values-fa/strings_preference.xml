@@ -39,6 +39,8 @@
     <string name="theme_title">طراحی</string>
     <string name="theme_option_light">‏نور</string>
     <string name="theme_option_dark">تاریک</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">پیش فرض سیستم (OLED)</string>
     <string name="pure_black_enabled_title">مشکی OLED</string>
     <string name="pure_black_enabled_summary">از مشکی خالص در حالت تاریک استفاده کنید</string>
     <!-- graph options -->

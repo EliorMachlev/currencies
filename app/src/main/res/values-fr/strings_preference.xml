@@ -39,6 +39,8 @@
     <string name="theme_title">Thème</string>
     <string name="theme_option_light">Clair</string>
     <string name="theme_option_dark">Sombre</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Paramètre système par défaut (OLED)</string>
     <string name="pure_black_enabled_title">OLED noir</string>
     <string name="pure_black_enabled_summary">Utiliser le noir pur en mode sombre</string>
     <!-- graph options -->
