@@ -1,16 +1,36 @@
 package de.salomax.currencies
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import de.salomax.currencies.repository.Database
 import java.net.InetAddress
 import kotlin.concurrent.thread
+
+private const val THEME_LIGHT = 0
+private const val THEME_DARK = 1
 
 class CurrenciesApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        applyNightMode()
         warmSharedPreferences()
         prewarmProviderDns()
+    }
+
+    // Apply the persisted day/night mode before any Activity is created, so
+    // BaseActivity.setTheme(AppTheme_PureBlack) resolves against the correct
+    // night qualifier on the very first frame. Otherwise the pure-black
+    // background renders as the day-mode color until setDefaultNightMode
+    // triggers a recreate.
+    private fun applyNightMode() {
+        AppCompatDelegate.setDefaultNightMode(
+            when (Database(this).getTheme()) {
+                THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                THEME_DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+        )
     }
 
     // Force each SharedPreferences file the app uses to load from disk on a
