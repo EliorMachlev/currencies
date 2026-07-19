@@ -60,6 +60,9 @@ class ExchangeRatesRepository(private val context: Context) {
     private fun timelineKey(base: Currency, symbol: Currency): String =
         "${base.iso4217Alpha()}|${symbol.iso4217Alpha()}"
 
+    private fun isCurrentTimelinePair(key: String): Boolean =
+        key == latestTimelineKey
+
     /**
      * Gets and returns all latest exchange rates from the API.
      */
@@ -101,7 +104,7 @@ class ExchangeRatesRepository(private val context: Context) {
             // Fast-paint: show cached data while the tail refresh runs. Gated on
             // latestTimelineKey so a prefetch for a stale pair can't paint over
             // whatever the user is currently looking at.
-            if (cached != null && key == latestTimelineKey) liveTimeline.postValue(cached)
+            if (cached != null && isCurrentTimelinePair(key)) liveTimeline.postValue(cached)
 
             val today = LocalDate.now()
             val windowStart = today.minusDays(TIMELINE_WINDOW_DAYS)
@@ -129,7 +132,7 @@ class ExchangeRatesRepository(private val context: Context) {
                         // away from, so switching back fast-paints from fresh cache.
                         db.putCachedTimeline(merged, base, symbol)
                         // Only notify the UI if this pair is still the one the user cares about.
-                        if (key == latestTimelineKey) {
+                        if (isCurrentTimelinePair(key)) {
                             CoroutineScope(Dispatchers.Main).launch {
                                 liveTimeline.setValue(merged)
                             }
