@@ -44,12 +44,16 @@
         <item>@string/theme_option_light</item>
         <item>@string/theme_option_dark</item>
         <item>@string/system_default</item>
+        <item>@string/theme_option_oled</item>
+        <item>@string/theme_option_system_oled</item>
     </string-array>
 
     <string-array name="theme_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
 </resources>

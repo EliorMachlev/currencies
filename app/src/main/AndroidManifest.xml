@@ -17,14 +17,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
+        <!-- Two launcher entries with different launch themes. Exactly one is
+             enabled at a time (see PackageManager toggle in PreferenceViewModel).
+             The non-OLED alias is enabled by default; picking an OLED theme
+             option flips to the pure-black alias so the pre-onCreate window
+             renders true black instead of blackOlive on cold start. -->
         <activity
             android:name=".view.main.MainActivity"
-            android:exported="true">
+            android:exported="false" />
+        <activity-alias
+            android:name=".view.main.MainActivityLauncher"
+            android:enabled="true"
+            android:exported="true"
+            android:targetActivity=".view.main.MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
+        <activity-alias
+            android:name=".view.main.MainActivityLauncherPureBlack"
+            android:enabled="false"
+            android:exported="true"
+            android:targetActivity=".view.main.MainActivity"
+            android:theme="@style/AppTheme.PureBlack">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
         <activity android:name=".view.preference.PreferenceActivity" />
         <activity android:name=".view.timeline.TimelineActivity" />
 

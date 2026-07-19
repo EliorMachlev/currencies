@@ -120,12 +120,6 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                 true
             }
         }
-        findPreference<SwitchPreferenceCompat>(getString(R.string.pure_black_key))?.apply {
-            setOnPreferenceChangeListener { _, newValue ->
-                viewModel.setPureBlackEnabled(newValue.toString().toBoolean())
-                true
-            }
-        }
         findPreference<LanguagePickerPreference>(getString(R.string.language_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 viewModel.setLanguage(newValue.toString())
