@@ -109,4 +109,25 @@
     <string name="rate_summary">Podeu ajudar a altres persones a descobrir Currencies. Toqueu aquí per a puntuar l\'aplicació a Google Play.</string>
     <string name="category_versioninfo">Informació de la versió</string>
     <string name="title_changelog">Registre de canvis</string>
+    <string name="backup_title">Còpia de seguretat i restauració</string>
+    <string name="backup_summary">Desa la teva configuració en un fitxer o restaura-la des d\'una còpia anterior</string>
+    <string name="backup_manager_title">Còpia de seguretat</string>
+    <string name="backup_section_local">Còpia local</string>
+    <string name="backup_section_restore">Restauració</string>
+    <string name="backup_export_title">Exporta a un fitxer</string>
+    <string name="backup_export_summary">Tria una ubicació d\'aquest dispositiu per desar un fitxer de configuració, xifrat o en text pla</string>
+    <string name="backup_import_title">Importa des d\'un fitxer</string>
+    <string name="backup_import_summary">Sobreescriu la configuració actual amb la d\'una còpia de seguretat exportada anteriorment</string>
+    <string name="backup_export_success">Còpia de seguretat desada</string>
+    <string name="backup_export_failed">Ha fallat la còpia de seguretat: %1$s</string>
+    <string name="backup_import_success">Configuració restaurada — reinicia per aplicar-la</string>
+    <string name="backup_import_failed">Ha fallat la restauració: %1$s</string>
+    <string name="backup_import_confirm_title">Restaurar la còpia de seguretat?</string>
+    <string name="backup_import_confirm_message">La teva configuració actual se sobreescriurà amb la del fitxer. Aquesta acció no es pot desfer.</string>
+    <string name="backup_import_confirm_positive">Restaura</string>
+    <string name="backup_encrypt_option">Xifra amb una contrasenya</string>
+    <string name="backup_password_hint">Contrasenya</string>
+    <string name="backup_password_prompt_title">Introdueix la contrasenya</string>
+    <string name="backup_password_wrong">La contrasenya no ha desxifrat el fitxer. Torna-ho a provar.</string>
+    <string name="backup_password_too_short">La contrasenya ha de tenir com a mínim %1$d caràcters</string>
 </resources>

@@ -21,6 +21,7 @@
     <string name="menu_refresh">Osvježi tečajnu listu</string>
     <string name="menu_timeline">Grafikon tečaja</string>
     <string name="menu_quick_conversions">Brze konverzije</string>
+    <string name="menu_share">Podijeli</string>
     <string name="quick_conversions_title">Brze konverzije</string>
     <string name="quick_conversions_no_rates">Tečajevi još nisu učitani.</string>
     <string name="quick_conversions_fees_applied">Primijenjene naknade: %s</string>

@@ -109,4 +109,25 @@
     <string name="rate_summary">Если вам всё понравилось, то вы можете помочь другим узнать о Currencies. Нажмите здесь, чтобы оценить приложение в Google Play.</string>
     <string name="category_versioninfo">Информация о версии</string>
     <string name="title_changelog">История изменений</string>
+    <string name="backup_title">Резервное копирование и восстановление</string>
+    <string name="backup_summary">Сохраните настройки в файл или восстановите их из предыдущей резервной копии</string>
+    <string name="backup_manager_title">Резервная копия</string>
+    <string name="backup_section_local">Локальная копия</string>
+    <string name="backup_section_restore">Восстановление</string>
+    <string name="backup_export_title">Экспортировать в файл</string>
+    <string name="backup_export_summary">Выберите место на этом устройстве для сохранения зашифрованного или обычного файла настроек</string>
+    <string name="backup_import_title">Импортировать из файла</string>
+    <string name="backup_import_summary">Заменить текущие настройки данными из ранее экспортированной резервной копии</string>
+    <string name="backup_export_success">Копия сохранена</string>
+    <string name="backup_export_failed">Не удалось создать резервную копию: %1$s</string>
+    <string name="backup_import_success">Настройки восстановлены — перезапустите, чтобы применить</string>
+    <string name="backup_import_failed">Не удалось восстановить: %1$s</string>
+    <string name="backup_import_confirm_title">Восстановить из копии?</string>
+    <string name="backup_import_confirm_message">Ваши текущие настройки будут заменены данными из файла. Отменить это действие нельзя.</string>
+    <string name="backup_import_confirm_positive">Восстановить</string>
+    <string name="backup_encrypt_option">Шифровать паролем</string>
+    <string name="backup_password_hint">Пароль</string>
+    <string name="backup_password_prompt_title">Введите пароль</string>
+    <string name="backup_password_wrong">Пароль не расшифровал файл. Попробуйте ещё раз.</string>
+    <string name="backup_password_too_short">Пароль должен содержать не менее %1$d символов</string>
 </resources>

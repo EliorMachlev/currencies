@@ -25,6 +25,7 @@
     <string name="menu_refresh">നിരക്കുകൾ പുതുക്കുക</string>
     <string name="menu_timeline">വിനിമയ നിരക്ക് ചാർട്ട്</string>
     <string name="menu_quick_conversions">വേഗത്തിലുള്ള പരിവർത്തനങ്ങൾ</string>
+    <string name="menu_share">പങ്കിടുക</string>
     <string name="quick_conversions_title">വേഗത്തിലുള്ള പരിവർത്തനങ്ങൾ</string>
     <string name="quick_conversions_no_rates">നിരക്കുകൾ ഇതുവരെ ലോഡ് ചെയ്തിട്ടില്ല.</string>
     <string name="quick_conversions_fees_applied">ബാധകമായ ഫീസുകൾ: %s</string>

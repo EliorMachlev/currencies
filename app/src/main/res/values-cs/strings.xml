@@ -21,6 +21,7 @@
     <string name="menu_refresh">Obnovit kurzy</string>
     <string name="menu_timeline">Tabulka kurzů</string>
     <string name="menu_quick_conversions">Rychlé převody</string>
+    <string name="menu_share">Sdílet</string>
     <string name="quick_conversions_title">Rychlé převody</string>
     <string name="quick_conversions_no_rates">Kurzy zatím nejsou načteny.</string>
     <string name="quick_conversions_fees_applied">Použité poplatky: %s</string>

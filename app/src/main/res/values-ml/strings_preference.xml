@@ -109,4 +109,25 @@
     <string name="rate_summary">നിങ്ങൾക്ക് താൽപ്പര്യമുണ്ടെങ്കിൽ, മറ്റുള്ളവർക്ക് Currencies കണ്ടെത്താൻ നിങ്ങൾക്ക് സഹായിക്കാം. Google Play-യിൽ ആപ്പ് റേറ്റ് ചെയ്യാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക.</string>
     <string name="category_versioninfo">പതിപ്പ് വിവരം</string>
     <string name="title_changelog">മാറ്റങ്ങളുടെ ചരിത്രം</string>
+    <string name="backup_title">ബാക്കപ്പും പുനഃസ്ഥാപനവും</string>
+    <string name="backup_summary">നിങ്ങളുടെ ക്രമീകരണങ്ങൾ ഒരു ഫയലിലേക്ക് സേവ് ചെയ്യുക, അല്ലെങ്കിൽ മുൻ ബാക്കപ്പിൽ നിന്ന് പുനഃസ്ഥാപിക്കുക</string>
+    <string name="backup_manager_title">ബാക്കപ്പ്</string>
+    <string name="backup_section_local">പ്രാദേശിക ബാക്കപ്പ്</string>
+    <string name="backup_section_restore">പുനഃസ്ഥാപനം</string>
+    <string name="backup_export_title">ഫയലിലേക്ക് കയറ്റുമതി ചെയ്യുക</string>
+    <string name="backup_export_summary">എൻക്രിപ്റ്റ് ചെയ്ത അല്ലെങ്കിൽ സാധാരണ ക്രമീകരണ ഫയൽ സേവ് ചെയ്യാൻ ഈ ഉപകരണത്തിലെ ഒരു സ്ഥാനം തിരഞ്ഞെടുക്കുക</string>
+    <string name="backup_import_title">ഫയലിൽ നിന്ന് ഇറക്കുമതി ചെയ്യുക</string>
+    <string name="backup_import_summary">മുമ്പ് കയറ്റുമതി ചെയ്ത ബാക്കപ്പ് ഫയലിലെ ക്രമീകരണങ്ങൾ ഉപയോഗിച്ച് നിലവിലുള്ളവ മാറ്റിയെഴുതുക</string>
+    <string name="backup_export_success">ബാക്കപ്പ് സേവ് ചെയ്തു</string>
+    <string name="backup_export_failed">ബാക്കപ്പ് പരാജയപ്പെട്ടു: %1$s</string>
+    <string name="backup_import_success">ക്രമീകരണങ്ങൾ പുനഃസ്ഥാപിച്ചു — പ്രയോഗിക്കാൻ പുനരാരംഭിക്കുക</string>
+    <string name="backup_import_failed">പുനഃസ്ഥാപനം പരാജയപ്പെട്ടു: %1$s</string>
+    <string name="backup_import_confirm_title">ബാക്കപ്പ് പുനഃസ്ഥാപിക്കണോ?</string>
+    <string name="backup_import_confirm_message">നിലവിലുള്ള ക്രമീകരണങ്ങൾ ഫയലിലുള്ളവ കൊണ്ട് മാറ്റിയെഴുതും. ഇത് പഴയപടിയാക്കാൻ കഴിയില്ല.</string>
+    <string name="backup_import_confirm_positive">പുനഃസ്ഥാപിക്കുക</string>
+    <string name="backup_encrypt_option">പാസ്‌വേഡ് ഉപയോഗിച്ച് എൻക്രിപ്റ്റ് ചെയ്യുക</string>
+    <string name="backup_password_hint">പാസ്‌വേഡ്</string>
+    <string name="backup_password_prompt_title">പാസ്‌വേഡ് നൽകുക</string>
+    <string name="backup_password_wrong">പാസ്‌വേഡിന് ഈ ഫയൽ ഡീക്രിപ്റ്റ് ചെയ്യാൻ കഴിഞ്ഞില്ല. വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="backup_password_too_short">പാസ്‌വേഡ് കുറഞ്ഞത് %1$d പ്രതീകങ്ങൾ ഉണ്ടായിരിക്കണം</string>
 </resources>

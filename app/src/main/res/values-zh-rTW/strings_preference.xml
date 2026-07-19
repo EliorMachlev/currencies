@@ -109,4 +109,25 @@
     <string name="rate_summary">如果您喜歡的話，您可以幫忙其他人發現 Currencies。按這裡在 Google Play 為這個應用程式評分。</string>
     <string name="category_versioninfo">版本資訊</string>
     <string name="title_changelog">更新日誌</string>
+    <string name="backup_title">備份與還原</string>
+    <string name="backup_summary">將設定儲存至檔案,或從先前的備份還原</string>
+    <string name="backup_manager_title">備份</string>
+    <string name="backup_section_local">本機備份</string>
+    <string name="backup_section_restore">還原</string>
+    <string name="backup_export_title">匯出到檔案</string>
+    <string name="backup_export_summary">在此裝置上選擇位置以儲存已加密或未加密的設定檔</string>
+    <string name="backup_import_title">從檔案匯入</string>
+    <string name="backup_import_summary">以先前匯出的備份檔覆蓋目前設定</string>
+    <string name="backup_export_success">備份已儲存</string>
+    <string name="backup_export_failed">備份失敗:%1$s</string>
+    <string name="backup_import_success">設定已還原 — 請重新啟動以套用</string>
+    <string name="backup_import_failed">還原失敗:%1$s</string>
+    <string name="backup_import_confirm_title">要還原備份嗎?</string>
+    <string name="backup_import_confirm_message">目前的設定將被檔案中的設定覆蓋。此操作無法復原。</string>
+    <string name="backup_import_confirm_positive">還原</string>
+    <string name="backup_encrypt_option">使用密碼加密</string>
+    <string name="backup_password_hint">密碼</string>
+    <string name="backup_password_prompt_title">輸入密碼</string>
+    <string name="backup_password_wrong">此密碼無法解密該檔案,請再試一次。</string>
+    <string name="backup_password_too_short">密碼長度至少須為 %1$d 個字元</string>
 </resources>

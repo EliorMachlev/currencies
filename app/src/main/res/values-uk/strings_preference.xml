@@ -109,4 +109,25 @@
     <string name="rate_summary">Якщо хочете, ви можете допомогти іншим відкрити для себе Currencies. Натисніть тут, щоб оцінити додаток у Google Play.</string>
     <string name="category_versioninfo">Інформація про версію</string>
     <string name="title_changelog">Історія змін</string>
+    <string name="backup_title">Резервне копіювання та відновлення</string>
+    <string name="backup_summary">Збережіть налаштування у файл або відновіть їх із попередньої резервної копії</string>
+    <string name="backup_manager_title">Резервна копія</string>
+    <string name="backup_section_local">Локальна копія</string>
+    <string name="backup_section_restore">Відновлення</string>
+    <string name="backup_export_title">Експортувати у файл</string>
+    <string name="backup_export_summary">Оберіть місце на цьому пристрої, щоб зберегти зашифрований або звичайний файл налаштувань</string>
+    <string name="backup_import_title">Імпортувати з файлу</string>
+    <string name="backup_import_summary">Замінити поточні налаштування даними з раніше експортованої резервної копії</string>
+    <string name="backup_export_success">Копію збережено</string>
+    <string name="backup_export_failed">Не вдалося створити копію: %1$s</string>
+    <string name="backup_import_success">Налаштування відновлено — перезапустіть, щоб застосувати</string>
+    <string name="backup_import_failed">Не вдалося відновити: %1$s</string>
+    <string name="backup_import_confirm_title">Відновити з копії?</string>
+    <string name="backup_import_confirm_message">Ваші поточні налаштування буде замінено даними з файлу. Скасувати цю дію не можна.</string>
+    <string name="backup_import_confirm_positive">Відновити</string>
+    <string name="backup_encrypt_option">Шифрувати паролем</string>
+    <string name="backup_password_hint">Пароль</string>
+    <string name="backup_password_prompt_title">Введіть пароль</string>
+    <string name="backup_password_wrong">Пароль не розшифрував цей файл. Спробуйте ще раз.</string>
+    <string name="backup_password_too_short">Пароль має містити щонайменше %1$d символів</string>
 </resources>

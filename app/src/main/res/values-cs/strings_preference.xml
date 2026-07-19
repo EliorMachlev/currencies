@@ -109,4 +109,25 @@
     <string name="rate_summary">Pokud chcete, můžete ostatním pomoci objevit Currencies. Klepněte sem a ohodnoťte aplikaci v Google Play.</string>
     <string name="category_versioninfo">Info o verzi</string>
     <string name="title_changelog">Seznam změn</string>
+    <string name="backup_title">Zálohování a obnovení</string>
+    <string name="backup_summary">Ulož nastavení do souboru nebo je obnov z předchozí zálohy</string>
+    <string name="backup_manager_title">Záloha</string>
+    <string name="backup_section_local">Místní záloha</string>
+    <string name="backup_section_restore">Obnovení</string>
+    <string name="backup_export_title">Export do souboru</string>
+    <string name="backup_export_summary">Vyber v tomto zařízení místo pro uložení šifrovaného nebo prostého souboru s nastavením</string>
+    <string name="backup_import_title">Import ze souboru</string>
+    <string name="backup_import_summary">Přepiš aktuální nastavení hodnotami z dříve exportované zálohy</string>
+    <string name="backup_export_success">Záloha uložena</string>
+    <string name="backup_export_failed">Zálohování selhalo: %1$s</string>
+    <string name="backup_import_success">Nastavení obnoveno — pro použití restartuj aplikaci</string>
+    <string name="backup_import_failed">Obnovení selhalo: %1$s</string>
+    <string name="backup_import_confirm_title">Obnovit ze zálohy?</string>
+    <string name="backup_import_confirm_message">Aktuální nastavení bude přepsáno hodnotami ze souboru. Tuto akci nelze vrátit zpět.</string>
+    <string name="backup_import_confirm_positive">Obnovit</string>
+    <string name="backup_encrypt_option">Šifrovat heslem</string>
+    <string name="backup_password_hint">Heslo</string>
+    <string name="backup_password_prompt_title">Zadej heslo</string>
+    <string name="backup_password_wrong">Heslem se soubor nepodařilo dešifrovat. Zkus to znovu.</string>
+    <string name="backup_password_too_short">Heslo musí mít alespoň %1$d znaků</string>
 </resources>

@@ -109,4 +109,25 @@
     <string name="rate_summary">Als je wilt, kun je anderen helpen valuta\'s te ontdekken. Klik hier om de app te beoordelen op Google Play.</string>
     <string name="category_versioninfo">Versie-informatie</string>
     <string name="title_changelog">Wijzigingsoverzicht</string>
+    <string name="backup_title">Back-up en herstel</string>
+    <string name="backup_summary">Sla je instellingen op in een bestand of herstel ze uit een eerdere back-up</string>
+    <string name="backup_manager_title">Back-up</string>
+    <string name="backup_section_local">Lokale back-up</string>
+    <string name="backup_section_restore">Herstellen</string>
+    <string name="backup_export_title">Exporteren naar bestand</string>
+    <string name="backup_export_summary">Kies een locatie op dit apparaat om een versleuteld of gewoon instellingenbestand op te slaan</string>
+    <string name="backup_import_title">Importeren uit bestand</string>
+    <string name="backup_import_summary">Overschrijf de huidige instellingen met die uit een eerder geëxporteerd back-upbestand</string>
+    <string name="backup_export_success">Back-up opgeslagen</string>
+    <string name="backup_export_failed">Back-up mislukt: %1$s</string>
+    <string name="backup_import_success">Instellingen hersteld — herstart om toe te passen</string>
+    <string name="backup_import_failed">Herstellen mislukt: %1$s</string>
+    <string name="backup_import_confirm_title">Back-up herstellen?</string>
+    <string name="backup_import_confirm_message">Je huidige instellingen worden overschreven met die uit het bestand. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="backup_import_confirm_positive">Herstellen</string>
+    <string name="backup_encrypt_option">Versleutelen met een wachtwoord</string>
+    <string name="backup_password_hint">Wachtwoord</string>
+    <string name="backup_password_prompt_title">Voer wachtwoord in</string>
+    <string name="backup_password_wrong">Het wachtwoord kon dit bestand niet ontsleutelen. Probeer het opnieuw.</string>
+    <string name="backup_password_too_short">Het wachtwoord moet minstens %1$d tekens bevatten</string>
 </resources>

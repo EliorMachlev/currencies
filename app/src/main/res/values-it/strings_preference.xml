@@ -109,4 +109,25 @@
     <string name="rate_summary">Se vuoi, puoi aiutare gli altri a scoprire Currencies. Clicca qui per votare l\'app su Google Play.</string>
     <string name="category_versioninfo">Informazioni della versione</string>
     <string name="title_changelog">Registro dei cambiamenti</string>
+    <string name="backup_title">Backup e ripristino</string>
+    <string name="backup_summary">Salva le tue impostazioni in un file o ripristinale da un backup precedente</string>
+    <string name="backup_manager_title">Backup</string>
+    <string name="backup_section_local">Backup locale</string>
+    <string name="backup_section_restore">Ripristino</string>
+    <string name="backup_export_title">Esporta su file</string>
+    <string name="backup_export_summary">Scegli una posizione su questo dispositivo dove salvare un file di impostazioni cifrato o in chiaro</string>
+    <string name="backup_import_title">Importa da file</string>
+    <string name="backup_import_summary">Sovrascrive le impostazioni attuali con quelle di un file di backup esportato in precedenza</string>
+    <string name="backup_export_success">Backup salvato</string>
+    <string name="backup_export_failed">Backup non riuscito: %1$s</string>
+    <string name="backup_import_success">Impostazioni ripristinate — riavvia per applicare</string>
+    <string name="backup_import_failed">Ripristino non riuscito: %1$s</string>
+    <string name="backup_import_confirm_title">Ripristinare il backup?</string>
+    <string name="backup_import_confirm_message">Le impostazioni attuali verranno sovrascritte con quelle nel file. L\'operazione non può essere annullata.</string>
+    <string name="backup_import_confirm_positive">Ripristina</string>
+    <string name="backup_encrypt_option">Cifra con una password</string>
+    <string name="backup_password_hint">Password</string>
+    <string name="backup_password_prompt_title">Inserisci la password</string>
+    <string name="backup_password_wrong">La password non ha decifrato questo file. Riprova.</string>
+    <string name="backup_password_too_short">La password deve avere almeno %1$d caratteri</string>
 </resources>

@@ -109,4 +109,25 @@
     <string name="rate_summary">Si quieres, puedes ayudar a otros a descubrir Currencies. Haz clic aquí para valorar la aplicación en Google Play.</string>
     <string name="category_versioninfo">Información de la versión</string>
     <string name="title_changelog">Registro de cambios</string>
+    <string name="backup_title">Copia de seguridad y restauración</string>
+    <string name="backup_summary">Guarda tu configuración en un archivo o restaúrala desde una copia de seguridad anterior</string>
+    <string name="backup_manager_title">Copia de seguridad</string>
+    <string name="backup_section_local">Copia local</string>
+    <string name="backup_section_restore">Restauración</string>
+    <string name="backup_export_title">Exportar a un archivo</string>
+    <string name="backup_export_summary">Elige una ubicación en este dispositivo para guardar un archivo de configuración cifrado o sin cifrar</string>
+    <string name="backup_import_title">Importar desde un archivo</string>
+    <string name="backup_import_summary">Sobrescribe la configuración actual con la de un archivo de copia de seguridad exportado previamente</string>
+    <string name="backup_export_success">Copia de seguridad guardada</string>
+    <string name="backup_export_failed">Error al crear la copia de seguridad: %1$s</string>
+    <string name="backup_import_success">Configuración restaurada — reinicia para aplicar los cambios</string>
+    <string name="backup_import_failed">Error al restaurar: %1$s</string>
+    <string name="backup_import_confirm_title">¿Restaurar copia de seguridad?</string>
+    <string name="backup_import_confirm_message">Tu configuración actual se sobrescribirá con la del archivo. Esta acción no se puede deshacer.</string>
+    <string name="backup_import_confirm_positive">Restaurar</string>
+    <string name="backup_encrypt_option">Cifrar con una contraseña</string>
+    <string name="backup_password_hint">Contraseña</string>
+    <string name="backup_password_prompt_title">Introduce la contraseña</string>
+    <string name="backup_password_wrong">La contraseña no ha descifrado el archivo. Inténtalo de nuevo.</string>
+    <string name="backup_password_too_short">La contraseña debe tener al menos %1$d caracteres</string>
 </resources>

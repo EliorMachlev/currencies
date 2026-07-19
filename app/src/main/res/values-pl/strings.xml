@@ -18,6 +18,7 @@
     <string name="menu_refresh">Odśwież kursy</string>
     <string name="menu_timeline">Wykres kursów wymiany</string>
     <string name="menu_quick_conversions">Szybkie przeliczenia</string>
+    <string name="menu_share">Udostępnij</string>
     <string name="quick_conversions_title">Szybkie przeliczenia</string>
     <string name="quick_conversions_no_rates">Kursy nie zostały jeszcze załadowane.</string>
     <string name="quick_conversions_fees_applied">Zastosowane opłaty: %s</string>

@@ -18,6 +18,7 @@
     <string name="menu_refresh">Refreŝigaj tarifoj</string>
     <string name="menu_timeline">Kurza diagramo</string>
     <string name="menu_quick_conversions">Rapidaj konvertoj</string>
+    <string name="menu_share">Kunhavigi</string>
     <string name="quick_conversions_title">Rapidaj konvertoj</string>
     <string name="quick_conversions_no_rates">Kursoj ankoraŭ ne ŝargitaj.</string>
     <string name="quick_conversions_fees_applied">Aplikitaj kotizoj: %s</string>

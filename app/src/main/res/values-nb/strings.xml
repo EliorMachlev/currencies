@@ -16,6 +16,7 @@
     <string name="menu_refresh">Oppdater kurs</string>
     <string name="menu_timeline">Valutakurs historikk</string>
     <string name="menu_quick_conversions">Raske omregninger</string>
+    <string name="menu_share">Del</string>
     <string name="quick_conversions_title">Raske omregninger</string>
     <string name="quick_conversions_no_rates">Kursene er ikke lastet inn ennå.</string>
     <string name="quick_conversions_fees_applied">Anvendte gebyrer: %s</string>

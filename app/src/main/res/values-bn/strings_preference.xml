@@ -109,4 +109,25 @@
     <string name="rate_summary">তুমি চাইলে, অন্যদেরকে কারেন্সি অ্যাপটি সম্পর্কে জানতে সহায়তা করতে পারো। গুগল প্লেতে অ্যাপটি পর্যালোচনা জমা দিতে এখানে টিপ দাও।</string>
     <string name="category_versioninfo">সংস্করণ তথ্যা</string>
     <string name="title_changelog">পরিবর্তনসূচি</string>
+    <string name="backup_title">ব্যাকআপ ও পুনরুদ্ধার</string>
+    <string name="backup_summary">আপনার সেটিংস একটি ফাইলে সংরক্ষণ করুন, অথবা পূর্বের ব্যাকআপ থেকে পুনরুদ্ধার করুন</string>
+    <string name="backup_manager_title">ব্যাকআপ</string>
+    <string name="backup_section_local">স্থানীয় ব্যাকআপ</string>
+    <string name="backup_section_restore">পুনরুদ্ধার</string>
+    <string name="backup_export_title">ফাইলে এক্সপোর্ট করুন</string>
+    <string name="backup_export_summary">একটি এনক্রিপ্টেড বা সাধারণ সেটিংস ফাইল সংরক্ষণের জন্য এই ডিভাইসে একটি অবস্থান বেছে নিন</string>
+    <string name="backup_import_title">ফাইল থেকে ইম্পোর্ট করুন</string>
+    <string name="backup_import_summary">পূর্বে এক্সপোর্ট করা একটি ব্যাকআপ ফাইল থেকে বর্তমান সেটিংস প্রতিস্থাপন করুন</string>
+    <string name="backup_export_success">ব্যাকআপ সংরক্ষিত হয়েছে</string>
+    <string name="backup_export_failed">ব্যাকআপ ব্যর্থ: %1$s</string>
+    <string name="backup_import_success">সেটিংস পুনরুদ্ধার হয়েছে — প্রয়োগ করতে পুনরায় চালু করুন</string>
+    <string name="backup_import_failed">পুনরুদ্ধার ব্যর্থ: %1$s</string>
+    <string name="backup_import_confirm_title">ব্যাকআপ পুনরুদ্ধার করবেন?</string>
+    <string name="backup_import_confirm_message">আপনার বর্তমান সেটিংস ফাইলের সেটিংস দ্বারা প্রতিস্থাপিত হবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।</string>
+    <string name="backup_import_confirm_positive">পুনরুদ্ধার করুন</string>
+    <string name="backup_encrypt_option">পাসওয়ার্ড দিয়ে এনক্রিপ্ট করুন</string>
+    <string name="backup_password_hint">পাসওয়ার্ড</string>
+    <string name="backup_password_prompt_title">পাসওয়ার্ড লিখুন</string>
+    <string name="backup_password_wrong">পাসওয়ার্ড এই ফাইল ডিক্রিপ্ট করতে পারেনি। আবার চেষ্টা করুন।</string>
+    <string name="backup_password_too_short">পাসওয়ার্ড অন্তত %1$d অক্ষরের হতে হবে</string>
 </resources>

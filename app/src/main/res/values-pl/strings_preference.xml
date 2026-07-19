@@ -106,4 +106,25 @@
     <string name="rate_summary">Jeśli chcesz, możesz pomóc innym w odkrywaniu aplikacji Currencies. Kliknij tutaj, aby ocenić aplikację w Google Play.</string>
     <string name="category_versioninfo">Informacje o werski</string>
     <string name="title_changelog">Dziennik zmian</string>
+    <string name="backup_title">Kopia zapasowa i przywracanie</string>
+    <string name="backup_summary">Zapisz ustawienia do pliku lub przywróć je z wcześniejszej kopii</string>
+    <string name="backup_manager_title">Kopia zapasowa</string>
+    <string name="backup_section_local">Kopia lokalna</string>
+    <string name="backup_section_restore">Przywracanie</string>
+    <string name="backup_export_title">Eksport do pliku</string>
+    <string name="backup_export_summary">Wybierz miejsce na tym urządzeniu, aby zapisać zaszyfrowany lub zwykły plik z ustawieniami</string>
+    <string name="backup_import_title">Import z pliku</string>
+    <string name="backup_import_summary">Zastąp bieżące ustawienia zawartością wcześniej wyeksportowanej kopii zapasowej</string>
+    <string name="backup_export_success">Kopia zapisana</string>
+    <string name="backup_export_failed">Tworzenie kopii nie powiodło się: %1$s</string>
+    <string name="backup_import_success">Ustawienia przywrócone — uruchom ponownie, aby zastosować</string>
+    <string name="backup_import_failed">Przywracanie nie powiodło się: %1$s</string>
+    <string name="backup_import_confirm_title">Przywrócić z kopii zapasowej?</string>
+    <string name="backup_import_confirm_message">Bieżące ustawienia zostaną zastąpione tymi z pliku. Tej operacji nie można cofnąć.</string>
+    <string name="backup_import_confirm_positive">Przywróć</string>
+    <string name="backup_encrypt_option">Szyfruj hasłem</string>
+    <string name="backup_password_hint">Hasło</string>
+    <string name="backup_password_prompt_title">Wpisz hasło</string>
+    <string name="backup_password_wrong">Hasło nie odszyfrowało tego pliku. Spróbuj ponownie.</string>
+    <string name="backup_password_too_short">Hasło musi mieć co najmniej %1$d znaków</string>
 </resources>

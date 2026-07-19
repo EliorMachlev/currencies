@@ -110,4 +110,25 @@
     <string name="rate_summary">Hvis du vil, kan du hjælpe andre med at finde Valutaer. Klik her for at bedømme appen på Google Play.</string>
     <string name="category_versioninfo">Versioninformation</string>
     <string name="title_changelog">Ændringslog</string>
+    <string name="backup_title">Sikkerhedskopi og gendannelse</string>
+    <string name="backup_summary">Gem dine indstillinger i en fil, eller gendan fra en tidligere sikkerhedskopi</string>
+    <string name="backup_manager_title">Sikkerhedskopi</string>
+    <string name="backup_section_local">Lokal sikkerhedskopi</string>
+    <string name="backup_section_restore">Gendan</string>
+    <string name="backup_export_title">Eksportér til fil</string>
+    <string name="backup_export_summary">Vælg en placering på denne enhed, hvor en krypteret eller almindelig indstillingsfil kan gemmes</string>
+    <string name="backup_import_title">Importér fra fil</string>
+    <string name="backup_import_summary">Overskriv de nuværende indstillinger med indholdet af en tidligere eksporteret sikkerhedskopi</string>
+    <string name="backup_export_success">Sikkerhedskopi gemt</string>
+    <string name="backup_export_failed">Sikkerhedskopiering mislykkedes: %1$s</string>
+    <string name="backup_import_success">Indstillinger gendannet — genstart for at anvende dem</string>
+    <string name="backup_import_failed">Gendannelse mislykkedes: %1$s</string>
+    <string name="backup_import_confirm_title">Gendan sikkerhedskopi?</string>
+    <string name="backup_import_confirm_message">Dine nuværende indstillinger overskrives med dem i filen. Dette kan ikke fortrydes.</string>
+    <string name="backup_import_confirm_positive">Gendan</string>
+    <string name="backup_encrypt_option">Krypter med adgangskode</string>
+    <string name="backup_password_hint">Adgangskode</string>
+    <string name="backup_password_prompt_title">Indtast adgangskode</string>
+    <string name="backup_password_wrong">Adgangskoden kunne ikke dekryptere filen. Prøv igen.</string>
+    <string name="backup_password_too_short">Adgangskoden skal være mindst %1$d tegn</string>
 </resources>
