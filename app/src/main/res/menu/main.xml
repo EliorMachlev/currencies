@@ -29,6 +29,18 @@
         app:showAsAction="never" />
 
     <item
+        android:orderInCategory="15"
+        android:id="@+id/share"
+        android:title="@string/menu_share"
+        app:showAsAction="never" />
+
+    <item
+        android:orderInCategory="20"
+        android:id="@+id/change_api"
+        android:title="@string/api_title"
+        app:showAsAction="never" />
+
+    <item
         android:orderInCategory="500"
         android:id="@+id/fees"
         android:title="@string/fee_manager_title"

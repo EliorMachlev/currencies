@@ -45,6 +45,7 @@ import de.salomax.currencies.util.toNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
 import de.salomax.currencies.view.preference.PreferenceActivity
+import de.salomax.currencies.view.preference.showProviderPickerDialog
 import de.salomax.currencies.view.timeline.TimelineActivity
 import de.salomax.currencies.viewmodel.main.MainViewModel
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
@@ -149,12 +150,31 @@ class MainActivity : BaseActivity() {
         return when (item.itemId) {
             R.id.settings -> { startActivity(Intent(this, PreferenceActivity::class.java)); true }
             R.id.fees -> { startActivity(PreferenceActivity.feesIntent(this)); true }
+            R.id.change_api -> { showApiProviderPicker(); true }
             R.id.refresh -> { viewModel.forceUpdateExchangeRate(); true }
+            R.id.share -> { shareCurrentConversion(); true }
             R.id.timeline -> openTimelineActivity()
             R.id.quick_conversions -> { openQuickConversionsDialog(); true }
             R.id.date_picker -> { openHistoricalDatePicker(); true }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showApiProviderPicker() {
+        showProviderPickerDialog(
+            context = this,
+            current = Database(this).getApiProvider(),
+        ) { provider -> preferenceModel.setApiProvider(provider) }
+    }
+
+    private fun shareCurrentConversion() {
+        val text = tvInfoConversion.text?.toString().orEmpty()
+        if (text.isBlank()) return
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        startActivity(Intent.createChooser(intent, null))
     }
 
     private fun openQuickConversionsDialog() {

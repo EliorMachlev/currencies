@@ -29,6 +29,7 @@
     <string name="menu_timeline">Exchange rate chart</string>
     <string name="menu_quick_conversions">Quick conversions</string>
     <string name="menu_historical_rates" translatable="false">@string/historical_rates_dialog_title</string>
+    <string name="menu_share">Share</string>
 
     <string name="quick_conversions_title">Quick conversions</string>
     <string name="quick_conversions_no_rates">Rates not loaded yet.</string>

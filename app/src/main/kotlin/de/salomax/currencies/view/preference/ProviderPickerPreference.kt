@@ -14,6 +14,31 @@ import com.google.android.material.radiobutton.MaterialRadioButton
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
 
+/**
+ * Shows the API provider picker as a standalone dialog.
+ *
+ * Extracted so both [ProviderPickerPreference] (in the Settings screen) and
+ * the main-menu shortcut can present the same picker without any Settings
+ * chrome underneath.
+ */
+internal fun showProviderPickerDialog(
+    context: Context,
+    current: ApiProvider?,
+    onSelected: (ApiProvider) -> Unit,
+) {
+    val adapter = ProviderPickerDialogAdapter(context, current)
+    val dialog = AlertDialog.Builder(context)
+        .setSingleChoiceItems(adapter, current?.let { ApiProvider.entries.indexOf(it) } ?: -1, null)
+        .setTitle(R.string.api_title)
+        .setNegativeButton(android.R.string.cancel, null)
+        .create()
+    adapter.onProviderClicked = { provider ->
+        onSelected(provider)
+        dialog.dismiss()
+    }
+    dialog.show()
+}
+
 @Suppress("unused")
 class ProviderPickerPreference: ListPreference {
 
@@ -31,88 +56,78 @@ class ProviderPickerPreference: ListPreference {
 
     // open dialog
     override fun onClick() {
-        val adapter = ProviderPickerDialogAdapter(context, ApiProvider.fromId(value.toInt()))
-        val dialog = AlertDialog.Builder(context)
-            .setSingleChoiceItems(adapter, findIndexOfValue(value), null)
-            .setTitle(R.string.api_title)
-            .setNegativeButton(android.R.string.cancel, null)
-            .create()
-        adapter.onProviderClicked = { provider: ApiProvider ->
+        showProviderPickerDialog(
+            context = context,
+            current = ApiProvider.fromId(value.toInt()),
+        ) { provider ->
             callChangeListener(provider.id)
             value = provider.id.toString()
-            dialog.dismiss()
-        }
-        dialog.show()
-    }
-
-    /**
-     * A simple dialog adapter, that shows all available API providers.
-     */
-    internal class ProviderPickerDialogAdapter(
-        val context: Context,
-        private val selectedItem: ApiProvider?
-    ) : BaseAdapter() {
-
-        // listener
-        var onProviderClicked: ((ApiProvider) -> Unit)? = null
-        private val providers = ApiProvider.entries
-
-        override fun getCount() = providers.size
-
-        override fun getItem(position: Int) = providers[position]
-
-        override fun getItemId(position: Int): Long {
-            return getItem(position).id.toLong()
-        }
-
-        @SuppressLint("InflateParams")
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var view = convertView
-            val holder: ViewHolder
-
-            if (view == null) {
-                view = (context as Activity).layoutInflater.inflate(R.layout.row_provider_picker, null)
-                holder = ViewHolder().apply {
-                    parentView = view
-                    radioButton = view.findViewById(R.id.radio)
-                    textProviderName = view.findViewById(R.id.text)
-                    textDesc = view.findViewById(R.id.text2)
-                    textHint = view.findViewById(R.id.text3)
-                }
-                view.tag = holder
-            } else {
-                holder = view.tag as ViewHolder
-            }
-
-            holder.run {
-                val provider = providers[position]
-                // register clicks
-                parentView?.setOnClickListener {
-                    // TODO
-
-                    onProviderClicked?.invoke(provider)
-                }
-                // check current active api provider
-                radioButton?.isChecked = (provider == selectedItem)
-                // fill text
-                textProviderName?.text = provider.getName()
-                textDesc?.text = provider.getDescriptionShort(context)
-                textHint?.visibility = provider.getHint(context)?.let {
-                    textHint?.text = it
-                    View.VISIBLE
-                } ?: View.GONE
-            }
-
-            return view!!
-        }
-
-        internal class ViewHolder {
-            var parentView: View? = null
-            var radioButton: MaterialRadioButton? = null
-            var textProviderName: TextView? = null
-            var textDesc: TextView? = null
-            var textHint: TextView? = null
         }
     }
+}
 
+/**
+ * A simple dialog adapter, that shows all available API providers.
+ */
+internal class ProviderPickerDialogAdapter(
+    val context: Context,
+    private val selectedItem: ApiProvider?
+) : BaseAdapter() {
+
+    // listener
+    var onProviderClicked: ((ApiProvider) -> Unit)? = null
+    private val providers = ApiProvider.entries
+
+    override fun getCount() = providers.size
+
+    override fun getItem(position: Int) = providers[position]
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position).id.toLong()
+    }
+
+    @SuppressLint("InflateParams")
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        var view = convertView
+        val holder: ViewHolder
+
+        if (view == null) {
+            view = (context as Activity).layoutInflater.inflate(R.layout.row_provider_picker, null)
+            holder = ViewHolder().apply {
+                parentView = view
+                radioButton = view.findViewById(R.id.radio)
+                textProviderName = view.findViewById(R.id.text)
+                textDesc = view.findViewById(R.id.text2)
+                textHint = view.findViewById(R.id.text3)
+            }
+            view.tag = holder
+        } else {
+            holder = view.tag as ViewHolder
+        }
+
+        holder.run {
+            val provider = providers[position]
+            // register clicks
+            parentView?.setOnClickListener { onProviderClicked?.invoke(provider) }
+            // check current active api provider
+            radioButton?.isChecked = (provider == selectedItem)
+            // fill text
+            textProviderName?.text = provider.getName()
+            textDesc?.text = provider.getDescriptionShort(context)
+            textHint?.visibility = provider.getHint(context)?.let {
+                textHint?.text = it
+                View.VISIBLE
+            } ?: View.GONE
+        }
+
+        return view!!
+    }
+
+    internal class ViewHolder {
+        var parentView: View? = null
+        var radioButton: MaterialRadioButton? = null
+        var textProviderName: TextView? = null
+        var textDesc: TextView? = null
+        var textHint: TextView? = null
+    }
 }
