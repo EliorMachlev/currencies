@@ -17,6 +17,7 @@
     <string name="menu_timeline">Árfolyamgrafikon</string>
     <string name="menu_quick_conversions">Gyors átváltások</string>
     <string name="menu_share">Megosztás</string>
+    <string name="share_footer">%1$s alapján, %2$s</string>
     <string name="quick_conversions_title">Gyors átváltások</string>
     <string name="quick_conversions_no_rates">Az árfolyamok még nincsenek betöltve.</string>
     <string name="quick_conversions_fees_applied">Alkalmazott díjak: %s</string>

@@ -22,6 +22,7 @@
     <string name="menu_timeline">תרשים שערי חליפין</string>
     <string name="menu_quick_conversions">המרות מהירות</string>
     <string name="menu_share">שיתוף</string>
+    <string name="share_footer">מבוסס על %1$s, %2$s</string>
     <string name="quick_conversions_title">המרות מהירות</string>
     <string name="quick_conversions_no_rates">השערים עדיין לא נטענו.</string>
     <string name="quick_conversions_fees_applied">עמלות שהוחלו: %s</string>

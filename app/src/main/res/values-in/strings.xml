@@ -17,6 +17,7 @@
     <string name="menu_timeline">Bagan nilai tukar</string>
     <string name="menu_quick_conversions">Konversi cepat</string>
     <string name="menu_share">Bagikan</string>
+    <string name="share_footer">Berdasarkan %1$s, %2$s</string>
     <string name="quick_conversions_title">Konversi cepat</string>
     <string name="quick_conversions_no_rates">Nilai tukar belum dimuat.</string>
     <string name="quick_conversions_fees_applied">Biaya yang diterapkan: %s</string>

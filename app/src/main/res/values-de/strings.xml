@@ -23,6 +23,7 @@
     <string name="menu_timeline">Wechselkursverlauf</string>
     <string name="menu_quick_conversions">Schnellumrechnung</string>
     <string name="menu_share">Teilen</string>
+    <string name="share_footer">Basierend auf %1$s, %2$s</string>
     <string name="quick_conversions_title">Schnellumrechnung</string>
     <string name="quick_conversions_no_rates">Kurse noch nicht geladen.</string>
     <string name="quick_conversions_fees_applied">Angewendete Gebühren: %s</string>

@@ -22,6 +22,7 @@
     <string name="menu_timeline">বিনিময় হার চার্ট</string>
     <string name="menu_quick_conversions">দ্রুত রূপান্তর</string>
     <string name="menu_share">শেয়ার করুন</string>
+    <string name="share_footer">%1$s অনুযায়ী, %2$s</string>
     <string name="quick_conversions_title">দ্রুত রূপান্তর</string>
     <string name="quick_conversions_no_rates">হার এখনও লোড হয়নি।</string>
     <string name="quick_conversions_fees_applied">প্রযোজ্য ফি: %s</string>

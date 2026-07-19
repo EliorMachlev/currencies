@@ -22,6 +22,7 @@
     <string name="menu_timeline">Historique des taux de change</string>
     <string name="menu_quick_conversions">Conversions rapides</string>
     <string name="menu_share">Partager</string>
+    <string name="share_footer">D\'après %1$s, %2$s</string>
     <string name="quick_conversions_title">Conversions rapides</string>
     <string name="quick_conversions_no_rates">Taux non encore chargés.</string>
     <string name="quick_conversions_fees_applied">Frais appliqués : %s</string>

@@ -22,6 +22,7 @@
     <string name="menu_timeline">Biểu đồ tỷ giá hối đoái</string>
     <string name="menu_quick_conversions">Chuyển đổi nhanh</string>
     <string name="menu_share">Chia sẻ</string>
+    <string name="share_footer">Dựa trên %1$s, %2$s</string>
     <string name="quick_conversions_title">Chuyển đổi nhanh</string>
     <string name="quick_conversions_no_rates">Tỷ giá chưa được tải.</string>
     <string name="quick_conversions_fees_applied">Phí đã áp dụng: %s</string>
