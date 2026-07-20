@@ -220,10 +220,15 @@ class PreferenceFragment: PreferenceFragmentCompat() {
 
     private fun promptRestart() {
         val ctx = context ?: return
+        // Cancelable so back / outside-tap dismisses — those paths are
+        // treated as "Later" (no listener, nothing happens). Only the
+        // positive button actually restarts.
         MaterialAlertDialogBuilder(ctx)
             .setTitle(R.string.theme_restart_title)
             .setMessage(R.string.theme_restart_message)
+            .setCancelable(true)
             .setNegativeButton(R.string.theme_restart_negative, null)
+            .setOnCancelListener(null)
             .setPositiveButton(R.string.theme_restart_positive) { _, _ -> restartApp() }
             .show()
     }
