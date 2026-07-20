@@ -97,6 +97,7 @@ android {
 dependencies {
     // kotlin
     implementation("androidx.core:core-ktx:1.19.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     // support libs
     val appCompatVersion = "1.7.1"
     implementation("androidx.appcompat:appcompat:$appCompatVersion")

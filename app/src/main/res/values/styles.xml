@@ -8,6 +8,17 @@
 
     <style name="AppTheme.PureBlack" parent="BaseAppTheme.PureBlack" />
 
+    <!-- Cold-start splash. The system paints this before onCreate runs, so a
+         theme-independent brand color + centered icon hides the fact that
+         we can't know whether the user picked OLED until DB is read.
+         installSplashScreen() then transitions into postSplashScreenTheme;
+         BaseActivity.setTheme() overrides that with PureBlack when applicable. -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/dollarBill</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+
     <style name="BaseAppTheme" parent="Theme.Material3.DynamicColors.DayNight">
         <!-- theme-dependant colors (different for light/dark/black) -->
         <item name="colorBackground">@color/colorBackground</item>

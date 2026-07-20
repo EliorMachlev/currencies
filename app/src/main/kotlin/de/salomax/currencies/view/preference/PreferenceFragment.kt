@@ -13,7 +13,6 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
@@ -117,12 +116,13 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                // In-place recreate for Dark ↔ OLED is fragile (the launcher-
-                // alias swap can tear down the current task). Prompt the user
-                // to restart instead; night-mode changes still recreate
-                // automatically via AppCompatDelegate.setDefaultNightMode.
-                val needsRestart = viewModel.setTheme(newValue.toString().toInt())
-                if (needsRestart) promptRestart()
+                // Night-mode changes are recreated automatically by
+                // AppCompatDelegate.setDefaultNightMode. For a pure-black-only
+                // flip (Dark ↔ OLED) we recreate the current activity here;
+                // MainActivity below picks up the change via
+                // BaseActivity.onResume when the user backs out.
+                val needsRecreate = viewModel.setTheme(newValue.toString().toInt())
+                if (needsRecreate) view?.post { activity?.recreate() }
                 true
             }
         }
@@ -216,34 +216,6 @@ class PreferenceFragment: PreferenceFragmentCompat() {
             title = BuildConfig.VERSION_NAME
             summary = getString(R.string.version_summary, Calendar.getInstance().get(Calendar.YEAR).toString())
         }
-    }
-
-    private fun promptRestart() {
-        val ctx = context ?: return
-        // Cancelable so back / outside-tap dismisses — those paths are
-        // treated as "Later" (no listener, nothing happens). Only the
-        // positive button actually restarts.
-        MaterialAlertDialogBuilder(ctx)
-            .setTitle(R.string.theme_restart_title)
-            .setMessage(R.string.theme_restart_message)
-            .setCancelable(true)
-            .setNegativeButton(R.string.theme_restart_negative, null)
-            .setOnCancelListener(null)
-            .setPositiveButton(R.string.theme_restart_positive) { _, _ -> restartApp() }
-            .show()
-    }
-
-    // Relaunch the app via its launcher intent, then kill the current
-    // process so the fresh task boots from a cold start with the new theme
-    // applied by CurrenciesApplication.onCreate.
-    private fun restartApp() {
-        val ctx = context ?: return
-        val intent = ctx.packageManager.getLaunchIntentForPackage(ctx.packageName)
-            ?.apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK) }
-            ?: return
-        activity?.finishAffinity()
-        ctx.startActivity(intent)
-        Runtime.getRuntime().exit(0)
     }
 
     private fun createIntent(url: String): Intent {

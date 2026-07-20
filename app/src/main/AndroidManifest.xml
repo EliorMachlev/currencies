@@ -17,41 +17,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
-        <!-- Two launcher entries with different launch themes. Exactly one is
-             enabled at a time (see PackageManager toggle in PreferenceViewModel).
-             The non-OLED alias is enabled by default; picking an OLED theme
-             option flips to the pure-black alias so the pre-onCreate window
-             renders true black instead of blackOlive on cold start.
-
-             Both aliases target the same MainActivity and must be exported to
-             be reachable from the launcher (LAUNCHER intent-filter requires
-             exported=true). MainActivity itself has no exported entry point —
-             the aliases are the only public surface, and they don't add any
-             callable state beyond what the pre-refactor exported MainActivity
-             already exposed. -->
+        <!-- MainActivity is not exported. The launcher entry is the alias
+             below, whose sole job is to satisfy the LAUNCHER intent-filter
+             (which requires exported=true so the system launcher, running in
+             a different UID, can fire the tap intent). The alias adds no new
+             callable state — it just routes to MainActivity with the splash
+             launch theme so the pre-onCreate window is a brand-colored splash
+             instead of a theme-dependent background flash. -->
         <activity
             android:name=".view.main.MainActivity"
             android:exported="false" />
         <!-- nosemgrep: java.android.security.exported_activity.exported_activity -->
         <activity-alias
             android:name=".view.main.MainActivityLauncher"
-            android:enabled="true"
             android:exported="true"
             android:targetActivity=".view.main.MainActivity"
-            android:theme="@style/AppTheme"
-            tools:ignore="ExportedActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <!-- nosemgrep: java.android.security.exported_activity.exported_activity -->
-        <activity-alias
-            android:name=".view.main.MainActivityLauncherPureBlack"
-            android:enabled="false"
-            android:exported="true"
-            android:targetActivity=".view.main.MainActivity"
-            android:theme="@style/AppTheme.PureBlack"
+            android:theme="@style/Theme.App.Starting"
             tools:ignore="ExportedActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

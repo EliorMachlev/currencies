@@ -22,6 +22,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -101,6 +102,10 @@ class MainActivity : BaseActivity() {
     private lateinit var btnFeeSide: AppCompatImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Must run before super.onCreate so the system splash transitions
+        // straight into our post-splash theme instead of showing a frame of
+        // the default window background.
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         // general layout

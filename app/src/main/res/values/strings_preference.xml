@@ -93,10 +93,6 @@
     <string name="theme_option_dark">Dark</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">System default (OLED)</string>
-    <string name="theme_restart_title">Restart required</string>
-    <string name="theme_restart_message">The theme change will apply after restarting the app.</string>
-    <string name="theme_restart_positive">Restart</string>
-    <string name="theme_restart_negative">Later</string>
     <!-- languages -->
     <string name="language_key" translatable="false">KEY_LANGUAGE</string>
     <string name="language_title">App Language</string>
