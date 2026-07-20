@@ -25,25 +25,37 @@ private const val THEME_SYSTEM_OLED = 4
 private const val LAUNCHER_ALIAS_REGULAR = "de.salomax.currencies.view.main.MainActivityLauncher"
 private const val LAUNCHER_ALIAS_PURE_BLACK = "de.salomax.currencies.view.main.MainActivityLauncherPureBlack"
 
+// Fully-qualified name of the alias that should be enabled for the given
+// pure-black state. Callers use this to build an explicit launch intent
+// that doesn't depend on PackageManager's cached launcher resolution.
+internal fun launcherAliasName(pureBlack: Boolean): String =
+    if (pureBlack) LAUNCHER_ALIAS_PURE_BLACK else LAUNCHER_ALIAS_REGULAR
+
 // Enable exactly one launcher alias so the launcher intent resolves to the
 // activity whose static theme matches the user's chosen background. Idempotent —
 // safe to invoke on every startup to reconcile after migration or install.
+// Reads current component state first and skips the call when it already
+// matches, so cold-start reconciliation doesn't touch the alias that just
+// rooted the current task (some Android versions kill it despite DONT_KILL_APP).
 internal fun applyLauncherAliasState(context: Context, pureBlack: Boolean) {
     val pm = context.packageManager
-    val (enable, disable) = if (pureBlack)
-        LAUNCHER_ALIAS_PURE_BLACK to LAUNCHER_ALIAS_REGULAR
+    setComponentEnabledIfChanged(pm, context, launcherAliasName(pureBlack), enabled = true)
+    setComponentEnabledIfChanged(pm, context, launcherAliasName(!pureBlack), enabled = false)
+}
+
+private fun setComponentEnabledIfChanged(
+    pm: PackageManager,
+    context: Context,
+    className: String,
+    enabled: Boolean,
+) {
+    val component = ComponentName(context, className)
+    val target = if (enabled)
+        PackageManager.COMPONENT_ENABLED_STATE_ENABLED
     else
-        LAUNCHER_ALIAS_REGULAR to LAUNCHER_ALIAS_PURE_BLACK
-    pm.setComponentEnabledSetting(
-        ComponentName(context, enable),
-        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-        PackageManager.DONT_KILL_APP,
-    )
-    pm.setComponentEnabledSetting(
-        ComponentName(context, disable),
-        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        PackageManager.DONT_KILL_APP,
-    )
+        PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    if (pm.getComponentEnabledSetting(component) == target) return
+    pm.setComponentEnabledSetting(component, target, PackageManager.DONT_KILL_APP)
 }
 
 // Language.SYSTEM.iso — matches the enum value that means "follow system

@@ -23,7 +23,10 @@ import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
 import de.salomax.currencies.util.DECIMAL_PLACES_MAX
 import de.salomax.currencies.util.DECIMAL_PLACES_MIN
+import de.salomax.currencies.repository.Database
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
+import de.salomax.currencies.viewmodel.preference.applyLauncherAliasState
+import de.salomax.currencies.viewmodel.preference.launcherAliasName
 import de.salomax.currencies.widget.LongSummaryPreference
 import java.util.Calendar
 
@@ -241,14 +244,32 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     }
 
     // Relaunch via AlarmManager so the launcher intent fires *after* our
-    // process has died — starting the activity directly and then calling
+    // process has died. Starting the activity directly and then calling
     // exit() races the activity manager and often leaves the app closed
-    // without re-opening.
+    // without reopening.
+    //
+    // The alias swap happens here (not deferred to Application.onCreate on
+    // the next launch) for two reasons:
+    //  1. The alarm's launch intent needs to resolve to the alias whose
+    //     static theme matches the new setting, without depending on a
+    //     stale PackageManager cache — so we target the alias explicitly.
+    //  2. If the user gives up on the restart and reopens manually, the
+    //     launcher must already point at the correct alias; otherwise
+    //     Application.onCreate would disable the alias that just rooted
+    //     the fresh task and some Android versions kill it despite
+    //     DONT_KILL_APP.
+    // We're about to kill our own process, so the alias swap's own
+    // "may need restart" side effect is a non-issue here.
     private fun restartApp() {
         val ctx = context?.applicationContext ?: return
-        val intent = ctx.packageManager.getLaunchIntentForPackage(ctx.packageName)
-            ?.apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK) }
-            ?: return
+        val pureBlack = Database(ctx).isPureBlackEnabled()
+        applyLauncherAliasState(ctx, pureBlack)
+        val intent = Intent().apply {
+            setClassName(ctx, launcherAliasName(pureBlack))
+            action = Intent.ACTION_MAIN
+            addCategory(Intent.CATEGORY_LAUNCHER)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
         val pending = PendingIntent.getActivity(
             ctx, 0, intent,
             PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE,
