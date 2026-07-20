@@ -3,6 +3,7 @@ package de.salomax.currencies
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import de.salomax.currencies.repository.Database
+import de.salomax.currencies.viewmodel.preference.applyLauncherAliasState
 import java.net.InetAddress
 import kotlin.concurrent.thread
 
@@ -16,8 +17,16 @@ class CurrenciesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         applyNightMode()
+        reconcileLauncherAlias()
         warmSharedPreferences()
         prewarmProviderDns()
+    }
+
+    // Ensure the enabled launcher alias matches the current pure-black setting.
+    // Needed on the very first launch after the legacy pure-black boolean has
+    // been migrated into the unified theme value.
+    private fun reconcileLauncherAlias() {
+        applyLauncherAliasState(this, Database(this).isPureBlackEnabled())
     }
 
     // Apply the persisted day/night mode before any Activity is created, so

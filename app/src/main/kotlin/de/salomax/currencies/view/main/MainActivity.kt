@@ -8,7 +8,6 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.ContextMenu
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
@@ -23,7 +22,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -58,11 +56,6 @@ import java.time.format.DateTimeFormatter
 private const val HISTORICAL_MIN_YEAR = 2010
 private const val STALE_RATES_DAYS = 3L
 private const val MAX_ERROR_TEXT_LINES = 20
-
-// Minimum splash duration. Without this, the system dismisses the splash the
-// instant our first frame draws — on a fast cold start that's under 100 ms,
-// so the user perceives no splash at all.
-private const val SPLASH_MIN_DURATION_MS = 500L
 
 // context-menu item ids for the from/to text views
 private const val CTX_MENU_COPY_FROM = 0
@@ -108,14 +101,6 @@ class MainActivity : BaseActivity() {
     private lateinit var btnFeeSide: AppCompatImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Must run before super.onCreate so the system splash transitions
-        // straight into our post-splash theme instead of showing a frame of
-        // the default window background.
-        val splash = installSplashScreen()
-        val splashStart = SystemClock.uptimeMillis()
-        splash.setKeepOnScreenCondition {
-            SystemClock.uptimeMillis() - splashStart < SPLASH_MIN_DURATION_MS
-        }
         super.onCreate(savedInstanceState)
 
         // general layout
