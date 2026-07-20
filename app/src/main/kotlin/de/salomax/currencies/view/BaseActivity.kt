@@ -15,17 +15,31 @@ import kotlinx.coroutines.launch
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    // Theme value captured at onCreate; onResume compares against the current
+    // DB value so that returning here after a Dark ↔ OLED switch triggers a
+    // recreate. Night-mode changes are already handled by AppCompatDelegate.
+    private var appliedThemeAtCreate: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val db = Database(this)
+        appliedThemeAtCreate = db.getTheme()
         // pure black — night mode itself is set once in CurrenciesApplication
         // so this setTheme call resolves against the correct night qualifier.
         setTheme(
-            if (Database(this).isPureBlackEnabled())
+            if (db.isPureBlackEnabled())
                 R.style.AppTheme_PureBlack
             else
                 R.style.AppTheme
         )
 
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Database(this).getTheme() != appliedThemeAtCreate) {
+            recreate()
+        }
     }
 
     /**

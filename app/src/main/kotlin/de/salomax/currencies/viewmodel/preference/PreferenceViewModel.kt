@@ -3,19 +3,15 @@ package de.salomax.currencies.viewmodel.preference
 import android.app.Application
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.TaskStackBuilder
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
-import de.salomax.currencies.view.main.MainActivity
-import de.salomax.currencies.view.preference.PreferenceActivity
 
 // Same numeric contract as Database.getTheme() / BaseActivity.
 private const val THEME_LIGHT = 0
@@ -86,33 +82,25 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         return openExchangeratesApiKey
     }
 
-    fun setTheme(theme: Int) {
+    /**
+     * Returns true when the caller should recreate the current activity to pick
+     * up the new theme. Only happens when night mode stays the same but the
+     * pure-black flag flips (Dark ↔ OLED, or System ↔ System OLED while the
+     * system is currently in dark). For any night-mode change, AppCompatDelegate
+     * handles the recreate automatically and this returns false. MainActivity
+     * below the current one is refreshed by BaseActivity.onResume.
+     */
+    fun setTheme(theme: Int): Boolean {
+        val previousNightMode = nightModeFor(db.getTheme())
         val previousPureBlack = db.isPureBlackEnabled()
         db.setTheme(theme)
-        // Apply day/night. When this actually changes the mode, AppCompatDelegate
-        // recreates open activities automatically; otherwise (e.g. Dark → OLED)
-        // we manually recreate below to pick up the new theme.
-        AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
+        val newNightMode = nightModeFor(theme)
+        AppCompatDelegate.setDefaultNightMode(newNightMode)
         // Point the launcher at the correct alias so cold starts don't flash.
-        setLauncherPureBlack(pureBlackFor(theme))
-        // If night mode didn't change but pure-black did, force a recreate.
-        if (previousPureBlack != pureBlackFor(theme) && isDarkThemeActive()) {
-            recreateActivities()
-        }
-    }
-
-    private fun setLauncherPureBlack(pureBlack: Boolean) {
-        applyLauncherAliasState(app, pureBlack)
-    }
-
-    private fun recreateActivities() {
-        TaskStackBuilder.create(app)
-            // PreferencesActivity is always called from MainActivity
-            .addNextIntent(Intent(app, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            })
-            .addNextIntent(Intent(app, PreferenceActivity::class.java))
-            .startActivities()
+        applyLauncherAliasState(app, pureBlackFor(theme))
+        val nightModeChanged = previousNightMode != newNightMode
+        val pureBlackChanged = previousPureBlack != pureBlackFor(theme)
+        return !nightModeChanged && pureBlackChanged && isDarkThemeActive()
     }
 
     private fun nightModeFor(theme: Int): Int = when (theme) {

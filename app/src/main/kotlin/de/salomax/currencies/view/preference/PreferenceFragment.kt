@@ -116,7 +116,12 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                viewModel.setTheme(newValue.toString().toInt())
+                // ListPreference persists the new value and refreshes its own
+                // summary via a follow-up call; posting recreate() straight
+                // from here would race that. Defer to after the current
+                // dispatch so the preference has committed cleanly.
+                val needsRecreate = viewModel.setTheme(newValue.toString().toInt())
+                if (needsRecreate) view?.post { activity?.recreate() }
                 true
             }
         }
