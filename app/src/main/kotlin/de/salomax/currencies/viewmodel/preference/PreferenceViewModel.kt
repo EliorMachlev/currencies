@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
@@ -16,7 +15,6 @@ import de.salomax.currencies.repository.ExchangeRatesRepository
 // Same numeric contract as Database.getTheme() / BaseActivity.
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
-private const val THEME_SYSTEM = 2
 private const val THEME_OLED = 3
 private const val THEME_SYSTEM_OLED = 4
 
@@ -83,24 +81,25 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
     }
 
     /**
-     * Returns true when the caller should recreate the current activity to pick
-     * up the new theme. Only happens when night mode stays the same but the
-     * pure-black flag flips (Dark ↔ OLED, or System ↔ System OLED while the
-     * system is currently in dark). For any night-mode change, AppCompatDelegate
-     * handles the recreate automatically and this returns false. MainActivity
-     * below the current one is refreshed by BaseActivity.onResume.
+     * Persists the new theme and returns true when the caller should prompt the
+     * user to restart. Any transition into or out of an OLED variant (pure-black
+     * flag flips) defers the actual apply — night mode and launcher alias are
+     * left untouched — because letting AppCompatDelegate auto-recreate at the
+     * same moment the launcher alias is swapped can tear the current task down.
+     * The next cold start picks up both via CurrenciesApplication.onCreate.
+     *
+     * For a plain night-mode change with no OLED involvement, this applies the
+     * new mode immediately (AppCompatDelegate handles the recreate) and returns
+     * false.
      */
     fun setTheme(theme: Int): Boolean {
-        val previousNightMode = nightModeFor(db.getTheme())
-        val previousPureBlack = db.isPureBlackEnabled()
+        val previousPureBlack = pureBlackFor(db.getTheme())
+        val newPureBlack = pureBlackFor(theme)
+        val oledTransition = previousPureBlack != newPureBlack
         db.setTheme(theme)
-        val newNightMode = nightModeFor(theme)
-        AppCompatDelegate.setDefaultNightMode(newNightMode)
-        // Point the launcher at the correct alias so cold starts don't flash.
-        applyLauncherAliasState(app, pureBlackFor(theme))
-        val nightModeChanged = previousNightMode != newNightMode
-        val pureBlackChanged = previousPureBlack != pureBlackFor(theme)
-        return !nightModeChanged && pureBlackChanged && isDarkThemeActive()
+        if (oledTransition) return true
+        AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
+        return false
     }
 
     private fun nightModeFor(theme: Int): Int = when (theme) {
@@ -138,15 +137,6 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
             appLocale.country
         else
             "${appLocale.language}_${appLocale.country}"
-    }
-
-    private fun isDarkThemeActive(): Boolean {
-        val theme = db.getTheme()
-        val explicitlyDark = theme == THEME_DARK || theme == THEME_OLED
-        val nightMode = app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val systemDark = (theme == THEME_SYSTEM || theme == THEME_SYSTEM_OLED) &&
-                nightMode == Configuration.UI_MODE_NIGHT_YES
-        return explicitlyDark || systemDark
     }
 
     fun isPreviewConversionEnabled(): LiveData<Boolean> {
