@@ -53,21 +53,21 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
 
     /**
      * Returns true when the caller should recreate the current activity to pick
-     * up the new theme. Only happens when night mode stays the same but the
-     * pure-black flag flips (Dark ↔ OLED, or System ↔ System OLED while the
-     * system is currently in dark). For any night-mode change, AppCompatDelegate
-     * handles the recreate automatically and this returns false. MainActivity
-     * below the current one is refreshed by BaseActivity.onResume.
+     * up the new theme. AppCompatDelegate auto-recreates only when the *effective*
+     * night mode flips; swapping between two themes that resolve to the same
+     * effective mode (e.g. System ↔ OLED while the system is currently in dark)
+     * needs a manual recreate whenever the pure-black flag changed.
+     * MainActivity below the current one is refreshed by BaseActivity.onResume.
      */
     fun setTheme(theme: Int): Boolean {
-        val previousNightMode = nightModeFor(db.getTheme())
+        val previousEffectiveDark = isDarkThemeActiveFor(db.getTheme())
         val previousPureBlack = db.isPureBlackEnabled()
         db.setTheme(theme)
-        val newNightMode = nightModeFor(theme)
-        AppCompatDelegate.setDefaultNightMode(newNightMode)
-        val nightModeChanged = previousNightMode != newNightMode
+        AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
+        val newEffectiveDark = isDarkThemeActiveFor(theme)
+        val effectiveDarkChanged = previousEffectiveDark != newEffectiveDark
         val pureBlackChanged = previousPureBlack != pureBlackFor(theme)
-        return !nightModeChanged && pureBlackChanged && isDarkThemeActive()
+        return !effectiveDarkChanged && pureBlackChanged && newEffectiveDark
     }
 
     private fun nightModeFor(theme: Int): Int = when (theme) {
@@ -107,8 +107,7 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
             "${appLocale.language}_${appLocale.country}"
     }
 
-    private fun isDarkThemeActive(): Boolean {
-        val theme = db.getTheme()
+    private fun isDarkThemeActiveFor(theme: Int): Boolean {
         val explicitlyDark = theme == THEME_DARK || theme == THEME_OLED
         val nightMode = app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val systemDark = (theme == THEME_SYSTEM || theme == THEME_SYSTEM_OLED) &&
