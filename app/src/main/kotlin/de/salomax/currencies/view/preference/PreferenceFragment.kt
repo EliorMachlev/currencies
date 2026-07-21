@@ -5,7 +5,6 @@ import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Process
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,15 +13,12 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
 import de.salomax.currencies.util.DECIMAL_PLACES_MAX
 import de.salomax.currencies.util.DECIMAL_PLACES_MIN
-import de.salomax.currencies.repository.Database
-import de.salomax.currencies.view.RestartActivity
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import de.salomax.currencies.widget.LongSummaryPreference
 import java.util.Calendar
@@ -120,12 +116,7 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                // In-place recreate for Dark ↔ OLED is fragile (the launcher-
-                // alias swap can tear down the current task). Prompt the user
-                // to restart instead; night-mode changes still recreate
-                // automatically via AppCompatDelegate.setDefaultNightMode.
-                val needsRestart = viewModel.setTheme(newValue.toString().toInt())
-                if (needsRestart) promptRestart()
+                viewModel.setTheme(newValue.toString().toInt())
                 true
             }
         }
@@ -219,49 +210,6 @@ class PreferenceFragment: PreferenceFragmentCompat() {
             title = BuildConfig.VERSION_NAME
             summary = getString(R.string.version_summary, Calendar.getInstance().get(Calendar.YEAR).toString())
         }
-    }
-
-    private fun promptRestart() {
-        val ctx = context ?: return
-        // Cancelable so back / outside-tap dismisses — those paths are
-        // treated as "Later" (no listener, nothing happens). Only the
-        // positive button actually restarts.
-        MaterialAlertDialogBuilder(ctx)
-            .setTitle(R.string.theme_restart_title)
-            .setMessage(R.string.theme_restart_message)
-            .setCancelable(true)
-            .setNegativeButton(R.string.theme_restart_negative, null)
-            .setOnCancelListener(null)
-            .setPositiveButton(R.string.theme_restart_positive) { _, _ -> restartApp() }
-            .show()
-    }
-
-    // Relaunch via RestartActivity — a headless helper that lives in its
-    // own ":restart" process. AlarmManager-based relaunches are unreliable
-    // on Android 12+ due to background-activity-start restrictions, so we
-    // hand off to a process that outlives ours and then fires the launcher
-    // intent as a foreground activity start.
-    //
-    // The alias swap happens here (not deferred to Application.onCreate on
-    // the next launch) for two reasons:
-    //  1. The relaunch intent needs to resolve to the alias whose static
-    //     theme matches the new setting, so we target it explicitly.
-    //  2. If the user reopens manually before the relaunch completes, the
-    //     launcher must already point at the correct alias; otherwise
-    //     Application.onCreate would disable the alias that just rooted
-    //     the fresh task and some Android versions kill it despite
-    //     DONT_KILL_APP.
-    // We're about to kill our own process, so the alias swap's own
-    // "may need restart" side effect is a non-issue here.
-    private fun restartApp() {
-        val ctx = context?.applicationContext ?: return
-        val pureBlack = Database(ctx).isPureBlackEnabled()
-        val restart = Intent(ctx, RestartActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(RestartActivity.EXTRA_PURE_BLACK, pureBlack)
-            putExtra(RestartActivity.EXTRA_MAIN_PID, Process.myPid())
-        }
-        ctx.startActivity(restart)
     }
 
     private fun createIntent(url: String): Intent {

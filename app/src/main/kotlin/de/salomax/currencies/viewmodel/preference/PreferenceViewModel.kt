@@ -1,9 +1,6 @@
 package de.salomax.currencies.viewmodel.preference
 
 import android.app.Application
-import android.content.ComponentName
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
@@ -16,47 +13,6 @@ import de.salomax.currencies.repository.ExchangeRatesRepository
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
 private const val THEME_OLED = 3
-private const val THEME_SYSTEM_OLED = 4
-
-// Activity-alias entries in the manifest — must be kept in sync with
-// AndroidManifest.xml. The launcher targets one of these depending on whether
-// the user picked an OLED theme option, so the pre-onCreate window paints the
-// correct background on cold start.
-private const val LAUNCHER_ALIAS_REGULAR = "de.salomax.currencies.view.main.MainActivityLauncher"
-private const val LAUNCHER_ALIAS_PURE_BLACK = "de.salomax.currencies.view.main.MainActivityLauncherPureBlack"
-
-// Fully-qualified name of the alias that should be enabled for the given
-// pure-black state. Callers use this to build an explicit launch intent
-// that doesn't depend on PackageManager's cached launcher resolution.
-internal fun launcherAliasName(pureBlack: Boolean): String =
-    if (pureBlack) LAUNCHER_ALIAS_PURE_BLACK else LAUNCHER_ALIAS_REGULAR
-
-// Enable exactly one launcher alias so the launcher intent resolves to the
-// activity whose static theme matches the user's chosen background. Idempotent —
-// safe to invoke on every startup to reconcile after migration or install.
-// Reads current component state first and skips the call when it already
-// matches, so cold-start reconciliation doesn't touch the alias that just
-// rooted the current task (some Android versions kill it despite DONT_KILL_APP).
-internal fun applyLauncherAliasState(context: Context, pureBlack: Boolean) {
-    val pm = context.packageManager
-    setComponentEnabledIfChanged(pm, context, launcherAliasName(pureBlack), enabled = true)
-    setComponentEnabledIfChanged(pm, context, launcherAliasName(!pureBlack), enabled = false)
-}
-
-private fun setComponentEnabledIfChanged(
-    pm: PackageManager,
-    context: Context,
-    className: String,
-    enabled: Boolean,
-) {
-    val component = ComponentName(context, className)
-    val target = if (enabled)
-        PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-    else
-        PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-    if (pm.getComponentEnabledSetting(component) == target) return
-    pm.setComponentEnabledSetting(component, target, PackageManager.DONT_KILL_APP)
-}
 
 // Language.SYSTEM.iso — matches the enum value that means "follow system
 // locale" without pulling the enum into this file.
@@ -92,26 +48,9 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         return openExchangeratesApiKey
     }
 
-    /**
-     * Persists the new theme and returns true when the caller should prompt the
-     * user to restart. Any transition into or out of an OLED variant (pure-black
-     * flag flips) defers the actual apply — night mode and launcher alias are
-     * left untouched — because letting AppCompatDelegate auto-recreate at the
-     * same moment the launcher alias is swapped can tear the current task down.
-     * The next cold start picks up both via CurrenciesApplication.onCreate.
-     *
-     * For a plain night-mode change with no OLED involvement, this applies the
-     * new mode immediately (AppCompatDelegate handles the recreate) and returns
-     * false.
-     */
-    fun setTheme(theme: Int): Boolean {
-        val previousPureBlack = pureBlackFor(db.getTheme())
-        val newPureBlack = pureBlackFor(theme)
-        val oledTransition = previousPureBlack != newPureBlack
+    fun setTheme(theme: Int) {
         db.setTheme(theme)
-        if (oledTransition) return true
         AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
-        return false
     }
 
     private fun nightModeFor(theme: Int): Int = when (theme) {
@@ -119,9 +58,6 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         THEME_DARK, THEME_OLED -> AppCompatDelegate.MODE_NIGHT_YES
         else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     }
-
-    private fun pureBlackFor(theme: Int): Boolean =
-        theme == THEME_OLED || theme == THEME_SYSTEM_OLED
 
     fun setLanguage(language: String) {
         val appLocale: LocaleListCompat =

@@ -13,11 +13,6 @@
         <item name="colorBackground">@color/colorBackground</item>
         <item name="colorDisplayOverlay">@color/displayOverlay</item>
 
-        <!-- Paint the pre-onCreate launch window with the same background the
-             Activity will render, so cold start doesn't flash the Material3
-             default color before onCreate swaps in our real background. -->
-        <item name="android:windowBackground">@color/colorBackground</item>
-
         <!-- Material 3 colors +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
           - https://material.io/blog/migrating-material-3
           - https://material.io/blog/android-material-theme-color
@@ -87,11 +82,6 @@
         <!-- colors -->
         <item name="colorBackground">@color/colorBackgroundPureBlack</item>
         <item name="colorDisplayOverlay">@color/displayOverlayPureBlack</item>
-
-        <!-- Same reasoning as BaseAppTheme, but pointing at the pure-black
-             variant so the launch window paints @android:color/black in
-             night mode instead of the default dark background. -->
-        <item name="android:windowBackground">@color/colorBackgroundPureBlack</item>
     </style>
 
     <!-- make actionbar the same color as the background -->

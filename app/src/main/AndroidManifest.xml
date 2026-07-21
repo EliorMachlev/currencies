@@ -17,62 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
-        <!-- Two launcher entries with different launch themes. Exactly one is
-             enabled at a time (see PackageManager toggle in PreferenceViewModel).
-             The non-OLED alias is enabled by default; picking an OLED theme
-             option flips to the pure-black alias so the pre-onCreate window
-             renders true black instead of blackOlive on cold start.
-
-             Both aliases target the same MainActivity and must be exported to
-             be reachable from the launcher (LAUNCHER intent-filter requires
-             exported=true). MainActivity itself has no exported entry point —
-             the aliases are the only public surface, and they don't add any
-             callable state beyond what the pre-refactor exported MainActivity
-             already exposed. -->
         <activity
             android:name=".view.main.MainActivity"
-            android:exported="false" />
-        <!-- nosemgrep: java.android.security.exported_activity.exported_activity -->
-        <activity-alias
-            android:name=".view.main.MainActivityLauncher"
-            android:enabled="true"
-            android:exported="true"
-            android:targetActivity=".view.main.MainActivity"
-            android:theme="@style/AppTheme"
-            tools:ignore="ExportedActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity-alias>
-        <!-- nosemgrep: java.android.security.exported_activity.exported_activity -->
-        <activity-alias
-            android:name=".view.main.MainActivityLauncherPureBlack"
-            android:enabled="false"
-            android:exported="true"
-            android:targetActivity=".view.main.MainActivity"
-            android:theme="@style/AppTheme.PureBlack"
-            tools:ignore="ExportedActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
+        </activity>
         <activity android:name=".view.preference.PreferenceActivity" />
         <activity android:name=".view.timeline.TimelineActivity" />
-        <!-- Runs in its own process so it can outlive the main process
-             during a theme restart and then fire the launcher intent for
-             a fresh cold start. Isolated task affinity + excludeFromRecents
-             keeps it from ever appearing in the recents list or fighting
-             with the main task for CLEAR_TASK semantics.
-             See RestartActivity.kt. -->
-        <activity
-            android:name=".view.RestartActivity"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:process=":restart"
-            android:taskAffinity=""
-            android:theme="@android:style/Theme.NoDisplay" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
