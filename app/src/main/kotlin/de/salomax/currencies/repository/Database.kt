@@ -43,8 +43,8 @@ private const val FEE_TYPE_SPECIFIC_PAIR = "specific_pair"
 // layer doesn't need to depend on androidx.appcompat.
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
-private const val THEME_SYSTEM = 2
-private const val THEME_OLED = 3
+private const val THEME_OLED = 2
+private const val THEME_SYSTEM = 3
 private const val THEME_SYSTEM_OLED = 4
 private const val DEFAULT_THEME_MODE = THEME_SYSTEM
 
@@ -315,8 +315,8 @@ class Database(context: Context) {
     /**
      * 0 = Light           (MODE_NIGHT_NO)
      * 1 = Dark            (MODE_NIGHT_YES)
-     * 2 = System default  (MODE_NIGHT_FOLLOW_SYSTEM)
-     * 3 = OLED            (MODE_NIGHT_YES, pure-black)
+     * 2 = OLED            (MODE_NIGHT_YES, pure-black)
+     * 3 = System default  (MODE_NIGHT_FOLLOW_SYSTEM)
      * 4 = System (OLED)   (MODE_NIGHT_FOLLOW_SYSTEM, pure-black)
      *
      * Migrates the legacy separate pure-black boolean into the new unified

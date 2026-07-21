@@ -9,7 +9,7 @@ import kotlin.concurrent.thread
 // Kept in sync with Database.getTheme() unified values.
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
-private const val THEME_OLED = 3
+private const val THEME_OLED = 2
 
 class CurrenciesApplication : Application() {
 

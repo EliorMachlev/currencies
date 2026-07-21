@@ -12,7 +12,7 @@ import de.salomax.currencies.repository.ExchangeRatesRepository
 // Same numeric contract as Database.getTheme() / BaseActivity.
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
-private const val THEME_OLED = 3
+private const val THEME_OLED = 2
 
 // Language.SYSTEM.iso — matches the enum value that means "follow system
 // locale" without pulling the enum into this file.
