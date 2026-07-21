@@ -12,6 +12,7 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
+import de.salomax.currencies.model.FeeType
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import de.salomax.currencies.util.KEY_RATES_BASE
@@ -35,10 +36,6 @@ import java.util.UUID
 private const val LEGACY_FEE_KEY = "_fee"
 private const val LEGACY_FEE_STR_KEY = "_fee_str"
 private const val LEGACY_FEE_ENABLED_KEY = "_feeEnabled"
-
-private const val FEE_TYPE_GLOBAL_EXCHANGE = "global_exchange"
-private const val FEE_TYPE_GLOBAL_BANK = "global_bank"
-private const val FEE_TYPE_SPECIFIC_PAIR = "specific_pair"
 
 // Sentinel for "no historical date stored" in the millis-since-epoch pref.
 // -1L is used because it can't collide with any real epoch millis (1970-01-01
@@ -436,15 +433,11 @@ class Database(context: Context) {
             obj.put("id", fee.id)
             obj.put("percent", fee.percent.toPlainString())
             obj.put("isMarkup", fee.isMarkup)
-            when (fee) {
-                is Fee.GlobalExchange -> obj.put("type", FEE_TYPE_GLOBAL_EXCHANGE)
-                is Fee.GlobalBank -> obj.put("type", FEE_TYPE_GLOBAL_BANK)
-                is Fee.SpecificPair -> {
-                    obj.put("type", FEE_TYPE_SPECIFIC_PAIR)
-                    obj.put("from", fee.from)
-                    obj.put("to", fee.to)
-                    obj.put("bothWays", fee.bothWays)
-                }
+            obj.put("type", fee.type.wire)
+            if (fee is Fee.SpecificPair) {
+                obj.put("from", fee.from)
+                obj.put("to", fee.to)
+                obj.put("bothWays", fee.bothWays)
             }
             arr.put(obj)
         }
@@ -466,10 +459,10 @@ class Database(context: Context) {
         val id = obj.optString("id", "").ifEmpty { UUID.randomUUID().toString() }
         val percent = obj.optString("percent", "0").toBigDecimalOrNull() ?: return null
         val isMarkup = obj.optBoolean("isMarkup", true)
-        return when (obj.optString("type")) {
-            FEE_TYPE_GLOBAL_EXCHANGE -> Fee.GlobalExchange(id, percent, isMarkup)
-            FEE_TYPE_GLOBAL_BANK -> Fee.GlobalBank(id, percent, isMarkup)
-            FEE_TYPE_SPECIFIC_PAIR -> Fee.SpecificPair(
+        return when (FeeType.fromWire(obj.optString("type"))) {
+            FeeType.GLOBAL_EXCHANGE -> Fee.GlobalExchange(id, percent, isMarkup)
+            FeeType.GLOBAL_BANK -> Fee.GlobalBank(id, percent, isMarkup)
+            FeeType.SPECIFIC_PAIR -> Fee.SpecificPair(
                 id = id,
                 percent = percent,
                 isMarkup = isMarkup,
@@ -477,7 +470,7 @@ class Database(context: Context) {
                 to = obj.optString("to", ""),
                 bothWays = obj.optBoolean("bothWays", false),
             )
-            else -> null
+            null -> null
         }
     }
 
