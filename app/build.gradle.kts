@@ -6,8 +6,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    // Temporarily pinned to 2.3.9 — 2.4.0 isn't resolvable in CI's plugin repos.
-    id("org.jetbrains.kotlin.plugin.compose") version "2.3.9"
+    // Pinned to the latest stable 2.3.x — 2.4.0 flakes in CI's plugin repos.
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.21"
     id("com.google.devtools.ksp") version "2.3.9"
 }
 
