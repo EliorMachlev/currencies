@@ -48,6 +48,7 @@ import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.view.preference.showProviderPickerDialog
 import de.salomax.currencies.view.timeline.TimelineActivity
 import de.salomax.currencies.viewmodel.main.MainViewModel
+import de.salomax.currencies.viewmodel.main.Operator
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -66,12 +67,6 @@ private const val CTX_MENU_COPY_TO = 2
 private const val PERCENT_MULTIPLIER = 100
 private const val FEE_BADGE_DECIMAL_PLACES = 2
 private const val AMOUNT_DECIMAL_PLACES = 2
-
-// calculator button labels
-private const val KEY_PLUS = "+"
-private const val KEY_MINUS = "−"
-private const val KEY_TIMES = "×"
-private const val KEY_DIVIDE = "÷"
 
 class MainActivity : BaseActivity() {
 
@@ -562,12 +557,8 @@ class MainActivity : BaseActivity() {
      */
     fun calculationEvent(view: View) {
         haptic(view)
-        when ((view as AppCompatButton).text.toString()) {
-            KEY_PLUS -> viewModel.addition()
-            KEY_MINUS -> viewModel.subtraction()
-            KEY_TIMES -> viewModel.multiplication()
-            KEY_DIVIDE -> viewModel.division()
-        }
+        Operator.fromDisplay((view as AppCompatButton).text.toString())
+            ?.apply?.invoke(viewModel)
     }
 
     // capture hardware keyboard input
@@ -580,13 +571,10 @@ class MainActivity : BaseActivity() {
 
     private fun handleCharKey(key: Char?): Boolean {
         key ?: return false
+        Operator.fromHardware(key)?.let { it.apply(viewModel); return true }
         when {
             key.isDigit() -> viewModel.addNumber(key.toString())
             key == '.' || key == ',' -> viewModel.addDecimal()
-            key == '+' -> viewModel.addition()
-            key == '-' -> viewModel.subtraction()
-            key == '*' -> viewModel.multiplication()
-            key == '/' -> viewModel.division()
             else -> return false
         }
         return true
