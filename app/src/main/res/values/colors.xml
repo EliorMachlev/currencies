@@ -17,8 +17,7 @@
    <color name="displayOverlayPureBlack">@color/displayOverlay</color>
    <color name="colorBackgroundPureBlack">@color/colorBackground</color>
 
-   <!-- Launch/splash background. Night variant is pure black so OLED cold
-        starts don't flash; Dark users get black instead of blackOlive for
-        the brief launch frame. -->
-   <color name="windowBackground">@color/dirtyWhite</color>
+   <!-- Launch/splash background — transparent so no colored frame is drawn
+        before the activity paints its first frame, regardless of theme. -->
+   <color name="windowBackground">@android:color/transparent</color>
 </resources>
