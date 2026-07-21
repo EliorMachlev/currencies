@@ -62,11 +62,16 @@
         <activity android:name=".view.timeline.TimelineActivity" />
         <!-- Runs in its own process so it can outlive the main process
              during a theme restart and then fire the launcher intent for
-             a fresh cold start. See RestartActivity.kt. -->
+             a fresh cold start. Isolated task affinity + excludeFromRecents
+             keeps it from ever appearing in the recents list or fighting
+             with the main task for CLEAR_TASK semantics.
+             See RestartActivity.kt. -->
         <activity
             android:name=".view.RestartActivity"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:process=":restart"
+            android:taskAffinity=""
             android:theme="@android:style/Theme.NoDisplay" />
 
         <service

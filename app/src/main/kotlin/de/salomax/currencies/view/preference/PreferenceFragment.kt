@@ -24,8 +24,6 @@ import de.salomax.currencies.util.DECIMAL_PLACES_MIN
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.view.RestartActivity
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
-import de.salomax.currencies.viewmodel.preference.applyLauncherAliasState
-import de.salomax.currencies.viewmodel.preference.launcherAliasName
 import de.salomax.currencies.widget.LongSummaryPreference
 import java.util.Calendar
 
@@ -258,16 +256,9 @@ class PreferenceFragment: PreferenceFragmentCompat() {
     private fun restartApp() {
         val ctx = context?.applicationContext ?: return
         val pureBlack = Database(ctx).isPureBlackEnabled()
-        applyLauncherAliasState(ctx, pureBlack)
-        val target = Intent().apply {
-            setClassName(ctx, launcherAliasName(pureBlack))
-            action = Intent.ACTION_MAIN
-            addCategory(Intent.CATEGORY_LAUNCHER)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        }
         val restart = Intent(ctx, RestartActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            putExtra(RestartActivity.EXTRA_TARGET_INTENT, target)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(RestartActivity.EXTRA_PURE_BLACK, pureBlack)
             putExtra(RestartActivity.EXTRA_MAIN_PID, Process.myPid())
         }
         ctx.startActivity(restart)
