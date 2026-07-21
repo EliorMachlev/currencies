@@ -123,7 +123,7 @@ dependencies {
     // math (v5 releases use incompatible license to fdroid: noinspection GradleDependency)
     implementation("org.mariuszgromada.math:MathParser.org-mXparser:4.4.3")
     // compose (needed to host the Vico chart via ComposeView)
-    val composeBomVersion = "2024.12.01"
+    val composeBomVersion = "2026.06.01"
     implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
