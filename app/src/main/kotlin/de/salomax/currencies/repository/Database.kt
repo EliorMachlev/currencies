@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.model.AppTheme
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
@@ -38,15 +39,6 @@ private const val LEGACY_FEE_ENABLED_KEY = "_feeEnabled"
 private const val FEE_TYPE_GLOBAL_EXCHANGE = "global_exchange"
 private const val FEE_TYPE_GLOBAL_BANK = "global_bank"
 private const val FEE_TYPE_SPECIFIC_PAIR = "specific_pair"
-
-// Unified theme values (see Database.getTheme). Kept as plain ints so the DB
-// layer doesn't need to depend on androidx.appcompat.
-private const val THEME_LIGHT = 0
-private const val THEME_DARK = 1
-private const val THEME_OLED = 2
-private const val THEME_SYSTEM = 3
-private const val THEME_SYSTEM_OLED = 4
-private const val DEFAULT_THEME_MODE = THEME_SYSTEM
 
 // Sentinel for "no historical date stored" in the millis-since-epoch pref.
 // -1L is used because it can't collide with any real epoch millis (1970-01-01
@@ -306,44 +298,33 @@ class Database(context: Context) {
 
     /* theme */
 
-    fun setTheme(theme: Int) {
-        prefs.apply {
-            edit().putInt(keyTheme, theme).apply()
-        }
+    fun setTheme(theme: AppTheme) {
+        prefs.edit().putInt(keyTheme, theme.id).apply()
     }
 
     /**
-     * 0 = Light           (MODE_NIGHT_NO)
-     * 1 = Dark            (MODE_NIGHT_YES)
-     * 2 = OLED            (MODE_NIGHT_YES, pure-black)
-     * 3 = System default  (MODE_NIGHT_FOLLOW_SYSTEM)
-     * 4 = System (OLED)   (MODE_NIGHT_FOLLOW_SYSTEM, pure-black)
-     *
      * Migrates the legacy separate pure-black boolean into the new unified
      * value on first read after upgrade, then deletes the legacy key.
      */
-    fun getTheme(): Int {
+    fun getTheme(): AppTheme {
         migrateLegacyPureBlackIfNeeded()
-        return prefs.getInt(keyTheme, DEFAULT_THEME_MODE)
+        return AppTheme.fromId(prefs.getInt(keyTheme, AppTheme.DEFAULT.id))
     }
 
-    fun isPureBlackEnabled(): Boolean {
-        val theme = getTheme()
-        return theme == THEME_OLED || theme == THEME_SYSTEM_OLED
-    }
+    fun isPureBlackEnabled(): Boolean = getTheme().isPureBlack
 
     private fun migrateLegacyPureBlackIfNeeded() {
         if (!prefs.contains(keyPureBlackEnabled)) return
         val wasPureBlack = prefs.getBoolean(keyPureBlackEnabled, false)
         val editor = prefs.edit().remove(keyPureBlackEnabled)
         if (wasPureBlack) {
-            val current = prefs.getInt(keyTheme, DEFAULT_THEME_MODE)
+            val current = AppTheme.fromId(prefs.getInt(keyTheme, AppTheme.DEFAULT.id))
             val migrated = when (current) {
-                THEME_DARK -> THEME_OLED
-                THEME_SYSTEM -> THEME_SYSTEM_OLED
+                AppTheme.DARK -> AppTheme.OLED
+                AppTheme.SYSTEM -> AppTheme.SYSTEM_OLED
                 else -> current // Light + OLED is meaningless — keep as Light.
             }
-            editor.putInt(keyTheme, migrated)
+            editor.putInt(keyTheme, migrated.id)
         }
         editor.apply()
     }

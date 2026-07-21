@@ -1,21 +1,14 @@
 package de.salomax.currencies.viewmodel.preference
 
 import android.app.Application
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.model.AppTheme
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
-
-// Same numeric contract as Database.getTheme() / BaseActivity.
-private const val THEME_LIGHT = 0
-private const val THEME_DARK = 1
-private const val THEME_OLED = 2
-private const val THEME_SYSTEM = 3
-private const val THEME_SYSTEM_OLED = 4
 
 // Language.SYSTEM.iso — matches the enum value that means "follow system
 // locale" without pulling the enum into this file.
@@ -58,31 +51,13 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
      * System ↔ System-OLED while system is dark) keeps the same night mode,
      * so `BaseActivity.setTheme` doesn't rerun on its own.
      */
-    fun setTheme(theme: Int): Boolean {
+    fun setTheme(theme: AppTheme): Boolean {
         val old = db.getTheme()
         db.setTheme(theme)
-        AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
-        return nightModeFor(old) == nightModeFor(theme) &&
-            isPureBlack(old) != isPureBlack(theme) &&
-            isDarkThemeActive(theme)
-    }
-
-    private fun nightModeFor(theme: Int): Int = when (theme) {
-        THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-        THEME_DARK, THEME_OLED -> AppCompatDelegate.MODE_NIGHT_YES
-        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    }
-
-    private fun isPureBlack(theme: Int): Boolean =
-        theme == THEME_OLED || theme == THEME_SYSTEM_OLED
-
-    private fun isDarkThemeActive(theme: Int): Boolean {
-        val explicitlyDark = theme == THEME_DARK || theme == THEME_OLED
-        val followingSystem = theme == THEME_SYSTEM || theme == THEME_SYSTEM_OLED
-        val systemDark = followingSystem &&
-            (app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
-                Configuration.UI_MODE_NIGHT_YES
-        return explicitlyDark || systemDark
+        AppCompatDelegate.setDefaultNightMode(theme.nightMode)
+        return old.nightMode == theme.nightMode &&
+            old.isPureBlack != theme.isPureBlack &&
+            theme.isDarkActive(app.resources.configuration)
     }
 
     fun setLanguage(language: String) {

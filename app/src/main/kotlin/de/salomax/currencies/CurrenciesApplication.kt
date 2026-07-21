@@ -6,11 +6,6 @@ import de.salomax.currencies.repository.Database
 import java.net.InetAddress
 import kotlin.concurrent.thread
 
-// Kept in sync with Database.getTheme() unified values.
-private const val THEME_LIGHT = 0
-private const val THEME_DARK = 1
-private const val THEME_OLED = 2
-
 class CurrenciesApplication : Application() {
 
     override fun onCreate() {
@@ -26,13 +21,7 @@ class CurrenciesApplication : Application() {
     // background renders as the day-mode color until setDefaultNightMode
     // triggers a recreate.
     private fun applyNightMode() {
-        AppCompatDelegate.setDefaultNightMode(
-            when (Database(this).getTheme()) {
-                THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-                THEME_DARK, THEME_OLED -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
-        )
+        AppCompatDelegate.setDefaultNightMode(Database(this).getTheme().nightMode)
     }
 
     // Force each SharedPreferences file the app uses to load from disk on a
