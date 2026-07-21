@@ -21,6 +21,8 @@
     <string name="menu_refresh">Aggiorna tassi</string>
     <string name="menu_timeline">Cronologia del tasso di cambio</string>
     <string name="menu_quick_conversions">Conversioni rapide</string>
+    <string name="menu_share">Condividi</string>
+    <string name="share_footer">Basato su %1$s, %2$s</string>
     <string name="quick_conversions_title">Conversioni rapide</string>
     <string name="quick_conversions_no_rates">Tassi non ancora caricati.</string>
     <string name="quick_conversions_fees_applied">Commissioni applicate: %s</string>

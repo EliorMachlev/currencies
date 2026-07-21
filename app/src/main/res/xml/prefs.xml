@@ -58,19 +58,13 @@
         android:title="@string/category_appearance"
         app:allowDividerAbove="false">
         <ListPreference
-            android:defaultValue="2"
+            android:defaultValue="3"
             android:entries="@array/theme_names"
             android:entryValues="@array/theme_values"
             android:icon="@drawable/ic_theme"
             android:key="@string/theme_key"
             android:title="@string/theme_title"
             app:useSimpleSummaryProvider="true" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:icon="@drawable/ic_black"
-            android:key="@string/pure_black_key"
-            android:summary="@string/pure_black_enabled_summary"
-            android:title="@string/pure_black_enabled_title" />
         <de.salomax.currencies.view.preference.LanguagePickerPreference
             android:icon="@drawable/ic_language"
             android:key="@string/language_key"

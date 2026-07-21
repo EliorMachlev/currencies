@@ -39,8 +39,8 @@
     <string name="theme_title">Kujundus</string>
     <string name="theme_option_light">Hele kujundus</string>
     <string name="theme_option_dark">Tume kujundus</string>
-    <string name="pure_black_enabled_title">Süsimustad värvid OLED-ekraanide jaoks</string>
-    <string name="pure_black_enabled_summary">Tumeda kujunduse puhul kasuta süsimusta värvi</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Süsteemi välimus (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Graafiku valikud</string>
     <string name="graph_options_title">Graafiku valikud</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">Kui soovid, et ka teised kasutajad leiaks selle rakenduse, siis klõpsi siin ja hinda seda Google Plays.</string>
     <string name="category_versioninfo">Versiooniteave</string>
     <string name="title_changelog">Muudatuste logi</string>
+    <string name="backup_title">Varundamine ja taastamine</string>
+    <string name="backup_summary">Salvesta oma seaded faili või taasta need eelmisest varukoopiast</string>
+    <string name="backup_manager_title">Varukoopia</string>
+    <string name="backup_section_local">Kohalik varukoopia</string>
+    <string name="backup_section_restore">Taastamine</string>
+    <string name="backup_export_title">Ekspordi faili</string>
+    <string name="backup_export_summary">Vali selles seadmes koht, kuhu salvestada krüpteeritud või lihtne seadefail</string>
+    <string name="backup_import_title">Impordi failist</string>
+    <string name="backup_import_summary">Kirjuta praegused seaded üle varem eksporditud varukoopiast</string>
+    <string name="backup_export_success">Varukoopia salvestatud</string>
+    <string name="backup_export_failed">Varundamine ebaõnnestus: %1$s</string>
+    <string name="backup_import_success">Seaded taastatud — rakenda muudatused rakenduse taaskäivitusega</string>
+    <string name="backup_import_failed">Taastamine ebaõnnestus: %1$s</string>
+    <string name="backup_import_confirm_title">Kas taastada varukoopia?</string>
+    <string name="backup_import_confirm_message">Praegused seaded kirjutatakse failis olevatega üle. Seda pole võimalik tagasi võtta.</string>
+    <string name="backup_import_confirm_positive">Taasta</string>
+    <string name="backup_encrypt_option">Krüpteeri parooliga</string>
+    <string name="backup_password_hint">Parool</string>
+    <string name="backup_password_prompt_title">Sisesta parool</string>
+    <string name="backup_password_wrong">Parool ei avanud selle faili krüptot. Proovi uuesti.</string>
+    <string name="backup_password_too_short">Parool peab olema vähemalt %1$d märki</string>
 </resources>

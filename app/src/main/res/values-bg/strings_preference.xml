@@ -39,8 +39,8 @@
     <string name="theme_title">Дизайн</string>
     <string name="theme_option_light">Сетъл</string>
     <string name="theme_option_dark">Тъмен</string>
-    <string name="pure_black_enabled_title">OLED черно</string>
-    <string name="pure_black_enabled_summary">Използвай чисто черно в тъмен режим</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Стандартно за системата (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Опции на графиката</string>
     <string name="graph_options_title">Опции на графиката</string>
@@ -105,4 +105,25 @@
     <string name="rate_summary">Ако искаш, можеш да помогнеш на другите да открият Currencies. Натисни тук да оцениш приложението в Google Play.</string>
 
 
+    <string name="backup_title">Резервно копие и възстановяване</string>
+    <string name="backup_summary">Запази настройките си във файл или възстанови от предишно резервно копие</string>
+    <string name="backup_manager_title">Резервно копие</string>
+    <string name="backup_section_local">Локално резервно копие</string>
+    <string name="backup_section_restore">Възстановяване</string>
+    <string name="backup_export_title">Експортиране във файл</string>
+    <string name="backup_export_summary">Избери място на това устройство, където да се запази шифрован или обикновен файл с настройки</string>
+    <string name="backup_import_title">Импортиране от файл</string>
+    <string name="backup_import_summary">Замени текущите настройки с тези от предишно експортирано резервно копие</string>
+    <string name="backup_export_success">Резервното копие е запазено</string>
+    <string name="backup_export_failed">Неуспешно резервно копие: %1$s</string>
+    <string name="backup_import_success">Настройките са възстановени — рестартирай, за да влязат в сила</string>
+    <string name="backup_import_failed">Неуспешно възстановяване: %1$s</string>
+    <string name="backup_import_confirm_title">Възстановяване на резервно копие?</string>
+    <string name="backup_import_confirm_message">Текущите ти настройки ще бъдат заменени с тези от файла. Това не може да бъде отменено.</string>
+    <string name="backup_import_confirm_positive">Възстанови</string>
+    <string name="backup_encrypt_option">Шифроване с парола</string>
+    <string name="backup_password_hint">Парола</string>
+    <string name="backup_password_prompt_title">Въведи парола</string>
+    <string name="backup_password_wrong">Паролата не дешифрира този файл. Опитай отново.</string>
+    <string name="backup_password_too_short">Паролата трябва да е поне %1$d знака</string>
 </resources>

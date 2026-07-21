@@ -39,8 +39,8 @@
     <string name="theme_title">Thème</string>
     <string name="theme_option_light">Clair</string>
     <string name="theme_option_dark">Sombre</string>
-    <string name="pure_black_enabled_title">OLED noir</string>
-    <string name="pure_black_enabled_summary">Utiliser le noir pur en mode sombre</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Paramètre système par défaut (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Options du graphique</string>
     <string name="graph_options_title">Options du graphique</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">Si vous le souhaitez, vous pouvez aider d\'autres personnes à découvrir Currencies. Cliquez ici pour évaluer l\'application sur Google Play.</string>
     <string name="category_versioninfo">Informations sur les versions</string>
     <string name="title_changelog">Journal des modifications</string>
+    <string name="backup_title">Sauvegarder et restaurer</string>
+    <string name="backup_summary">Enregistre tes paramètres dans un fichier ou restaure-les depuis une sauvegarde précédente</string>
+    <string name="backup_manager_title">Sauvegarde</string>
+    <string name="backup_section_local">Sauvegarde locale</string>
+    <string name="backup_section_restore">Restauration</string>
+    <string name="backup_export_title">Exporter vers un fichier</string>
+    <string name="backup_export_summary">Choisis un emplacement sur cet appareil pour enregistrer un fichier de paramètres chiffré ou en clair</string>
+    <string name="backup_import_title">Importer depuis un fichier</string>
+    <string name="backup_import_summary">Remplace les paramètres actuels par ceux d\'un fichier de sauvegarde exporté précédemment</string>
+    <string name="backup_export_success">Sauvegarde enregistrée</string>
+    <string name="backup_export_failed">Échec de la sauvegarde : %1$s</string>
+    <string name="backup_import_success">Paramètres restaurés — redémarre pour appliquer</string>
+    <string name="backup_import_failed">Échec de la restauration : %1$s</string>
+    <string name="backup_import_confirm_title">Restaurer la sauvegarde ?</string>
+    <string name="backup_import_confirm_message">Tes paramètres actuels seront remplacés par ceux du fichier. Cette action est irréversible.</string>
+    <string name="backup_import_confirm_positive">Restaurer</string>
+    <string name="backup_encrypt_option">Chiffrer avec un mot de passe</string>
+    <string name="backup_password_hint">Mot de passe</string>
+    <string name="backup_password_prompt_title">Saisir le mot de passe</string>
+    <string name="backup_password_wrong">Le mot de passe n\'a pas permis de déchiffrer ce fichier. Réessaie.</string>
+    <string name="backup_password_too_short">Le mot de passe doit contenir au moins %1$d caractères</string>
 </resources>

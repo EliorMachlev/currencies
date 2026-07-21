@@ -21,6 +21,8 @@
     <string name="menu_refresh">Update koersen</string>
     <string name="menu_timeline">Wisselkoers grafiek</string>
     <string name="menu_quick_conversions">Snelle omrekeningen</string>
+    <string name="menu_share">Delen</string>
+    <string name="share_footer">Gebaseerd op %1$s, %2$s</string>
     <string name="quick_conversions_title">Snelle omrekeningen</string>
     <string name="quick_conversions_no_rates">Koersen zijn nog niet geladen.</string>
     <string name="quick_conversions_fees_applied">Toegepaste kosten: %s</string>

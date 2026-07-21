@@ -21,6 +21,8 @@
     <string name="menu_refresh">Tarifas de actualización</string>
     <string name="menu_timeline">Historial de tipos de cambio</string>
     <string name="menu_quick_conversions">Conversiones rápidas</string>
+    <string name="menu_share">Compartir</string>
+    <string name="share_footer">Basado en %1$s, %2$s</string>
     <string name="quick_conversions_title">Conversiones rápidas</string>
     <string name="quick_conversions_no_rates">Las tasas aún no se han cargado.</string>
     <string name="quick_conversions_fees_applied">Comisiones aplicadas: %s</string>

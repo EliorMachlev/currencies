@@ -16,6 +16,8 @@
     <string name="menu_refresh">Endurnýja gengi</string>
     <string name="menu_timeline">Línurit</string>
     <string name="menu_quick_conversions">Skjótar umbreytingar</string>
+    <string name="menu_share">Deila</string>
+    <string name="share_footer">Byggt á %1$s, %2$s</string>
     <string name="quick_conversions_title">Skjótar umbreytingar</string>
     <string name="quick_conversions_no_rates">Gengi hefur ekki verið hlaðið enn.</string>
     <string name="quick_conversions_fees_applied">Beitt gjöld: %s</string>

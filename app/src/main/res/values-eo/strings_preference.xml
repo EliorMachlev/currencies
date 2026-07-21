@@ -39,8 +39,8 @@
     <string name="theme_title">Dezajno</string>
     <string name="theme_option_light">Hela</string>
     <string name="theme_option_dark">Malhela</string>
-    <string name="pure_black_enabled_title">OLED nigra</string>
-    <string name="pure_black_enabled_summary">Uzi puran nigran en malhela reĝimo</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Sistema defaŭlta (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafeaj agordoj</string>
     <string name="graph_options_title">Grafeaj agordoj</string>
@@ -104,4 +104,25 @@
 
 
 
+    <string name="backup_title">Sekurkopio kaj restarigo</string>
+    <string name="backup_summary">Konservu viajn agordojn en dosiero, aŭ restarigu el antaŭa sekurkopio</string>
+    <string name="backup_manager_title">Sekurkopio</string>
+    <string name="backup_section_local">Loka sekurkopio</string>
+    <string name="backup_section_restore">Restarigo</string>
+    <string name="backup_export_title">Eksporti al dosiero</string>
+    <string name="backup_export_summary">Elektu lokon en ĉi tiu aparato por konservi ĉifritan aŭ nudan agordo-dosieron</string>
+    <string name="backup_import_title">Importi el dosiero</string>
+    <string name="backup_import_summary">Anstataŭigi la nunajn agordojn per tiuj el antaŭe eksportita sekurkopio</string>
+    <string name="backup_export_success">Sekurkopio konservita</string>
+    <string name="backup_export_failed">Sekurkopio malsukcesis: %1$s</string>
+    <string name="backup_import_success">Agordoj restarigitaj — restartigu por apliki</string>
+    <string name="backup_import_failed">Restarigo malsukcesis: %1$s</string>
+    <string name="backup_import_confirm_title">Ĉu restarigi el sekurkopio?</string>
+    <string name="backup_import_confirm_message">Viaj nunaj agordoj estos anstataŭigitaj per tiuj en la dosiero. Tio ne malfareblas.</string>
+    <string name="backup_import_confirm_positive">Restarigi</string>
+    <string name="backup_encrypt_option">Ĉifri per pasvorto</string>
+    <string name="backup_password_hint">Pasvorto</string>
+    <string name="backup_password_prompt_title">Enigu pasvorton</string>
+    <string name="backup_password_wrong">La pasvorto ne malĉifris ĉi tiun dosieron. Provu denove.</string>
+    <string name="backup_password_too_short">La pasvorto devas havi almenaŭ %1$d signojn</string>
 </resources>

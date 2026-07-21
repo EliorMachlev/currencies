@@ -21,6 +21,8 @@
     <string name="menu_refresh">همار نوسازی</string>
     <string name="menu_timeline">نمودار نرخ دادوستد</string>
     <string name="menu_quick_conversions">تبدیل‌های سریع</string>
+    <string name="menu_share">هم‌رسانی</string>
+    <string name="share_footer">بر اساس %1$s، %2$s</string>
     <string name="quick_conversions_title">تبدیل‌های سریع</string>
     <string name="quick_conversions_no_rates">نرخ‌ها هنوز بارگذاری نشده‌اند.</string>
     <string name="quick_conversions_fees_applied">کارمزدهای اعمال‌شده: %s</string>

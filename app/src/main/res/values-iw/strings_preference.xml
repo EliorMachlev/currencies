@@ -39,8 +39,8 @@
     <string name="theme_title">עיצוב</string>
     <string name="theme_option_light">בהיר</string>
     <string name="theme_option_dark">כהה</string>
-    <string name="pure_black_enabled_title">שחור OLED</string>
-    <string name="pure_black_enabled_summary">להשתמש בשחור טהור במצב כהה</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">ברירת המחדל של המערכת (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">אפשרויות הגרף</string>
     <string name="graph_options_title">אפשרויות הגרף</string>
@@ -103,4 +103,25 @@
     <string name="rate_summary">לבחירתך, אפשר לסייע לאחרים להיחשף ליישומון. לחיצה כאן תוביל אותך לדירוג ב־Google Play.</string>
     <string name="category_versioninfo">פרטי גרסה</string>
     <string name="title_changelog">יומן שינויים</string>
+    <string name="backup_title">גיבוי ושחזור</string>
+    <string name="backup_summary">שמור את ההגדרות שלך לקובץ, או שחזר אותן מגיבוי קודם</string>
+    <string name="backup_manager_title">גיבוי</string>
+    <string name="backup_section_local">גיבוי מקומי</string>
+    <string name="backup_section_restore">שחזור</string>
+    <string name="backup_export_title">ייצוא לקובץ</string>
+    <string name="backup_export_summary">בחר מיקום במכשיר זה לשמירת קובץ הגדרות מוצפן או רגיל</string>
+    <string name="backup_import_title">ייבוא מקובץ</string>
+    <string name="backup_import_summary">החלף את ההגדרות הנוכחיות בהגדרות מקובץ גיבוי שיוצא בעבר</string>
+    <string name="backup_export_success">הגיבוי נשמר</string>
+    <string name="backup_export_failed">הגיבוי נכשל: %1$s</string>
+    <string name="backup_import_success">ההגדרות שוחזרו — הפעל מחדש כדי להחיל</string>
+    <string name="backup_import_failed">השחזור נכשל: %1$s</string>
+    <string name="backup_import_confirm_title">לשחזר את הגיבוי?</string>
+    <string name="backup_import_confirm_message">ההגדרות הנוכחיות שלך יוחלפו בהגדרות שבקובץ. לא ניתן לבטל פעולה זו.</string>
+    <string name="backup_import_confirm_positive">שחזר</string>
+    <string name="backup_encrypt_option">הצפן באמצעות סיסמה</string>
+    <string name="backup_password_hint">סיסמה</string>
+    <string name="backup_password_prompt_title">הזן סיסמה</string>
+    <string name="backup_password_wrong">הסיסמה לא הצליחה לפענח את הקובץ. נסה שוב.</string>
+    <string name="backup_password_too_short">הסיסמה חייבת להכיל לפחות %1$d תווים</string>
 </resources>

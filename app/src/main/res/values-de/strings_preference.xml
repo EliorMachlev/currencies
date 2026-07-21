@@ -39,8 +39,8 @@
     <string name="theme_title">Design</string>
     <string name="theme_option_light">Hell</string>
     <string name="theme_option_dark">Dunkel</string>
-    <string name="pure_black_enabled_title">OLED-Schwarz</string>
-    <string name="pure_black_enabled_summary">Komplett schwarzes Design im Dark-Modus verwenden</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Standardeinstellung des Systems (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Diagrammoptionen</string>
     <string name="graph_options_title">Diagrammoptionen</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">Wenn du möchtest, kannst du helfen, dass noch mehr Leute Currencies entdecken. Klicke hier, um die App auf Google Play zu bewerten.</string>
     <string name="category_versioninfo">Versionsinfo</string>
     <string name="title_changelog">Änderungsprotokoll</string>
+    <string name="backup_title">Sichern &amp; Wiederherstellen</string>
+    <string name="backup_summary">Speichere deine Einstellungen in einer Datei oder stelle sie aus einer früheren Sicherung wieder her</string>
+    <string name="backup_manager_title">Sicherung</string>
+    <string name="backup_section_local">Lokale Sicherung</string>
+    <string name="backup_section_restore">Wiederherstellen</string>
+    <string name="backup_export_title">In Datei exportieren</string>
+    <string name="backup_export_summary">Wähle einen Speicherort auf diesem Gerät für eine verschlüsselte oder unverschlüsselte Einstellungsdatei</string>
+    <string name="backup_import_title">Aus Datei importieren</string>
+    <string name="backup_import_summary">Aktuelle Einstellungen mit denen aus einer zuvor exportierten Sicherungsdatei überschreiben</string>
+    <string name="backup_export_success">Sicherung gespeichert</string>
+    <string name="backup_export_failed">Sicherung fehlgeschlagen: %1$s</string>
+    <string name="backup_import_success">Einstellungen wiederhergestellt — zum Anwenden neu starten</string>
+    <string name="backup_import_failed">Wiederherstellung fehlgeschlagen: %1$s</string>
+    <string name="backup_import_confirm_title">Sicherung wiederherstellen?</string>
+    <string name="backup_import_confirm_message">Deine aktuellen Einstellungen werden mit denen aus der Datei überschrieben. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="backup_import_confirm_positive">Wiederherstellen</string>
+    <string name="backup_encrypt_option">Mit Passwort verschlüsseln</string>
+    <string name="backup_password_hint">Passwort</string>
+    <string name="backup_password_prompt_title">Passwort eingeben</string>
+    <string name="backup_password_wrong">Mit dem Passwort ließ sich die Datei nicht entschlüsseln. Versuche es erneut.</string>
+    <string name="backup_password_too_short">Das Passwort muss mindestens %1$d Zeichen lang sein</string>
 </resources>

@@ -39,8 +39,8 @@
     <string name="theme_title">طراحی</string>
     <string name="theme_option_light">‏نور</string>
     <string name="theme_option_dark">تاریک</string>
-    <string name="pure_black_enabled_title">مشکی OLED</string>
-    <string name="pure_black_enabled_summary">از مشکی خالص در حالت تاریک استفاده کنید</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">پیش فرض سیستم (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">گزینه‌های نمودار</string>
     <string name="graph_options_title">گزینه‌های نمودار</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">اگر مایل هستید، می توانید به دیگران کمک کنید تا ارزها را کشف کنند. برای امتیاز دادن به برنامه در Google Play اینجا را کلیک کنید.</string>
     <string name="category_versioninfo">اطلاعات نسخه</string>
     <string name="title_changelog">تغییرات</string>
+    <string name="backup_title">پشتیبان‌گیری و بازیابی</string>
+    <string name="backup_summary">تنظیمات خود را در یک فایل ذخیره کنید یا از پشتیبان قبلی بازیابی کنید</string>
+    <string name="backup_manager_title">پشتیبان‌گیری</string>
+    <string name="backup_section_local">پشتیبان محلی</string>
+    <string name="backup_section_restore">بازیابی</string>
+    <string name="backup_export_title">برون‌بری به فایل</string>
+    <string name="backup_export_summary">محلی در این دستگاه برای ذخیره‌ی فایل تنظیمات رمزنگاری‌شده یا ساده انتخاب کنید</string>
+    <string name="backup_import_title">درون‌ریزی از فایل</string>
+    <string name="backup_import_summary">تنظیمات کنونی را با تنظیمات یک فایل پشتیبان که پیش‌تر برون‌بری شده جایگزین کنید</string>
+    <string name="backup_export_success">پشتیبان ذخیره شد</string>
+    <string name="backup_export_failed">پشتیبان‌گیری ناموفق بود: %1$s</string>
+    <string name="backup_import_success">تنظیمات بازیابی شد — برای اعمال، برنامه را دوباره اجرا کنید</string>
+    <string name="backup_import_failed">بازیابی ناموفق بود: %1$s</string>
+    <string name="backup_import_confirm_title">بازیابی از پشتیبان؟</string>
+    <string name="backup_import_confirm_message">تنظیمات کنونی شما با تنظیمات موجود در فایل جایگزین خواهد شد. این کار قابل بازگشت نیست.</string>
+    <string name="backup_import_confirm_positive">بازیابی</string>
+    <string name="backup_encrypt_option">رمزنگاری با گذرواژه</string>
+    <string name="backup_password_hint">گذرواژه</string>
+    <string name="backup_password_prompt_title">گذرواژه را وارد کنید</string>
+    <string name="backup_password_wrong">گذرواژه نتوانست این فایل را رمزگشایی کند. دوباره تلاش کنید.</string>
+    <string name="backup_password_too_short">گذرواژه باید دست‌کم %1$d نویسه باشد</string>
 </resources>

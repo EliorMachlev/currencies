@@ -39,8 +39,8 @@
     <string name="theme_title">Desain</string>
     <string name="theme_option_light">Cerah</string>
     <string name="theme_option_dark">Gelap</string>
-    <string name="pure_black_enabled_title">Hitam OLED</string>
-    <string name="pure_black_enabled_summary">Gunakan hitam asli dalam mode gelap</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Default sistem (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Opsi grafik</string>
     <string name="graph_options_title">Opsi grafik</string>
@@ -105,4 +105,25 @@
     <string name="rate_summary">Jika Anda mau, Anda dapat membantu orang lain menemukan Currencies. Klik di sini untuk menilai aplikasi di Google Play.</string>
 
 
+    <string name="backup_title">Cadangkan &amp; Pulihkan</string>
+    <string name="backup_summary">Simpan pengaturan Anda ke sebuah file, atau pulihkan dari cadangan sebelumnya</string>
+    <string name="backup_manager_title">Cadangan</string>
+    <string name="backup_section_local">Cadangan lokal</string>
+    <string name="backup_section_restore">Pulihkan</string>
+    <string name="backup_export_title">Ekspor ke file</string>
+    <string name="backup_export_summary">Pilih lokasi di perangkat ini untuk menyimpan file pengaturan terenkripsi atau biasa</string>
+    <string name="backup_import_title">Impor dari file</string>
+    <string name="backup_import_summary">Timpa pengaturan saat ini dengan file cadangan yang pernah diekspor sebelumnya</string>
+    <string name="backup_export_success">Cadangan tersimpan</string>
+    <string name="backup_export_failed">Pencadangan gagal: %1$s</string>
+    <string name="backup_import_success">Pengaturan dipulihkan — mulai ulang untuk menerapkan</string>
+    <string name="backup_import_failed">Pemulihan gagal: %1$s</string>
+    <string name="backup_import_confirm_title">Pulihkan cadangan?</string>
+    <string name="backup_import_confirm_message">Pengaturan Anda saat ini akan ditimpa dengan pengaturan dalam file. Tindakan ini tidak bisa dibatalkan.</string>
+    <string name="backup_import_confirm_positive">Pulihkan</string>
+    <string name="backup_encrypt_option">Enkripsi dengan kata sandi</string>
+    <string name="backup_password_hint">Kata sandi</string>
+    <string name="backup_password_prompt_title">Masukkan kata sandi</string>
+    <string name="backup_password_wrong">Kata sandi tidak berhasil mendekripsi file. Coba lagi.</string>
+    <string name="backup_password_too_short">Kata sandi harus minimal %1$d karakter</string>
 </resources>

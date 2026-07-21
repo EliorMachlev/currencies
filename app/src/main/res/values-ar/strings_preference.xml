@@ -39,8 +39,8 @@
     <string name="theme_title">تصميم</string>
     <string name="theme_option_light">فاتح</string>
     <string name="theme_option_dark">غامق</string>
-    <string name="pure_black_enabled_title">أسود OLED</string>
-    <string name="pure_black_enabled_summary">استخدم الأسود النقي في الوضع المظلم</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">الإعداد التلقائي للنظام (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">خيارات الرسم البياني</string>
     <string name="graph_options_title">خيارات الرسم البياني</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">إذا كنت ترغب في ذلك ، يمكنك مساعدة الآخرين في اكتشاف العملات. انقر هنا لتقييم التطبيق على Google Play.</string>
     <string name="category_versioninfo">معلومات الإصدار</string>
     <string name="title_changelog">سجل التغيير</string>
+    <string name="backup_title">النسخ الاحتياطي والاستعادة</string>
+    <string name="backup_summary">احفظ إعداداتك في ملف، أو استعدها من نسخة احتياطية سابقة</string>
+    <string name="backup_manager_title">نسخ احتياطي</string>
+    <string name="backup_section_local">نسخة احتياطية محلية</string>
+    <string name="backup_section_restore">استعادة</string>
+    <string name="backup_export_title">تصدير إلى ملف</string>
+    <string name="backup_export_summary">اختر مكانًا على هذا الجهاز لحفظ ملف إعدادات مشفَّر أو عادي</string>
+    <string name="backup_import_title">استيراد من ملف</string>
+    <string name="backup_import_summary">استبدال الإعدادات الحالية بإعدادات ملف نسخة احتياطية سبق تصديره</string>
+    <string name="backup_export_success">تم حفظ النسخة الاحتياطية</string>
+    <string name="backup_export_failed">فشل النسخ الاحتياطي: %1$s</string>
+    <string name="backup_import_success">تمت استعادة الإعدادات — أعد التشغيل للتطبيق</string>
+    <string name="backup_import_failed">فشلت الاستعادة: %1$s</string>
+    <string name="backup_import_confirm_title">استعادة النسخة الاحتياطية؟</string>
+    <string name="backup_import_confirm_message">سيتم استبدال إعداداتك الحالية بتلك الموجودة في الملف. لا يمكن التراجع عن هذا.</string>
+    <string name="backup_import_confirm_positive">استعادة</string>
+    <string name="backup_encrypt_option">التشفير بكلمة مرور</string>
+    <string name="backup_password_hint">كلمة المرور</string>
+    <string name="backup_password_prompt_title">أدخل كلمة المرور</string>
+    <string name="backup_password_wrong">كلمة المرور لم تفكّ تشفير هذا الملف. حاول مرة أخرى.</string>
+    <string name="backup_password_too_short">يجب ألا تقل كلمة المرور عن %1$d أحرف</string>
 </resources>

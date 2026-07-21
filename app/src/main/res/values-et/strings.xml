@@ -21,6 +21,8 @@
     <string name="menu_refresh">Uuenda vahetuskursse</string>
     <string name="menu_timeline">Vahetuskursside graafik</string>
     <string name="menu_quick_conversions">Kiirteisendused</string>
+    <string name="menu_share">Jaga</string>
+    <string name="share_footer">Allika %1$s põhjal, %2$s</string>
     <string name="quick_conversions_title">Kiirteisendused</string>
     <string name="quick_conversions_no_rates">Kursid pole veel laaditud.</string>
     <string name="quick_conversions_fees_applied">Rakendatud tasud: %s</string>

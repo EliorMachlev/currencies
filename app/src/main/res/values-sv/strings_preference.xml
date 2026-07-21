@@ -39,8 +39,8 @@
     <string name="theme_title">Färgtema</string>
     <string name="theme_option_light">Ljust</string>
     <string name="theme_option_dark">Mörkt</string>
-    <string name="pure_black_enabled_title">OLED-svart</string>
-    <string name="pure_black_enabled_summary">Använd helt svart färg i mörkt läge</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Systemets standardinställning (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Diagraminställningar</string>
     <string name="graph_options_title">Diagraminställningar</string>
@@ -108,4 +108,25 @@
     <string name="rate_summary">Om du vill så kan du bidra till att fler upptäcker Currencies. Tryck här för att betygssätta appen på Google Play.</string>
     <string name="category_versioninfo">Info om version</string>
     <string name="title_changelog">Ändringslogg</string>
+    <string name="backup_title">Säkerhetskopiera och återställ</string>
+    <string name="backup_summary">Spara inställningarna i en fil eller återställ från en tidigare säkerhetskopia</string>
+    <string name="backup_manager_title">Säkerhetskopia</string>
+    <string name="backup_section_local">Lokal säkerhetskopia</string>
+    <string name="backup_section_restore">Återställ</string>
+    <string name="backup_export_title">Exportera till fil</string>
+    <string name="backup_export_summary">Välj en plats på enheten där en krypterad eller vanlig inställningsfil ska sparas</string>
+    <string name="backup_import_title">Importera från fil</string>
+    <string name="backup_import_summary">Skriv över de aktuella inställningarna med en tidigare exporterad säkerhetskopia</string>
+    <string name="backup_export_success">Säkerhetskopia sparad</string>
+    <string name="backup_export_failed">Säkerhetskopieringen misslyckades: %1$s</string>
+    <string name="backup_import_success">Inställningar återställda — starta om för att tillämpa</string>
+    <string name="backup_import_failed">Återställningen misslyckades: %1$s</string>
+    <string name="backup_import_confirm_title">Återställa säkerhetskopian?</string>
+    <string name="backup_import_confirm_message">Dina nuvarande inställningar skrivs över med de i filen. Detta kan inte ångras.</string>
+    <string name="backup_import_confirm_positive">Återställ</string>
+    <string name="backup_encrypt_option">Kryptera med lösenord</string>
+    <string name="backup_password_hint">Lösenord</string>
+    <string name="backup_password_prompt_title">Ange lösenord</string>
+    <string name="backup_password_wrong">Lösenordet dekrypterade inte filen. Försök igen.</string>
+    <string name="backup_password_too_short">Lösenordet måste vara minst %1$d tecken</string>
 </resources>

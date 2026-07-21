@@ -39,8 +39,8 @@
     <string name="theme_title">Tema</string>
     <string name="theme_option_light">Açık</string>
     <string name="theme_option_dark">Koyu</string>
-    <string name="pure_black_enabled_title">OLED siyahı</string>
-    <string name="pure_black_enabled_summary">Koyu modda saf siyah kullan</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Sistem varsayılanı (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafik seçenekleri</string>
     <string name="graph_options_title">Grafik seçenekleri</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">Eğer hoşuna gittiyse başka insanların da Currencies\'i keşfetmesini sağlayabilirsin. Uygulamayı Google Play üzerinden puanlamak için buraya tıkla.</string>
     <string name="category_versioninfo">Sürüm bilgisi</string>
     <string name="title_changelog">Değişiklik günlüğü</string>
+    <string name="backup_title">Yedekle ve geri yükle</string>
+    <string name="backup_summary">Ayarlarını bir dosyaya kaydet veya önceki bir yedekten geri yükle</string>
+    <string name="backup_manager_title">Yedek</string>
+    <string name="backup_section_local">Yerel yedek</string>
+    <string name="backup_section_restore">Geri yükleme</string>
+    <string name="backup_export_title">Dosyaya aktar</string>
+    <string name="backup_export_summary">Bu cihazda şifreli veya düz bir ayar dosyası kaydedilecek bir konum seç</string>
+    <string name="backup_import_title">Dosyadan içe aktar</string>
+    <string name="backup_import_summary">Mevcut ayarları önceden dışa aktarılmış bir yedek dosyasıyla değiştir</string>
+    <string name="backup_export_success">Yedek kaydedildi</string>
+    <string name="backup_export_failed">Yedekleme başarısız: %1$s</string>
+    <string name="backup_import_success">Ayarlar geri yüklendi — uygulamak için yeniden başlat</string>
+    <string name="backup_import_failed">Geri yükleme başarısız: %1$s</string>
+    <string name="backup_import_confirm_title">Yedek geri yüklensin mi?</string>
+    <string name="backup_import_confirm_message">Mevcut ayarların dosyadaki ayarlarla değiştirilecek. Bu işlem geri alınamaz.</string>
+    <string name="backup_import_confirm_positive">Geri yükle</string>
+    <string name="backup_encrypt_option">Parolayla şifrele</string>
+    <string name="backup_password_hint">Parola</string>
+    <string name="backup_password_prompt_title">Parolayı gir</string>
+    <string name="backup_password_wrong">Parola dosyanın şifresini çözemedi. Tekrar dene.</string>
+    <string name="backup_password_too_short">Parola en az %1$d karakter olmalı</string>
 </resources>

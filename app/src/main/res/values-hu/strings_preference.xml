@@ -39,8 +39,8 @@
     <string name="theme_title">Dizájn</string>
     <string name="theme_option_light">Világos</string>
     <string name="theme_option_dark">Sötét</string>
-    <string name="pure_black_enabled_title">OLED fekete</string>
-    <string name="pure_black_enabled_summary">Tiszta fekete használata sötét módban</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Rendszerbeállítás (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafikon beállítások</string>
     <string name="graph_options_title">Grafikon beállítások</string>
@@ -105,4 +105,25 @@
     <string name="rate_summary">Ha szeretnéd, segíthetsz másoknak felfedezni a Currencies-t. Kattints ide az alkalmazás értékeléséhez a Google Play-en.</string>
 
 
+    <string name="backup_title">Biztonsági mentés és visszaállítás</string>
+    <string name="backup_summary">Mentsd a beállításokat fájlba, vagy állítsd vissza egy korábbi mentésből</string>
+    <string name="backup_manager_title">Biztonsági mentés</string>
+    <string name="backup_section_local">Helyi mentés</string>
+    <string name="backup_section_restore">Visszaállítás</string>
+    <string name="backup_export_title">Exportálás fájlba</string>
+    <string name="backup_export_summary">Válaszd ki, hova mentsük ezen az eszközön a titkosított vagy sima beállításfájlt</string>
+    <string name="backup_import_title">Importálás fájlból</string>
+    <string name="backup_import_summary">A jelenlegi beállítások felülírása egy korábban exportált mentés tartalmával</string>
+    <string name="backup_export_success">Mentés kész</string>
+    <string name="backup_export_failed">A mentés sikertelen: %1$s</string>
+    <string name="backup_import_success">Beállítások visszaállítva — a változások érvényesítéséhez indítsd újra az alkalmazást</string>
+    <string name="backup_import_failed">A visszaállítás sikertelen: %1$s</string>
+    <string name="backup_import_confirm_title">Visszaállítás mentésből?</string>
+    <string name="backup_import_confirm_message">A jelenlegi beállításokat felülírja a fájlban lévő. Ezt nem lehet visszavonni.</string>
+    <string name="backup_import_confirm_positive">Visszaállítás</string>
+    <string name="backup_encrypt_option">Titkosítás jelszóval</string>
+    <string name="backup_password_hint">Jelszó</string>
+    <string name="backup_password_prompt_title">Add meg a jelszót</string>
+    <string name="backup_password_wrong">A jelszóval nem sikerült visszafejteni a fájlt. Próbáld újra.</string>
+    <string name="backup_password_too_short">A jelszónak legalább %1$d karakterből kell állnia</string>
 </resources>

@@ -168,13 +168,26 @@ class MainActivity : BaseActivity() {
     }
 
     private fun shareCurrentConversion() {
-        val text = tvInfoConversion.text?.toString().orEmpty()
-        if (text.isBlank()) return
+        val conversion = tvInfoConversion.text?.toString().orEmpty()
+        if (conversion.isBlank()) return
+        val footer = buildShareFooter(viewModel.getExchangeRates().value)
+        val text = if (footer != null) "$conversion\n-- $footer" else conversion
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, text)
         }
         startActivity(Intent.createChooser(intent, null))
+    }
+
+    private fun buildShareFooter(rates: ExchangeRates?): String? {
+        if (rates == null) return null
+        val providerName = rates.provider?.getName() ?: return null
+        val date = rates.date ?: return null
+        val time = rates.time
+        val pattern = if (time != null) dateFormatPattern else stripTimePattern(dateFormatPattern)
+        val temporal = if (time != null) date.atTime(time) else date
+        val dateString = DateTimeFormatter.ofPattern(pattern).format(temporal).stripRtlMark()
+        return getString(R.string.share_footer, providerName, dateString)
     }
 
     private fun openQuickConversionsDialog() {

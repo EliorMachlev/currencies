@@ -39,8 +39,8 @@
     <string name="theme_title">Þema</string>
     <string name="theme_option_light">Ljós</string>
     <string name="theme_option_dark">Dökk</string>
-    <string name="pure_black_enabled_title">OLED svart</string>
-    <string name="pure_black_enabled_summary">Nota kolsvartan fyrir dökku þemu</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Sjálfgildi kerfis (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafvalkostir</string>
     <string name="graph_options_title">Grafvalkostir</string>
@@ -105,4 +105,25 @@
     <string name="rate_summary">Það má hjálpa öðrum að finna forritið. Smelltu hingað til að gefa forritinu einkunn á Google Play.</string>
     <string name="category_versioninfo">Útgáfuupplýsingar</string>
     <string name="title_changelog">Breytingarskrá</string>
+    <string name="backup_title">Öryggisafrit og endurheimt</string>
+    <string name="backup_summary">Vistaðu stillingarnar þínar í skrá, eða endurheimtu úr fyrra öryggisafriti</string>
+    <string name="backup_manager_title">Öryggisafrit</string>
+    <string name="backup_section_local">Staðbundið afrit</string>
+    <string name="backup_section_restore">Endurheimt</string>
+    <string name="backup_export_title">Flytja út í skrá</string>
+    <string name="backup_export_summary">Veldu staðsetningu í þessu tæki til að vista dulkóðaða eða venjulega stillingaskrá</string>
+    <string name="backup_import_title">Flytja inn úr skrá</string>
+    <string name="backup_import_summary">Skrifa yfir núverandi stillingar með stillingum úr áður útfluttri öryggisafritsskrá</string>
+    <string name="backup_export_success">Öryggisafrit vistað</string>
+    <string name="backup_export_failed">Öryggisafritun mistókst: %1$s</string>
+    <string name="backup_import_success">Stillingar endurheimtar — endurræstu til að virkja</string>
+    <string name="backup_import_failed">Endurheimt mistókst: %1$s</string>
+    <string name="backup_import_confirm_title">Endurheimta öryggisafrit?</string>
+    <string name="backup_import_confirm_message">Núverandi stillingum þínum verður skipt út fyrir þær sem eru í skránni. Ekki er hægt að afturkalla þetta.</string>
+    <string name="backup_import_confirm_positive">Endurheimta</string>
+    <string name="backup_encrypt_option">Dulkóða með lykilorði</string>
+    <string name="backup_password_hint">Lykilorð</string>
+    <string name="backup_password_prompt_title">Sláðu inn lykilorð</string>
+    <string name="backup_password_wrong">Lykilorðið afkóðaði ekki þessa skrá. Reyndu aftur.</string>
+    <string name="backup_password_too_short">Lykilorð verður að vera minnst %1$d stafir</string>
 </resources>

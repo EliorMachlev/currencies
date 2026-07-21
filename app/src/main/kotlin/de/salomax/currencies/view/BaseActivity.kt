@@ -3,7 +3,6 @@ package de.salomax.currencies.view
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,26 +13,16 @@ import de.salomax.currencies.repository.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-private const val THEME_LIGHT = 0
-private const val THEME_DARK = 1
-
 abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // pure black
+        // pure black — night mode itself is set once in CurrenciesApplication
+        // so this setTheme call resolves against the correct night qualifier.
         setTheme(
             if (Database(this).isPureBlackEnabled())
                 R.style.AppTheme_PureBlack
             else
                 R.style.AppTheme
-        )
-        // theme
-        AppCompatDelegate.setDefaultNightMode(
-            when (Database(this).getTheme()) {
-                THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-                THEME_DARK -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
         )
 
         super.onCreate(savedInstanceState)

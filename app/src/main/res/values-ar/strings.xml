@@ -21,6 +21,8 @@
     <string name="menu_refresh">معدلات التحديث</string>
     <string name="menu_timeline">مخطط سعر الصرف</string>
     <string name="menu_quick_conversions">تحويلات سريعة</string>
+    <string name="menu_share">مشاركة</string>
+    <string name="share_footer">استنادًا إلى %1$s، %2$s</string>
     <string name="quick_conversions_title">تحويلات سريعة</string>
     <string name="quick_conversions_no_rates">لم يتم تحميل الأسعار بعد.</string>
     <string name="quick_conversions_fees_applied">الرسوم المطبقة: %s</string>

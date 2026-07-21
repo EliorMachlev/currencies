@@ -91,9 +91,8 @@
     <string name="theme_title">Design</string>
     <string name="theme_option_light">Light</string>
     <string name="theme_option_dark">Dark</string>
-    <string name="pure_black_key" translatable="false">KEY_PURE_BLACK_ENABLED</string>
-    <string name="pure_black_enabled_title">OLED black</string>
-    <string name="pure_black_enabled_summary">Use pure black in dark mode</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">System default (OLED)</string>
     <!-- languages -->
     <string name="language_key" translatable="false">KEY_LANGUAGE</string>
     <string name="language_title">App Language</string>

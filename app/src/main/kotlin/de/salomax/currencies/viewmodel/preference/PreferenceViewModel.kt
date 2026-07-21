@@ -1,25 +1,21 @@
 package de.salomax.currencies.viewmodel.preference
 
 import android.app.Application
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.TaskStackBuilder
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
-import de.salomax.currencies.view.main.MainActivity
-import de.salomax.currencies.view.preference.PreferenceActivity
 
-// Same numeric contract as Database.getTheme() / BaseActivity: 0 = light,
-// 1 = dark, 2 = follow system.
+// Same numeric contract as Database.getTheme() / BaseActivity.
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
-private const val THEME_SYSTEM = 2
+private const val THEME_OLED = 2
+private const val THEME_SYSTEM = 3
+private const val THEME_SYSTEM_OLED = 4
 
 // Language.SYSTEM.iso — matches the enum value that means "follow system
 // locale" without pulling the enum into this file.
@@ -55,16 +51,38 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         return openExchangeratesApiKey
     }
 
-    fun setTheme(theme: Int) {
+    /**
+     * Returns true when the caller must rebuild the activity stack to make
+     * the change visible. `setDefaultNightMode` auto-recreates when the
+     * night mode changes, but a pure-black-only flip (Dark ↔ OLED, or
+     * System ↔ System-OLED while system is dark) keeps the same night mode,
+     * so `BaseActivity.setTheme` doesn't rerun on its own.
+     */
+    fun setTheme(theme: Int): Boolean {
+        val old = db.getTheme()
         db.setTheme(theme)
-        // switch theme
-        AppCompatDelegate.setDefaultNightMode(
-            when (theme) {
-                THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-                THEME_DARK -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
-        )
+        AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
+        return nightModeFor(old) == nightModeFor(theme) &&
+            isPureBlack(old) != isPureBlack(theme) &&
+            isDarkThemeActive(theme)
+    }
+
+    private fun nightModeFor(theme: Int): Int = when (theme) {
+        THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+        THEME_DARK, THEME_OLED -> AppCompatDelegate.MODE_NIGHT_YES
+        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    }
+
+    private fun isPureBlack(theme: Int): Boolean =
+        theme == THEME_OLED || theme == THEME_SYSTEM_OLED
+
+    private fun isDarkThemeActive(theme: Int): Boolean {
+        val explicitlyDark = theme == THEME_DARK || theme == THEME_OLED
+        val followingSystem = theme == THEME_SYSTEM || theme == THEME_SYSTEM_OLED
+        val systemDark = followingSystem &&
+            (app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES
+        return explicitlyDark || systemDark
     }
 
     fun setLanguage(language: String) {
@@ -93,39 +111,6 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
             appLocale.country
         else
             "${appLocale.language}_${appLocale.country}"
-    }
-
-    fun setPureBlackEnabled(enabled: Boolean) {
-        db.setPureBlackEnabled(enabled)
-        // switch theme
-        app.setTheme(
-            if (enabled)
-                R.style.AppTheme_PureBlack
-            else
-                R.style.AppTheme
-        )
-
-        // re-create all open activities, when we're in night mode
-        if (isDarkThemeActive()) {
-            TaskStackBuilder.create(app)
-                // PreferencesActivity is always called from MainActivity
-                .addNextIntent(Intent(app, MainActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                })
-                .addNextIntent(Intent(app, PreferenceActivity::class.java))
-                .startActivities()
-        }
-    }
-
-    private fun isDarkThemeActive(): Boolean {
-        // app theme is dark
-        val explicitlyDark = db.getTheme() == THEME_DARK
-        // app theme is system default && current state is dark
-        val nightMode = app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val systemDark = db.getTheme() == THEME_SYSTEM &&
-                nightMode == Configuration.UI_MODE_NIGHT_YES
-
-        return explicitlyDark || systemDark
     }
 
     fun isPreviewConversionEnabled(): LiveData<Boolean> {

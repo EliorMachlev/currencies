@@ -21,6 +21,8 @@
     <string name="menu_refresh">更新汇率</string>
     <string name="menu_timeline">查看汇率走势图</string>
     <string name="menu_quick_conversions">快速换算</string>
+    <string name="menu_share">分享</string>
+    <string name="share_footer">数据来源：%1$s，%2$s</string>
     <string name="quick_conversions_title">快速换算</string>
     <string name="quick_conversions_no_rates">汇率尚未加载。</string>
     <string name="quick_conversions_fees_applied">已应用费用：%s</string>

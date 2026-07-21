@@ -39,8 +39,8 @@
     <string name="theme_title">Tema</string>
     <string name="theme_option_light">Svijetla</string>
     <string name="theme_option_dark">Tamna</string>
-    <string name="pure_black_enabled_title">Crna za OLED zaslone</string>
-    <string name="pure_black_enabled_summary">Koristi potpuno crnu boju u tamnom načinu rada</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Zadano od sustava (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Opcije grafikona</string>
     <string name="graph_options_title">Opcije grafikona</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">Ako to želite, možete pomoći drugima da otkriju ovu aplikaciju. Ovdje kliknite kako biste je ocijenili na Trgovini Play.</string>
     <string name="category_versioninfo">Podaci o inačici</string>
     <string name="title_changelog">Povijest izmjena</string>
+    <string name="backup_title">Sigurnosna kopija i vraćanje</string>
+    <string name="backup_summary">Spremi svoje postavke u datoteku ili ih vrati iz prethodne sigurnosne kopije</string>
+    <string name="backup_manager_title">Sigurnosna kopija</string>
+    <string name="backup_section_local">Lokalna sigurnosna kopija</string>
+    <string name="backup_section_restore">Vraćanje</string>
+    <string name="backup_export_title">Izvoz u datoteku</string>
+    <string name="backup_export_summary">Odaberi lokaciju na ovom uređaju za spremanje šifrirane ili obične datoteke s postavkama</string>
+    <string name="backup_import_title">Uvoz iz datoteke</string>
+    <string name="backup_import_summary">Prepiši trenutne postavke onima iz prethodno izvezene sigurnosne kopije</string>
+    <string name="backup_export_success">Sigurnosna kopija spremljena</string>
+    <string name="backup_export_failed">Sigurnosna kopija nije uspjela: %1$s</string>
+    <string name="backup_import_success">Postavke vraćene — ponovno pokreni za primjenu</string>
+    <string name="backup_import_failed">Vraćanje nije uspjelo: %1$s</string>
+    <string name="backup_import_confirm_title">Vratiti iz sigurnosne kopije?</string>
+    <string name="backup_import_confirm_message">Trenutne postavke bit će prepisane onima iz datoteke. To se ne može poništiti.</string>
+    <string name="backup_import_confirm_positive">Vrati</string>
+    <string name="backup_encrypt_option">Šifriraj lozinkom</string>
+    <string name="backup_password_hint">Lozinka</string>
+    <string name="backup_password_prompt_title">Unesi lozinku</string>
+    <string name="backup_password_wrong">Lozinka nije dešifrirala ovu datoteku. Pokušaj ponovno.</string>
+    <string name="backup_password_too_short">Lozinka mora imati najmanje %1$d znakova</string>
 </resources>

@@ -39,8 +39,8 @@
     <string name="theme_title">Thiết kế</string>
     <string name="theme_option_light">Sáng</string>
     <string name="theme_option_dark">Tối</string>
-    <string name="pure_black_enabled_title">Đen OLED</string>
-    <string name="pure_black_enabled_summary">Sử dụng màu đen kịt ở chế độ tối</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Theo chế độ mặc định của hệ thống (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Tùy chọn biểu đồ</string>
     <string name="graph_options_title">Tùy chọn biểu đồ</string>
@@ -109,4 +109,25 @@
     <string name="rate_summary">Nếu bạn muốn, bạn có thể giúp những người khác khám phá ra Currencies. Hãy nhấn vào đây để đánh giá ứng dụng trên Google Play.</string>
     <string name="category_versioninfo">Thông tin phiên bản</string>
     <string name="title_changelog">Nhật ký thay đổi</string>
+    <string name="backup_title">Sao lưu &amp; khôi phục</string>
+    <string name="backup_summary">Lưu cài đặt của bạn vào tệp hoặc khôi phục từ bản sao lưu trước đó</string>
+    <string name="backup_manager_title">Sao lưu</string>
+    <string name="backup_section_local">Sao lưu cục bộ</string>
+    <string name="backup_section_restore">Khôi phục</string>
+    <string name="backup_export_title">Xuất ra tệp</string>
+    <string name="backup_export_summary">Chọn vị trí trên thiết bị này để lưu tệp cài đặt được mã hoá hoặc dạng thường</string>
+    <string name="backup_import_title">Nhập từ tệp</string>
+    <string name="backup_import_summary">Ghi đè cài đặt hiện tại bằng nội dung của tệp sao lưu đã xuất trước đó</string>
+    <string name="backup_export_success">Đã lưu bản sao lưu</string>
+    <string name="backup_export_failed">Sao lưu thất bại: %1$s</string>
+    <string name="backup_import_success">Đã khôi phục cài đặt — khởi động lại để áp dụng</string>
+    <string name="backup_import_failed">Khôi phục thất bại: %1$s</string>
+    <string name="backup_import_confirm_title">Khôi phục bản sao lưu?</string>
+    <string name="backup_import_confirm_message">Cài đặt hiện tại sẽ bị ghi đè bằng cài đặt trong tệp. Không thể hoàn tác thao tác này.</string>
+    <string name="backup_import_confirm_positive">Khôi phục</string>
+    <string name="backup_encrypt_option">Mã hoá bằng mật khẩu</string>
+    <string name="backup_password_hint">Mật khẩu</string>
+    <string name="backup_password_prompt_title">Nhập mật khẩu</string>
+    <string name="backup_password_wrong">Mật khẩu không giải mã được tệp này. Hãy thử lại.</string>
+    <string name="backup_password_too_short">Mật khẩu phải có ít nhất %1$d ký tự</string>
 </resources>

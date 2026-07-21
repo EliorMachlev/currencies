@@ -21,6 +21,8 @@
     <string name="menu_refresh">更新匯率</string>
     <string name="menu_timeline">匯率走勢圖</string>
     <string name="menu_quick_conversions">快速換算</string>
+    <string name="menu_share">分享</string>
+    <string name="share_footer">資料來源：%1$s，%2$s</string>
     <string name="quick_conversions_title">快速換算</string>
     <string name="quick_conversions_no_rates">匯率尚未載入。</string>
     <string name="quick_conversions_fees_applied">已套用手續費：%s</string>

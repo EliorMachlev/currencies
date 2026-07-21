@@ -21,6 +21,8 @@
     <string name="menu_refresh">Atualizar taxas</string>
     <string name="menu_timeline">Gráfico da taxa de câmbio</string>
     <string name="menu_quick_conversions">Conversões rápidas</string>
+    <string name="menu_share">Compartilhar</string>
+    <string name="share_footer">Com base em %1$s, %2$s</string>
     <string name="quick_conversions_title">Conversões rápidas</string>
     <string name="quick_conversions_no_rates">Taxas ainda não carregadas.</string>
     <string name="quick_conversions_fees_applied">Taxas aplicadas: %s</string>

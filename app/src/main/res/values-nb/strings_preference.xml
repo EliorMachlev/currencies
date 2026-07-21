@@ -39,8 +39,8 @@
     <string name="theme_title">Tema</string>
     <string name="theme_option_light">Lys</string>
     <string name="theme_option_dark">Mørk</string>
-    <string name="pure_black_enabled_title">OLED-svart</string>
-    <string name="pure_black_enabled_summary">Bruk helsvart i nattmodus</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Systemstandard (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafinnstillinger</string>
     <string name="graph_options_title">Grafinnstillinger</string>
@@ -105,4 +105,25 @@
     <string name="rate_summary">Hjelp andre å oppdage Currencies. Klikk her for å vurdere programmet på Google Play.</string>
 
 
+    <string name="backup_title">Sikkerhetskopi og gjenoppretting</string>
+    <string name="backup_summary">Lagre innstillingene dine i en fil, eller gjenopprett fra en tidligere sikkerhetskopi</string>
+    <string name="backup_manager_title">Sikkerhetskopi</string>
+    <string name="backup_section_local">Lokal sikkerhetskopi</string>
+    <string name="backup_section_restore">Gjenopprett</string>
+    <string name="backup_export_title">Eksporter til fil</string>
+    <string name="backup_export_summary">Velg et sted på denne enheten for å lagre en kryptert eller vanlig innstillingsfil</string>
+    <string name="backup_import_title">Importer fra fil</string>
+    <string name="backup_import_summary">Overskriv gjeldende innstillinger med de fra en tidligere eksportert sikkerhetskopi</string>
+    <string name="backup_export_success">Sikkerhetskopi lagret</string>
+    <string name="backup_export_failed">Sikkerhetskopiering mislyktes: %1$s</string>
+    <string name="backup_import_success">Innstillinger gjenopprettet — start på nytt for å bruke dem</string>
+    <string name="backup_import_failed">Gjenoppretting mislyktes: %1$s</string>
+    <string name="backup_import_confirm_title">Gjenopprett sikkerhetskopi?</string>
+    <string name="backup_import_confirm_message">Gjeldende innstillinger vil bli overskrevet med de i filen. Dette kan ikke angres.</string>
+    <string name="backup_import_confirm_positive">Gjenopprett</string>
+    <string name="backup_encrypt_option">Krypter med passord</string>
+    <string name="backup_password_hint">Passord</string>
+    <string name="backup_password_prompt_title">Skriv inn passord</string>
+    <string name="backup_password_wrong">Passordet klarte ikke å dekryptere denne filen. Prøv igjen.</string>
+    <string name="backup_password_too_short">Passordet må være minst %1$d tegn</string>
 </resources>

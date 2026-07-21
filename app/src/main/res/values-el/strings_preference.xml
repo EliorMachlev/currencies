@@ -39,8 +39,8 @@
     <string name="theme_title">Θέμα</string>
     <string name="theme_option_light">Ανοικτό</string>
     <string name="theme_option_dark">Σκούρο</string>
-    <string name="pure_black_enabled_title">Μαύρο OLED</string>
-    <string name="pure_black_enabled_summary">Χρήση μαύρου στο σκούρο θέμα</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">Συστήματος (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">Επιλογές γραφήματος</string>
     <string name="graph_options_title">Επιλογές γραφήματος</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">Αν θέλετε, μπορείτε να βοηθήσετε και άλλους να ανακαλύψουν την εφαρμογή. Πατήστε εδώ για να την αξιολογήσετε στο Google Play.</string>
     <string name="category_versioninfo">Πληροφορίες έκδοσης</string>
     <string name="title_changelog">Αρχείο αλλαγών</string>
+    <string name="backup_title">Αντίγραφο ασφαλείας &amp; επαναφορά</string>
+    <string name="backup_summary">Αποθήκευσε τις ρυθμίσεις σου σε αρχείο ή κάνε επαναφορά από προηγούμενο αντίγραφο</string>
+    <string name="backup_manager_title">Αντίγραφο ασφαλείας</string>
+    <string name="backup_section_local">Τοπικό αντίγραφο</string>
+    <string name="backup_section_restore">Επαναφορά</string>
+    <string name="backup_export_title">Εξαγωγή σε αρχείο</string>
+    <string name="backup_export_summary">Επίλεξε τοποθεσία σε αυτή τη συσκευή για την αποθήκευση κρυπτογραφημένου ή απλού αρχείου ρυθμίσεων</string>
+    <string name="backup_import_title">Εισαγωγή από αρχείο</string>
+    <string name="backup_import_summary">Αντικατάσταση των τρεχουσών ρυθμίσεων με αυτές από ένα προηγούμενο αντίγραφο ασφαλείας</string>
+    <string name="backup_export_success">Το αντίγραφο ασφαλείας αποθηκεύτηκε</string>
+    <string name="backup_export_failed">Αποτυχία δημιουργίας αντιγράφου: %1$s</string>
+    <string name="backup_import_success">Οι ρυθμίσεις επαναφέρθηκαν — κάνε επανεκκίνηση για να εφαρμοστούν</string>
+    <string name="backup_import_failed">Αποτυχία επαναφοράς: %1$s</string>
+    <string name="backup_import_confirm_title">Επαναφορά αντιγράφου;</string>
+    <string name="backup_import_confirm_message">Οι τρέχουσες ρυθμίσεις σου θα αντικατασταθούν από αυτές του αρχείου. Η ενέργεια δεν αναιρείται.</string>
+    <string name="backup_import_confirm_positive">Επαναφορά</string>
+    <string name="backup_encrypt_option">Κρυπτογράφηση με κωδικό</string>
+    <string name="backup_password_hint">Κωδικός</string>
+    <string name="backup_password_prompt_title">Εισαγωγή κωδικού</string>
+    <string name="backup_password_wrong">Ο κωδικός δεν αποκρυπτογράφησε το αρχείο. Δοκίμασε ξανά.</string>
+    <string name="backup_password_too_short">Ο κωδικός πρέπει να έχει τουλάχιστον %1$d χαρακτήρες</string>
 </resources>

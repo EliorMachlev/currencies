@@ -18,6 +18,8 @@
     <string name="menu_refresh">Επικαιροποίηση ισοτιμίας</string>
     <string name="menu_timeline">Διάγραμμα ισοτιμίας</string>
     <string name="menu_quick_conversions">Γρήγορες μετατροπές</string>
+    <string name="menu_share">Κοινοποίηση</string>
+    <string name="share_footer">Βάσει %1$s, %2$s</string>
     <string name="quick_conversions_title">Γρήγορες μετατροπές</string>
     <string name="quick_conversions_no_rates">Οι ισοτιμίες δεν έχουν φορτωθεί ακόμα.</string>
     <string name="quick_conversions_fees_applied">Εφαρμοσμένες χρεώσεις: %s</string>

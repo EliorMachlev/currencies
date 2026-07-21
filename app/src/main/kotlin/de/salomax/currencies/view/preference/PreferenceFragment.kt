@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.TaskStackBuilder
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.EditTextPreference
@@ -16,6 +17,7 @@ import androidx.preference.SwitchPreferenceCompat
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.view.main.MainActivity
 import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
 import de.salomax.currencies.util.DECIMAL_PLACES_MAX
 import de.salomax.currencies.util.DECIMAL_PLACES_MIN
@@ -116,13 +118,9 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                viewModel.setTheme(newValue.toString().toInt())
-                true
-            }
-        }
-        findPreference<SwitchPreferenceCompat>(getString(R.string.pure_black_key))?.apply {
-            setOnPreferenceChangeListener { _, newValue ->
-                viewModel.setPureBlackEnabled(newValue.toString().toBoolean())
+                if (viewModel.setTheme(newValue.toString().toInt())) {
+                    rebuildActivityStack()
+                }
                 true
             }
         }
@@ -226,6 +224,21 @@ class PreferenceFragment: PreferenceFragmentCompat() {
                     or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
         )
         return intent
+    }
+
+    // Rebuild the MainActivity → PreferenceActivity stack and finish the
+    // current activity so the pure-black theme is reapplied everywhere.
+    // Matches the pre-fork OLED toggle behavior.
+    private fun rebuildActivityStack() {
+        val activity = requireActivity()
+        TaskStackBuilder.create(activity)
+            .addNextIntent(Intent(activity, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            })
+            .addNextIntent(Intent(activity, PreferenceActivity::class.java))
+            .startActivities()
+        activity.finish()
+        activity.overridePendingTransition(0, 0)
     }
 
 }

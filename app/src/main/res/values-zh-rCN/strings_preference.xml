@@ -39,8 +39,8 @@
     <string name="theme_title">设计</string>
     <string name="theme_option_light">浅色</string>
     <string name="theme_option_dark">深色</string>
-    <string name="pure_black_enabled_title">OLED 黑色</string>
-    <string name="pure_black_enabled_summary">在深色模式中使用纯黑主题</string>
+    <string name="theme_option_oled">OLED</string>
+    <string name="theme_option_system_oled">系统默认 (OLED)</string>
     <!-- graph options -->
     <string name="category_graph_options">图表选项</string>
     <string name="graph_options_title">图表选项</string>
@@ -107,4 +107,25 @@
     <string name="rate_summary">如果您喜欢此应用，还可以帮助他人发现 Currencies。点击此处在 Google Play 上对应用评价。</string>
     <string name="category_versioninfo">版本信息</string>
     <string name="title_changelog">更新日志</string>
+    <string name="backup_title">备份和恢复</string>
+    <string name="backup_summary">将设置保存到文件,或从以前的备份中恢复</string>
+    <string name="backup_manager_title">备份</string>
+    <string name="backup_section_local">本地备份</string>
+    <string name="backup_section_restore">恢复</string>
+    <string name="backup_export_title">导出到文件</string>
+    <string name="backup_export_summary">在此设备上选择一个位置以保存加密或明文的设置文件</string>
+    <string name="backup_import_title">从文件导入</string>
+    <string name="backup_import_summary">使用之前导出的备份文件覆盖当前设置</string>
+    <string name="backup_export_success">备份已保存</string>
+    <string name="backup_export_failed">备份失败:%1$s</string>
+    <string name="backup_import_success">设置已恢复 — 请重启以应用</string>
+    <string name="backup_import_failed">恢复失败:%1$s</string>
+    <string name="backup_import_confirm_title">要恢复备份吗?</string>
+    <string name="backup_import_confirm_message">当前设置将被文件中的设置覆盖。此操作无法撤销。</string>
+    <string name="backup_import_confirm_positive">恢复</string>
+    <string name="backup_encrypt_option">使用密码加密</string>
+    <string name="backup_password_hint">密码</string>
+    <string name="backup_password_prompt_title">输入密码</string>
+    <string name="backup_password_wrong">此密码无法解密该文件,请重试。</string>
+    <string name="backup_password_too_short">密码长度至少为 %1$d 个字符</string>
 </resources>
