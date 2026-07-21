@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Mörkt</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Systemets standardinställning (OLED)</string>
-    <string name="pure_black_enabled_title">OLED-svart</string>
-    <string name="pure_black_enabled_summary">Använd helt svart färg i mörkt läge</string>
     <!-- graph options -->
     <string name="category_graph_options">Diagraminställningar</string>
     <string name="graph_options_title">Diagraminställningar</string>

@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Dunkel</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Standardeinstellung des Systems (OLED)</string>
-    <string name="pure_black_enabled_title">OLED-Schwarz</string>
-    <string name="pure_black_enabled_summary">Komplett schwarzes Design im Dark-Modus verwenden</string>
     <!-- graph options -->
     <string name="category_graph_options">Diagrammoptionen</string>
     <string name="graph_options_title">Diagrammoptionen</string>

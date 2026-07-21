@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Scuro</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Predefinita di sistema (OLED)</string>
-    <string name="pure_black_enabled_title">OLED nero</string>
-    <string name="pure_black_enabled_summary">Usare il nero puro in modalità scura</string>
     <!-- graph options -->
     <string name="category_graph_options">Opzioni del grafico</string>
     <string name="graph_options_title">Opzioni del grafico</string>

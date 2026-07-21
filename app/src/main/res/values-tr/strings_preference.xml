@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Koyu</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Sistem varsayılanı (OLED)</string>
-    <string name="pure_black_enabled_title">OLED siyahı</string>
-    <string name="pure_black_enabled_summary">Koyu modda saf siyah kullan</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafik seçenekleri</string>
     <string name="graph_options_title">Grafik seçenekleri</string>

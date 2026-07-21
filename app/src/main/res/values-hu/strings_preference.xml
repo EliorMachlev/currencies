@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Sötét</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Rendszerbeállítás (OLED)</string>
-    <string name="pure_black_enabled_title">OLED fekete</string>
-    <string name="pure_black_enabled_summary">Tiszta fekete használata sötét módban</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafikon beállítások</string>
     <string name="graph_options_title">Grafikon beállítások</string>

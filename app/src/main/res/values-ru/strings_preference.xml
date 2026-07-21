@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Тёмная</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Как в системе (OLED)</string>
-    <string name="pure_black_enabled_title">OLED чёрный</string>
-    <string name="pure_black_enabled_summary">Использовать абсолютно чёрный цвет в тёмной теме</string>
     <!-- graph options -->
     <string name="category_graph_options">Параметры графика</string>
     <string name="graph_options_title">Параметры графика</string>

@@ -41,8 +41,6 @@
     <string name="theme_option_dark">ഡാർക്ക്</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">സിസ്റ്റം സ്ഥിരസ്ഥിതി (OLED)</string>
-    <string name="pure_black_enabled_title">OLED കറുപ്പ്</string>
-    <string name="pure_black_enabled_summary">ഡാർക്ക് മോഡിൽ പൂർണ കറുപ്പ് ഉപയോഗിക്കുക</string>
     <!-- graph options -->
     <string name="category_graph_options">ഗ്രാഫ് ഓപ്ഷനുകൾ</string>
     <string name="graph_options_title">ഗ്രാഫ് ഓപ്ഷനുകൾ</string>

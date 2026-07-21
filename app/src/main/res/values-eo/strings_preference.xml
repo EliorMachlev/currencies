@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Malhela</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Sistema defaŭlta (OLED)</string>
-    <string name="pure_black_enabled_title">OLED nigra</string>
-    <string name="pure_black_enabled_summary">Uzi puran nigran en malhela reĝimo</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafeaj agordoj</string>
     <string name="graph_options_title">Grafeaj agordoj</string>

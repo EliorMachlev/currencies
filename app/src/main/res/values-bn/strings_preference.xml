@@ -41,8 +41,6 @@
     <string name="theme_option_dark">অন্ধকার</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">সিস্টেম ডিফল্ট (OLED)</string>
-    <string name="pure_black_enabled_title">ওলেড অন্ধকার</string>
-    <string name="pure_black_enabled_summary">বিশুদ্ধ কালো ব্যবহার করো অন্ধকার অবস্থায়(মোড)</string>
     <!-- graph options -->
     <string name="category_graph_options">গ্রাফ বিকল্প</string>
     <string name="graph_options_title">গ্রাফ বিকল্প</string>

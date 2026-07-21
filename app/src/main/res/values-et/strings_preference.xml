@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Tume kujundus</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Süsteemi välimus (OLED)</string>
-    <string name="pure_black_enabled_title">Süsimustad värvid OLED-ekraanide jaoks</string>
-    <string name="pure_black_enabled_summary">Tumeda kujunduse puhul kasuta süsimusta värvi</string>
     <!-- graph options -->
     <string name="category_graph_options">Graafiku valikud</string>
     <string name="graph_options_title">Graafiku valikud</string>

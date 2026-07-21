@@ -41,8 +41,6 @@
     <string name="theme_option_dark">暗色</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">系統預設值 (OLED)</string>
-    <string name="pure_black_enabled_title">OLED 純黑</string>
-    <string name="pure_black_enabled_summary">在暗色模式中使用純黑色</string>
     <!-- graph options -->
     <string name="category_graph_options">圖表選項</string>
     <string name="graph_options_title">圖表選項</string>

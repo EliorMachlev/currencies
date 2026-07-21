@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Sombre</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Paramètre système par défaut (OLED)</string>
-    <string name="pure_black_enabled_title">OLED noir</string>
-    <string name="pure_black_enabled_summary">Utiliser le noir pur en mode sombre</string>
     <!-- graph options -->
     <string name="category_graph_options">Options du graphique</string>
     <string name="graph_options_title">Options du graphique</string>

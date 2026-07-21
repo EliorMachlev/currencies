@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Dökk</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Sjálfgildi kerfis (OLED)</string>
-    <string name="pure_black_enabled_title">OLED svart</string>
-    <string name="pure_black_enabled_summary">Nota kolsvartan fyrir dökku þemu</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafvalkostir</string>
     <string name="graph_options_title">Grafvalkostir</string>

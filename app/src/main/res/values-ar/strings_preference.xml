@@ -41,8 +41,6 @@
     <string name="theme_option_dark">غامق</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">الإعداد التلقائي للنظام (OLED)</string>
-    <string name="pure_black_enabled_title">أسود OLED</string>
-    <string name="pure_black_enabled_summary">استخدم الأسود النقي في الوضع المظلم</string>
     <!-- graph options -->
     <string name="category_graph_options">خيارات الرسم البياني</string>
     <string name="graph_options_title">خيارات الرسم البياني</string>

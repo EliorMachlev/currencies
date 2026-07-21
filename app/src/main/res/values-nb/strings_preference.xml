@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Mørk</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Systemstandard (OLED)</string>
-    <string name="pure_black_enabled_title">OLED-svart</string>
-    <string name="pure_black_enabled_summary">Bruk helsvart i nattmodus</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafinnstillinger</string>
     <string name="graph_options_title">Grafinnstillinger</string>

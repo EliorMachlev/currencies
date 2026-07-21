@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Tmavý</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Výchozí nastavení systému (OLED)</string>
-    <string name="pure_black_enabled_title">OLED černý</string>
-    <string name="pure_black_enabled_summary">Použít plně černou v tmavém režimu</string>
     <!-- graph options -->
     <string name="category_graph_options">Možnosti grafu</string>
     <string name="graph_options_title">Možnosti grafu</string>

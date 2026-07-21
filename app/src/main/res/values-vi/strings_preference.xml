@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Tối</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Theo chế độ mặc định của hệ thống (OLED)</string>
-    <string name="pure_black_enabled_title">Đen OLED</string>
-    <string name="pure_black_enabled_summary">Sử dụng màu đen kịt ở chế độ tối</string>
     <!-- graph options -->
     <string name="category_graph_options">Tùy chọn biểu đồ</string>
     <string name="graph_options_title">Tùy chọn biểu đồ</string>

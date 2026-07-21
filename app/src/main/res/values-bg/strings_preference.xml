@@ -41,8 +41,6 @@
     <string name="theme_option_dark">Тъмен</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Стандартно за системата (OLED)</string>
-    <string name="pure_black_enabled_title">OLED черно</string>
-    <string name="pure_black_enabled_summary">Използвай чисто черно в тъмен режим</string>
     <!-- graph options -->
     <string name="category_graph_options">Опции на графиката</string>
     <string name="graph_options_title">Опции на графиката</string>

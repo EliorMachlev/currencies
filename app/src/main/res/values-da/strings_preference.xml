@@ -42,8 +42,6 @@
     <string name="theme_option_dark">Mørk</string>
     <string name="theme_option_oled">OLED</string>
     <string name="theme_option_system_oled">Systemstandard (OLED)</string>
-    <string name="pure_black_enabled_title">OLED-mørk</string>
-    <string name="pure_black_enabled_summary">Brug ren sort i mørk tilstand</string>
     <!-- graph options -->
     <string name="category_graph_options">Grafindstillinger</string>
     <string name="graph_options_title">Grafindstillinger</string>
