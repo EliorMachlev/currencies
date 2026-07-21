@@ -13,7 +13,6 @@ import de.salomax.currencies.repository.ExchangeRatesRepository
 private const val THEME_LIGHT = 0
 private const val THEME_DARK = 1
 private const val THEME_OLED = 2
-private const val THEME_SYSTEM_OLED = 4
 
 // Language.SYSTEM.iso — matches the enum value that means "follow system
 // locale" without pulling the enum into this file.
@@ -49,18 +48,9 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         return openExchangeratesApiKey
     }
 
-    /**
-     * Returns true when the caller must call `Activity.recreate()` to make the
-     * change visible. `setDefaultNightMode` auto-recreates when the night mode
-     * changes, but a pure-black-only flip (Dark ↔ OLED, System ↔ System-OLED)
-     * keeps the same night mode, so `BaseActivity.setTheme` doesn't rerun on
-     * its own.
-     */
-    fun setTheme(theme: Int): Boolean {
-        val old = db.getTheme()
+    fun setTheme(theme: Int) {
         db.setTheme(theme)
         AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
-        return nightModeFor(old) == nightModeFor(theme) && isPureBlack(old) != isPureBlack(theme)
     }
 
     private fun nightModeFor(theme: Int): Int = when (theme) {
@@ -68,9 +58,6 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         THEME_DARK, THEME_OLED -> AppCompatDelegate.MODE_NIGHT_YES
         else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     }
-
-    private fun isPureBlack(theme: Int): Boolean =
-        theme == THEME_OLED || theme == THEME_SYSTEM_OLED
 
     fun setLanguage(language: String) {
         val appLocale: LocaleListCompat =

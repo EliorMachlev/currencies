@@ -16,9 +16,4 @@
    <!-- pure black (equals light in light mode) -->
    <color name="displayOverlayPureBlack">@color/displayOverlay</color>
    <color name="colorBackgroundPureBlack">@color/colorBackground</color>
-
-   <!-- Launch/splash background. Kept in sync with the theme's colorBackground
-        so light stays light and dark stays dark; OLED users still see a brief
-        blackOlive frame before BaseActivity applies pure-black. -->
-   <color name="windowBackground">@color/colorBackground</color>
 </resources>

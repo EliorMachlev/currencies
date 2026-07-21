@@ -116,9 +116,7 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                if (viewModel.setTheme(newValue.toString().toInt())) {
-                    requireActivity().recreate()
-                }
+                viewModel.setTheme(newValue.toString().toInt())
                 true
             }
         }
