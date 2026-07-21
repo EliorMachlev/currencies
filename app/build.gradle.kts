@@ -142,7 +142,7 @@ dependencies {
     // run on the JVM test thread without hitting the main-thread assertion.
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     // fuzzing
-    val junitVersion = "6.1.1"
+    val junitVersion = "6.1.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitVersion")
