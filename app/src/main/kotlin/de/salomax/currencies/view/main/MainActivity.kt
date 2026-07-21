@@ -52,6 +52,7 @@ import de.salomax.currencies.viewmodel.main.Operator
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 private const val HISTORICAL_MIN_YEAR = 2010
@@ -177,12 +178,20 @@ class MainActivity : BaseActivity() {
     private fun buildShareFooter(rates: ExchangeRates?): String? {
         if (rates == null) return null
         val providerName = rates.provider?.getName() ?: return null
-        val date = rates.date ?: return null
-        val time = rates.time
+        val dateString = formatRatesTimestamp(rates.date, rates.time) ?: return null
+        return getString(R.string.share_footer, providerName, dateString)
+    }
+
+    // Combine [date] and optional [time] into a single formatted string using
+    // the user's configured pattern. When [time] is null the time portion is
+    // stripped from the pattern first so users on "date-only" don't see a
+    // trailing "00:00". RTL marks injected by some locale formatters are
+    // stripped so a right-side timestamp stays flush with the label.
+    private fun formatRatesTimestamp(date: LocalDate?, time: LocalTime?): String? {
+        if (date == null) return null
         val pattern = if (time != null) dateFormatPattern else stripTimePattern(dateFormatPattern)
         val temporal = if (time != null) date.atTime(time) else date
-        val dateString = DateTimeFormatter.ofPattern(pattern).format(temporal).stripRtlMark()
-        return getString(R.string.share_footer, providerName, dateString)
+        return DateTimeFormatter.ofPattern(pattern).format(temporal).stripRtlMark()
     }
 
     private fun openQuickConversionsDialog() {
@@ -288,34 +297,8 @@ class MainActivity : BaseActivity() {
         registerForContextMenu(findViewById<LinearLayout>(R.id.textTo))
 
         // spinners: listen for changes
-        spinnerFrom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position != -1 && parent?.adapter?.isEmpty != true) {
-                    val rate = parent?.adapter?.getItem(position) as Rate?
-                    rate?.let { viewModel.setBaseCurrency(it.currency) }
-                }
-            }
-        }
-        spinnerTo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position != -1 && parent?.adapter?.isEmpty != true) {
-                    val rate = parent?.adapter?.getItem(position) as Rate?
-                    rate?.let { viewModel.setDestinationCurrency(it.currency) }
-                }
-            }
-        }
+        spinnerFrom.onItemSelectedListener = rateSpinnerListener(viewModel::setBaseCurrency)
+        spinnerTo.onItemSelectedListener = rateSpinnerListener(viewModel::setDestinationCurrency)
 
         // swipe to refresh
         swipeRefresh.setOnRefreshListener {
@@ -342,6 +325,22 @@ class MainActivity : BaseActivity() {
         startActivity(PreferenceActivity.feesIntent(this))
         return true
     }
+
+    // Forward the picked rate's currency to [onCurrencySelected]; both spinners
+    // share this exact shape (guard against empty adapter / position -1 first).
+    private fun rateSpinnerListener(onCurrencySelected: (Currency) -> Unit) =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                if (position == -1 || parent?.adapter?.isEmpty == true) return
+                (parent?.adapter?.getItem(position) as Rate?)?.let { onCurrencySelected(it.currency) }
+            }
+        }
 
     private fun copyToClipboard(copyText: String) {
         clipboardManager().setPrimaryClip(ClipData.newPlainText(null, copyText))
@@ -435,17 +434,7 @@ class MainActivity : BaseActivity() {
     private fun observeExchangeRates(rates: ExchangeRates?) {
         rates?.let {
             val date = it.date
-            val time = it.time
-            val effectivePattern =
-                if (time != null) dateFormatPattern else stripTimePattern(dateFormatPattern)
-            val temporal = when {
-                date == null -> null
-                time != null -> date.atTime(time)
-                else -> date
-            }
-            val dateString = temporal
-                ?.let { DateTimeFormatter.ofPattern(effectivePattern).format(it) }
-                ?.stripRtlMark()
+            val dateString = formatRatesTimestamp(date, it.time)
             val providerString = it.provider?.getName()
             tvInfoDate.text =
                 if (dateString != null && providerString != null)

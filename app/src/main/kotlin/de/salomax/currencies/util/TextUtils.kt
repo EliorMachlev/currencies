@@ -28,6 +28,20 @@ internal const val DECIMAL_PLACES_DEFAULT = 2
 internal const val DECIMAL_PLACES_MIN = 0
 internal const val DECIMAL_PLACES_MAX = 6
 
+// Trailing zeros after a decimal point ("12.3400" -> "12.34"), and the point
+// itself when nothing survives ("12.0000" -> "12"). Anchored so a leading
+// zero on an integer ("0" or "0.5") is preserved.
+private val TRAILING_ZEROS_REGEX = Regex("(?!^)\\.?0+$")
+
+// Characters accepted by [CharSequence.toNumber]: digits, comma, dot, and any
+// whitespace (thousands separator can be NBSP or normal space depending on
+// locale). Anything else means "not a number, don't try to parse".
+private val NUMERIC_INPUT_REGEX = Regex("[0-9,.\\s]+")
+
+// Any run of whitespace — used to strip locale thousands separators before
+// handing the string to NumberFormat.parse.
+private val WHITESPACE_REGEX = Regex("\\s+")
+
 /**
  * Wrap [s] in Unicode LTR isolate (U+2066 … U+2069) so an "<amount> <currency>"
  * chunk stays glued together as one LTR unit inside an RTL paragraph — otherwise
@@ -146,7 +160,7 @@ private fun roundIfNeeded(value: String, decimalPlaces: Int?): String {
 }
 
 private fun trimTrailingZeros(value: String): String =
-    value.replace("(?!^)\\.?0+$".toRegex(), "")
+    value.replace(TRAILING_ZEROS_REGEX, "")
 
 private fun applyGrouping(value: String, context: Context): String {
     if (!value.contains('.')) return value.groupNumbers(context)
@@ -180,6 +194,6 @@ private fun String.groupNumbers(context: Context): String {
  */
 fun CharSequence.toNumber(): Number? {
     // allow 0-9 , . whitespace only
-    if (isBlank() || !matches("[0-9,.\\s]+".toRegex())) return null
-    return NumberFormat.getNumberInstance().parse(toString().replace("\\s+".toRegex(), ""))
+    if (isBlank() || !matches(NUMERIC_INPUT_REGEX)) return null
+    return NumberFormat.getNumberInstance().parse(toString().replace(WHITESPACE_REGEX, ""))
 }

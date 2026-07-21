@@ -21,6 +21,12 @@ import java.math.MathContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+// The Bank Rossii URL endpoints accept dates as dd/MM/yyyy in the query
+// string. The XML *response* uses dd.MM.yyyy — that formatter lives in
+// AdapterUtils as BANK_ROSSII_DATE_FORMATTER and shouldn't be reused here.
+private val BANK_ROSSII_URL_DATE_FORMATTER: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
 class BankRossii : ApiProvider.Api() {
 
     override val name = "Bank Rossii"
@@ -44,7 +50,7 @@ class BankRossii : ApiProvider.Api() {
             // latest
             if (date == null) ""
             // historical
-            else "?date_req=${date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}"
+            else "?date_req=${date.format(BANK_ROSSII_URL_DATE_FORMATTER)}"
 
         return Fuel.get(
             baseUrl +
@@ -66,7 +72,6 @@ class BankRossii : ApiProvider.Api() {
         startDate: LocalDate,
         endDate: LocalDate
     ): Result<Timeline, FuelError> {
-        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val parameterBase = base.apiCodeOrDkkForFok()
         val parameterSymbol = symbol.apiCodeOrDkkForFok()
 
@@ -88,12 +93,12 @@ class BankRossii : ApiProvider.Api() {
         val baseTimeline = if (parameterBase == Currency.RUB.iso4217Alpha())
             Result.success(timelineRub)
         else
-            fetchCurrencyTimeline(startDate, endDate, idBase!!, ids, dateFormatter)
+            fetchCurrencyTimeline(startDate, endDate, idBase!!, ids)
 
         val symbolTimeline = if (parameterSymbol == Currency.RUB.iso4217Alpha())
             Result.success(timelineRub)
         else
-            fetchCurrencyTimeline(startDate, endDate, idSymbol!!, ids, dateFormatter)
+            fetchCurrencyTimeline(startDate, endDate, idSymbol!!, ids)
 
         val baseRates: Map<LocalDate, Rate>? = baseTimeline.component1()?.rates
         val symbolRates: Map<LocalDate, Rate>? = symbolTimeline.component1()?.rates
@@ -142,13 +147,12 @@ class BankRossii : ApiProvider.Api() {
         startDate: LocalDate,
         endDate: LocalDate,
         currencyId: String,
-        ids: Map<String, String>,
-        dateFormatter: DateTimeFormatter
+        ids: Map<String, String>
     ): Result<Timeline, FuelError> {
         return Fuel.get(
             baseUrl + "/XML_dynamic.asp" +
-                "?date_req1=${startDate.format(dateFormatter)}" +
-                "&date_req2=${endDate.format(dateFormatter)}" +
+                "?date_req1=${startDate.format(BANK_ROSSII_URL_DATE_FORMATTER)}" +
+                "&date_req2=${endDate.format(BANK_ROSSII_URL_DATE_FORMATTER)}" +
                 "&VAL_NM_RQ=$currencyId"
         ).awaitResult(object : ResponseDeserializable<Timeline> {
             override fun deserialize(inputStream: InputStream): Timeline =
