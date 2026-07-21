@@ -9,6 +9,12 @@
     <style name="AppTheme.PureBlack" parent="BaseAppTheme.PureBlack" />
 
     <style name="BaseAppTheme" parent="Theme.Material3.DynamicColors.DayNight">
+        <!-- Suppress the launch preview window so cold starts don't flash a
+             non-OLED background before BaseActivity applies the pure-black
+             theme. Trade-off: tapping the launcher icon briefly shows nothing
+             until the activity draws its first frame. -->
+        <item name="android:windowDisablePreview">true</item>
+
         <!-- theme-dependant colors (different for light/dark/black) -->
         <item name="colorBackground">@color/colorBackground</item>
         <item name="colorDisplayOverlay">@color/displayOverlay</item>
