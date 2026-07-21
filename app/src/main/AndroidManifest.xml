@@ -60,6 +60,14 @@
         </activity-alias>
         <activity android:name=".view.preference.PreferenceActivity" />
         <activity android:name=".view.timeline.TimelineActivity" />
+        <!-- Runs in its own process so it can outlive the main process
+             during a theme restart and then fire the launcher intent for
+             a fresh cold start. See RestartActivity.kt. -->
+        <activity
+            android:name=".view.RestartActivity"
+            android:exported="false"
+            android:process=":restart"
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

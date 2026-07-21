@@ -1,13 +1,11 @@
 package de.salomax.currencies.view.preference
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Process
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +22,7 @@ import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
 import de.salomax.currencies.util.DECIMAL_PLACES_MAX
 import de.salomax.currencies.util.DECIMAL_PLACES_MIN
 import de.salomax.currencies.repository.Database
+import de.salomax.currencies.view.RestartActivity
 import de.salomax.currencies.viewmodel.preference.PreferenceViewModel
 import de.salomax.currencies.viewmodel.preference.applyLauncherAliasState
 import de.salomax.currencies.viewmodel.preference.launcherAliasName
@@ -44,10 +43,6 @@ private const val URL_SOURCE_CODE = "https://github.com/sal0max/currencies"
 private const val URL_DONATE = "https://www.paypal.com/donate?hosted_button_id=2JCY7E99V9DGC"
 private const val URL_PLAY_MARKET = "market://details?id=de.salomax.currencies"
 private const val URL_PLAY_WEB = "https://play.google.com/store/apps/details?id=de.salomax.currencies"
-
-// Small delay before the AlarmManager fires the launcher intent; gives the
-// current process time to actually exit before the new task is created.
-private const val RESTART_DELAY_MS = 100L
 
 @Suppress("unused")
 class PreferenceFragment: PreferenceFragmentCompat() {
@@ -243,17 +238,17 @@ class PreferenceFragment: PreferenceFragmentCompat() {
             .show()
     }
 
-    // Relaunch via AlarmManager so the launcher intent fires *after* our
-    // process has died. Starting the activity directly and then calling
-    // exit() races the activity manager and often leaves the app closed
-    // without reopening.
+    // Relaunch via RestartActivity — a headless helper that lives in its
+    // own ":restart" process. AlarmManager-based relaunches are unreliable
+    // on Android 12+ due to background-activity-start restrictions, so we
+    // hand off to a process that outlives ours and then fires the launcher
+    // intent as a foreground activity start.
     //
     // The alias swap happens here (not deferred to Application.onCreate on
     // the next launch) for two reasons:
-    //  1. The alarm's launch intent needs to resolve to the alias whose
-    //     static theme matches the new setting, without depending on a
-    //     stale PackageManager cache — so we target the alias explicitly.
-    //  2. If the user gives up on the restart and reopens manually, the
+    //  1. The relaunch intent needs to resolve to the alias whose static
+    //     theme matches the new setting, so we target it explicitly.
+    //  2. If the user reopens manually before the relaunch completes, the
     //     launcher must already point at the correct alias; otherwise
     //     Application.onCreate would disable the alias that just rooted
     //     the fresh task and some Android versions kill it despite
@@ -264,20 +259,18 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         val ctx = context?.applicationContext ?: return
         val pureBlack = Database(ctx).isPureBlackEnabled()
         applyLauncherAliasState(ctx, pureBlack)
-        val intent = Intent().apply {
+        val target = Intent().apply {
             setClassName(ctx, launcherAliasName(pureBlack))
             action = Intent.ACTION_MAIN
             addCategory(Intent.CATEGORY_LAUNCHER)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
-        val pending = PendingIntent.getActivity(
-            ctx, 0, intent,
-            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-        )
-        val alarm = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarm.set(AlarmManager.RTC, System.currentTimeMillis() + RESTART_DELAY_MS, pending)
-        activity?.finishAffinity()
-        Runtime.getRuntime().exit(0)
+        val restart = Intent(ctx, RestartActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            putExtra(RestartActivity.EXTRA_TARGET_INTENT, target)
+            putExtra(RestartActivity.EXTRA_MAIN_PID, Process.myPid())
+        }
+        ctx.startActivity(restart)
     }
 
     private fun createIntent(url: String): Intent {
