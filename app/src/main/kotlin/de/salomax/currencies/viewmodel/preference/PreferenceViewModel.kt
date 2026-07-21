@@ -1,18 +1,14 @@
 package de.salomax.currencies.viewmodel.preference
 
 import android.app.Application
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.TaskStackBuilder
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import de.salomax.currencies.model.ApiProvider
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.repository.ExchangeRatesRepository
-import de.salomax.currencies.view.main.MainActivity
-import de.salomax.currencies.view.preference.PreferenceActivity
 
 // Same numeric contract as Database.getTheme() / BaseActivity.
 private const val THEME_LIGHT = 0
@@ -55,25 +51,20 @@ class PreferenceViewModel(private val app: Application) : AndroidViewModel(app) 
         return openExchangeratesApiKey
     }
 
-    fun setTheme(theme: Int) {
+    /**
+     * Returns true when the caller must rebuild the activity stack to make
+     * the change visible. `setDefaultNightMode` auto-recreates when the
+     * night mode changes, but a pure-black-only flip (Dark ↔ OLED, or
+     * System ↔ System-OLED while system is dark) keeps the same night mode,
+     * so `BaseActivity.setTheme` doesn't rerun on its own.
+     */
+    fun setTheme(theme: Int): Boolean {
         val old = db.getTheme()
         db.setTheme(theme)
         AppCompatDelegate.setDefaultNightMode(nightModeFor(theme))
-        // setDefaultNightMode auto-recreates on night-mode change; a
-        // pure-black-only flip while dark keeps the same night mode, so
-        // rebuild the activity stack the same way the pre-fork OLED switch
-        // did, otherwise the pure-black background isn't applied.
-        if (nightModeFor(old) == nightModeFor(theme) &&
+        return nightModeFor(old) == nightModeFor(theme) &&
             isPureBlack(old) != isPureBlack(theme) &&
             isDarkThemeActive(theme)
-        ) {
-            TaskStackBuilder.create(app)
-                .addNextIntent(Intent(app, MainActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                })
-                .addNextIntent(Intent(app, PreferenceActivity::class.java))
-                .startActivities()
-        }
     }
 
     private fun nightModeFor(theme: Int): Int = when (theme) {
