@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <attr name="colorDisplayOverlay" format="reference|color" />
     <attr name="colorBackground" format="reference|color" />
 
@@ -9,11 +9,13 @@
     <style name="AppTheme.PureBlack" parent="BaseAppTheme.PureBlack" />
 
     <style name="BaseAppTheme" parent="Theme.Material3.DynamicColors.DayNight">
-        <!-- Suppress the launch preview window so cold starts don't flash a
-             non-OLED background before BaseActivity applies the pure-black
-             theme. Trade-off: tapping the launcher icon briefly shows nothing
-             until the activity draws its first frame. -->
+        <!-- Match the launch/splash frame to the theme so cold starts don't
+             flash a lighter color before BaseActivity applies pure-black.
+             windowDisablePreview handles pre-Android-12; the splash-screen
+             background attribute covers Android 12+. -->
         <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/windowBackground</item>
 
         <!-- theme-dependant colors (different for light/dark/black) -->
         <item name="colorBackground">@color/colorBackground</item>

@@ -5,4 +5,8 @@
     <!-- pure black -->
     <color name="colorBackgroundPureBlack">@android:color/black</color>
     <color name="displayOverlayPureBlack">@null</color>
+
+    <!-- Launch/splash background — pure black in night so OLED cold starts
+         don't flash a lighter color first. -->
+    <color name="windowBackground">@android:color/black</color>
 </resources>

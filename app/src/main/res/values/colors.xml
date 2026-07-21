@@ -16,4 +16,9 @@
    <!-- pure black (equals light in light mode) -->
    <color name="displayOverlayPureBlack">@color/displayOverlay</color>
    <color name="colorBackgroundPureBlack">@color/colorBackground</color>
+
+   <!-- Launch/splash background. Night variant is pure black so OLED cold
+        starts don't flash; Dark users get black instead of blackOlive for
+        the brief launch frame. -->
+   <color name="windowBackground">@color/dirtyWhite</color>
 </resources>

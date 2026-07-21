@@ -58,7 +58,7 @@
         android:title="@string/category_appearance"
         app:allowDividerAbove="false">
         <ListPreference
-            android:defaultValue="2"
+            android:defaultValue="3"
             android:entries="@array/theme_names"
             android:entryValues="@array/theme_values"
             android:icon="@drawable/ic_theme"
