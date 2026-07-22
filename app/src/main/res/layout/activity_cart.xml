@@ -80,6 +80,17 @@
                 android:src="@drawable/ic_swap_horiz"
                 app:tint="?attr/colorPrimary" />
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/cart_btn_fee_side"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/fee_side_label"
+                android:padding="@dimen/margin1x"
+                android:src="@drawable/ic_fee_side_original_horizontal"
+                android:visibility="gone"
+                app:tint="?attr/colorError" />
+
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

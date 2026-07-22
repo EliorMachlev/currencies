@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
+import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.SavedCart
 import de.salomax.currencies.repository.CartExporter
@@ -27,6 +29,7 @@ import de.salomax.currencies.repository.CartFileResult
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
+import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.viewmodel.cart.CartSnapshot
 import de.salomax.currencies.viewmodel.cart.CartViewModel
 import java.math.BigDecimal
@@ -56,6 +59,7 @@ class CartActivity : BaseActivity() {
     private lateinit var spinnerFrom: SearchableSpinner
     private lateinit var spinnerTo: SearchableSpinner
     private lateinit var swapButton: ImageButton
+    private lateinit var feeSideButton: AppCompatImageButton
     private lateinit var emptyHint: TextView
     private lateinit var addButton: MaterialButton
 
@@ -82,6 +86,7 @@ class CartActivity : BaseActivity() {
         this.spinnerFrom = findViewById(R.id.cart_spinner_from)
         this.spinnerTo = findViewById(R.id.cart_spinner_to)
         this.swapButton = findViewById(R.id.cart_swap)
+        this.feeSideButton = findViewById(R.id.cart_btn_fee_side)
         this.emptyHint = findViewById(R.id.cart_empty_hint)
         this.addButton = findViewById(R.id.cart_add_item)
 
@@ -96,6 +101,14 @@ class CartActivity : BaseActivity() {
         spinnerFrom.onItemSelectedListener = rateSpinnerListener(viewModel::setBaseCurrency)
         spinnerTo.onItemSelectedListener = rateSpinnerListener(viewModel::setDestinationCurrency)
         swapButton.setOnClickListener { viewModel.swapCurrencies() }
+        feeSideButton.setOnClickListener {
+            val current = viewModel.getFeeSide().value ?: FeeSide.ORIGINAL
+            viewModel.setFeeSide(current.toggled())
+        }
+        feeSideButton.setOnLongClickListener {
+            startActivity(PreferenceActivity.feesIntent(this))
+            true
+        }
 
         exportLauncher = registerForActivityResult(
             ActivityResultContracts.CreateDocument(EXPORT_FILE_MIME)
@@ -141,6 +154,13 @@ class CartActivity : BaseActivity() {
         }
         viewModel.getFees().observe(this) { updateFeeLine() }
         viewModel.getCurrentCart().observe(this) { updateFeeLine() }
+        viewModel.getFeeSide().observe(this) { side ->
+            val effective = side ?: FeeSide.ORIGINAL
+            feeSideButton.setImageResource(
+                if (effective == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted_horizontal
+                else R.drawable.ic_fee_side_original_horizontal
+            )
+        }
         viewModel.getExchangeRates().observe(this) { rates ->
             // Feed the same rate list the spinner shows on the main screen so
             // its picker shows flags, ISO codes, and (when enabled) preview
@@ -176,6 +196,7 @@ class CartActivity : BaseActivity() {
         val snapshot = viewModel.snapshotForShare()
         if (snapshot == null || snapshot.feeStack.compareTo(BigDecimal.ONE) == 0) {
             feeLine.visibility = View.GONE
+            feeSideButton.visibility = View.GONE
             return
         }
         val deltaPercent = snapshot.feeStack
@@ -184,6 +205,7 @@ class CartActivity : BaseActivity() {
             .setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN)
         feeLine.text = getString(R.string.cart_fee_line, deltaPercent.toPlainString())
         feeLine.visibility = View.VISIBLE
+        feeSideButton.visibility = View.VISIBLE
     }
 
     private fun formatAmount(value: BigDecimal?, currency: Currency?): String {

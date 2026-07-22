@@ -12,6 +12,7 @@ import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeCalculator
+import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.model.SavedCart
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.util.evaluateCalculatorExpression
@@ -29,23 +30,28 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
 
     private val fees: LiveData<List<Fee>> = db.getFees()
     private val rates: LiveData<ExchangeRates?> = db.getExchangeRates()
+    private val feeSide: LiveData<FeeSide> = db.getFeeSide()
 
-    // Cache the last-known fee list and rates so synchronous callers (share
-    // text, fee line rendering) can reflect the same totals the UI shows
-    // without a suspend hop.
+    // Cache the last-known fee list, rates, and fee side so synchronous
+    // callers (share text, fee line rendering) can reflect the same totals
+    // the UI shows without a suspend hop.
     private var lastFees: List<Fee> = emptyList()
     private var lastRates: ExchangeRates? = null
+    private var lastFeeSide: FeeSide = FeeSide.ORIGINAL
     private val feesObserver = Observer<List<Fee>> { lastFees = it }
     private val ratesObserver = Observer<ExchangeRates?> { lastRates = it }
+    private val feeSideObserver = Observer<FeeSide> { lastFeeSide = it }
 
     init {
         fees.observeForever(feesObserver)
         rates.observeForever(ratesObserver)
+        feeSide.observeForever(feeSideObserver)
     }
 
     override fun onCleared() {
         fees.removeObserver(feesObserver)
         rates.removeObserver(ratesObserver)
+        feeSide.removeObserver(feeSideObserver)
         super.onCleared()
     }
 
@@ -56,6 +62,10 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
     fun getFees(): LiveData<List<Fee>> = fees
 
     fun getExchangeRates(): LiveData<ExchangeRates?> = rates
+
+    fun getFeeSide(): LiveData<FeeSide> = feeSide
+
+    fun setFeeSide(side: FeeSide) = db.setFeeSide(side)
 
     fun getBaseCurrency(): LiveData<Currency> = current.map { resolveCurrency(it.currency) }
 
@@ -68,14 +78,22 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
     fun getSubtotal(): LiveData<BigDecimal> = current.map { subtotalOf(it) }
 
     /**
-     * Total in the destination currency: subtotal → converted at cached rates →
-     * multiplied by the fee stack for the (base, dest) pair.
+     * Total in the destination currency: subtotal → converted at cached rates
+     * → adjusted by the fee stack according to the selected [FeeSide].
      */
     fun getTotal(): LiveData<BigDecimal> = MediatorLiveData<BigDecimal>().apply {
-        val recompute = { value = totalOf(current.value, fees.value.orEmpty(), rates.value) }
+        val recompute = {
+            value = totalOf(
+                current.value,
+                fees.value.orEmpty(),
+                rates.value,
+                feeSide.value ?: FeeSide.ORIGINAL,
+            )
+        }
         addSource(current) { recompute() }
         addSource(fees) { recompute() }
         addSource(rates) { recompute() }
+        addSource(feeSide) { recompute() }
     }
 
     fun addItem(name: String, expression: String) {
@@ -169,8 +187,11 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
         val dest = cart.destinationCurrency?.let { resolveCurrency(it) } ?: base
         val stack = FeeCalculator.totalStack(lastFees, base, dest)
         val converted = convertAmount(subtotal, base, dest, lastRates)
-        val total = converted.multiply(stack, MathContext.DECIMAL128)
-        return CartSnapshot(cart, evaluated, subtotal, converted, stack, total, lastFees, base, dest)
+        val total = applyFeeSide(converted, stack, lastFeeSide)
+        return CartSnapshot(
+            cart, evaluated, subtotal, converted, stack, total,
+            lastFees, base, dest, lastFeeSide,
+        )
     }
 
     private fun mutate(transform: (SavedCart) -> SavedCart) {
@@ -203,14 +224,36 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
         return cart.items.fold(BigDecimal.ZERO) { acc, item -> acc + evaluateItem(item) }
     }
 
-    private fun totalOf(cart: SavedCart?, feeList: List<Fee>, rates: ExchangeRates?): BigDecimal {
+    private fun totalOf(
+        cart: SavedCart?,
+        feeList: List<Fee>,
+        rates: ExchangeRates?,
+        side: FeeSide,
+    ): BigDecimal {
         cart ?: return BigDecimal.ZERO
         val base = resolveCurrency(cart.currency)
         val dest = cart.destinationCurrency?.let { resolveCurrency(it) } ?: base
         val subtotal = subtotalOf(cart)
         val converted = convertAmount(subtotal, base, dest, rates)
         val stack = FeeCalculator.totalStack(feeList, base, dest)
-        return converted.multiply(stack, MathContext.DECIMAL128)
+        return applyFeeSide(converted, stack, side)
+    }
+
+    /**
+     * Fold [stack] into [converted] according to [side]. Mirrors main-screen
+     * semantics: ORIGINAL shows fees as an outflow markup (multiply), CONVERTED
+     * bakes them into the destination amount (divide, i.e. what you'd receive).
+     */
+    private fun applyFeeSide(
+        converted: BigDecimal,
+        stack: BigDecimal,
+        side: FeeSide,
+    ): BigDecimal {
+        if (stack.compareTo(BigDecimal.ZERO) == 0) return converted
+        return when (side) {
+            FeeSide.ORIGINAL -> converted.multiply(stack, MathContext.DECIMAL128)
+            FeeSide.CONVERTED -> converted.divide(stack, MathContext.DECIMAL128)
+        }
     }
 
     /**
@@ -260,6 +303,7 @@ data class CartSnapshot(
     val fees: List<Fee>,
     val baseCurrency: Currency,
     val destinationCurrency: Currency,
+    val feeSide: FeeSide,
 ) {
     val isConverting: Boolean get() = baseCurrency != destinationCurrency
 }
