@@ -32,6 +32,7 @@ private const val ROW_PREVIEW_SCALE = 2
 class CartItemAdapter(
     private val onChange: (id: String, name: String, expression: String) -> Unit,
     private val onDelete: (id: String) -> Unit,
+    private val onEditExpression: (initial: String, apply: (String) -> Unit) -> Unit,
 ) : ListAdapter<CartItem, CartItemAdapter.VH>(DIFF) {
 
     // The cart's ISO code. Held on the adapter so a currency change can be
@@ -52,7 +53,7 @@ class CartItemAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(getItem(position), currency, onChange, onDelete)
+        holder.bind(getItem(position), currency, onChange, onDelete, onEditExpression)
     }
 
     class VH(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
@@ -80,6 +81,7 @@ class CartItemAdapter(
             currency: String,
             onChange: (id: String, name: String, expression: String) -> Unit,
             onDelete: (id: String) -> Unit,
+            onEditExpression: (initial: String, apply: (String) -> Unit) -> Unit,
         ) {
             currentItem = item
             onChangeHook = onChange
@@ -100,6 +102,19 @@ class CartItemAdapter(
             }
             nameField.addTextChangedListener(nameWatcher)
             exprField.addTextChangedListener(exprWatcher)
+
+            // Route expression edits through the app's calculator dialog
+            // instead of the system IME. Keep the EditText for its styling
+            // and text buffer but suppress focus/keyboard/cursor.
+            exprField.showSoftInputOnFocus = false
+            exprField.isFocusable = false
+            exprField.isClickable = true
+            exprField.isCursorVisible = false
+            exprField.setOnClickListener {
+                onEditExpression(exprField.text?.toString().orEmpty()) { result ->
+                    exprField.setText(result)
+                }
+            }
 
             deleteButton.setOnClickListener { onDelete(item.id) }
         }

@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,7 @@ import de.salomax.currencies.view.main.spinner.SearchableSpinner
 import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.viewmodel.cart.CartSnapshot
 import de.salomax.currencies.viewmodel.cart.CartViewModel
+import de.salomax.currencies.viewmodel.main.CalculatorInputState
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -67,6 +69,12 @@ class CartActivity : BaseActivity() {
     private lateinit var addButton: MaterialButton
 
     private lateinit var adapter: CartItemAdapter
+
+    // Set while a CartExpressionDialog is showing so the keypad's XML-declared
+    // reflection targets (numberEvent / calculationEvent / decimalEvent /
+    // deleteEvent / percentEvent) can be forwarded to the dialog's state
+    // without CartActivity holding any calculator model itself.
+    internal var activeCalculatorState: CalculatorInputState? = null
     private lateinit var exportLauncher: ActivityResultLauncher<String>
     private lateinit var importLauncher: ActivityResultLauncher<Array<String>>
 
@@ -96,6 +104,9 @@ class CartActivity : BaseActivity() {
         adapter = CartItemAdapter(
             onChange = viewModel::updateItem,
             onDelete = viewModel::removeItem,
+            onEditExpression = { initial, apply ->
+                CartExpressionDialog.show(this, initial) { apply(it) }
+            },
         )
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
@@ -396,6 +407,39 @@ class CartActivity : BaseActivity() {
                 destIso,
             )
         )
+    }
+
+    // ------------------------------------------------------------------
+    // Keypad reflection targets. main_keypad.xml wires each button's
+    // android:onClick to these names — Android's LayoutInflater resolves
+    // them against the hosting Activity, so we mirror MainActivity's
+    // signatures here and forward to whichever CalculatorInputState is
+    // currently open in a CartExpressionDialog.
+    // ------------------------------------------------------------------
+
+    @Suppress("UNUSED_PARAMETER")
+    fun numberEvent(view: View) {
+        activeCalculatorState?.addNumber((view as AppCompatButton).text.toString())
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun decimalEvent(view: View) {
+        activeCalculatorState?.addDecimal()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun deleteEvent(view: View) {
+        activeCalculatorState?.delete()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun percentEvent(view: View) {
+        activeCalculatorState?.addPercent()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun calculationEvent(view: View) {
+        activeCalculatorState?.addOperator((view as AppCompatButton).text.toString())
     }
 
     private fun showSnackbar(message: String) {

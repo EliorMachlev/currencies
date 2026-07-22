@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin2x">
+
+    <!-- Calculation-mode row (e.g. "2 × 3.5"); hidden when only the base is set. -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <TextView
+            android:id="@+id/cart_expr_calc"
+            style="@style/TextAppearance.Material3.TitleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:alpha=".6"
+            android:lines="1"
+            android:textDirection="ltr"
+            android:visibility="gone"
+            tools:text="2 × 3.5"
+            tools:visibility="visible" />
+    </HorizontalScrollView>
+
+    <!-- Base value (large, always visible). -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <TextView
+            android:id="@+id/cart_expr_base"
+            style="@style/TextAppearance.Material3.HeadlineMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:lines="1"
+            android:paddingVertical="@dimen/margin1x"
+            android:textDirection="ltr"
+            tools:text="7.00" />
+    </HorizontalScrollView>
+
+    <include
+        layout="@layout/main_keypad"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="280dp" />
+</LinearLayout>
