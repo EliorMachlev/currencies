@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,11 +20,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import de.salomax.currencies.R
 import de.salomax.currencies.model.Currency
+import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.SavedCart
 import de.salomax.currencies.repository.CartExporter
 import de.salomax.currencies.repository.CartFileResult
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
+import de.salomax.currencies.view.main.spinner.SearchableSpinner
 import de.salomax.currencies.viewmodel.cart.CartSnapshot
 import de.salomax.currencies.viewmodel.cart.CartViewModel
 import java.math.BigDecimal
@@ -51,12 +53,8 @@ class CartActivity : BaseActivity() {
     private lateinit var subtotalLabel: TextView
     private lateinit var feeLine: TextView
     private lateinit var totalLabel: TextView
-    private lateinit var flagFrom: ImageView
-    private lateinit var labelFrom: TextView
-    private lateinit var flagTo: ImageView
-    private lateinit var labelTo: TextView
-    private lateinit var currencyFromButton: View
-    private lateinit var currencyToButton: View
+    private lateinit var spinnerFrom: SearchableSpinner
+    private lateinit var spinnerTo: SearchableSpinner
     private lateinit var swapButton: ImageButton
     private lateinit var emptyHint: TextView
     private lateinit var addButton: MaterialButton
@@ -81,12 +79,8 @@ class CartActivity : BaseActivity() {
         this.subtotalLabel = findViewById(R.id.cart_subtotal_value)
         this.feeLine = findViewById(R.id.cart_fee_line)
         this.totalLabel = findViewById(R.id.cart_total_value)
-        this.flagFrom = findViewById(R.id.cart_flag_from)
-        this.labelFrom = findViewById(R.id.cart_label_from)
-        this.flagTo = findViewById(R.id.cart_flag_to)
-        this.labelTo = findViewById(R.id.cart_label_to)
-        this.currencyFromButton = findViewById(R.id.cart_currency_from_button)
-        this.currencyToButton = findViewById(R.id.cart_currency_to_button)
+        this.spinnerFrom = findViewById(R.id.cart_spinner_from)
+        this.spinnerTo = findViewById(R.id.cart_spinner_to)
         this.swapButton = findViewById(R.id.cart_swap)
         this.emptyHint = findViewById(R.id.cart_empty_hint)
         this.addButton = findViewById(R.id.cart_add_item)
@@ -99,8 +93,8 @@ class CartActivity : BaseActivity() {
         recycler.adapter = adapter
 
         addButton.setOnClickListener { viewModel.addItem(name = "", expression = "") }
-        currencyFromButton.setOnClickListener { showCurrencyPicker(isBase = true) }
-        currencyToButton.setOnClickListener { showCurrencyPicker(isBase = false) }
+        spinnerFrom.onItemSelectedListener = rateSpinnerListener(viewModel::setBaseCurrency)
+        spinnerTo.onItemSelectedListener = rateSpinnerListener(viewModel::setDestinationCurrency)
         swapButton.setOnClickListener { viewModel.swapCurrencies() }
 
         exportLauncher = registerForActivityResult(
@@ -137,8 +131,8 @@ class CartActivity : BaseActivity() {
             adapter.submitList(cart.items.toList())
             emptyHint.visibility = if (cart.items.isEmpty()) View.VISIBLE else View.GONE
         }
-        viewModel.getBaseCurrency().observe(this) { renderHeader(flagFrom, labelFrom, it) }
-        viewModel.getDestinationCurrency().observe(this) { renderHeader(flagTo, labelTo, it) }
+        viewModel.getBaseCurrency().observe(this) { spinnerFrom.setSelection(it) }
+        viewModel.getDestinationCurrency().observe(this) { spinnerTo.setSelection(it) }
         viewModel.getSubtotal().observe(this) { value ->
             subtotalLabel.text = formatAmount(value, viewModel.getBaseCurrency().value)
         }
@@ -147,13 +141,36 @@ class CartActivity : BaseActivity() {
         }
         viewModel.getFees().observe(this) { updateFeeLine() }
         viewModel.getCurrentCart().observe(this) { updateFeeLine() }
-        viewModel.getExchangeRates().observe(this) { updateFeeLine() }
+        viewModel.getExchangeRates().observe(this) { rates ->
+            // Feed the same rate list the spinner shows on the main screen so
+            // its picker shows flags, ISO codes, and (when enabled) preview
+            // conversions.
+            spinnerFrom.setRates(rates?.rates)
+            spinnerTo.setRates(rates?.rates)
+            // Re-apply the saved base/dest selections: setRates rebuilds the
+            // adapter, which drops the previous selection unless we re-set it.
+            spinnerFrom.setSelection(viewModel.getBaseCurrency().value)
+            spinnerTo.setSelection(viewModel.getDestinationCurrency().value)
+            updateFeeLine()
+        }
     }
 
-    private fun renderHeader(flag: ImageView, label: TextView, currency: Currency) {
-        flag.setImageDrawable(currency.flag(this))
-        label.text = currency.iso4217Alpha()
-    }
+    // Same shape as MainActivity's spinner listener: forwards the selected
+    // rate's currency to the given setter, guarding against spurious "no
+    // selection" callbacks that fire during adapter swaps.
+    private fun rateSpinnerListener(onCurrencySelected: (Currency) -> Unit) =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                if (position == -1 || parent?.adapter?.isEmpty == true) return
+                (parent?.adapter?.getItem(position) as Rate?)?.let { onCurrencySelected(it.currency) }
+            }
+        }
 
     private fun updateFeeLine() {
         val snapshot = viewModel.snapshotForShare()
@@ -175,26 +192,6 @@ class CartActivity : BaseActivity() {
             .toHumanReadableNumber(this, decimalPlaces = CART_DISPLAY_SCALE)
         val iso = currency?.iso4217Alpha()
         return if (iso.isNullOrEmpty()) amount else "$amount $iso"
-    }
-
-    private fun showCurrencyPicker(isBase: Boolean) {
-        val currencies = Currency.entries.sortedBy { it.iso4217Alpha() }
-        val labels = currencies.map { it.iso4217Alpha() }.toTypedArray()
-        val currentIso = if (isBase) viewModel.getBaseCurrency().value?.iso4217Alpha()
-        else viewModel.getDestinationCurrency().value?.iso4217Alpha()
-        val checked = currencies.indexOfFirst { it.iso4217Alpha() == currentIso }
-        val title =
-            if (isBase) R.string.cart_currency_picker_base_title
-            else R.string.cart_currency_picker_dest_title
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setSingleChoiceItems(labels, checked) { dialog, which ->
-                if (isBase) viewModel.setBaseCurrency(currencies[which])
-                else viewModel.setDestinationCurrency(currencies[which])
-                dialog.dismiss()
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
     }
 
     private fun showSaveAsDialog() {

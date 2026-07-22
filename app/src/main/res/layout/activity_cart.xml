@@ -49,42 +49,25 @@
         android:orientation="vertical"
         android:padding="@dimen/margin2x">
 
-        <!-- header: FROM  ⇄  TO -->
+        <!-- header: FROM  ⇄  TO — same SearchableSpinner as the main screen -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/cart_currency_from_button"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="end|center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/margin1x">
+                android:gravity="end|center_vertical">
 
-                <ImageView
-                    android:id="@+id/cart_flag_from"
-                    android:layout_width="28dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@null"
-                    tools:src="@drawable/flag_unknown" />
-
-                <TextView
-                    android:id="@+id/cart_label_from"
-                    style="@style/TextAppearance.Material3.TitleMedium"
+                <de.salomax.currencies.view.main.spinner.SearchableSpinner
+                    android:id="@+id/cart_spinner_from"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin1x"
-                    android:textDirection="ltr"
-                    tools:text="USD" />
-            </LinearLayout>
+                    android:layout_gravity="end|center_vertical" />
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/cart_swap"
@@ -97,35 +80,18 @@
                 android:src="@drawable/ic_swap_horiz"
                 app:tint="?attr/colorPrimary" />
 
-            <LinearLayout
-                android:id="@+id/cart_currency_to_button"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="start|center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/margin1x">
+                android:gravity="start|center_vertical">
 
-                <ImageView
-                    android:id="@+id/cart_flag_to"
-                    android:layout_width="28dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@null"
-                    tools:src="@drawable/flag_unknown" />
-
-                <TextView
-                    android:id="@+id/cart_label_to"
-                    style="@style/TextAppearance.Material3.TitleMedium"
+                <de.salomax.currencies.view.main.spinner.SearchableSpinner
+                    android:id="@+id/cart_spinner_to"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin1x"
-                    android:textDirection="ltr"
-                    tools:text="EUR" />
-            </LinearLayout>
+                    android:layout_gravity="start|center_vertical" />
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
