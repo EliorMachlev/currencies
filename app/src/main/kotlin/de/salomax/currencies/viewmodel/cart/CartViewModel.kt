@@ -7,6 +7,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.map
+
+private const val KEYBOARD_TYPE_BASIC = 0
 import de.salomax.currencies.model.CartItem
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
@@ -71,6 +73,14 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
     fun getExchangeRates(): LiveData<ExchangeRates?> = rates
 
     fun getFeeSide(): LiveData<FeeSide> = feeSide
+
+    /**
+     * Whether the extended calculator keypad is enabled in settings. Same
+     * source of truth as the main screen so the cart's slide-up keypad
+     * shows the same layout the user picked.
+     */
+    val isExtendedKeypadEnabled: LiveData<Boolean> =
+        db.getKeyboardType().map { it != KEYBOARD_TYPE_BASIC }
 
     fun setFeeSide(side: FeeSide) = db.setFeeSide(side)
 

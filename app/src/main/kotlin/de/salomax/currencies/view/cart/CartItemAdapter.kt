@@ -32,7 +32,12 @@ private const val ROW_PREVIEW_SCALE = 2
 class CartItemAdapter(
     private val onChange: (id: String, name: String, expression: String) -> Unit,
     private val onDelete: (id: String) -> Unit,
-    private val onEditExpression: (initial: String, apply: (String) -> Unit) -> Unit,
+    // Signature mirrors CartActivity.openKeypadFor: the activity keeps the
+    // active EditText reference so it can mirror keypad taps back into it.
+    // Second param is intentionally unused for now; kept so the row can
+    // supply extra context (e.g., cursor position) without a signature
+    // churn later.
+    private val onEditExpression: (field: EditText, item: CartItem) -> Unit,
 ) : ListAdapter<CartItem, CartItemAdapter.VH>(DIFF) {
 
     // The cart's ISO code. Held on the adapter so a currency change can be
@@ -81,7 +86,7 @@ class CartItemAdapter(
             currency: String,
             onChange: (id: String, name: String, expression: String) -> Unit,
             onDelete: (id: String) -> Unit,
-            onEditExpression: (initial: String, apply: (String) -> Unit) -> Unit,
+            onEditExpression: (field: EditText, item: CartItem) -> Unit,
         ) {
             currentItem = item
             onChangeHook = onChange
@@ -110,11 +115,7 @@ class CartItemAdapter(
             exprField.isFocusable = false
             exprField.isClickable = true
             exprField.isCursorVisible = false
-            exprField.setOnClickListener {
-                onEditExpression(exprField.text?.toString().orEmpty()) { result ->
-                    exprField.setText(result)
-                }
-            }
+            exprField.setOnClickListener { onEditExpression(exprField, item) }
 
             deleteButton.setOnClickListener { onDelete(item.id) }
         }

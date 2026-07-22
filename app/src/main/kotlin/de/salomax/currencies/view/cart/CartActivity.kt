@@ -1,11 +1,13 @@
 package de.salomax.currencies.view.cart
 
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -13,11 +15,13 @@ import android.widget.BaseAdapter
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +38,7 @@ import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
 import de.salomax.currencies.view.preference.PreferenceActivity
+import de.salomax.currencies.util.OPERATOR_REGEX
 import de.salomax.currencies.viewmodel.cart.CartSnapshot
 import de.salomax.currencies.viewmodel.cart.CartViewModel
 import de.salomax.currencies.viewmodel.main.CalculatorInputState
@@ -51,6 +56,9 @@ private const val CART_DISPLAY_SCALE = 2
 private const val EXPORT_FILE_MIME = "application/json"
 private const val EXPORT_FILE_EXT = ".json"
 private const val EXPORT_FILE_DATE_FORMAT = "yyyyMMdd-HHmmss"
+
+// Duration of the slide-in / slide-out animation for the cart keypad.
+private const val KEYPAD_ANIM_MS = 180L
 
 class CartActivity : BaseActivity() {
 
@@ -70,11 +78,18 @@ class CartActivity : BaseActivity() {
 
     private lateinit var adapter: CartItemAdapter
 
-    // Set while a CartExpressionDialog is showing so the keypad's XML-declared
-    // reflection targets (numberEvent / calculationEvent / decimalEvent /
-    // deleteEvent / percentEvent) can be forwarded to the dialog's state
-    // without CartActivity holding any calculator model itself.
-    internal var activeCalculatorState: CalculatorInputState? = null
+    // Slide-up keypad state — behaves like a soft IME. `activeExprField` is
+    // the row's price EditText the keypad is currently editing; the taps
+    // route through `activeCalculatorState`, and every state change is
+    // mirrored back into the field's text.
+    private lateinit var keypadContainer: ViewGroup
+    private lateinit var keypadRegular: View
+    private lateinit var keypadExtended: View
+    private var activeCalculatorState: CalculatorInputState? = null
+    private var activeExprField: EditText? = null
+    private var activeStateObserver: Observer<String?>? = null
+    private var keypadBackCallback: OnBackPressedCallback? = null
+
     private lateinit var exportLauncher: ActivityResultLauncher<String>
     private lateinit var importLauncher: ActivityResultLauncher<Array<String>>
 
@@ -100,14 +115,21 @@ class CartActivity : BaseActivity() {
         this.feeSideButton = findViewById(R.id.cart_btn_fee_side)
         this.emptyHint = findViewById(R.id.cart_empty_hint)
         this.addButton = findViewById(R.id.cart_add_item)
+        this.keypadContainer = findViewById(R.id.cart_keypad_container)
+        this.keypadRegular = findViewById(R.id.cart_keypad_regular)
+        this.keypadExtended = findViewById(R.id.cart_keypad_extended)
 
         adapter = CartItemAdapter(
             onChange = viewModel::updateItem,
             onDelete = viewModel::removeItem,
-            onEditExpression = { initial, apply ->
-                CartExpressionDialog.show(this, initial) { apply(it) }
-            },
+            onEditExpression = { field, _ -> openKeypadFor(field) },
         )
+
+        // Back-press dismisses the keypad first; only bubbles up to finish
+        // the activity when the keypad is already closed.
+        keypadBackCallback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() = closeKeypad()
+        }.also { onBackPressedDispatcher.addCallback(this, it) }
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
@@ -153,6 +175,10 @@ class CartActivity : BaseActivity() {
     }
 
     private fun observe() {
+        viewModel.isExtendedKeypadEnabled.observe(this) { extended ->
+            keypadRegular.visibility = if (extended) View.GONE else View.VISIBLE
+            keypadExtended.visibility = if (extended) View.VISIBLE else View.GONE
+        }
         viewModel.getCurrentCart().observe(this) { cart ->
             adapter.setCurrency(cart.currency)
             adapter.submitList(cart.items.toList())
@@ -410,11 +436,109 @@ class CartActivity : BaseActivity() {
     }
 
     // ------------------------------------------------------------------
+    // Slide-up keypad — behaves like a soft IME. A value field taps calls
+    // `openKeypadFor`; taps on non-value regions (or a back-press) call
+    // `closeKeypad`; every keypad button routes through the reflection
+    // targets below.
+    // ------------------------------------------------------------------
+
+    /**
+     * Show the keypad for [field], seeding a fresh [CalculatorInputState]
+     * with its current text and mirroring every state change back into the
+     * field. Called with the currently-focused row's price EditText.
+     */
+    fun openKeypadFor(field: EditText) {
+        detachActiveField()
+        val state = CalculatorInputState().apply { seedExpression(field.text?.toString().orEmpty()) }
+        val observer = Observer<String?> { field.setText(state.toExpressionString()) }
+        state.baseValueText.observeForever(observer)
+        state.calculationValueText.observeForever(observer)
+        activeCalculatorState = state
+        activeExprField = field
+        activeStateObserver = observer
+        showKeypad()
+    }
+
+    /** Hide the keypad and unbind whichever field was being edited. */
+    fun closeKeypad() {
+        if (activeExprField == null && keypadContainer.visibility == View.GONE) return
+        detachActiveField()
+        hideKeypad()
+    }
+
+    private fun showKeypad() {
+        keypadBackCallback?.isEnabled = true
+        if (keypadContainer.visibility == View.VISIBLE) return
+        keypadContainer.visibility = View.VISIBLE
+        keypadContainer.translationY = keypadContainer.height.toFloat().takeIf { it > 0f }
+            ?: resources.displayMetrics.heightPixels.toFloat()
+        keypadContainer.animate()
+            .translationY(0f)
+            .setDuration(KEYPAD_ANIM_MS)
+            .start()
+    }
+
+    private fun hideKeypad() {
+        keypadBackCallback?.isEnabled = false
+        if (keypadContainer.visibility != View.VISIBLE) return
+        keypadContainer.animate()
+            .translationY(keypadContainer.height.toFloat())
+            .setDuration(KEYPAD_ANIM_MS)
+            .withEndAction { keypadContainer.visibility = View.GONE }
+            .start()
+    }
+
+    private fun detachActiveField() {
+        val state = activeCalculatorState
+        val observer = activeStateObserver
+        if (state != null && observer != null) {
+            state.baseValueText.removeObserver(observer)
+            state.calculationValueText.removeObserver(observer)
+        }
+        activeCalculatorState = null
+        activeExprField = null
+        activeStateObserver = null
+    }
+
+    /**
+     * Route outside-taps to close the keypad. Taps *inside* the keypad
+     * (button presses) and taps on the currently-editing field itself pass
+     * through unchanged; a tap on any other row's price field will fall
+     * through to that field's click handler, which calls [openKeypadFor]
+     * again and swaps the active state without a visible close/open flicker.
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN && keypadContainer.visibility == View.VISIBLE) {
+            val keypadRect = Rect().also(keypadContainer::getGlobalVisibleRect)
+            if (!keypadRect.contains(ev.rawX.toInt(), ev.rawY.toInt())
+                && !isTouchOnActiveField(ev)
+            ) {
+                keypadContainer.post {
+                    // If the touched view was another expr field, its click
+                    // handler has already swapped `activeExprField` by now.
+                    // Only close if we're still bound to the previous field.
+                    if (activeExprField == null) return@post
+                    val stillOn = activeExprField
+                    keypadContainer.postDelayed({
+                        if (activeExprField === stillOn) closeKeypad()
+                    }, 40)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
+    private fun isTouchOnActiveField(ev: MotionEvent): Boolean {
+        val field = activeExprField ?: return false
+        val r = Rect().also(field::getGlobalVisibleRect)
+        return r.contains(ev.rawX.toInt(), ev.rawY.toInt())
+    }
+
+    // ------------------------------------------------------------------
     // Keypad reflection targets. main_keypad.xml wires each button's
     // android:onClick to these names — Android's LayoutInflater resolves
     // them against the hosting Activity, so we mirror MainActivity's
-    // signatures here and forward to whichever CalculatorInputState is
-    // currently open in a CartExpressionDialog.
+    // signatures here and forward to the currently-active state.
     // ------------------------------------------------------------------
 
     @Suppress("UNUSED_PARAMETER")
@@ -449,6 +573,58 @@ class CartActivity : BaseActivity() {
         // M3 attributes missing from the AppCompat ActionBar theme.
         Snackbar.make(this, findViewById(R.id.snackbar_top_position), message, Snackbar.LENGTH_SHORT).show()
     }
+}
+
+/**
+ * Rebuild the input state from a previously-saved cart-row expression so the
+ * keypad opens where the user left off. Empty input leaves the state at its
+ * default "0" seed.
+ */
+private fun CalculatorInputState.seedExpression(expression: String) {
+    val trimmed = expression.trim()
+    if (trimmed.isEmpty()) return
+    if (!trimmed.contains(OPERATOR_REGEX)) {
+        replayDigits(trimmed)
+        return
+    }
+    // Split on operator boundaries while keeping operators as separate
+    // tokens — mirrors how the state serialises them back out.
+    val tokens = mutableListOf<String>()
+    val buf = StringBuilder()
+    trimmed.forEach { ch ->
+        if (ch.toString().matches(OPERATOR_REGEX)) {
+            if (buf.isNotBlank()) tokens += buf.toString().trim()
+            tokens += ch.toString()
+            buf.clear()
+        } else {
+            buf.append(ch)
+        }
+    }
+    if (buf.isNotBlank()) tokens += buf.toString().trim()
+    // The digit-replay API is state-aware — it targets the base row before
+    // the first operator and the calculation row afterwards — so every
+    // operand goes through the same path.
+    tokens.forEach { token ->
+        if (token.matches(OPERATOR_REGEX)) addOperator(token) else replayDigits(token)
+    }
+}
+
+private fun CalculatorInputState.replayDigits(number: String) {
+    number.forEach { ch ->
+        when {
+            ch.isDigit() -> addNumber(ch.toString())
+            ch == '.' -> addDecimal()
+        }
+    }
+}
+
+/**
+ * Serialise the current input state back to a string the cart layer can
+ * store and later evaluate (matches the expression format cart rows use).
+ */
+private fun CalculatorInputState.toExpressionString(): String {
+    val calc = calculationValueText.value
+    return if (calc.isNullOrBlank()) baseValueText.value.orEmpty() else calc.trim()
 }
 
 /**
