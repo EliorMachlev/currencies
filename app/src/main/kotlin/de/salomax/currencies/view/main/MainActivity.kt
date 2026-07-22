@@ -43,6 +43,7 @@ import de.salomax.currencies.util.stripTimePattern
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.util.toNumber
 import de.salomax.currencies.view.BaseActivity
+import de.salomax.currencies.view.cart.CartActivity
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
 import de.salomax.currencies.view.preference.PreferenceActivity
 import de.salomax.currencies.view.preference.showProviderPickerDialog
@@ -152,6 +153,7 @@ class MainActivity : BaseActivity() {
             R.id.timeline -> openTimelineActivity()
             R.id.quick_conversions -> { openQuickConversionsDialog(); true }
             R.id.date_picker -> { openHistoricalDatePicker(); true }
+            R.id.cart -> { startActivity(Intent(this, CartActivity::class.java)); true }
             else -> super.onOptionsItemSelected(item)
         }
     }

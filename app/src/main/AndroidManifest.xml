@@ -27,6 +27,7 @@
         </activity>
         <activity android:name=".view.preference.PreferenceActivity" />
         <activity android:name=".view.timeline.TimelineActivity" />
+        <activity android:name=".view.cart.CartActivity" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

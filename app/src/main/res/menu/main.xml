@@ -23,6 +23,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:orderInCategory="3"
+        android:id="@+id/cart"
+        android:title="@string/cart_title"
+        app:showAsAction="never" />
+
+    <item
         android:orderInCategory="10"
         android:id="@+id/refresh"
         android:title="@string/menu_refresh"

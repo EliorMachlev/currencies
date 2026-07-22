@@ -39,4 +39,43 @@
 
     <string name="tooltip_filter_starred">Show only starred currencies.</string>
     <string name="currency_dropdown_api_hint">Something missing? Different data providers offer different currencies. Go to the settings to try another one!\u00A0\uD83E\uDD17</string>
+
+    <!-- Shopping cart -->
+    <string name="cart_title">Shopping cart</string>
+    <string name="cart_empty_hint">Your cart is empty. Tap “Add item” to start.</string>
+    <string name="cart_add_item">Add item</string>
+    <string name="cart_item_name_hint">Item</string>
+    <string name="cart_item_expression_hint">Price (e.g. 2 × 3.50)</string>
+    <string name="cart_row_value_format">= %1$s %2$s</string>
+    <string name="cart_delete_item">Delete item</string>
+    <string name="cart_subtotal_label">Subtotal</string>
+    <string name="cart_total_label">Total</string>
+    <string name="cart_fee_line">Fees: %s%%</string>
+    <string name="cart_currency_button">Currency: %s</string>
+    <string name="cart_currency_picker_title">Cart currency</string>
+    <string name="cart_menu_save_as">Save as…</string>
+    <string name="cart_menu_load">Load</string>
+    <string name="cart_menu_export">Export to file</string>
+    <string name="cart_menu_import">Import from file</string>
+    <string name="cart_menu_clear">Clear</string>
+    <string name="cart_save_name_hint">Cart name</string>
+    <string name="cart_default_saved_name">My cart</string>
+    <string name="cart_saved_toast">Saved as “%s”</string>
+    <string name="cart_no_saved">No saved carts yet.</string>
+    <string name="cart_load_manage">Manage…</string>
+    <string name="cart_manage_title">Manage saved carts</string>
+    <string name="cart_delete_confirm">Delete “%s”?</string>
+    <string name="cart_delete_confirm_button">Delete</string>
+    <string name="cart_clear_confirm">Remove all items from the current cart?</string>
+    <string name="cart_clear_confirm_button">Clear</string>
+    <string name="cart_export_ok">Cart exported.</string>
+    <string name="cart_export_error">Export failed: %s</string>
+    <string name="cart_import_ok">Cart imported.</string>
+    <string name="cart_import_error">Import failed: %s</string>
+    <string name="cart_share_empty">Cart is empty — nothing to share.</string>
+    <string name="cart_share_default_title">Cart</string>
+    <string name="cart_share_header">%1$s (%2$s)</string>
+    <string name="cart_share_subtotal">Subtotal: %1$s %2$s</string>
+    <string name="cart_share_fees">Fees: %s%%</string>
+    <string name="cart_share_total">Total: %1$s %2$s</string>
 </resources>

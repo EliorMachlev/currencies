@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/cart_share"
+        android:title="@string/menu_share"
+        app:showAsAction="never" />
+
+    <item
+        android:orderInCategory="10"
+        android:id="@+id/cart_save_as"
+        android:title="@string/cart_menu_save_as"
+        app:showAsAction="never" />
+
+    <item
+        android:orderInCategory="11"
+        android:id="@+id/cart_load"
+        android:title="@string/cart_menu_load"
+        app:showAsAction="never" />
+
+    <item
+        android:orderInCategory="20"
+        android:id="@+id/cart_export"
+        android:title="@string/cart_menu_export"
+        app:showAsAction="never" />
+
+    <item
+        android:orderInCategory="21"
+        android:id="@+id/cart_import"
+        android:title="@string/cart_menu_import"
+        app:showAsAction="never" />
+
+    <item
+        android:orderInCategory="30"
+        android:id="@+id/cart_clear"
+        android:title="@string/cart_menu_clear"
+        app:showAsAction="never" />
+
+</menu>
