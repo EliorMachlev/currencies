@@ -1,9 +1,11 @@
 package de.salomax.currencies.view.cart
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -123,6 +125,7 @@ class CartActivity : BaseActivity() {
             onChange = viewModel::updateItem,
             onDelete = viewModel::removeItem,
             onEditExpression = { field, _ -> openKeypadFor(field) },
+            onNameFocused = ::closeKeypad,
         )
 
         // Back-press dismisses the keypad first; only bubbles up to finish
@@ -448,6 +451,7 @@ class CartActivity : BaseActivity() {
      * field. Called with the currently-focused row's price EditText.
      */
     fun openKeypadFor(field: EditText) {
+        hideSystemIme()
         detachActiveField()
         val state = CalculatorInputState().apply { seedExpression(field.text?.toString().orEmpty()) }
         val observer = Observer<String?> { field.setText(state.toExpressionString()) }
@@ -526,6 +530,12 @@ class CartActivity : BaseActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
+    }
+
+    private fun hideSystemIme() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager ?: return
+        val token = currentFocus?.windowToken ?: window.decorView.windowToken ?: return
+        imm.hideSoftInputFromWindow(token, 0)
     }
 
     private fun isTouchOnActiveField(ev: MotionEvent): Boolean {
