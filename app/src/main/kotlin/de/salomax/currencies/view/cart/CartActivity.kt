@@ -381,6 +381,10 @@ class CartActivity : BaseActivity() {
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(findViewById(R.id.cart_root), message, Snackbar.LENGTH_SHORT).show()
+        // Pass `this` as the theme context so Snackbar inflates against the
+        // activity's Material3 theme. The 2-arg overload walks up from the
+        // anchor view and can hit the ActionBar overlay, which crashes on
+        // M3 attributes missing from the AppCompat ActionBar theme.
+        Snackbar.make(this, findViewById(R.id.cart_root), message, Snackbar.LENGTH_SHORT).show()
     }
 }
