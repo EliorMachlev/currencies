@@ -59,18 +59,11 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <FrameLayout
+            <de.salomax.currencies.view.main.spinner.SearchableSpinner
+                android:id="@+id/cart_spinner_from"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end|center_vertical">
-
-                <de.salomax.currencies.view.main.spinner.SearchableSpinner
-                    android:id="@+id/cart_spinner_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical" />
-            </FrameLayout>
+                android:layout_weight="1" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/cart_swap"
@@ -94,18 +87,11 @@
                 android:visibility="gone"
                 app:tint="?attr/colorError" />
 
-            <FrameLayout
+            <de.salomax.currencies.view.main.spinner.SearchableSpinner
+                android:id="@+id/cart_spinner_to"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start|center_vertical">
-
-                <de.salomax.currencies.view.main.spinner.SearchableSpinner
-                    android:id="@+id/cart_spinner_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center_vertical" />
-            </FrameLayout>
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
