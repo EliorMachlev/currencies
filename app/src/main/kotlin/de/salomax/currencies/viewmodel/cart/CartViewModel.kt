@@ -278,7 +278,7 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
     ): BigDecimal {
         if (base == dest) return amount
         val baseRate = rates?.rates?.find { it.currency == base }?.value ?: return amount
-        val destRate = rates.rates?.find { it.currency == dest }?.value ?: return amount
+        val destRate = rates.rates.find { it.currency == dest }?.value ?: return amount
         return amount.divide(baseRate, MathContext.DECIMAL128).multiply(destRate)
     }
 }
