@@ -57,11 +57,11 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getExchangeRates(): LiveData<ExchangeRates?> = rates
 
-    fun getBaseCurrency(): LiveData<Currency> = current.map { Currency.fromString(it.currency) }
+    fun getBaseCurrency(): LiveData<Currency> = current.map { resolveCurrency(it.currency) }
 
     /** Destination for the running total. Falls back to base when unset. */
     fun getDestinationCurrency(): LiveData<Currency> = current.map {
-        Currency.fromString(it.destinationCurrency ?: it.currency)
+        resolveCurrency(it.destinationCurrency ?: it.currency)
     }
 
     /** Subtotal from summing every item's evaluated expression in the base currency. */
@@ -165,8 +165,8 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
         if (cart.items.isEmpty()) return null
         val evaluated = cart.items.map { it to evaluateItem(it) }
         val subtotal = evaluated.fold(BigDecimal.ZERO) { acc, (_, value) -> acc + value }
-        val base = Currency.fromString(cart.currency)
-        val dest = cart.destinationCurrency?.let { Currency.fromString(it) } ?: base
+        val base = resolveCurrency(cart.currency)
+        val dest = cart.destinationCurrency?.let { resolveCurrency(it) } ?: base
         val stack = FeeCalculator.totalStack(lastFees, base, dest)
         val converted = convertAmount(subtotal, base, dest, lastRates)
         val total = converted.multiply(stack, MathContext.DECIMAL128)
@@ -205,13 +205,22 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun totalOf(cart: SavedCart?, feeList: List<Fee>, rates: ExchangeRates?): BigDecimal {
         cart ?: return BigDecimal.ZERO
-        val base = Currency.fromString(cart.currency)
-        val dest = cart.destinationCurrency?.let { Currency.fromString(it) } ?: base
+        val base = resolveCurrency(cart.currency)
+        val dest = cart.destinationCurrency?.let { resolveCurrency(it) } ?: base
         val subtotal = subtotalOf(cart)
         val converted = convertAmount(subtotal, base, dest, rates)
         val stack = FeeCalculator.totalStack(feeList, base, dest)
         return converted.multiply(stack, MathContext.DECIMAL128)
     }
+
+    /**
+     * Persisted ISO codes are strings, so unknown values (legacy carts,
+     * imported files) can slip through and return `null` from
+     * [Currency.fromString]. Fall back to USD in that case so downstream
+     * math and UI stay non-null instead of exploding on an edge case.
+     */
+    private fun resolveCurrency(iso: String): Currency =
+        Currency.fromString(iso) ?: Currency.USD
 
     /**
      * Convert [amount] from [base] to [dest] using cached rates. Returns
