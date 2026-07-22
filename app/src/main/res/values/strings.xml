@@ -60,8 +60,8 @@
     <string name="cart_default_saved_name">My cart</string>
     <string name="cart_saved_toast">Saved as “%s”</string>
     <string name="cart_no_saved">No saved carts yet.</string>
-    <string name="cart_load_manage">Manage…</string>
-    <string name="cart_manage_title">Manage saved carts</string>
+    <string name="cart_rename">Rename</string>
+    <string name="cart_rename_title">Rename cart</string>
     <string name="cart_delete_confirm">Delete “%s”?</string>
     <string name="cart_delete_confirm_button">Delete</string>
     <string name="cart_clear_confirm">Remove all items from the current cart?</string>

@@ -21,31 +21,32 @@
 
             <EditText
                 android:id="@+id/cart_row_name"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
                 android:hint="@string/cart_item_name_hint"
                 android:inputType="text"
-                android:maxLines="1"
-                android:textAppearance="?attr/textAppearanceBodyMedium" />
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/cart_row_expression"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="none"
                 android:hint="@string/cart_item_expression_hint"
                 android:inputType="text"
-                android:maxLines="1"
-                android:textAppearance="?attr/textAppearanceBodyMedium" />
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/cart_row_value"
+                style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/margin1x"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textStyle="bold" />
+                android:textColor="?attr/colorPrimary"
+                android:textDirection="ltr" />
         </LinearLayout>
 
         <ImageButton

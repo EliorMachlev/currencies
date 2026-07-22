@@ -8,6 +8,12 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_top_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_items"
         android:layout_width="match_parent"
@@ -19,12 +25,12 @@
 
     <TextView
         android:id="@+id/cart_empty_hint"
+        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin3x"
         android:gravity="center"
         android:text="@string/cart_empty_hint"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
         android:visibility="gone" />
 
     <com.google.android.material.button.MaterialButton
@@ -37,15 +43,12 @@
         android:text="@string/cart_add_item"
         app:icon="@android:drawable/ic_input_add" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/margin2x"
-        android:background="?android:attr/dividerHorizontal" />
-
+    <!-- Totals card — mirrors main_display's rounded bg_display treatment -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin2x"
+        android:background="@drawable/bg_display"
         android:orientation="vertical"
         android:padding="@dimen/margin2x">
 
@@ -69,16 +72,16 @@
                     android:layout_gravity="end|center_vertical" />
             </FrameLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/cart_swap"
+                style="@style/Widget.Material3.FloatingActionButton.Small.Primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin1x"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="?attr/colorPrimary"
                 android:contentDescription="@string/desc_toggle_currencies"
-                android:padding="@dimen/margin1x"
                 android:src="@drawable/ic_swap_horiz"
-                app:tint="?attr/colorPrimary" />
+                app:tint="?attr/colorOnPrimary" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/cart_btn_fee_side"
@@ -112,26 +115,28 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cart_subtotal_label"
-                android:textAppearance="?attr/textAppearanceBodyMedium" />
+                android:text="@string/cart_subtotal_label" />
 
             <TextView
                 android:id="@+id/cart_subtotal_value"
+                style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBodyMedium" />
+                android:textDirection="ltr" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/cart_fee_line"
+            style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/margin1x"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="?attr/colorError"
+            android:textDirection="ltr"
             android:visibility="gone" />
 
         <LinearLayout
@@ -141,17 +146,18 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cart_total_label"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                android:text="@string/cart_total_label" />
 
             <TextView
                 android:id="@+id/cart_total_value"
+                style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                android:textDirection="ltr" />
         </LinearLayout>
     </LinearLayout>
 

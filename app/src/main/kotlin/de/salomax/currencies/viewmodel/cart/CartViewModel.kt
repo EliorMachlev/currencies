@@ -175,6 +175,16 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
 
     fun deleteSaved(id: String) = db.deleteSavedCart(id)
 
+    /** Rename a saved cart in place. No-op if the id isn't found. */
+    fun renameSaved(id: String, name: String) {
+        val existing = db.getSavedCartsBlocking().firstOrNull { it.id == id } ?: return
+        db.saveCart(existing.copy(name = name))
+        // Keep the current cart's displayed name in sync if it's the same one.
+        if (current.value?.id == id) {
+            setCurrent((current.value ?: return).copy(name = name))
+        }
+    }
+
     /**
      * Replace the current cart wholesale (used by "Load" and by the file
      * importer). Persists immediately so the change survives process death.

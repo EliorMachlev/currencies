@@ -3,10 +3,13 @@ package de.salomax.currencies.view.cart
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.BaseAdapter
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -239,37 +242,52 @@ class CartActivity : BaseActivity() {
     }
 
     private fun showLoadDialog() {
-        val saved = viewModel.getSavedCartsSnapshot()
+        val saved = viewModel.getSavedCartsSnapshot().toMutableList()
         if (saved.isEmpty()) {
             showSnackbar(getString(R.string.cart_no_saved))
             return
         }
-        val labels = saved.map { it.name.ifBlank { it.id.take(8) } }.toTypedArray()
-        AlertDialog.Builder(this)
+        val adapter = SavedCartAdapter(saved)
+        val dialog = AlertDialog.Builder(this)
             .setTitle(R.string.cart_menu_load)
-            .setItems(labels) { _, which -> viewModel.loadSaved(saved[which].id) }
-            .setNeutralButton(R.string.cart_load_manage) { _, _ -> showManageSavedDialog(saved) }
+            .setAdapter(adapter) { _, which -> viewModel.loadSaved(saved[which].id) }
             .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-    private fun showManageSavedDialog(saved: List<SavedCart>) {
-        val labels = saved.map { it.name.ifBlank { it.id.take(8) } }.toTypedArray()
-        AlertDialog.Builder(this)
-            .setTitle(R.string.cart_manage_title)
-            .setItems(labels) { _, which ->
-                val cart = saved[which]
-                AlertDialog.Builder(this)
-                    .setTitle(cart.name)
-                    .setMessage(getString(R.string.cart_delete_confirm, cart.name))
-                    .setPositiveButton(R.string.cart_delete_confirm_button) { _, _ ->
-                        viewModel.deleteSaved(cart.id)
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
+            .create()
+        adapter.onDelete = { position ->
+            val cart = saved[position]
+            AlertDialog.Builder(this)
+                .setTitle(cart.name.ifBlank { cart.id.take(8) })
+                .setMessage(getString(R.string.cart_delete_confirm, cart.name))
+                .setPositiveButton(R.string.cart_delete_confirm_button) { _, _ ->
+                    viewModel.deleteSaved(cart.id)
+                    saved.removeAt(position)
+                    if (saved.isEmpty()) dialog.dismiss()
+                    else adapter.notifyDataSetChanged()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+        adapter.onRename = { position ->
+            val cart = saved[position]
+            val input = EditText(this).apply {
+                hint = getString(R.string.cart_save_name_hint)
+                setText(cart.name)
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+            AlertDialog.Builder(this)
+                .setTitle(R.string.cart_rename_title)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    val name = input.text.toString().trim().ifBlank {
+                        getString(R.string.cart_default_saved_name)
+                    }
+                    viewModel.renameSaved(cart.id, name)
+                    saved[position] = cart.copy(name = name)
+                    adapter.notifyDataSetChanged()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+        dialog.show()
     }
 
     private fun launchExport() {
@@ -385,6 +403,37 @@ class CartActivity : BaseActivity() {
         // activity's Material3 theme. The 2-arg overload walks up from the
         // anchor view and can hit the ActionBar overlay, which crashes on
         // M3 attributes missing from the AppCompat ActionBar theme.
-        Snackbar.make(this, findViewById(R.id.cart_root), message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(this, findViewById(R.id.snackbar_top_position), message, Snackbar.LENGTH_SHORT).show()
+    }
+}
+
+/**
+ * ListAdapter for the "Load" dialog: each row shows the saved cart's name and
+ * a trailing delete button. Tapping the row itself falls through to the
+ * dialog's `OnClickListener` (load); tapping the delete icon calls [onDelete].
+ */
+private class SavedCartAdapter(
+    private val items: List<SavedCart>,
+) : BaseAdapter() {
+    var onDelete: ((Int) -> Unit)? = null
+    var onRename: ((Int) -> Unit)? = null
+
+    override fun getCount(): Int = items.size
+    override fun getItem(position: Int): SavedCart = items[position]
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = convertView ?: LayoutInflater.from(parent.context)
+            .inflate(R.layout.dialog_saved_cart_row, parent, false)
+        val cart = items[position]
+        view.findViewById<TextView>(R.id.saved_cart_row_name).text =
+            cart.name.ifBlank { cart.id.take(8) }
+        view.findViewById<View>(R.id.saved_cart_row_rename).setOnClickListener {
+            onRename?.invoke(position)
+        }
+        view.findViewById<View>(R.id.saved_cart_row_delete).setOnClickListener {
+            onDelete?.invoke(position)
+        }
+        return view
     }
 }
