@@ -7,10 +7,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.model.AppTheme
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
 import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
+import de.salomax.currencies.model.FeeType
 import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.Timeline
 import de.salomax.currencies.util.KEY_RATES_BASE
@@ -34,19 +36,6 @@ import java.util.UUID
 private const val LEGACY_FEE_KEY = "_fee"
 private const val LEGACY_FEE_STR_KEY = "_fee_str"
 private const val LEGACY_FEE_ENABLED_KEY = "_feeEnabled"
-
-private const val FEE_TYPE_GLOBAL_EXCHANGE = "global_exchange"
-private const val FEE_TYPE_GLOBAL_BANK = "global_bank"
-private const val FEE_TYPE_SPECIFIC_PAIR = "specific_pair"
-
-// Unified theme values (see Database.getTheme). Kept as plain ints so the DB
-// layer doesn't need to depend on androidx.appcompat.
-private const val THEME_LIGHT = 0
-private const val THEME_DARK = 1
-private const val THEME_OLED = 2
-private const val THEME_SYSTEM = 3
-private const val THEME_SYSTEM_OLED = 4
-private const val DEFAULT_THEME_MODE = THEME_SYSTEM
 
 // Sentinel for "no historical date stored" in the millis-since-epoch pref.
 // -1L is used because it can't collide with any real epoch millis (1970-01-01
@@ -306,44 +295,33 @@ class Database(context: Context) {
 
     /* theme */
 
-    fun setTheme(theme: Int) {
-        prefs.apply {
-            edit().putInt(keyTheme, theme).apply()
-        }
+    fun setTheme(theme: AppTheme) {
+        prefs.edit().putInt(keyTheme, theme.id).apply()
     }
 
     /**
-     * 0 = Light           (MODE_NIGHT_NO)
-     * 1 = Dark            (MODE_NIGHT_YES)
-     * 2 = OLED            (MODE_NIGHT_YES, pure-black)
-     * 3 = System default  (MODE_NIGHT_FOLLOW_SYSTEM)
-     * 4 = System (OLED)   (MODE_NIGHT_FOLLOW_SYSTEM, pure-black)
-     *
      * Migrates the legacy separate pure-black boolean into the new unified
      * value on first read after upgrade, then deletes the legacy key.
      */
-    fun getTheme(): Int {
+    fun getTheme(): AppTheme {
         migrateLegacyPureBlackIfNeeded()
-        return prefs.getInt(keyTheme, DEFAULT_THEME_MODE)
+        return AppTheme.fromId(prefs.getInt(keyTheme, AppTheme.DEFAULT.id))
     }
 
-    fun isPureBlackEnabled(): Boolean {
-        val theme = getTheme()
-        return theme == THEME_OLED || theme == THEME_SYSTEM_OLED
-    }
+    fun isPureBlackEnabled(): Boolean = getTheme().isPureBlack
 
     private fun migrateLegacyPureBlackIfNeeded() {
         if (!prefs.contains(keyPureBlackEnabled)) return
         val wasPureBlack = prefs.getBoolean(keyPureBlackEnabled, false)
         val editor = prefs.edit().remove(keyPureBlackEnabled)
         if (wasPureBlack) {
-            val current = prefs.getInt(keyTheme, DEFAULT_THEME_MODE)
+            val current = AppTheme.fromId(prefs.getInt(keyTheme, AppTheme.DEFAULT.id))
             val migrated = when (current) {
-                THEME_DARK -> THEME_OLED
-                THEME_SYSTEM -> THEME_SYSTEM_OLED
+                AppTheme.DARK -> AppTheme.OLED
+                AppTheme.SYSTEM -> AppTheme.SYSTEM_OLED
                 else -> current // Light + OLED is meaningless — keep as Light.
             }
-            editor.putInt(keyTheme, migrated)
+            editor.putInt(keyTheme, migrated.id)
         }
         editor.apply()
     }
@@ -455,15 +433,11 @@ class Database(context: Context) {
             obj.put("id", fee.id)
             obj.put("percent", fee.percent.toPlainString())
             obj.put("isMarkup", fee.isMarkup)
-            when (fee) {
-                is Fee.GlobalExchange -> obj.put("type", FEE_TYPE_GLOBAL_EXCHANGE)
-                is Fee.GlobalBank -> obj.put("type", FEE_TYPE_GLOBAL_BANK)
-                is Fee.SpecificPair -> {
-                    obj.put("type", FEE_TYPE_SPECIFIC_PAIR)
-                    obj.put("from", fee.from)
-                    obj.put("to", fee.to)
-                    obj.put("bothWays", fee.bothWays)
-                }
+            obj.put("type", fee.type.wire)
+            if (fee is Fee.SpecificPair) {
+                obj.put("from", fee.from)
+                obj.put("to", fee.to)
+                obj.put("bothWays", fee.bothWays)
             }
             arr.put(obj)
         }
@@ -485,10 +459,10 @@ class Database(context: Context) {
         val id = obj.optString("id", "").ifEmpty { UUID.randomUUID().toString() }
         val percent = obj.optString("percent", "0").toBigDecimalOrNull() ?: return null
         val isMarkup = obj.optBoolean("isMarkup", true)
-        return when (obj.optString("type")) {
-            FEE_TYPE_GLOBAL_EXCHANGE -> Fee.GlobalExchange(id, percent, isMarkup)
-            FEE_TYPE_GLOBAL_BANK -> Fee.GlobalBank(id, percent, isMarkup)
-            FEE_TYPE_SPECIFIC_PAIR -> Fee.SpecificPair(
+        return when (FeeType.fromWire(obj.optString("type"))) {
+            FeeType.GLOBAL_EXCHANGE -> Fee.GlobalExchange(id, percent, isMarkup)
+            FeeType.GLOBAL_BANK -> Fee.GlobalBank(id, percent, isMarkup)
+            FeeType.SPECIFIC_PAIR -> Fee.SpecificPair(
                 id = id,
                 percent = percent,
                 isMarkup = isMarkup,
@@ -496,7 +470,7 @@ class Database(context: Context) {
                 to = obj.optString("to", ""),
                 bothWays = obj.optBoolean("bothWays", false),
             )
-            else -> null
+            null -> null
         }
     }
 

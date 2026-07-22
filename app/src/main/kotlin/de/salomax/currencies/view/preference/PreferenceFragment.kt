@@ -17,6 +17,7 @@ import androidx.preference.SwitchPreferenceCompat
 import de.salomax.currencies.BuildConfig
 import de.salomax.currencies.R
 import de.salomax.currencies.model.ApiProvider
+import de.salomax.currencies.model.AppTheme
 import de.salomax.currencies.view.main.MainActivity
 import de.salomax.currencies.util.DECIMAL_PLACES_DEFAULT
 import de.salomax.currencies.util.DECIMAL_PLACES_MAX
@@ -118,7 +119,8 @@ class PreferenceFragment: PreferenceFragmentCompat() {
         }
         findPreference<ListPreference>(getString(R.string.theme_key))?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                if (viewModel.setTheme(newValue.toString().toInt())) {
+                val theme = AppTheme.fromId(newValue.toString().toInt())
+                if (viewModel.setTheme(theme)) {
                     rebuildActivityStack()
                 }
                 true
