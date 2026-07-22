@@ -59,6 +59,13 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getSavedCarts(): LiveData<List<SavedCart>> = db.getSavedCarts()
 
+    /**
+     * Synchronous snapshot for one-shot menu flows (Load / Manage) — the
+     * LiveData accessor is a fresh instance per call and never gets observed
+     * from those flows, so its `.value` is always null.
+     */
+    fun getSavedCartsSnapshot(): List<SavedCart> = db.getSavedCartsBlocking()
+
     fun getFees(): LiveData<List<Fee>> = fees
 
     fun getExchangeRates(): LiveData<ExchangeRates?> = rates

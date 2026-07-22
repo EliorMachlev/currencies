@@ -239,7 +239,7 @@ class CartActivity : BaseActivity() {
     }
 
     private fun showLoadDialog() {
-        val saved = viewModel.getSavedCarts().value.orEmpty()
+        val saved = viewModel.getSavedCartsSnapshot()
         if (saved.isEmpty()) {
             showSnackbar(getString(R.string.cart_no_saved))
             return
