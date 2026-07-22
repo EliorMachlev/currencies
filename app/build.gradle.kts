@@ -6,9 +6,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    // Pinned to the latest stable 2.3.x — 2.4.0 flakes in CI's plugin repos.
-    id("org.jetbrains.kotlin.plugin.compose") version "2.3.21"
-    id("com.google.devtools.ksp") version "2.3.9"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.4.10"
+    id("com.google.devtools.ksp") version "2.3.10"
 }
 
 kotlin {
@@ -123,7 +122,7 @@ dependencies {
     // math (v5 releases use incompatible license to fdroid: noinspection GradleDependency)
     implementation("org.mariuszgromada.math:MathParser.org-mXparser:4.4.3")
     // compose (needed to host the Vico chart via ComposeView)
-    val composeBomVersion = "2024.12.01"
+    val composeBomVersion = "2026.06.01"
     implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
@@ -134,7 +133,7 @@ dependencies {
     implementation("com.patrykandpatrick.vico:compose:$vicoVersion")
     // crypto: BouncyCastle provides pure-Java Argon2id, used by BackupManager
     // for password-based backup encryption (quantum-resistant KDF).
-    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.85")
     // test
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")
@@ -142,7 +141,7 @@ dependencies {
     // run on the JVM test thread without hitting the main-thread assertion.
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     // fuzzing
-    val junitVersion = "6.1.1"
+    val junitVersion = "6.1.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitVersion")
