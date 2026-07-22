@@ -31,7 +31,7 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
     // Cache the last-known fee list so synchronous callers (share text) can
     // reflect the same total the UI is showing without a suspend hop.
     private var lastFees: List<Fee> = emptyList()
-    private val feesObserver = Observer<List<Fee>> { lastFees = it ?: emptyList() }
+    private val feesObserver = Observer<List<Fee>> { lastFees = it }
 
     init {
         fees.observeForever(feesObserver)
