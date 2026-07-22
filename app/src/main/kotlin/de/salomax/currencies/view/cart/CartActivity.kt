@@ -7,6 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,7 +51,13 @@ class CartActivity : BaseActivity() {
     private lateinit var subtotalLabel: TextView
     private lateinit var feeLine: TextView
     private lateinit var totalLabel: TextView
-    private lateinit var currencyButton: MaterialButton
+    private lateinit var flagFrom: ImageView
+    private lateinit var labelFrom: TextView
+    private lateinit var flagTo: ImageView
+    private lateinit var labelTo: TextView
+    private lateinit var currencyFromButton: View
+    private lateinit var currencyToButton: View
+    private lateinit var swapButton: ImageButton
     private lateinit var emptyHint: TextView
     private lateinit var addButton: MaterialButton
 
@@ -73,7 +81,13 @@ class CartActivity : BaseActivity() {
         this.subtotalLabel = findViewById(R.id.cart_subtotal_value)
         this.feeLine = findViewById(R.id.cart_fee_line)
         this.totalLabel = findViewById(R.id.cart_total_value)
-        this.currencyButton = findViewById(R.id.cart_currency_button)
+        this.flagFrom = findViewById(R.id.cart_flag_from)
+        this.labelFrom = findViewById(R.id.cart_label_from)
+        this.flagTo = findViewById(R.id.cart_flag_to)
+        this.labelTo = findViewById(R.id.cart_label_to)
+        this.currencyFromButton = findViewById(R.id.cart_currency_from_button)
+        this.currencyToButton = findViewById(R.id.cart_currency_to_button)
+        this.swapButton = findViewById(R.id.cart_swap)
         this.emptyHint = findViewById(R.id.cart_empty_hint)
         this.addButton = findViewById(R.id.cart_add_item)
 
@@ -85,7 +99,9 @@ class CartActivity : BaseActivity() {
         recycler.adapter = adapter
 
         addButton.setOnClickListener { viewModel.addItem(name = "", expression = "") }
-        currencyButton.setOnClickListener { showCurrencyPicker() }
+        currencyFromButton.setOnClickListener { showCurrencyPicker(isBase = true) }
+        currencyToButton.setOnClickListener { showCurrencyPicker(isBase = false) }
+        swapButton.setOnClickListener { viewModel.swapCurrencies() }
 
         exportLauncher = registerForActivityResult(
             ActivityResultContracts.CreateDocument(EXPORT_FILE_MIME)
@@ -120,18 +136,23 @@ class CartActivity : BaseActivity() {
             adapter.setCurrency(cart.currency)
             adapter.submitList(cart.items.toList())
             emptyHint.visibility = if (cart.items.isEmpty()) View.VISIBLE else View.GONE
-            currencyButton.text = getString(R.string.cart_currency_button, cart.currency)
         }
+        viewModel.getBaseCurrency().observe(this) { renderHeader(flagFrom, labelFrom, it) }
+        viewModel.getDestinationCurrency().observe(this) { renderHeader(flagTo, labelTo, it) }
         viewModel.getSubtotal().observe(this) { value ->
-            subtotalLabel.text = formatAmount(value, viewModel.getCurrentCart().value?.currency)
+            subtotalLabel.text = formatAmount(value, viewModel.getBaseCurrency().value)
         }
         viewModel.getTotal().observe(this) { value ->
-            totalLabel.text = formatAmount(value, viewModel.getCurrentCart().value?.currency)
+            totalLabel.text = formatAmount(value, viewModel.getDestinationCurrency().value)
         }
         viewModel.getFees().observe(this) { updateFeeLine() }
-        // Also refresh the fee line whenever the cart's currency changes,
-        // since which fees apply is currency-dependent.
         viewModel.getCurrentCart().observe(this) { updateFeeLine() }
+        viewModel.getExchangeRates().observe(this) { updateFeeLine() }
+    }
+
+    private fun renderHeader(flag: ImageView, label: TextView, currency: Currency) {
+        flag.setImageDrawable(currency.flag(this))
+        label.text = currency.iso4217Alpha()
     }
 
     private fun updateFeeLine() {
@@ -148,22 +169,28 @@ class CartActivity : BaseActivity() {
         feeLine.visibility = View.VISIBLE
     }
 
-    private fun formatAmount(value: BigDecimal?, currency: String?): String {
+    private fun formatAmount(value: BigDecimal?, currency: Currency?): String {
         val amount = (value ?: BigDecimal.ZERO)
             .setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN)
             .toHumanReadableNumber(this, decimalPlaces = CART_DISPLAY_SCALE)
-        return if (currency.isNullOrEmpty()) amount else "$amount $currency"
+        val iso = currency?.iso4217Alpha()
+        return if (iso.isNullOrEmpty()) amount else "$amount $iso"
     }
 
-    private fun showCurrencyPicker() {
+    private fun showCurrencyPicker(isBase: Boolean) {
         val currencies = Currency.entries.sortedBy { it.iso4217Alpha() }
         val labels = currencies.map { it.iso4217Alpha() }.toTypedArray()
-        val currentIso = viewModel.getCurrentCart().value?.currency
+        val currentIso = if (isBase) viewModel.getBaseCurrency().value?.iso4217Alpha()
+        else viewModel.getDestinationCurrency().value?.iso4217Alpha()
         val checked = currencies.indexOfFirst { it.iso4217Alpha() == currentIso }
+        val title =
+            if (isBase) R.string.cart_currency_picker_base_title
+            else R.string.cart_currency_picker_dest_title
         AlertDialog.Builder(this)
-            .setTitle(R.string.cart_currency_picker_title)
+            .setTitle(title)
             .setSingleChoiceItems(labels, checked) { dialog, which ->
-                viewModel.setCurrency(currencies[which])
+                if (isBase) viewModel.setBaseCurrency(currencies[which])
+                else viewModel.setDestinationCurrency(currencies[which])
                 dialog.dismiss()
             }
             .setNegativeButton(android.R.string.cancel, null)
@@ -292,9 +319,10 @@ class CartActivity : BaseActivity() {
     }
 
     private fun buildShareText(snapshot: CartSnapshot): String = buildString {
-        val ccy = snapshot.cart.currency
+        val baseIso = snapshot.baseCurrency.iso4217Alpha()
+        val destIso = snapshot.destinationCurrency.iso4217Alpha()
         val name = snapshot.cart.name.ifBlank { getString(R.string.cart_share_default_title) }
-        appendLine(getString(R.string.cart_share_header, name, ccy))
+        appendLine(getString(R.string.cart_share_header, name, baseIso))
         snapshot.evaluatedItems.forEach { (item, value) ->
             val amount = value.setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN).toPlainString()
             val label = item.name.ifBlank { item.expression }
@@ -305,9 +333,18 @@ class CartActivity : BaseActivity() {
             getString(
                 R.string.cart_share_subtotal,
                 snapshot.subtotal.setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN).toPlainString(),
-                ccy,
+                baseIso,
             )
         )
+        if (snapshot.isConverting) {
+            appendLine(
+                getString(
+                    R.string.cart_share_converted,
+                    snapshot.convertedSubtotal.setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN).toPlainString(),
+                    destIso,
+                )
+            )
+        }
         if (snapshot.feeStack.compareTo(BigDecimal.ONE) != 0) {
             val deltaPercent = snapshot.feeStack
                 .subtract(BigDecimal.ONE)
@@ -319,7 +356,7 @@ class CartActivity : BaseActivity() {
             getString(
                 R.string.cart_share_total,
                 snapshot.total.setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN).toPlainString(),
-                ccy,
+                destIso,
             )
         )
     }

@@ -13,6 +13,7 @@ import java.util.UUID
 internal const val CART_KEY_ID = "id"
 internal const val CART_KEY_NAME = "name"
 internal const val CART_KEY_CURRENCY = "currency"
+internal const val CART_KEY_DEST_CURRENCY = "destinationCurrency"
 internal const val CART_KEY_ITEMS = "items"
 internal const val CART_KEY_CREATED_AT = "createdAt"
 internal const val CART_ITEM_KEY_ID = "id"
@@ -24,6 +25,7 @@ internal fun serializeCart(cart: SavedCart): JSONObject {
         put(CART_KEY_ID, cart.id)
         put(CART_KEY_NAME, cart.name)
         put(CART_KEY_CURRENCY, cart.currency)
+        cart.destinationCurrency?.let { put(CART_KEY_DEST_CURRENCY, it) }
         put(CART_KEY_CREATED_AT, cart.createdAt)
         put(CART_KEY_ITEMS, JSONArray().apply {
             cart.items.forEach { put(serializeCartItem(it)) }
@@ -49,6 +51,7 @@ internal fun parseCart(obj: JSONObject?): SavedCart? {
         id = obj.optString(CART_KEY_ID, "").ifEmpty { UUID.randomUUID().toString() },
         name = obj.optString(CART_KEY_NAME, ""),
         currency = obj.optString(CART_KEY_CURRENCY, ""),
+        destinationCurrency = obj.optString(CART_KEY_DEST_CURRENCY, "").ifEmpty { null },
         items = items,
         createdAt = obj.optLong(CART_KEY_CREATED_AT, System.currentTimeMillis()),
     )

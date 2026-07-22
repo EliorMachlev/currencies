@@ -51,8 +51,8 @@
     <string name="cart_subtotal_label">Subtotal</string>
     <string name="cart_total_label">Total</string>
     <string name="cart_fee_line">Fees: %s%%</string>
-    <string name="cart_currency_button">Currency: %s</string>
-    <string name="cart_currency_picker_title">Cart currency</string>
+    <string name="cart_currency_picker_base_title">Base currency</string>
+    <string name="cart_currency_picker_dest_title">Destination currency</string>
     <string name="cart_menu_save_as">Save as…</string>
     <string name="cart_menu_load">Load</string>
     <string name="cart_menu_export">Export to file</string>
@@ -76,6 +76,7 @@
     <string name="cart_share_default_title">Cart</string>
     <string name="cart_share_header">%1$s (%2$s)</string>
     <string name="cart_share_subtotal">Subtotal: %1$s %2$s</string>
+    <string name="cart_share_converted">Converted: %1$s %2$s</string>
     <string name="cart_share_fees">Fees: %s%%</string>
     <string name="cart_share_total">Total: %1$s %2$s</string>
 </resources>

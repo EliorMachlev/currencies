@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cart_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -48,9 +49,89 @@
         android:orientation="vertical"
         android:padding="@dimen/margin2x">
 
+        <!-- header: FROM  ⇄  TO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/cart_currency_from_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin1x">
+
+                <ImageView
+                    android:id="@+id/cart_flag_from"
+                    android:layout_width="28dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    tools:src="@drawable/flag_unknown" />
+
+                <TextView
+                    android:id="@+id/cart_label_from"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin1x"
+                    android:textDirection="ltr"
+                    tools:text="USD" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/cart_swap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin1x"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/desc_toggle_currencies"
+                android:padding="@dimen/margin1x"
+                android:src="@drawable/ic_swap_horiz"
+                app:tint="?attr/colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/cart_currency_to_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin1x">
+
+                <ImageView
+                    android:id="@+id/cart_flag_to"
+                    android:layout_width="28dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    tools:src="@drawable/flag_unknown" />
+
+                <TextView
+                    android:id="@+id/cart_label_to"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin1x"
+                    android:textDirection="ltr"
+                    tools:text="EUR" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin2x"
             android:orientation="horizontal">
 
             <TextView
@@ -95,13 +176,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceTitleMedium" />
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cart_currency_button"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin2x" />
     </LinearLayout>
 
 </LinearLayout>

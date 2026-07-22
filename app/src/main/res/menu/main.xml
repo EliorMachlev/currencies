@@ -10,23 +10,24 @@
 
     <item
         android:orderInCategory="1"
+        android:id="@+id/cart"
+        android:icon="@drawable/ic_cart"
+        android:title="@string/cart_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:orderInCategory="2"
         android:id="@+id/quick_conversions"
         android:icon="@drawable/ic_table"
         android:title="@string/menu_quick_conversions"
         app:showAsAction="ifRoom" />
 
     <item
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:id="@+id/date_picker"
         android:icon="@drawable/ic_history"
         android:title="@string/menu_historical_rates"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:orderInCategory="3"
-        android:id="@+id/cart"
-        android:title="@string/cart_title"
-        app:showAsAction="never" />
 
     <item
         android:orderInCategory="10"
