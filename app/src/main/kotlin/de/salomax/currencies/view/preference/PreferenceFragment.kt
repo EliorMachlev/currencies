@@ -1,9 +1,11 @@
 package de.salomax.currencies.view.preference
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.util.Log
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.TaskStackBuilder
@@ -240,7 +242,12 @@ class PreferenceFragment: PreferenceFragmentCompat() {
             .addNextIntent(Intent(activity, PreferenceActivity::class.java))
             .startActivities()
         activity.finish()
-        activity.overridePendingTransition(0, 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            activity.overrideActivityTransition(Activity.OVERRIDE_TRANSITION_CLOSE, 0, 0)
+        } else {
+            @Suppress("DEPRECATION")
+            activity.overridePendingTransition(0, 0)
+        }
     }
 
 }
