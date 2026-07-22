@@ -7,8 +7,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.map
-
-private const val KEYBOARD_TYPE_BASIC = 0
 import de.salomax.currencies.model.CartItem
 import de.salomax.currencies.model.Currency
 import de.salomax.currencies.model.ExchangeRates
@@ -21,6 +19,8 @@ import de.salomax.currencies.util.evaluateCalculatorExpression
 import java.math.BigDecimal
 import java.math.MathContext
 import java.util.UUID
+
+private const val KEYBOARD_TYPE_BASIC = 0
 
 class CartViewModel(app: Application) : AndroidViewModel(app) {
 
