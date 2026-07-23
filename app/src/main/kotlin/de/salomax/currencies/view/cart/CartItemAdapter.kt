@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import de.salomax.currencies.R
 import de.salomax.currencies.model.CartItem
+import de.salomax.currencies.util.hapticTap
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.viewmodel.cart.evaluateItem
 import java.math.RoundingMode
@@ -45,10 +46,19 @@ class CartItemAdapter(
     // without touching the debounced text watchers on each holder.
     private var currency: String = ""
 
+    // Haptic setting mirrored from the view model so row-local buttons
+    // (delete) can honour the same preference as the keypad without threading
+    // it through every row callback.
+    private var hapticEnabled: Boolean = false
+
     fun setCurrency(iso: String) {
         if (iso == currency) return
         currency = iso
         notifyDataSetChanged()
+    }
+
+    fun setHapticEnabled(enabled: Boolean) {
+        hapticEnabled = enabled
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -58,7 +68,7 @@ class CartItemAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(getItem(position), currency, onChange, onDelete, onEditExpression)
+        holder.bind(getItem(position), currency, hapticEnabled, onChange, onDelete, onEditExpression)
     }
 
     class VH(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
@@ -84,6 +94,7 @@ class CartItemAdapter(
         fun bind(
             item: CartItem,
             currency: String,
+            hapticEnabled: Boolean,
             onChange: (id: String, name: String, expression: String) -> Unit,
             onDelete: (id: String) -> Unit,
             onEditExpression: (field: EditText, item: CartItem) -> Unit,
@@ -115,9 +126,15 @@ class CartItemAdapter(
             exprField.isFocusable = false
             exprField.isClickable = true
             exprField.isCursorVisible = false
-            exprField.setOnClickListener { onEditExpression(exprField, item) }
+            exprField.setOnClickListener {
+                it.hapticTap(hapticEnabled)
+                onEditExpression(exprField, item)
+            }
 
-            deleteButton.setOnClickListener { onDelete(item.id) }
+            deleteButton.setOnClickListener {
+                it.hapticTap(hapticEnabled)
+                onDelete(item.id)
+            }
         }
 
         private fun scheduleCommit(next: CartItem) {

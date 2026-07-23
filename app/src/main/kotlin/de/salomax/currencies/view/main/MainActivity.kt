@@ -9,7 +9,6 @@ import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Bundle
 import android.view.ContextMenu
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -37,6 +36,7 @@ import de.salomax.currencies.model.Rate
 import de.salomax.currencies.repository.Database
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.util.getDecimalSeparator
+import de.salomax.currencies.util.hapticTap
 import de.salomax.currencies.util.ltrIsolate
 import de.salomax.currencies.util.stripRtlMark
 import de.salomax.currencies.util.stripTimePattern
@@ -506,10 +506,7 @@ class MainActivity : BaseActivity() {
         keypadRegular.findViewById<TextView>(R.id.btn_decimal).text = separator
     }
 
-    private fun haptic(view: View) {
-        if (hapticEnabled)
-            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-    }
+    private fun haptic(view: View) = view.hapticTap(hapticEnabled)
 
     /*
      * keyboard: number input

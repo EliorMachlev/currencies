@@ -82,6 +82,9 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
     val isExtendedKeypadEnabled: LiveData<Boolean> =
         db.getKeyboardType().map { it != KEYBOARD_TYPE_BASIC }
 
+    /** Shared with the main screen — same preference gates haptics everywhere. */
+    val isHapticFeedbackEnabled: LiveData<Boolean> = db.isHapticFeedbackEnabled()
+
     fun setFeeSide(side: FeeSide) = db.setFeeSide(side)
 
     fun getBaseCurrency(): LiveData<Currency> = current.map { resolveCurrency(it.currency) }

@@ -36,6 +36,7 @@ import de.salomax.currencies.model.Rate
 import de.salomax.currencies.model.SavedCart
 import de.salomax.currencies.repository.CartExporter
 import de.salomax.currencies.repository.CartFileResult
+import de.salomax.currencies.util.hapticTap
 import de.salomax.currencies.util.toHumanReadableNumber
 import de.salomax.currencies.view.BaseActivity
 import de.salomax.currencies.view.main.spinner.SearchableSpinner
@@ -79,6 +80,9 @@ class CartActivity : BaseActivity() {
     private lateinit var addButton: MaterialButton
 
     private lateinit var adapter: CartItemAdapter
+
+    // Cached haptic setting so per-tap handlers don't need to touch prefs.
+    private var hapticEnabled = false
 
     // Slide-up keypad state — behaves like a soft IME. `activeExprField` is
     // the row's price EditText the keypad is currently editing; the taps
@@ -135,15 +139,23 @@ class CartActivity : BaseActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
-        addButton.setOnClickListener { viewModel.addItem(name = "", expression = "") }
+        addButton.setOnClickListener {
+            it.hapticTap(hapticEnabled)
+            viewModel.addItem(name = "", expression = "")
+        }
         spinnerFrom.onItemSelectedListener = rateSpinnerListener(viewModel::setBaseCurrency)
         spinnerTo.onItemSelectedListener = rateSpinnerListener(viewModel::setDestinationCurrency)
-        swapButton.setOnClickListener { viewModel.swapCurrencies() }
+        swapButton.setOnClickListener {
+            it.hapticTap(hapticEnabled)
+            viewModel.swapCurrencies()
+        }
         feeSideButton.setOnClickListener {
+            it.hapticTap(hapticEnabled)
             val current = viewModel.getFeeSide().value ?: FeeSide.ORIGINAL
             viewModel.setFeeSide(current.toggled())
         }
         feeSideButton.setOnLongClickListener {
+            it.hapticTap(hapticEnabled)
             startActivity(PreferenceActivity.feesIntent(this))
             true
         }
@@ -177,6 +189,10 @@ class CartActivity : BaseActivity() {
     }
 
     private fun observe() {
+        viewModel.isHapticFeedbackEnabled.observe(this) {
+            hapticEnabled = it
+            adapter.setHapticEnabled(it)
+        }
         viewModel.isExtendedKeypadEnabled.observe(this) { extended ->
             keypadRegular.visibility = if (extended) View.GONE else View.VISIBLE
             keypadExtended.visibility = if (extended) View.VISIBLE else View.GONE
@@ -550,28 +566,28 @@ class CartActivity : BaseActivity() {
     // signatures here and forward to the currently-active state.
     // ------------------------------------------------------------------
 
-    @Suppress("UNUSED_PARAMETER")
     fun numberEvent(view: View) {
+        view.hapticTap(hapticEnabled)
         activeCalculatorState?.addNumber((view as AppCompatButton).text.toString())
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun decimalEvent(view: View) {
+        view.hapticTap(hapticEnabled)
         activeCalculatorState?.addDecimal()
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun deleteEvent(view: View) {
+        view.hapticTap(hapticEnabled)
         activeCalculatorState?.delete()
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun percentEvent(view: View) {
+        view.hapticTap(hapticEnabled)
         activeCalculatorState?.addPercent()
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun calculationEvent(view: View) {
+        view.hapticTap(hapticEnabled)
         activeCalculatorState?.addOperator((view as AppCompatButton).text.toString())
     }
 
