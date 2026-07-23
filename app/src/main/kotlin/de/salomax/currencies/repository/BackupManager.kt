@@ -25,10 +25,9 @@ import javax.crypto.spec.SecretKeySpec
 // non-backwards-compatible way; readers must reject unknown versions.
 internal const val BACKUP_SCHEMA_VERSION = 1
 
-// Backup file top-level keys.
-private const val KEY_VERSION = "version"
-private const val KEY_CREATED_AT = "createdAt"
-private const val KEY_APP = "app"
+// Backup file top-level keys. [BACKUP_KEY_VERSION], [BACKUP_KEY_APP], and
+// [BACKUP_KEY_CREATED_AT] live in [BackupSchema] so [CartExporter] can share
+// the same envelope shape.
 private const val KEY_NAMESPACES = "namespaces"
 private const val KEY_ENCRYPTION = "encryption"
 
@@ -78,8 +77,6 @@ private const val TYPE_LONG = "long"
 private const val TYPE_FLOAT = "float"
 private const val TYPE_BOOLEAN = "boolean"
 private const val TYPE_STRING_SET = "stringSet"
-
-private const val APP_ID = "de.salomax.currencies"
 
 // SharedPreferences namespaces that carry user-authored state worth backing
 // up. The "rates" namespace is intentionally excluded — it's a network cache
@@ -138,7 +135,7 @@ class BackupManager(private val context: Context) {
             val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
                 ?: return BackupResult.Failure("Could not open input stream")
             val root = JSONObject(String(bytes, Charsets.UTF_8))
-            val version = root.optInt(KEY_VERSION, -1)
+            val version = root.optInt(BACKUP_KEY_VERSION, -1)
             if (version != BACKUP_SCHEMA_VERSION) {
                 return BackupResult.Failure("Unsupported backup version: $version")
             }
@@ -179,9 +176,9 @@ class BackupManager(private val context: Context) {
             nsObj.put(name, serializeNamespace(context.getSharedPreferences(name, MODE_PRIVATE)))
         }
         val root = JSONObject().apply {
-            put(KEY_VERSION, BACKUP_SCHEMA_VERSION)
-            put(KEY_CREATED_AT, Instant.now().toString())
-            put(KEY_APP, APP_ID)
+            put(BACKUP_KEY_VERSION, BACKUP_SCHEMA_VERSION)
+            put(BACKUP_KEY_CREATED_AT, Instant.now().toString())
+            put(BACKUP_KEY_APP, BACKUP_APP_ID)
         }
         if (password != null && password.isNotEmpty()) {
             root.put(KEY_ENCRYPTION, encryptNamespaces(nsObj, password))

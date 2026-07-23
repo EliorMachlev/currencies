@@ -14,6 +14,7 @@ import de.salomax.currencies.model.Fee
 import de.salomax.currencies.model.FeeSide
 import de.salomax.currencies.model.FeeType
 import de.salomax.currencies.model.Rate
+import de.salomax.currencies.model.SavedCart
 import de.salomax.currencies.model.Timeline
 import de.salomax.currencies.util.KEY_RATES_BASE
 import de.salomax.currencies.util.KEY_RATES_DATE
@@ -260,6 +261,8 @@ class Database(context: Context) {
     private val keyChartHighlightExtremes = "_chartHighlightExtremes"
     private val keyDateFormat = "_dateFormat"
     private val defaultDateFormat = "dd/MM/yy HH:mm"
+    private val keyCartCurrentJson = "_cart_current_json"
+    private val keyCartsSavedJson = "_carts_saved_json"
 
     /* api */
 
@@ -584,6 +587,50 @@ class Database(context: Context) {
 
     fun getDateFormatBlocking(): String {
         return prefs.getString(keyDateFormat, defaultDateFormat) ?: defaultDateFormat
+    }
+
+    /* cart ================================================================================== */
+
+    fun getCurrentCart(): LiveData<SavedCart?> {
+        return SharedPreferenceStringLiveData(prefs, keyCartCurrentJson, null)
+            .map { parseCart(it) }
+    }
+
+    fun getCurrentCartBlocking(): SavedCart? {
+        return parseCart(prefs.getString(keyCartCurrentJson, null))
+    }
+
+    fun setCurrentCart(cart: SavedCart?) {
+        val editor = prefs.edit()
+        if (cart == null) editor.remove(keyCartCurrentJson)
+        else editor.putString(keyCartCurrentJson, serializeCart(cart).toString())
+        editor.apply()
+    }
+
+    fun getSavedCarts(): LiveData<List<SavedCart>> {
+        return SharedPreferenceStringLiveData(prefs, keyCartsSavedJson, "[]")
+            .map { parseCartList(it) }
+    }
+
+    fun getSavedCartsBlocking(): List<SavedCart> {
+        return parseCartList(prefs.getString(keyCartsSavedJson, "[]"))
+    }
+
+    fun saveCart(cart: SavedCart) {
+        val existing = getSavedCartsBlocking()
+        val next = if (existing.any { it.id == cart.id })
+            existing.map { if (it.id == cart.id) cart else it }
+        else
+            existing + cart
+        writeSavedCarts(next)
+    }
+
+    fun deleteSavedCart(id: String) {
+        writeSavedCarts(getSavedCartsBlocking().filter { it.id != id })
+    }
+
+    private fun writeSavedCarts(list: List<SavedCart>) {
+        prefs.edit().putString(keyCartsSavedJson, serializeCartList(list)).apply()
     }
 
 }

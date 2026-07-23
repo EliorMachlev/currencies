@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingVertical="@dimen/margin2x"
-    android:paddingStart="@dimen/margin2x"
+    android:paddingStart="@dimen/margin1x"
     android:paddingEnd="0dp"
     tools:ignore="UseCompoundDrawables">
 
@@ -28,8 +28,9 @@
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin2x"
+        android:layout_marginStart="@dimen/margin1x"
         android:ellipsize="end"
+        android:includeFontPadding="false"
         android:lines="1"
         tools:text="SBD" />
 
