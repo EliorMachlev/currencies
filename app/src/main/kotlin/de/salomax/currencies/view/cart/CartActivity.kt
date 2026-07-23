@@ -251,13 +251,15 @@ class CartActivity : BaseActivity() {
         }
 
     private fun updateFeeLine() {
-        val snapshot = viewModel.snapshotForShare()
-        if (snapshot == null || snapshot.feeStack.compareTo(BigDecimal.ONE) == 0) {
+        // Compute the stack directly from currencies + fees so the arrow /
+        // percentage show even when the cart is empty (matches main screen).
+        val stack = viewModel.currentFeeStack()
+        if (stack.compareTo(BigDecimal.ONE) == 0) {
             feeLine.visibility = View.GONE
             feeSideButton.visibility = View.GONE
             return
         }
-        val deltaPercent = snapshot.feeStack
+        val deltaPercent = stack
             .subtract(BigDecimal.ONE)
             .multiply(BigDecimal(100))
             .setScale(CART_DISPLAY_SCALE, RoundingMode.HALF_EVEN)

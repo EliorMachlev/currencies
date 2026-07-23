@@ -207,6 +207,18 @@ class CartViewModel(app: Application) : AndroidViewModel(app) {
         db.setCurrentCart(cart)
     }
 
+    /**
+     * The multiplicative fee stack for the current base/destination pair.
+     * Doesn't depend on cart items, so the UI can show the fee arrow /
+     * percentage even for an empty cart (same shape as the main screen).
+     */
+    fun currentFeeStack(): BigDecimal {
+        val cart = current.value ?: return BigDecimal.ONE
+        val base = resolveCurrency(cart.currency)
+        val dest = cart.destinationCurrency?.let { resolveCurrency(it) } ?: base
+        return FeeCalculator.totalStack(lastFees, base, dest)
+    }
+
     /** Snapshot used by the "Share" flow — computed against the latest fees & rates. */
     fun snapshotForShare(): CartSnapshot? {
         val cart = current.value ?: return null
