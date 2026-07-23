@@ -129,6 +129,18 @@
                     android:textDirection="ltr" />
             </LinearLayout>
 
+            <!-- "True cost" in the base currency: shown only for fee-side ORIGINAL. -->
+            <TextView
+                android:id="@+id/cart_subtotal_extra"
+                style="@style/TextAppearance.Material3.LabelSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="?attr/colorError"
+                android:textDirection="ltr"
+                android:visibility="gone"
+                tools:text="True cost: 150.00 USD" />
+
             <TextView
                 android:id="@+id/cart_fee_line"
                 style="@style/TextAppearance.Material3.LabelSmall"
@@ -159,6 +171,18 @@
                     android:layout_height="wrap_content"
                     android:textDirection="ltr" />
             </LinearLayout>
+
+            <!-- "Original value" in the destination currency: shown only for fee-side CONVERTED. -->
+            <TextView
+                android:id="@+id/cart_total_extra"
+                style="@style/TextAppearance.Material3.LabelSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="?attr/colorError"
+                android:textDirection="ltr"
+                android:visibility="gone"
+                tools:text="Original value: 100.00 EUR" />
         </LinearLayout>
     </LinearLayout>
 

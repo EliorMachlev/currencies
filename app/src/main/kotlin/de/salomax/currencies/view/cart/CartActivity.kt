@@ -46,6 +46,7 @@ import de.salomax.currencies.viewmodel.cart.CartSnapshot
 import de.salomax.currencies.viewmodel.cart.CartViewModel
 import de.salomax.currencies.viewmodel.main.CalculatorInputState
 import java.math.BigDecimal
+import java.math.MathContext
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -70,8 +71,10 @@ class CartActivity : BaseActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var subtotalLabel: TextView
+    private lateinit var subtotalExtra: TextView
     private lateinit var feeLine: TextView
     private lateinit var totalLabel: TextView
+    private lateinit var totalExtra: TextView
     private lateinit var spinnerFrom: SearchableSpinner
     private lateinit var spinnerTo: SearchableSpinner
     private lateinit var swapButton: ImageButton
@@ -113,8 +116,10 @@ class CartActivity : BaseActivity() {
 
         this.recycler = findViewById(R.id.cart_items)
         this.subtotalLabel = findViewById(R.id.cart_subtotal_value)
+        this.subtotalExtra = findViewById(R.id.cart_subtotal_extra)
         this.feeLine = findViewById(R.id.cart_fee_line)
         this.totalLabel = findViewById(R.id.cart_total_value)
+        this.totalExtra = findViewById(R.id.cart_total_extra)
         this.spinnerFrom = findViewById(R.id.cart_spinner_from)
         this.spinnerTo = findViewById(R.id.cart_spinner_to)
         this.swapButton = findViewById(R.id.cart_swap)
@@ -206,18 +211,27 @@ class CartActivity : BaseActivity() {
         viewModel.getDestinationCurrency().observe(this) { spinnerTo.setSelection(it) }
         viewModel.getSubtotal().observe(this) { value ->
             subtotalLabel.text = formatAmount(value, viewModel.getBaseCurrency().value)
+            updateFeeExtras()
         }
         viewModel.getTotal().observe(this) { value ->
             totalLabel.text = formatAmount(value, viewModel.getDestinationCurrency().value)
+            updateFeeExtras()
         }
-        viewModel.getFees().observe(this) { updateFeeLine() }
-        viewModel.getCurrentCart().observe(this) { updateFeeLine() }
+        viewModel.getFees().observe(this) {
+            updateFeeLine()
+            updateFeeExtras()
+        }
+        viewModel.getCurrentCart().observe(this) {
+            updateFeeLine()
+            updateFeeExtras()
+        }
         viewModel.getFeeSide().observe(this) { side ->
             val effective = side ?: FeeSide.ORIGINAL
             feeSideButton.setImageResource(
                 if (effective == FeeSide.CONVERTED) R.drawable.ic_fee_side_converted_horizontal
                 else R.drawable.ic_fee_side_original_horizontal
             )
+            updateFeeExtras()
         }
         viewModel.getExchangeRates().observe(this) { rates ->
             // Feed the same rate list the spinner shows on the main screen so
@@ -266,6 +280,40 @@ class CartActivity : BaseActivity() {
         feeLine.text = getString(R.string.cart_fee_line, deltaPercent.toPlainString())
         feeLine.visibility = View.VISIBLE
         feeSideButton.visibility = View.VISIBLE
+    }
+
+    /**
+     * When fees apply, expose the "other side" of the fee so users can see both:
+     * fee-side ORIGINAL keeps subtotal at mid-market → show subtotal-after-fee in
+     * the base currency ("True cost"); fee-side CONVERTED bakes fees into total
+     * → show total-before-fee in the destination currency ("Original value").
+     */
+    private fun updateFeeExtras() {
+        val stack = viewModel.currentFeeStack()
+        if (stack.compareTo(BigDecimal.ONE) == 0) {
+            subtotalExtra.visibility = View.GONE
+            totalExtra.visibility = View.GONE
+            return
+        }
+        val side = viewModel.getFeeSide().value ?: FeeSide.ORIGINAL
+        when (side) {
+            FeeSide.ORIGINAL -> {
+                val subtotal = viewModel.getSubtotal().value ?: BigDecimal.ZERO
+                val withFee = subtotal.multiply(stack, MathContext.DECIMAL128)
+                subtotalExtra.text = getString(R.string.fee_true_cost_prefix) +
+                    formatAmount(withFee, viewModel.getBaseCurrency().value)
+                subtotalExtra.visibility = View.VISIBLE
+                totalExtra.visibility = View.GONE
+            }
+            FeeSide.CONVERTED -> {
+                val total = viewModel.getTotal().value ?: BigDecimal.ZERO
+                val fair = total.multiply(stack, MathContext.DECIMAL128)
+                totalExtra.text = getString(R.string.fee_original_value_prefix) +
+                    formatAmount(fair, viewModel.getDestinationCurrency().value)
+                totalExtra.visibility = View.VISIBLE
+                subtotalExtra.visibility = View.GONE
+            }
+        }
     }
 
     private fun formatAmount(value: BigDecimal?, currency: Currency?): String {
