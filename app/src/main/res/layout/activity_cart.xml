@@ -129,18 +129,6 @@
                     android:textDirection="ltr" />
             </LinearLayout>
 
-            <!-- "True cost" in the base currency: shown only for fee-side ORIGINAL. -->
-            <TextView
-                android:id="@+id/cart_subtotal_extra"
-                style="@style/TextAppearance.Material3.LabelSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:textColor="?attr/colorError"
-                android:textDirection="ltr"
-                android:visibility="gone"
-                tools:text="True cost: 150.00 USD" />
-
             <TextView
                 android:id="@+id/cart_fee_line"
                 style="@style/TextAppearance.Material3.LabelSmall"
@@ -150,6 +138,60 @@
                 android:textColor="?attr/colorError"
                 android:textDirection="ltr"
                 android:visibility="gone" />
+
+            <!-- "True cost" in the base currency: shown only for fee-side ORIGINAL. -->
+            <LinearLayout
+                android:id="@+id/cart_subtotal_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/cart_subtotal_extra_label"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorError"
+                    tools:text="True cost" />
+
+                <TextView
+                    android:id="@+id/cart_subtotal_extra_value"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorError"
+                    android:textDirection="ltr"
+                    tools:text="150.00 USD" />
+            </LinearLayout>
+
+            <!-- "Original value" in the destination currency: shown only for fee-side CONVERTED. -->
+            <LinearLayout
+                android:id="@+id/cart_total_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/cart_total_extra_label"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorError"
+                    tools:text="Original value" />
+
+                <TextView
+                    android:id="@+id/cart_total_extra_value"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorError"
+                    android:textDirection="ltr"
+                    tools:text="100.00 EUR" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,18 +213,6 @@
                     android:layout_height="wrap_content"
                     android:textDirection="ltr" />
             </LinearLayout>
-
-            <!-- "Original value" in the destination currency: shown only for fee-side CONVERTED. -->
-            <TextView
-                android:id="@+id/cart_total_extra"
-                style="@style/TextAppearance.Material3.LabelSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:textColor="?attr/colorError"
-                android:textDirection="ltr"
-                android:visibility="gone"
-                tools:text="Original value: 100.00 EUR" />
         </LinearLayout>
     </LinearLayout>
 

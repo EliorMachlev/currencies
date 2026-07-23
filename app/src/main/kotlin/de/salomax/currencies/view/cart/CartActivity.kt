@@ -71,10 +71,14 @@ class CartActivity : BaseActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var subtotalLabel: TextView
-    private lateinit var subtotalExtra: TextView
+    private lateinit var subtotalExtra: View
+    private lateinit var subtotalExtraLabel: TextView
+    private lateinit var subtotalExtraValue: TextView
     private lateinit var feeLine: TextView
     private lateinit var totalLabel: TextView
-    private lateinit var totalExtra: TextView
+    private lateinit var totalExtra: View
+    private lateinit var totalExtraLabel: TextView
+    private lateinit var totalExtraValue: TextView
     private lateinit var spinnerFrom: SearchableSpinner
     private lateinit var spinnerTo: SearchableSpinner
     private lateinit var swapButton: ImageButton
@@ -117,9 +121,13 @@ class CartActivity : BaseActivity() {
         this.recycler = findViewById(R.id.cart_items)
         this.subtotalLabel = findViewById(R.id.cart_subtotal_value)
         this.subtotalExtra = findViewById(R.id.cart_subtotal_extra)
+        this.subtotalExtraLabel = findViewById(R.id.cart_subtotal_extra_label)
+        this.subtotalExtraValue = findViewById(R.id.cart_subtotal_extra_value)
         this.feeLine = findViewById(R.id.cart_fee_line)
         this.totalLabel = findViewById(R.id.cart_total_value)
         this.totalExtra = findViewById(R.id.cart_total_extra)
+        this.totalExtraLabel = findViewById(R.id.cart_total_extra_label)
+        this.totalExtraValue = findViewById(R.id.cart_total_extra_value)
         this.spinnerFrom = findViewById(R.id.cart_spinner_from)
         this.spinnerTo = findViewById(R.id.cart_spinner_to)
         this.swapButton = findViewById(R.id.cart_swap)
@@ -300,21 +308,27 @@ class CartActivity : BaseActivity() {
             FeeSide.ORIGINAL -> {
                 val subtotal = viewModel.getSubtotal().value ?: BigDecimal.ZERO
                 val withFee = subtotal.multiply(stack, MathContext.DECIMAL128)
-                subtotalExtra.text = getString(R.string.fee_true_cost_prefix) +
-                    formatAmount(withFee, viewModel.getBaseCurrency().value)
+                subtotalExtraLabel.text = stripLabelSeparator(getString(R.string.fee_true_cost_prefix))
+                subtotalExtraValue.text = formatAmount(withFee, viewModel.getBaseCurrency().value)
                 subtotalExtra.visibility = View.VISIBLE
                 totalExtra.visibility = View.GONE
             }
             FeeSide.CONVERTED -> {
                 val total = viewModel.getTotal().value ?: BigDecimal.ZERO
                 val fair = total.multiply(stack, MathContext.DECIMAL128)
-                totalExtra.text = getString(R.string.fee_original_value_prefix) +
-                    formatAmount(fair, viewModel.getDestinationCurrency().value)
+                totalExtraLabel.text = stripLabelSeparator(getString(R.string.fee_original_value_prefix))
+                totalExtraValue.text = formatAmount(fair, viewModel.getDestinationCurrency().value)
                 totalExtra.visibility = View.VISIBLE
                 subtotalExtra.visibility = View.GONE
             }
         }
     }
+
+    // Existing prefix strings end with a locale-specific ": " / " : " / "：" for
+    // inline use. When we're showing them as a standalone left-aligned label,
+    // strip the trailing separator so it doesn't dangle before the right column.
+    private fun stripLabelSeparator(text: String): String =
+        text.trimEnd(' ', '\u00A0', ':', '：')
 
     private fun formatAmount(value: BigDecimal?, currency: Currency?): String {
         val amount = (value ?: BigDecimal.ZERO)

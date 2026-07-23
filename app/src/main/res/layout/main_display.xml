@@ -228,10 +228,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@id/scrollViewOriginalValue"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinnerTo"
-            app:layout_constraintTop_toTopOf="@+id/guideline_display"
+            app:layout_constraintTop_toBottomOf="@id/scrollViewOriginalValue"
             app:layout_constraintVertical_chainStyle="packed">
 
             <TextView
@@ -254,10 +254,10 @@
             android:layout_marginTop="@dimen/margin1x"
             android:layout_marginEnd="@dimen/margin2x"
             android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/scrollViewTextTo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/spinnerTo"
-            app:layout_constraintTop_toBottomOf="@id/scrollViewTextTo">
+            app:layout_constraintTop_toTopOf="@id/guideline_display">
 
             <TextView
                 android:id="@+id/textOriginalValue"
