@@ -92,17 +92,18 @@
 
         <!-- true cost hint *********************************************** -->
 
-        <!-- Anchored to the guideline (no top constraint) so it sits just
-             above the divider regardless of textFrom's centred position. -->
+        <!-- Hangs directly under textFrom so it reads as "input + fee note".
+             textFrom's constraints are independent of this view, so toggling
+             visibility here doesn't shift the input row. -->
         <HorizontalScrollView
             android:id="@+id/scrollViewTrueCost"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin2x"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@id/guideline_display"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/spinnerFrom">
+            app:layout_constraintStart_toEndOf="@id/spinnerFrom"
+            app:layout_constraintTop_toBottomOf="@id/scrollViewTextFrom">
 
             <TextView
                 android:id="@+id/textTrueCost"
@@ -253,17 +254,18 @@
                 tools:text="€ 383.99" />
         </HorizontalScrollView>
 
-        <!-- Anchored to the guideline (no bottom constraint) so it sits
-             just below the divider regardless of textTo's centred position. -->
+        <!-- Hangs directly above textTo so it reads as "fee note + total".
+             textTo's constraints are independent of this view, so toggling
+             visibility here doesn't shift the total row. -->
         <HorizontalScrollView
             android:id="@+id/scrollViewOriginalValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin2x"
             android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@id/scrollViewTextTo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/spinnerTo"
-            app:layout_constraintTop_toTopOf="@id/guideline_display">
+            app:layout_constraintStart_toEndOf="@id/spinnerTo">
 
             <TextView
                 android:id="@+id/textOriginalValue"
