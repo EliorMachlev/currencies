@@ -125,7 +125,6 @@ class CartActivity : BaseActivity() {
             onChange = viewModel::updateItem,
             onDelete = viewModel::removeItem,
             onEditExpression = { field, _ -> openKeypadFor(field) },
-            onNameFocused = ::closeKeypad,
         )
 
         // Back-press dismisses the keypad first; only bubbles up to finish

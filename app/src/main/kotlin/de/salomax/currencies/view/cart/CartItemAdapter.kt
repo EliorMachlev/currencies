@@ -38,9 +38,6 @@ class CartItemAdapter(
     // supply extra context (e.g., cursor position) without a signature
     // churn later.
     private val onEditExpression: (field: EditText, item: CartItem) -> Unit,
-    // Fired when the row's name field gains focus so the activity can
-    // dismiss its own slide-up keypad — the system IME is about to open.
-    private val onNameFocused: () -> Unit,
 ) : ListAdapter<CartItem, CartItemAdapter.VH>(DIFF) {
 
     // The cart's ISO code. Held on the adapter so a currency change can be
@@ -61,7 +58,7 @@ class CartItemAdapter(
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(getItem(position), currency, onChange, onDelete, onEditExpression, onNameFocused)
+        holder.bind(getItem(position), currency, onChange, onDelete, onEditExpression)
     }
 
     class VH(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
@@ -90,7 +87,6 @@ class CartItemAdapter(
             onChange: (id: String, name: String, expression: String) -> Unit,
             onDelete: (id: String) -> Unit,
             onEditExpression: (field: EditText, item: CartItem) -> Unit,
-            onNameFocused: () -> Unit,
         ) {
             currentItem = item
             onChangeHook = onChange
@@ -111,12 +107,6 @@ class CartItemAdapter(
             }
             nameField.addTextChangedListener(nameWatcher)
             exprField.addTextChangedListener(exprWatcher)
-
-            // Native IME will pop up next — tell the activity so it can slide
-            // its own calculator keypad away first.
-            nameField.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) onNameFocused()
-            }
 
             // Route expression edits through the app's calculator dialog
             // instead of the system IME. Keep the EditText for its styling
