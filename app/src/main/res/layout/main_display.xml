@@ -92,17 +92,17 @@
 
         <!-- true cost hint *********************************************** -->
 
+        <!-- Anchored to the guideline (no top constraint) so it sits just
+             above the divider regardless of textFrom's centred position. -->
         <HorizontalScrollView
             android:id="@+id/scrollViewTrueCost"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin1x"
             android:layout_marginEnd="@dimen/margin2x"
             android:scrollbars="none"
             app:layout_constraintBottom_toTopOf="@id/guideline_display"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/spinnerFrom"
-            app:layout_constraintTop_toBottomOf="@id/scrollViewTextFrom">
+            app:layout_constraintStart_toEndOf="@id/spinnerFrom">
 
             <TextView
                 android:id="@+id/textTrueCost"
@@ -189,16 +189,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="13 + 0.99" />
 
+        <!-- textFrom sits centred in the top half regardless of whether
+             scrollViewTrueCost is currently visible — anchoring its bottom
+             to the guideline instead of chaining to trueCost keeps it from
+             re-centring when the fee hint toggles. -->
         <HorizontalScrollView
             android:id="@+id/scrollViewTextFrom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@id/scrollViewTrueCost"
+            app:layout_constraintBottom_toTopOf="@id/guideline_display"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinnerFrom"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/textFrom"
@@ -223,6 +226,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/scrollViewTextTo" />
 
+        <!-- textTo is centred in the bottom half independently of
+             scrollViewOriginalValue's visibility. Anchoring its top to the
+             guideline (instead of chaining to originalValue) keeps the total
+             row stationary when the fee hint toggles. -->
         <HorizontalScrollView
             android:id="@+id/scrollViewTextTo"
             android:layout_width="0dp"
@@ -231,8 +238,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinnerTo"
-            app:layout_constraintTop_toBottomOf="@id/scrollViewOriginalValue"
-            app:layout_constraintVertical_chainStyle="packed">
+            app:layout_constraintTop_toBottomOf="@id/guideline_display">
 
             <TextView
                 android:id="@+id/textTo"
@@ -247,14 +253,14 @@
                 tools:text="€ 383.99" />
         </HorizontalScrollView>
 
+        <!-- Anchored to the guideline (no bottom constraint) so it sits
+             just below the divider regardless of textTo's centred position. -->
         <HorizontalScrollView
             android:id="@+id/scrollViewOriginalValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin1x"
             android:layout_marginEnd="@dimen/margin2x"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@id/scrollViewTextTo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/spinnerTo"
             app:layout_constraintTop_toTopOf="@id/guideline_display">
