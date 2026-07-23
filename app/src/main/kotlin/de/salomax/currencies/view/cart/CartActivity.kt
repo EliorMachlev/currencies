@@ -98,6 +98,7 @@ class CartActivity : BaseActivity() {
     private lateinit var keypadContainer: ViewGroup
     private lateinit var keypadRegular: View
     private lateinit var keypadExtended: View
+    private lateinit var contentColumn: View
     private var activeCalculatorState: CalculatorInputState? = null
     private var activeExprField: EditText? = null
     private var activeStateObserver: Observer<String?>? = null
@@ -137,6 +138,7 @@ class CartActivity : BaseActivity() {
         this.keypadContainer = findViewById(R.id.cart_keypad_container)
         this.keypadRegular = findViewById(R.id.cart_keypad_regular)
         this.keypadExtended = findViewById(R.id.cart_keypad_extended)
+        this.contentColumn = findViewById(R.id.cart_content)
 
         adapter = CartItemAdapter(
             onChange = viewModel::updateItem,
@@ -559,6 +561,10 @@ class CartActivity : BaseActivity() {
             .translationY(0f)
             .setDuration(KEYPAD_ANIM_MS)
             .start()
+        // Mirror the system-IME resize behaviour: pad the content column by the
+        // keypad's height so the totals card slides above it instead of being
+        // hidden underneath.
+        setContentBottomInsetToKeypad()
     }
 
     private fun hideKeypad() {
@@ -569,6 +575,28 @@ class CartActivity : BaseActivity() {
             .setDuration(KEYPAD_ANIM_MS)
             .withEndAction { keypadContainer.visibility = View.GONE }
             .start()
+        contentColumn.setPadding(
+            contentColumn.paddingLeft,
+            contentColumn.paddingTop,
+            contentColumn.paddingRight,
+            0,
+        )
+    }
+
+    private fun setContentBottomInsetToKeypad() {
+        val apply = {
+            val h = keypadContainer.height.takeIf { it > 0 }
+                ?: keypadContainer.layoutParams.height
+            contentColumn.setPadding(
+                contentColumn.paddingLeft,
+                contentColumn.paddingTop,
+                contentColumn.paddingRight,
+                h,
+            )
+        }
+        // If the keypad hasn't laid out yet (first open), wait one pass.
+        if (keypadContainer.height > 0) apply()
+        else keypadContainer.post(apply)
     }
 
     private fun detachActiveField() {

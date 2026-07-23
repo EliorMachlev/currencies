@@ -9,5 +9,13 @@ import android.view.View
  * both surfaces honour the same preference the same way.
  */
 fun View.hapticTap(enabled: Boolean) {
-    if (enabled) performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+    if (!enabled) return
+    // FLAG_IGNORE_VIEW_SETTING: some parent chains disable haptic feedback
+    // (e.g. cards, RecyclerView rows), so force the tap regardless of the
+    // view-tree setting. The user's global "haptic feedback" system toggle
+    // is still respected by the OS.
+    performHapticFeedback(
+        HapticFeedbackConstants.KEYBOARD_TAP,
+        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING,
+    )
 }
